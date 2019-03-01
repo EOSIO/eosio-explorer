@@ -1,0 +1,13 @@
+{
+  "name": "eos-toppings",
+  "version": "0.0.0",
+  "repository": "git@github.com:EOSIO/eos-toppings.git",
+  "author": "Terry Leung <terry.leung@block.one>",
+  "license": "MIT",
+  "workspaces": [
+     "packages/*"
+  ],
+  "devDependencies": {
+    "lerna": "^3.13.1"
+  }
+}
