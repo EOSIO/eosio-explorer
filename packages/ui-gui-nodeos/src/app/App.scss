@@ -1,0 +1,19 @@
+.App{
+
+  //always pad footer at the bottom, even the main content is short
+  > div{
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    main{
+      flex: 1 1 auto;
+
+      //make Page Component fill all the space
+      display: flex;
+      flex-direction: column;
+      >div{
+        flex:1 1 auto;
+      }
+    }
+  }
+}
