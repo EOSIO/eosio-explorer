@@ -1,0 +1,9 @@
+{
+  "name": "@eos-toppings/ui-gui-nodeos",
+  "version": "0.0.0",
+  "main": "src/index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@eos-toppings/api-mongodb-plugin": "^0.0.0"
+  }
+}
