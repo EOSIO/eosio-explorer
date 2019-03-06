@@ -1,11 +1,32 @@
-import _ from 'lodash';
+import mongoose from 'mongoose';
+import AccountModel from './account';
 
-const world = 'world~';
+const dbRoute = "mongodb://localhost:27017/mongopluginmainnet";
 
-export function hello(word: string = world): string {
-  return _.upperCase(`Hello ${word}!`);
-}
+// connects our back end code with the database
+mongoose.connect(
+  dbRoute,
+  { useNewUrlParser: true }
+);
 
-export function addSomething(text: string = ``): string {
-  return text + ` and Something!`;
-}
+let db = mongoose.connection;
+
+db.once("open", () => console.log("connected to the database"));
+
+// checks if connection with the database is successful
+db.on("error", console.error.bind(console, "MongoDB connection error:"));
+
+let promise = new Promise((reslove, reject)=>{
+
+  AccountModel
+    .find()
+    .then(doc=>{
+      reslove(doc);
+    })
+    .catch(err=>{
+      reject(err);
+    });
+
+})
+
+export const getAccounts = promise;
