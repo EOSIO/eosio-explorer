@@ -18,7 +18,7 @@ class LandingPage extends Component {
 
   componentDidMount(){
     axios
-      .get(`/api/getAccounts`)
+      .get(`/api/mongodb/get_accounts`)
       .then(({data})=>{
         this.setState({text: JSON.stringify(data)})
       })

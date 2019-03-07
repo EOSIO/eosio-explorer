@@ -8,8 +8,21 @@ RESTful api for retrieving data from mongodb ( which its data come from mongodb 
 * GUI of Nodeos
 
 # Development
-Install typescript and tsc globally
-`yarn global add typescript`
 
+## First time setup
+Install typescript and tsc globally
+```
+yarn global add typescript
+```
+
+## Watch and Compile
 Watch and compile ts to js into `/dist`
-`tsc -w -d`
+```
+rm -rf dist && tsc -w
+```
+
+## Test to run
+Call the APIs
+```
+node dist/run.js
+```

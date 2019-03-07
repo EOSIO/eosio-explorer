@@ -1,32 +1,10 @@
-import mongoose from 'mongoose';
-import AccountModel from './account';
 
-const dbRoute = "mongodb://localhost:27017/mongopluginmainnet";
+import dotenv from 'dotenv';
+dotenv.config({ path: `${__dirname}/../.env`});
 
-// connects our back end code with the database
-mongoose.connect(
-  dbRoute,
-  { useNewUrlParser: true }
-);
+import initMongo from './config/mongo';
+initMongo();
 
-let db = mongoose.connection;
+import api from './api';
 
-db.once("open", () => console.log("connected to the database"));
-
-// checks if connection with the database is successful
-db.on("error", console.error.bind(console, "MongoDB connection error:"));
-
-let promise = new Promise((reslove, reject)=>{
-
-  AccountModel
-    .find()
-    .then(doc=>{
-      reslove(doc);
-    })
-    .catch(err=>{
-      reject(err);
-    });
-
-})
-
-export const getAccounts = promise;
+export default api
