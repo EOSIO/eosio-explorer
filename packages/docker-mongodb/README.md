@@ -11,14 +11,18 @@ Create a docker image with a mongodb service inside.
 # Development
 cd into package root `/packages/docker-mongodb`
 
+## First Time Setup
+Make a `data` directory.
+```
+mkdir data
+```
+
 ## Start
 Start nodeos by creating and running a docker container.
 
 ```sh
 docker run -d -p 27017:27017 --name eosio-mongodb -v $(pwd)/data:/data/db mongo
 ```
-
-* Make sure a mongodb service is running ( mongodb://localhost:27017 ) before you start the nodeos.
 
 ## Stop
 Stop nodeos ( stop docker container )

@@ -6,7 +6,7 @@ const { getAccounts } = require('@eos-toppings/api-mongodb-plugin');
 
 const PORT = 5000;
 
-//only serve api calls ( not the static /build/ ) in development mode, create react app in develop will call the APIs from a proxy.
+//only serve api calls ( not the static build/ ) in development mode, create react app in develop will call the APIs from a proxy.
 if ( process.env.MODE !== 'development'){
   app.use(express.static(path.join(__dirname, 'build')));
 }
@@ -30,5 +30,5 @@ app.on('error', function (e) {
 });
 
 app.listen(PORT, ()=>{
-  console.log(`Listening ${process.env.MODE !== `development`  ? `static /build/ folder and ` : `` }API calls on port ${PORT} in production mode.`)
+  console.log(`Listening ${process.env.MODE !== `development`  ? `static \`build/\` folder and ` : `` }API calls on port ${PORT} in production mode.`)
 });

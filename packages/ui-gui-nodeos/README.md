@@ -16,7 +16,7 @@ Start development
 `yarn start`
 
 ## Different in development
-In production, we use `serve.js` to serve both api calls and static `/build/` files.
+In production, we use `serve.js` to serve both api calls and static `build/` files.
 In development, we use `src/setupProxy.js` to proxy API calls to a background serve.js process ( see `prestart` in `packages.json`)
 
 # Build
@@ -34,7 +34,7 @@ Using create-react-app v2 as the basis for this web app.
 
 ## Reset css
 This is always good add an reset stylesheet at the first place to syncing cross browsers css behaviour before starting any styling work.
-Please refer to `/src/reset.scss`
+Please refer to `src/app/reset.scss`
 
 ## Bootstrap Css
 We use package reactstrap ( compatible with Bootstrap v4.0.0 ) for rendering Bootstrap components and include the corresponding scss module from Bootstrap scss library.
@@ -45,7 +45,7 @@ Then you can import bootstrap css library from node_modules directly
 ## Custom Mixins and Variables
 
 We need to update variable `SASS_PATH=node_modules:src/scss` in .env
-Add mixins and variables into `/src/scss` with underscore prefixed to state it is a library css. Include the path in package.json build script.
+Add mixins and variables into `src/scss` with underscore prefixed to state it is a library css. Include the path in package.json build script.
 Use the mixins by `@import "mixins"` and `@import "variables"`
 
 # App structure

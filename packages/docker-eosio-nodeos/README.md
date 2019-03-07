@@ -11,6 +11,12 @@ Cloned from https://github.com/EOSIO/eosio-project-boilerplate-simple
 # Development
 cd into package root `/packages/docker-eosio-nodeos`
 
+## First Time Setup
+Make a `data` directory.
+```
+mkdir data
+```
+
 ## Start
 Start nodeos by creating and running a docker container.
 
@@ -23,7 +29,7 @@ Start nodeos by creating and running a docker container.
 Stop nodeos ( stop docker container )
 
 ```sh
-docker stop ame=eosio_notechain_container
+docker stop name=eosio_notechain_container
 ```
 
 ## Restart
