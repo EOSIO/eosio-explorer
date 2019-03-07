@@ -7,18 +7,33 @@ import { connect } from 'react-redux';
 import { StandardTemplate } from 'templates';
 import { increaseCounter } from 'actions/counter';
 
-const { hello, addSomething } = require('@eos-toppings/api-mongodb-plugin');
+import axios from 'axios';
 
 class LandingPage extends Component {
 
+  constructor(){
+    super()
+    this.state = { text: `default`}
+  }
+
+  componentDidMount(){
+    axios
+      .get(`/api/getAccounts`)
+      .then(({data})=>{
+        this.setState({text: JSON.stringify(data)})
+      })
+  }
+
   render() {
+
+    let { text } = this.state;
     return (
       <StandardTemplate>
         <div className="LandingPage">
             <div className="high-block">
               <div>
                 Landing Page Content <br/><br/>
-                Import from packages/api-mongodb-plugin: {addSomething(hello('test'))}<br/><br/>
+                Calls from mongodb: {text}<br/><br/>
                 Counter: {this.props.count}<br/><br/>
                 <button onClick={()=>{this.props.updateCounter(2)}}>Click here to increase counter by 2</button>
               </div>

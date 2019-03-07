@@ -11,14 +11,21 @@ The frontend part of an application of the GUI of Nodeos.
 Install dependencies
 `yarn install`
 
+## Start development
 Start development
 `yarn start`
+
+## Different in development
+In production, we use `serve.js` to serve both api calls and static `/build/` files.
+In development, we use `src/setupProxy.js` to proxy API calls to a background serve.js process ( see `prestart` in `packages.json`)
 
 # Build
 Enter `yarn run build` to build a static production distribution.
 
 # Serve
-Enter `serve -s build` to build a static production distribution.
+```
+node serve.js
+```
 
 # App Structure
 
