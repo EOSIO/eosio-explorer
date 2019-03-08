@@ -20,20 +20,20 @@ mkdir data
 ## Start
 Start nodeos by creating and running a docker container.
 
-```sh
+```
 docker run -d -p 27017:27017 --name eosio-mongodb -v $(pwd)/data:/data/db mongo
 ```
 
 ## Stop
 Stop nodeos ( stop docker container )
 
-```sh
-docker stop name=eosio-mongodb
+```
+docker stop eosio-mongodb
 ```
 
 ## Restart
 Reset and restart
 
-```sh
+```
 rm -rf data/ && mkdir data && docker rm eosio-mongodb && docker run -d -p 27017:27017 --name eosio-mongodb -v $(pwd)/data:/data/db mongo
 ```
