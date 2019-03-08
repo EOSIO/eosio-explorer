@@ -2,7 +2,7 @@
 
 import api from './index';
 
-const endpoint = 'get_accounts';
+const endpoint = 'get_blocks';
 
 api[endpoint]()
   .then((doc: any)=>{
@@ -11,3 +11,7 @@ api[endpoint]()
   .catch((err: any)=>{
     console.error(err);
   });
+
+  setTimeout((function() {
+    return process.exit(22);
+}), 300);

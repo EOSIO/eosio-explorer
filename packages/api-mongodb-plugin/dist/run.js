@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var index_1 = __importDefault(require("./index"));
-var endpoint = 'get_accounts';
+var endpoint = 'get_blocks';
 index_1.default[endpoint]()
     .then(function (doc) {
     console.log(doc);
@@ -13,3 +13,6 @@ index_1.default[endpoint]()
     .catch(function (err) {
     console.error(err);
 });
+setTimeout((function () {
+    return process.exit(22);
+}), 300);
