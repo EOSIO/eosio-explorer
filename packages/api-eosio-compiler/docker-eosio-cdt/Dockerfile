@@ -1,1 +1,6 @@
-FROM ubuntu
+FROM ubuntu:18.04
+
+RUN apt-get update && apt-get install -y wget sudo curl
+
+RUN wget https://github.com/EOSIO/eosio.cdt/releases/download/v1.5.0/eosio.cdt_1.5.0-1_amd64.deb
+RUN apt-get update && sudo apt install -y ./eosio.cdt_1.5.0-1_amd64.deb
