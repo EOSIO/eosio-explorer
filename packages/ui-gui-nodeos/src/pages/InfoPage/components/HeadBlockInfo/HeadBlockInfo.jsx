@@ -6,14 +6,22 @@ import { fetchHeadBlock, fetchHeadBlockFulfilled, fetchHeadBlockRejected } from 
 
 class HeadBlockInfo extends Component {
 
+  componentDidMount() {
+    this.props.startPolling()
+  }
+
+  componentWillUnmount() {
+    this.props.stopPolling();
+  }
+
   render() {
 
     return (
       <div className="HeadBlockInfo">
-        <button onClick={()=>{this.props.fetchHeadBlock()}}>Click!</button>
-        <div>{this.props.isFetchingHeadBlock?`true`:`false`}</div>
-        <button onClick={()=>{this.props.fetchHeadBlockFulfilled({'a':1})}}>Click!</button>
-        <div>{JSON.stringify(this.props.headBlockInfoData.payload)}</div>
+        <button onClick={()=>{
+          this.props.fetchHeadBlock()
+        }}>Refresh Block!</button>
+        <div>{this.props.isFetchingHeadBlock ? `loading...`: JSON.stringify(this.props.headBlockInfoData.payload)}</div>
       </div>
     );
   }
@@ -28,6 +36,12 @@ export default connect(
     fetchHeadBlock: () => dispatch(fetchHeadBlock()),
     fetchHeadBlockFulfilled: (payload) => dispatch(fetchHeadBlockFulfilled(payload)),
     fetchHeadBlockRejected: (payload) => dispatch(fetchHeadBlockRejected(payload)),
+    startPolling: () => dispatch({
+      type: 'START_POLLING_FETCH_HEADBLOCK'
+    }),
+    stopPolling: () => dispatch({
+      type: 'STOP_POLLING_FETCH_HEADBLOCK'
+    }),
   })
 
 )(HeadBlockInfo);

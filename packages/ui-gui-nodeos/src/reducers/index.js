@@ -1,9 +1,16 @@
 import { combineReducers } from 'redux';
+import { combineEpics } from 'redux-observable';
 
 import { counterReducer } from './counter';
-import InfoPageReducer from '../pages/InfoPage/InfoPageReducer';
 
-export default combineReducers({
+import { infoPageEpic, infoPageReducer } from '../pages/InfoPage/InfoPageReducer';
+
+
+export const rootEpic = combineEpics(
+  infoPageEpic
+);
+
+export const rootReducer = combineReducers({
   counter: counterReducer,
-  info: InfoPageReducer,
+  info: infoPageReducer,
 })

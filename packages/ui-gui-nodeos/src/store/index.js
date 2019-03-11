@@ -1,11 +1,15 @@
 import { createStore, applyMiddleware, compose } from 'redux';
+import { createEpicMiddleware } from 'redux-observable';
 import thunk from 'redux-thunk';
-import rootReducer from 'reducers';
+import { rootReducer, rootEpic } from 'reducers';
+
+const epicMiddleware = createEpicMiddleware();
 
 const initialState = {};
 const enhancers = [];
 const middleware = [
   thunk,
+  epicMiddleware
 ]
 
 if (process.env.NODE_ENV === 'development') {
@@ -26,5 +30,7 @@ const store = createStore(
   initialState,
   composedEnhancers
 )
+
+epicMiddleware.run(rootEpic);
 
 export default store;
