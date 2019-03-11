@@ -1,9 +1,9 @@
-import LandingPage from './LandingPage';
+import InfoPage from './InfoPage';
 import SomePage from './SomePage';
 import NotFoundPage from './NotFoundPage';
 
 export {
-  LandingPage,
+  InfoPage,
   SomePage,
   NotFoundPage
 }

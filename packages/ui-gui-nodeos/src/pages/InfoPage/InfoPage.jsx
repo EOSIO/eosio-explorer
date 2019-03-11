@@ -1,4 +1,4 @@
-import './LandingPage.scss';
+import './InfoPage.scss';
 
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
@@ -6,10 +6,11 @@ import { connect } from 'react-redux';
 
 import { StandardTemplate } from 'templates';
 import { increaseCounter } from 'actions/counter';
+import HeadBlockInfo from './components/HeadBlockInfo';
 
 import axios from 'axios';
 
-class LandingPage extends Component {
+class InfoPage extends Component {
 
   constructor(){
     super()
@@ -29,7 +30,7 @@ class LandingPage extends Component {
     let { text } = this.state;
     return (
       <StandardTemplate>
-        <div className="LandingPage">
+        <div className="InfoPage">
             <div className="high-block">
               <div>
                 Landing Page Content <br/><br/>
@@ -37,6 +38,7 @@ class LandingPage extends Component {
                 Counter: {this.props.count}<br/><br/>
                 <button onClick={()=>{this.props.updateCounter(2)}}>Click here to increase counter by 2</button>
               </div>
+              <HeadBlockInfo/>
               <div>Scroll down</div>
               <div>
                 <Link to={'/some'}>Go to Some Page</Link>
@@ -55,4 +57,4 @@ export default connect(
   dispatch => ({
       updateCounter: (number) => dispatch(increaseCounter(number)),
   })
-)(LandingPage);
+)(InfoPage);
