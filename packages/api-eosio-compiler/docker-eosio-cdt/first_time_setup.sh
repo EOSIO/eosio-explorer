@@ -26,7 +26,3 @@ if [[ "$(docker images -q eosio-gui-nodeos-cdt:1.5.0)" == "" ]]; then
 else
   echo "=== Docker image already exists, skip building ==="
 fi
-
-# force remove the perivous container if any
-echo "=== force remove the perivous container if any ==="
-docker rm --force eosio_gui_nodeos_cdt_container
