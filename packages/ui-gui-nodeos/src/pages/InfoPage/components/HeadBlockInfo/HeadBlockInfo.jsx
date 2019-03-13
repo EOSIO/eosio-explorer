@@ -1,30 +1,20 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 
 import { connect } from 'react-redux';
 
-import { fetchHeadBlock, fetchHeadBlockFulfilled, fetchHeadBlockRejected } from './HeadBlockInfoReducer';
 
-class HeadBlockInfo extends Component {
+const HeadBlockInfo = (props) => {
 
-  componentDidMount() {
-    this.props.startPolling()
-  }
+  useEffect(()=>{
+    props.startPolling()
+    return () => { props.stopPolling() }
+  }, [])
 
-  componentWillUnmount() {
-    this.props.stopPolling();
-  }
-
-  render() {
-
-    return (
-      <div className="HeadBlockInfo">
-        <button onClick={()=>{
-          this.props.fetchHeadBlock()
-        }}>Refresh Block!</button>
-        <div>{this.props.isFetchingHeadBlock ? `loading...`: JSON.stringify(this.props.headBlockInfoData.payload)}</div>
-      </div>
-    );
-  }
+  return (
+    <div className="HeadBlockInfo">
+      <div>{props.isFetchingHeadBlock ? `loading...`: JSON.stringify(props.headBlockInfoData.payload)}</div>
+    </div>
+  );
 }
 
 export default connect(
@@ -33,9 +23,6 @@ export default connect(
     isFetchingHeadBlock
   }),
   dispatch => ({
-    fetchHeadBlock: () => dispatch(fetchHeadBlock()),
-    fetchHeadBlockFulfilled: (payload) => dispatch(fetchHeadBlockFulfilled(payload)),
-    fetchHeadBlockRejected: (payload) => dispatch(fetchHeadBlockRejected(payload)),
     startPolling: () => dispatch({
       type: 'START_POLLING_FETCH_HEADBLOCK'
     }),
