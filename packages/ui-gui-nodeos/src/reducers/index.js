@@ -12,5 +12,5 @@ export const rootEpic = combineEpics(
 
 export const rootReducer = combineReducers({
   counter: counterReducer,
-  info: infoPageReducer,
+  infoPage: infoPageReducer,
 })

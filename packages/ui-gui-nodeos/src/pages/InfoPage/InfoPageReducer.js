@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux';
 import { combineEpics } from 'redux-observable';
 
-import {headBlockInfoReducer, headBlockInfoEpic} from './components/HeadBlockInfo/HeadBlockInfoReducer';
+import { headblockReducer, headblockEpic } from './components/Headblock/HeadblockReducer';
 
 export const infoPageEpic = combineEpics(
-  headBlockInfoEpic
+  headblockEpic
 );
 
 export const infoPageReducer = combineReducers({
-  headBlockInfo: headBlockInfoReducer,
+  headblock: headblockReducer,
 })

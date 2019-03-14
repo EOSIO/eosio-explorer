@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 
 import { StandardTemplate } from 'templates';
 import { increaseCounter } from 'actions/counter';
-import HeadBlockInfo from './components/HeadBlockInfo';
+import Headblock from './components/Headblock';
 
 import axios from 'axios';
 
@@ -38,7 +38,7 @@ class InfoPage extends Component {
                 Counter: {this.props.count}<br/><br/>
                 <button onClick={()=>{this.props.updateCounter(2)}}>Click here to increase counter by 2</button>
               </div>
-              <HeadBlockInfo/>
+              <Headblock/>
               <div>Scroll down</div>
               <div>
                 <Link to={'/some'}>Go to Some Page</Link>
