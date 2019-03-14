@@ -1,11 +1,13 @@
 const express = require('express');
 const router = express.Router();
-
+const url = require('url');
 const apiMongodbPlugin = require('@eos-toppings/api-mongodb-plugin').default;
 
 router.get("*", (req, res) => {
-  let endpoint = req.path.substring(1); // remove leading '/'
-  apiMongodbPlugin[endpoint]()
+  let { pathname, query } = url.parse(req.url, true);
+  let endpoint = pathname.substring(1); // remove leading '/'
+  
+  apiMongodbPlugin[endpoint](query)
     .then(doc=>{
       res.setHeader('Cache-Control', 'no-cache');
       res.json(doc);
