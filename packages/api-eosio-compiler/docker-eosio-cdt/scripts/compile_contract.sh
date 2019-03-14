@@ -13,8 +13,9 @@ mkdir -p ./compiled_contracts
 mkdir -p ./compiled_contracts/$1
 
 COMPILEDCONTRACTSPATH="$( pwd -P )/compiled_contracts"
+CONTRACTNAME=$(basename -- "$1")
 
 # compile smart contract source files to WASM and ABI files using EOSIO.CDT
 (
-    eosio-cpp -abigen "$CONTRACTSPATH/$1/$1.cpp" -o "$COMPILEDCONTRACTSPATH/$1/$1.wasm" --contract "$1"
+    eosio-cpp -abigen "$CONTRACTSPATH/$1.cpp" -o "$COMPILEDCONTRACTSPATH/$CONTRACTNAME/$CONTRACTNAME.wasm" --contract "$1"
 ) 

@@ -16,7 +16,7 @@ Modularized Node.JS process that spawns child processes responsible for spinning
 ### Development Quick Start
 
 Running `./quick_start.sh` will bundle both the first time setup step and the Docker spinup at once.
-It will mount `contracts/notechain/` directory into the Docker container, compile `notechain.cpp` and then copy the resulting `.wasm` and `.abi` files into `compiled_contracts/notechain/`
+The `./quick_start.sh` script is **hard coded** to compile the **eosio.token** smart contract which inside the root of the directory `./contracts`. This is just for you to test the flow of compiling and copying the WASM and ABI files from container to host terminal. 
 
 ### First Time Setup
 
@@ -28,7 +28,7 @@ Spin up a container that mounts input source code and compiles it using `eosio-c
 
 `local_service.js` is responsible for filesystem manipulating so source files go into the correct places...
 
-It will copy the files into a `compiled_contracts` folder which `local_service.js` should retrieve...
+It will copy the files into a `compiled_contracts/<name_of_smart_contract>` folder. Kindly view `compile_contract.sh` for reference.
 
 ## `local_service` component
 
@@ -39,4 +39,4 @@ It should do the following:
 2. Place the source code files into `contracts/...`
 3. Spin up the Docker script using `exec`
 4. Inspect `compiled_contracts/...`, getting the correct folder based on the entry file's name. 
-5. Present file(s) to the frontend
+5. Present ABI file to the frontend.
