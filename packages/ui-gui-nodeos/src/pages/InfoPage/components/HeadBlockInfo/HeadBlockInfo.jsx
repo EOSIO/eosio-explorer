@@ -2,12 +2,14 @@ import React, { useEffect } from 'react';
 
 import { connect } from 'react-redux';
 
+import { dispatchFetchHeadBlockStartPolling, dispatchFetchHeadBlockStopPolling } from './HeadBlockInfoReducer';
+
 
 const HeadBlockInfo = (props) => {
 
   useEffect(()=>{
-    props.startPolling()
-    return () => { props.stopPolling() }
+    props.dispatchFetchHeadBlockStartPolling()
+    return () => { props.dispatchFetchHeadBlockStopPolling() }
   }, [])
 
   return (
@@ -22,13 +24,9 @@ export default connect(
     headBlockInfoData,
     isFetchingHeadBlock
   }),
-  dispatch => ({
-    startPolling: () => dispatch({
-      type: 'START_POLLING_FETCH_HEADBLOCK'
-    }),
-    stopPolling: () => dispatch({
-      type: 'STOP_POLLING_FETCH_HEADBLOCK'
-    }),
-  })
+  {
+    dispatchFetchHeadBlockStartPolling,
+    dispatchFetchHeadBlockStopPolling
+  }
 
 )(HeadBlockInfo);
