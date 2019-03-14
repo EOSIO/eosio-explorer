@@ -9,6 +9,24 @@ Install all dependencies
 yarn install
 ```
 
+## Development
+Make sure you have `docker` installed and assigned 8Gb Ram for it.
+
+Make 2 terminals.
+
+First terminal, start dockers for mongodb/nodeos.
+```
+yarn start-dockers
+```
+
+Second terminal, start dockers for gui ( create-react-app ) and the api service.
+```
+yarn start-gui
+```
+
+Start development on browser at http://localhost:3000
+
+
 ## Add a dependency in a package
 Using `yarn add` won't update the dependencies in each packages.json for each package.
 
