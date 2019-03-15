@@ -3,6 +3,7 @@ import './InfoPage.scss';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { Button, Card, CardBody, CardHeader, Col } from 'reactstrap';
 
 import { StandardTemplate } from 'templates';
 import { increaseCounter } from 'actions/counter';
@@ -30,20 +31,24 @@ class InfoPage extends Component {
     let { text } = this.state;
     return (
       <StandardTemplate>
-        <div className="InfoPage">
-            <div className="high-block">
-              <div>
-                Landing Page Content <br/><br/>
-                Calls from mongodb: {text}<br/><br/>
-                Counter: {this.props.count}<br/><br/>
-                <button onClick={()=>{this.props.updateCounter(2)}}>Click here to increase counter by 2</button>
-              </div>
-              <Headblock/>
-              <div>Scroll down</div>
-              <div>
-                <Link to={'/some'}>Go to Some Page</Link>
-              </div>
-            </div>
+        <div className="InfoPage animated fadeIn">
+            <Card>
+              <CardHeader>
+                Landing Page Content
+              </CardHeader>
+              <CardBody>
+                <p><strong>Calls from mongodb:</strong> {text}</p>
+                <p><strong>Counter:</strong> {this.props.count}</p>
+                <Col col="4" sm="8" md="4" className="mb-3 text-center">
+                  <Button block color="primary" onClick={()=>{this.props.updateCounter(2)}}>Click here to increase counter by 2</Button>
+                </Col>
+                <Headblock/>
+                <p>Scroll down</p>
+                <p>
+                  <Link to={'/some'}>Go to Some Page</Link>
+                </p>
+              </CardBody>
+            </Card>
         </div>
       </StandardTemplate>
     );
