@@ -2,7 +2,7 @@
 
 const express = require('express');
 const Router = express.Router();
-const { exec } = require('child_process');
+const { exec, execSync } = require('child_process');
 const fs = require('fs');
 const copy = require('recursive-copy');
 const del = require('del');
@@ -12,17 +12,31 @@ const stripAnsi = require('strip-ansi');
 const LOG_DEST = path.resolve("./docker-eosio-cdt/log.txt");
 const DEL_TARGETS = ["./docker-eosio-cdt/contracts/**", "!./docker-eosio-cdt/contracts"];
 const DEST = path.resolve("./docker-eosio-cdt/contracts");
+const CWD = path.resolve('./docker-eosio-cdt')
+const COMPILE_SCRIPT = './quick_start.sh';
+const SHUTDOWN_CMD = './remove_eosio_cdt_docker.sh';
 
 const fetchDeployableFilesFromDirectory = (directory) => {
+    let response = {
+        wasmPath: "",
+        abiPath: "",
+        errors: "",
+    }
     const directoryContents = fs.readdirSync(directory);
     const wasmFileName = directoryContents.find(filePath => filePath.match(/.*\.(wasm)$/gi));
     const abiFileName = directoryContents.find(filePath => filePath.match(/.*\.(abi)$/gi));
-    if (!wasmFileName) throw new Error(`Cannot find a ".wasm file" in ${directory}`)
-    if (!abiFileName) throw new Error(`Cannot find an ".abi file" in ${directory}`)
-    return {
-      wasmPath: path.join(directory, wasmFileName),
-      abiPath: path.join(directory, abiFileName)
-    }
+    
+    if (!wasmFileName) 
+        response["errors"] += ` Cannot find a ".wasm file" in ${directory} `;
+    else 
+        response["wasmPath"] = path.join(directory, wasmFileName);
+
+    if (!abiFileName) 
+        response["errors"] += ` Cannot find a ".abi file" in ${directory} `; 
+    else   
+        response["abiPath"] = path.join(directory, abiFileName);
+
+    return response;
 }
 
 const parseLog = (logContent) => {
@@ -39,42 +53,42 @@ const parseLog = (logContent) => {
 Router.get("/compile", async (req, res) => {
     const { params, query, body } = req;
     const deletedFiles = await del(DEL_TARGETS);
-    const COMPILED_CONTRACTS = path.resolve(
-        "./docker-eosio-cdt/compiled_contracts/" + 
-        path.basename(query["source"])
-    );
     let results = await copy(query["source"], DEST);
-    console.log('Files and folders that were deleted: \n', deletedFiles.join('\n'));
-    console.log(`${results.length} files copied to ${DEST}`);
-    results.forEach((file) => console.log(file["src"]));
-    /**
-     * TODO: Execute compilation script
-     * 1. child_process exec shell scripts...
-     * 2. Wait for execution to finish 
-     * 3. Likely need to wrap next section of code
-     */
-    let parsedLog = parseLog(fs.readFileSync(LOG_DEST, 'utf-8'));
-    /**
-     * TODO: Complete log handling
-     * 1. Convert CRLF breaks in logContent to proper HTML readable text
-     * 2. Frontend needs to use file API to open wasm location
-     * 3. Frontend can use abi property directly
-     */
-    try {
-        const { wasmPath, abiPath } = fetchDeployableFilesFromDirectory(COMPILED_CONTRACTS);
-        const abi = JSON.parse(fs.readFileSync(abiPath));
-        res.json({
-            wasmLocation: wasmPath,
-            abi: abi,
-            logContent: parsedLog
-        });
-    } catch (ex) {
-        console.log(ex);
-        res.json({
-            exception: ex,
-            logContent: parsedLog
+    exec(COMPILE_SCRIPT, {
+        cwd: CWD
+    }, (err, stdout, stderr) => {
+        execSync(SHUTDOWN_CMD, {
+            cwd: CWD
         })
-    }
+        let parsedLog = parseLog(fs.readFileSync(LOG_DEST, 'utf-8'));
+        if (err) {
+            console.log(`${stderr}`)
+            console.error(`exec error: ${err}`);
+            res.send({
+                error: err,
+                logContents: parsedLog
+            });
+        } else {
+            const COMPILED_CONTRACTS = path.resolve(
+                "./docker-eosio-cdt/compiled_contracts/" + 
+                path.basename(query["source"])
+            );
+            const { wasmPath, abiPath, errors } = fetchDeployableFilesFromDirectory(COMPILED_CONTRACTS);
+            if (errors.length > 0) {
+                res.send({
+                    errors: errors,
+                    logContent: parsedLog
+                })
+            } else {
+                console.log(`stdout: ${stdout}`);
+                res.send({
+                    wasmLocation: wasmPath,
+                    abi: abiPath,
+                    logContent: parsedLog
+                });
+            }
+        }
+    });
 });
 
 module.exports = Router;

@@ -17,6 +17,7 @@ app.on('error', (err) => {
 });
 
 app.listen(PORT, () => {
+    console.log(process.cwd())
     console.log(
         `Booted up local service server. Listening on ${PORT}`
     );

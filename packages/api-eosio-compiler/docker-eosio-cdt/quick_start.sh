@@ -5,19 +5,37 @@ set -o errexit
 echo "[Quick Start Engage] First time setup..."
 ./first_time_setup.sh
 
-# Engage EOSIO.CDT Docker ephemeral container
-# Step 1: Run container
-# Step 2: Mount contract files to container
-# Step 3: Compile contract
-# Step 4: Copy compiled contract to host folder
-echo "[Quick Start Engage] Create container eosio_gui_nodeos_cdt_container..."
-./start_eosio_cdt_docker.sh 
+# Checks if the Docker container is already running. If it is, then compile the contract as normal.
+if [ "$(docker ps -q -f name=eosio_gui_nodeos_cdt_container)" ]; then
+    if [ "$(docker ps -aq -f status=running -f name=eosio_gui_nodeos_cdt_container)" ]; then
+        echo "=== Docker container is currently occupied, please wait. ==="
+    fi
+fi
 
-echo "[Quick Start Engage] Attempt compilation of smart contract file"
-docker exec -it eosio_gui_nodeos_cdt_container ./scripts/compile_contract.sh eosio.token &> log.txt
+# If the Docker container is not running, then spin it up and compile.
+# We can leave it running and destroy it later on.
+if [ ! "$(docker ps -q -f name=eosio_gui_nodeos_cdt_container)" ]; then
+    if [ "$(docker ps -aq -f status=exited -f name=eosio_gui_nodeos_cdt_container)" ]; then
+        # Guard against exited container that somehow still exists in docker ps listing.
+        # Cleanup.
+        docker rm -fv eosio_gui_nodeos_cdt_container
+    fi
+    echo "=== clear compiled_contracts cache ==="
+    # clean out the previous compiled contracts
+    rm -rf compiled_contracts
+    mkdir compiled_contracts
 
-echo "--> See log.txt for piped file..."
-echo "[Quick Start Engage] Attempt copying of smart contract..."
-docker cp eosio_gui_nodeos_cdt_container:/opt/eosio/bin/compiled_contracts/eosio.token "$(pwd)"/compiled_contracts
+    ./start_eosio_cdt_docker.sh
 
-echo "--> Copied smart contract"
+    echo ">> Attempt compilation of smart contract file"
+    docker exec -i eosio_gui_nodeos_cdt_container ./scripts/compile_contract.sh src/eosiotoken.cpp \
+        &> log.txt \
+        && echo "exec pass" || echo "exec fail"
+
+    echo ">> See log.txt for piped file..."
+
+    echo ">> Attempt copying of smart contract..."
+    docker cp eosio_gui_nodeos_cdt_container:/opt/eosio/bin/compiled_contracts/eosiotoken "$(pwd)"/compiled_contracts
+    echo ">> docker cp operation finished"
+fi
+
