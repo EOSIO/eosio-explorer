@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 set -o errexit
 
+CONTRACTFILE=$(basename -- "$1")
+EXTENSION="${CONTRACTFILE##*.}"
+CONTRACTNAME="${CONTRACTFILE%.*}"
+FULLFILEPATH=$1
+
 # Verify everything is clean and setup properly
 echo "[Quick Start Engage] First time setup..."
 ./first_time_setup.sh
@@ -28,14 +33,16 @@ if [ ! "$(docker ps -q -f name=eosio_gui_nodeos_cdt_container)" ]; then
     ./start_eosio_cdt_docker.sh
 
     echo ">> Attempt compilation of smart contract file"
-    docker exec -i eosio_gui_nodeos_cdt_container ./scripts/compile_contract.sh src/eosiotoken.cpp \
+    shift 1
+    echo "$@"
+    docker exec -i eosio_gui_nodeos_cdt_container ./scripts/compile_contract.sh "$FULLFILEPATH" "$@" \
         &> log.txt \
         && echo "exec pass" || echo "exec fail"
 
     echo ">> See log.txt for piped file..."
 
     echo ">> Attempt copying of smart contract..."
-    docker cp eosio_gui_nodeos_cdt_container:/opt/eosio/bin/compiled_contracts/eosiotoken "$(pwd)"/compiled_contracts
+    docker cp eosio_gui_nodeos_cdt_container:/opt/eosio/bin/compiled_contracts/$CONTRACTNAME "$(pwd)"/compiled_contracts
     echo ">> docker cp operation finished"
 fi
 
