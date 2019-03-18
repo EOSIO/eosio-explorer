@@ -9,7 +9,7 @@ const Header = () =>
 
   <div className="Header">
 
-    <React.Fragment>
+    <>
       <AppNavbarBrand
           full={{ src: null, width: 89, height: 25, alt: 'Nodeos GUI' }}
           minimized={{ src: null, width: 30, height: 30, alt: 'Nodeos GUI' }}
@@ -22,7 +22,7 @@ const Header = () =>
           <Link to="/block-list" className="nav-link">Blocklist Page</Link>
         </NavItem>
       </Nav>
-    </React.Fragment>
+    </>
 
   </div>
 
