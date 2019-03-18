@@ -12,6 +12,7 @@
     "recursive-copy": "^2.0.10",
     "del": "^4.0.0",
     "express": "^4.16.4",
+    "file":"^0.2.2",
     "body-parser": "^1.18.3",
     "strip-ansi": "^5.1.0"
   }

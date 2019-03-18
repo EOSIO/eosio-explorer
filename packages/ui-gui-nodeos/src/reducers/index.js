@@ -3,8 +3,8 @@ import { combineEpics } from 'redux-observable';
 
 import { counterReducer } from './counter';
 
-import { infoPageEpic, infoPageReducer } from '../pages/InfoPage/InfoPageReducer';
-import { blocklistPageEpic, blocklistPageReducer } from '../pages/BlocklistPage/BlocklistPageReducer';
+import { combinedEpic as infoPageEpic, combinedReducer as infoPageReducer } from '../pages/InfoPage/InfoPageReducer';
+import { combinedEpic as blocklistPageEpic, combinedReducer as blocklistPageReducer } from '../pages/BlocklistPage/BlocklistPageReducer';
 
 
 export const rootEpic = combineEpics(

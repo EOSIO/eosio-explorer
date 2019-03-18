@@ -4,9 +4,13 @@
   "private": true,
   "license": "MIT",
   "dependencies": {
+    "@coreui/coreui": "^2.1.8",
+    "@coreui/react": "^2.1.5",
     "@eos-toppings/api-mongodb-plugin": "^0.0.0",
     "axios": "^0.18.0",
     "express": "^4.16.4",
+    "flag-icon-css": "^3.3.0",
+    "font-awesome": "^4.7.0",
     "http-proxy-middleware": "^0.19.1",
     "node-sass": "^4.11.0",
     "react": "^16.8.1",
@@ -21,11 +25,13 @@
     "redux": "^4.0.1",
     "redux-observable": "^1.0.0",
     "redux-thunk": "^2.3.0",
-    "rxjs": "^6.4.0"
+    "rxjs": "^6.4.0",
+    "simple-line-icons": "^2.4.1"
   },
   "scripts": {
     "prestart": "MODE=development node serve.js &",
     "start": "react-app-rewired start",
+    "start-ui": "react-app-rewired start",
     "build": "react-app-rewired build",
     "postbuild": "react-snap",
     "test": "react-app-rewired test --env=jsdom",

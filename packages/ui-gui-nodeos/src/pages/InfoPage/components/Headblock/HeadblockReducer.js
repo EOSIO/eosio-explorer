@@ -5,31 +5,32 @@
 */
 
 import { combineReducers } from 'redux';
-import { interval } from 'rxjs';
+import { interval, of } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
-import { mergeMap, mapTo, map, takeUntil } from 'rxjs/operators';
+import { mergeMap, mapTo, map, takeUntil, catchError } from 'rxjs/operators';
 
-import { combineEpics } from 'redux-observable';
-import { ofType } from 'redux-observable';
+import { combineEpics, ofType } from 'redux-observable';
+
+const actionPrefix = `InfoPage/Headblock/`;
 
 //Action Type
-const FETCH_START = 'Headblock/FETCH_START';
-const FETCH_FULFILLED = 'Headblock/FETCH_FULFILLED';
-const FETCH_REJECTED = 'Headblock/FETCH_REJECTED';
-const POLLING_START = 'Headblock/POLLING_START';
-const POLLING_STOP = 'Headblock/POLLING_STOP';
+const FETCH_START = actionPrefix + `FETCH_START`;
+const FETCH_FULFILLED = actionPrefix + `FETCH_FULFILLED`;
+const FETCH_REJECTED = actionPrefix + `FETCH_REJECTED`;
+const POLLING_START = actionPrefix + `POLLING_START`;
+const POLLING_STOP = actionPrefix + `POLLING_STOP`;
 
 //Action Creator
 export const fetchStart = () => ({ type: FETCH_START });
 export const fetchFulfilled = payload => ({ type: FETCH_FULFILLED, payload });
-export const fetchRejected = payload => ({ type: FETCH_REJECTED, payload });
+export const fetchRejected = ( payload, error ) => ({ type: FETCH_REJECTED, payload, error });
 export const pollingStart = () => ({ type: POLLING_START });
 export const pollingStop = () => ({ type: POLLING_STOP });
 
 //Epic
 const startEpic = action$ => action$.pipe(
   ofType(POLLING_START),
-  mapTo({ type: FETCH_START }),
+  mapTo(fetchStart()),
 );
 
 const fetchEpic = action$ => action$.pipe(
@@ -37,17 +38,19 @@ const fetchEpic = action$ => action$.pipe(
   mergeMap(action =>
     interval(500).pipe(
       mergeMap(action =>
-        ajax.getJSON(`/api/mongodb/get_block_latest`).pipe(
-        map(response => fetchFulfilled(response))
-      )),
+        ajax({ url :`/api/mongodb/get_block_latest`, timeout: 1000, responseType: "json"}).pipe(
+          map(res => fetchFulfilled(res.response)),
+          catchError(error => of(fetchRejected(error.response, { status: error.status })))
+        )
+      ),
       takeUntil(action$.pipe(
-        ofType(POLLING_STOP)
+        ofType(POLLING_STOP, POLLING_START, FETCH_REJECTED)
       ))
     )
   ),
 );
 
-export const headblockEpic = combineEpics(
+export const combinedEpic = combineEpics(
   startEpic,
   fetchEpic
 );
@@ -56,7 +59,7 @@ export const headblockEpic = combineEpics(
 //Reducer
 const initialState = {
   payload: {},
-  error: {}
+  error: null
 }
 
 const dataReducer = (state=initialState, action) => {
@@ -67,12 +70,14 @@ const dataReducer = (state=initialState, action) => {
       case FETCH_FULFILLED:
         return {
           ...state,
-          payload: action.payload
+          payload: action.payload,
+          error: null
         };
       case FETCH_REJECTED:
         return {
           ...state,
-          error: action.payload
+          payload: action.payload,
+          error: action.error
         };
       default:
         return state;
@@ -93,7 +98,7 @@ const isFetchingReducer = (state = false, action) => {
   }
 };
 
-export const headblockReducer = combineReducers({
+export const combinedReducer = combineReducers({
   data: dataReducer,
   isFetching: isFetchingReducer
 })
