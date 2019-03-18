@@ -12,6 +12,8 @@ import { combineEpics, ofType } from 'redux-observable';
 
 import apiMongodb from 'services/api-mongodb';
 
+// IMPORTANT
+// Must modify action prefix since action types must be unique in the whole app
 const actionPrefix = `InfoPage/Headblock/`;
 
 //Action Type
