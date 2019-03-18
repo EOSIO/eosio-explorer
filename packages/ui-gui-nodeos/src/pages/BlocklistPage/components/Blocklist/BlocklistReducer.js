@@ -9,17 +9,18 @@ import { interval } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
 import { mergeMap, mapTo, map, takeUntil, filter } from 'rxjs/operators';
 
-import { combineEpics } from 'redux-observable';
-import { ofType } from 'redux-observable';
+import { combineEpics, ofType } from 'redux-observable';
+
+const actionPrefix = `BlocklistPage/Blocklist/`;
 
 //Action Type
-const FETCH_START = 'Blocklist/FETCH_START';
-const FETCH_FULFILLED = 'Blocklist/FETCH_FULFILLED';
-const FETCH_REJECTED = 'Blocklist/FETCH_REJECTED';
-const POLLING_START = 'Blocklist/POLLING_START';
-const POLLING_STOP = 'Blocklist/POLLING_STOP';
-const FILTER_SET = 'Blocklist/FILTER_SET';
-const FILTER_TOGGLE = 'Blocklist/FILTER_TOGGLE';
+const FETCH_START = actionPrefix + `FETCH_START`;
+const FETCH_FULFILLED = actionPrefix + `FETCH_FULFILLED`;
+const FETCH_REJECTED = actionPrefix + `FETCH_REJECTED`;
+const POLLING_START = actionPrefix + `POLLING_START`;
+const POLLING_STOP = actionPrefix + `POLLING_STOP`;
+const FILTER_SET = actionPrefix + `FILTER_SET`;
+const FILTER_TOGGLE = actionPrefix + `FILTER_TOGGLE`;
 
 //Action Creator
 export const fetchStart = () => ({ type: FETCH_START });
@@ -55,16 +56,16 @@ const fetchEpic = ( action$, state$ ) => action$.pipe(
   ),
 );
 
-const filterStartEpic = action$ => action$.pipe(
+const filterToggleEpic = action$ => action$.pipe(
   ofType(FILTER_TOGGLE),
   mapTo({ type: POLLING_START }),
 );
 
 
-export const blocklistEpic = combineEpics(
+export const combinedEpic = combineEpics(
   startEpic,
   fetchEpic,
-  filterStartEpic,
+  filterToggleEpic,
 );
 
 
@@ -121,7 +122,7 @@ const filterReducer = (state = false, action) => {
   }
 };
 
-export const blocklistReducer = combineReducers({
+export const combinedReducer = combineReducers({
   data: dataReducer,
   isFetching: isFetchingReducer,
   filter: filterReducer,

@@ -9,15 +9,16 @@ import { interval } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
 import { mergeMap, mapTo, map, takeUntil } from 'rxjs/operators';
 
-import { combineEpics } from 'redux-observable';
-import { ofType } from 'redux-observable';
+import { combineEpics, ofType } from 'redux-observable';
+
+const actionPrefix = `InfoPage/Headblock/`;
 
 //Action Type
-const FETCH_START = 'Headblock/FETCH_START';
-const FETCH_FULFILLED = 'Headblock/FETCH_FULFILLED';
-const FETCH_REJECTED = 'Headblock/FETCH_REJECTED';
-const POLLING_START = 'Headblock/POLLING_START';
-const POLLING_STOP = 'Headblock/POLLING_STOP';
+const FETCH_START = actionPrefix + `FETCH_START`;
+const FETCH_FULFILLED = actionPrefix + `FETCH_FULFILLED`;
+const FETCH_REJECTED = actionPrefix + `FETCH_REJECTED`;
+const POLLING_START = actionPrefix + `POLLING_START`;
+const POLLING_STOP = actionPrefix + `POLLING_STOP`;
 
 //Action Creator
 export const fetchStart = () => ({ type: FETCH_START });
@@ -47,7 +48,7 @@ const fetchEpic = action$ => action$.pipe(
   ),
 );
 
-export const headblockEpic = combineEpics(
+export const combinedEpic = combineEpics(
   startEpic,
   fetchEpic
 );
@@ -93,7 +94,7 @@ const isFetchingReducer = (state = false, action) => {
   }
 };
 
-export const headblockReducer = combineReducers({
+export const combinedReducer = combineReducers({
   data: dataReducer,
   isFetching: isFetchingReducer
 })
