@@ -1,22 +1,31 @@
 import './StandardTemplate.scss';
-
 import React from 'react';
+import { Container } from 'reactstrap';
 
 import { Footer, Header } from 'components';
+
+import {
+  AppFooter,
+  AppHeader
+} from '@coreui/react';
 
 const StandardTemplate = ({
   children = null,
 }) => (
-  <div className="StandardTemplate">
-    <header>
-      <Header/>
-    </header>
-    <main>
-      {children}
-    </main>
-    <footer>
+  <div className="StandardTemplate app">
+    <AppHeader fixed>
+      <Header />
+    </AppHeader>
+    <div className="app-body">
+      <main className="main">
+        <Container fluid>
+          {children}
+        </Container>
+      </main>
+    </div>
+    <AppFooter>
       <Footer/>
-    </footer>
+    </AppFooter>
   </div>
 )
 
