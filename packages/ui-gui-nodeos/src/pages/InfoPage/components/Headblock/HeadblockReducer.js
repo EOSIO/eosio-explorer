@@ -6,11 +6,14 @@
 
 import { combineReducers } from 'redux';
 import { interval, of } from 'rxjs';
-import { ajax } from 'rxjs/ajax';
 import { mergeMap, mapTo, map, takeUntil, catchError } from 'rxjs/operators';
 
 import { combineEpics, ofType } from 'redux-observable';
 
+import apiMongodb from 'services/api-mongodb';
+
+// IMPORTANT
+// Must modify action prefix since action types must be unique in the whole app
 const actionPrefix = `InfoPage/Headblock/`;
 
 //Action Type
@@ -38,7 +41,7 @@ const fetchEpic = action$ => action$.pipe(
   mergeMap(action =>
     interval(500).pipe(
       mergeMap(action =>
-        ajax({ url :`/api/mongodb/get_block_latest`, timeout: 1000, responseType: "json"}).pipe(
+        apiMongodb(`get_block_latest`).pipe(
           map(res => fetchFulfilled(res.response)),
           catchError(error => of(fetchRejected(error.response, { status: error.status })))
         )

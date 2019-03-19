@@ -77,3 +77,35 @@ Do these in the `<WillRoute>` Component. And scroll to top example is committed 
 
 ## Prerendering
 `react-snap` crawls all route and prerending pages into .html files to have a fast first load for each page
+
+# Create a component.
+Since we are having complicated behaivours in the component like firing async calls, error handling, read from localstorage, etc. We are heavily using redux / RxJS / redux-observable to handle all the data part of a component. Step for create a working component from an existing one.
+
+## Clone from Headblock component
+A minimal working exmample could be found in `src/pages/InfoPage/Headblock`. It polls from mongodb every 500 ms and shows the result in the UI. It also included loading state and error handling.
+
+Step:
+
+1. Clone the whole `Headblock` folder to the place that you want a new component to work.
+2. Rename the component files and corresponding place in the code
+3. **Modify the action prefix following the folder hierarchy since action types must be unique in the whole app**
+4. Include the exported combinedReducer and combinedEpic in parent reducer ( page level reducer or root reducer).
+
+## Action
+We will use the action creator to create a plain action object.
+Try to add new action for new feature in a general way with not adding specific component name into variables.
+It ensure certain level of the reusability by letting others to clone this component form your new one.
+
+## Epic
+We use Epic from redux-observable to hanlde all the data flow between action and UI / user interaction / local storage. It includes async calls / polling ( timed event ), cancelling a promise. **Remember, each Epic expect actions in and return actions out.**
+
+Know more from here: https://redux-observable.js.org/docs/basics/Epics.html
+
+After you handle the data flow in the Epics, exporting by compose a combinedEpic.
+
+## Redux
+We decompose each feature into a sinle reducer and compose those reduces into a single one before exporting the combinedReducer.
+
+For example, the `Blocklist` component is cloned from `Headblock` component but more a filter feature more.
+
+Make a new reducer only for the filter feature and compose it into the existing one.

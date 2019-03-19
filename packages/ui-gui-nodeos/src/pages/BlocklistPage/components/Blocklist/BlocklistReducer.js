@@ -6,11 +6,14 @@
 
 import { combineReducers } from 'redux';
 import { interval, of } from 'rxjs';
-import { ajax } from 'rxjs/ajax';
-import { mergeMap, mapTo, map, takeUntil, filter, catchError } from 'rxjs/operators';
+import { mergeMap, mapTo, map, takeUntil, catchError } from 'rxjs/operators';
 
 import { combineEpics, ofType } from 'redux-observable';
 
+import apiMongodb from 'services/api-mongodb';
+
+// IMPORTANT
+// Must modify action prefix since action types must be unique in the whole app
 const actionPrefix = `BlocklistPage/Blocklist/`;
 
 //Action Type
@@ -43,14 +46,14 @@ const fetchEpic = ( action$, state$ ) => action$.pipe(
     interval(500).pipe(
       mergeMap(action => {
           let { value: {blocklistPage: { blocklist: { filter } }}} = state$;
-          // console.log(state$);
-          return ajax({ url: `/api/mongodb/get_blocks?filter=${filter?`true`:`false`}`, timeout: 1000, responseType: "json"}).pipe(
+
+          return apiMongodb(`get_blocks?filter=${filter?`true`:`false`}`).pipe(
             map(res => fetchFulfilled(res.response)),
             catchError(error => of(fetchRejected(error.response, { status: error.status })))
           )
         }),
       takeUntil(action$.pipe(
-        ofType(POLLING_STOP, POLLING_START, FETCH_REJECTED),
+        ofType(POLLING_STOP, POLLING_START, FETCH_REJECTED)
       ))
     )
   ),
