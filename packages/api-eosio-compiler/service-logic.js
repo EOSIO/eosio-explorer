@@ -70,8 +70,7 @@ const parseLog = (logContent) => {
  * How to test:
  * localhost:8081/api/eosio/compile
  * POST request
- * 1. <source> - Absolute source file or folder. If the source is a file, entryFile will be the same as source.
- * 2. [entryFile] - Provide an entry file, if source is a directory.
+ * 1. <source> - Absolute source file
  */
 Router.post("/compile", async (req, res) => {
     const { body } = req;
