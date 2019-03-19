@@ -6,7 +6,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var index_1 = __importDefault(require("./index"));
 var endpoint = 'get_blocks';
-index_1.default[endpoint]()
+index_1.default[endpoint]({ "filter": true })
     .then(function (doc) {
     console.log(doc);
 })
