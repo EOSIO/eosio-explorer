@@ -7,11 +7,13 @@ import { Switch, Redirect } from 'react-router-dom';
 
 import InfoPage from 'pages/InfoPage';
 import BlocklistPage from 'pages/BlocklistPage';
+import BlockdetailPage from 'pages/BlockdetailPage';
 import PermissionsPage from 'pages/PermissionsPage';
 import NotFoundPage from 'pages/NotFoundPage';
 import { WillRoute } from 'hocs';
 import PrivacyPolicyPage from 'pages/PrivacyPolicyPage';
 import TermsOfUsePage from 'pages/TermsOfUsePage';
+import Headblock from '../pages/InfoPage/components/Headblock';
 
 class App extends Component {
   render() {
@@ -20,6 +22,7 @@ class App extends Component {
         <Switch>
           <WillRoute exact path="/" component={ InfoPage }/>
           <WillRoute exact path="/block-list" component={ BlocklistPage }/>
+          <WillRoute exact path="/block" component={ BlockdetailPage }/>
           <WillRoute exact path="/permissions" component={ PermissionsPage }/>
           <WillRoute exact path="/404" component={ NotFoundPage }/>
           <WillRoute exact path="/privacy" component={ PrivacyPolicyPage }/>
