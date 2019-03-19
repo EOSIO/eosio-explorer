@@ -36,7 +36,7 @@ if [ ! "$(docker ps -q -f name=eosio_gui_nodeos_cdt_container)" ]; then
     shift 1
     echo "$@"
     docker exec -i eosio_gui_nodeos_cdt_container ./scripts/compile_contract.sh "$FULLFILEPATH" "$@" \
-        &> log.txt \
+        > stdout.txt 2> stderr.txt \
         && echo "exec pass" || echo "exec fail"
 
     echo ">> See log.txt for piped file..."
