@@ -37,7 +37,7 @@ const fetchEpic = ( action$, state$ ) => action$.pipe(
 
     let { value: { blockdetailPage: { blockdetail: { params } }}} = state$;
 
-    return apiMongodb(`get_blocks${paramsToQuery(params)}`).pipe(
+    return apiMongodb(`get_block${paramsToQuery(params)}`).pipe(
       map(res => fetchFulfilled(res.response)),
       catchError(error => of(fetchRejected(error.response, { status: error.status })))
     )

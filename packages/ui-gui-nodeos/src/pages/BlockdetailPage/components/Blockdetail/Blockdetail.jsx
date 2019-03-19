@@ -10,19 +10,20 @@ const Blockdetail = (props) => {
   useEffect(()=>{
 
     let { router: { location: {pathname} } } = props;
-    
+
     props.paramsSet({id: pathNameConsumer(pathname)});
     props.fetchStart();
   }, [])
 
-  let { blockdetail: { isFetching, data } } = props;
+  let { blockdetail: { isFetching, data, params } } = props;
   let { payload, error } = data;
 
   return (
     <div className="Blockdetail">
-      <div>{ error          ? <button onClick={props.fetchStart}>{JSON.stringify(error)} Click to Reload.</button>
-             : isFetching   ? `loading...`
-                            : JSON.stringify(payload)}
+      <div>{ error                  ? <button onClick={props.fetchStart}>{JSON.stringify(error)} Click to Reload.</button>
+             : isFetching           ? `loading...`
+             : payload.length === 0 ? `No block found with block id = ${params.id}`
+                                    : JSON.stringify(payload)}
       </div>
     </div>
   );
