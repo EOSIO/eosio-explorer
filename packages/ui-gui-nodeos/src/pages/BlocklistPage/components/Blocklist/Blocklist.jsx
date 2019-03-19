@@ -13,16 +13,16 @@ const Blocklist = (props) => {
   }, [])
 
   let { blocklist: { isFetching, data, filter } } = props;
-  let { payload = [] } = data;
+  let { payload, error } = data;
 
   return (
     <div className="Blocklist">
       <div onClick={props.filterToggle}>Empty Filter: {filter?'on':'off'}</div>
-      <div>{ data.error     ? <button onClick={props.pollingStart}>{JSON.stringify(data.error)} Click to Reload.</button>
+      <div>{ error          ? <button onClick={props.pollingStart}>{JSON.stringify(error)} Click to Reload.</button>
              : isFetching   ? `loading...`
                             : <table>
                                 <tbody>
-                                  {payload.map(block=><tr key={block._id} style={{border:"1px solid black"}}><td>{block.block_num}</td></tr>)}
+                                  {( payload || [] ).map(block=><tr key={block._id} style={{border:"1px solid black"}}><td>{block.block_num}</td></tr>)}
                                 </tbody>
                               </table>}
       </div>

@@ -13,10 +13,11 @@ const Headblock = (props) => {
   }, [])
 
   let { headblock: { isFetching, data }} = props;
+  let { error } = data;
 
   return (
     <div className="Headblock">
-      <div>{ data.error     ? <button onClick={props.pollingStart}>{JSON.stringify(data.error)} Click to Reload.</button>
+      <div>{ error          ? <button onClick={props.pollingStart}>{JSON.stringify(error)} Click to Reload.</button>
              : isFetching   ? `loading...`
                             : JSON.stringify(data.payload)}</div>
     </div>
