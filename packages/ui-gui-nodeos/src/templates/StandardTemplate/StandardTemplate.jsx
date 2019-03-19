@@ -10,7 +10,7 @@ import {
 } from '@coreui/react';
 
 const StandardTemplate = ({
-  children = null,
+  children = undefined,
 }) => (
   <div className="StandardTemplate app">
     <AppHeader fixed>

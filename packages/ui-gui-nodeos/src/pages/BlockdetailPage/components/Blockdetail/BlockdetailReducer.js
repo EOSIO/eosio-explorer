@@ -11,6 +11,7 @@ import { mergeMap, map, catchError } from 'rxjs/operators';
 import { combineEpics, ofType } from 'redux-observable';
 
 import apiMongodb from 'services/api-mongodb';
+import paramsToQuery from 'helpers/params-to-query';
 
 // IMPORTANT
 // Must modify action prefix since action types must be unique in the whole app
@@ -20,22 +21,27 @@ const actionPrefix = `BlockdetailPage/Blockdetail/`;
 const FETCH_START = actionPrefix + `FETCH_START`;
 const FETCH_FULFILLED = actionPrefix + `FETCH_FULFILLED`;
 const FETCH_REJECTED = actionPrefix + `FETCH_REJECTED`;
+const PARMAS_SET = actionPrefix + `PARMAS_SET`;
 
 //Action Creator
 export const fetchStart = () => ({ type: FETCH_START });
 export const fetchFulfilled = payload => ({ type: FETCH_FULFILLED, payload });
 export const fetchRejected = ( payload, error ) => ({ type: FETCH_REJECTED, payload, error });
+export const paramsSet = (params) => ({ type: PARMAS_SET, params });
 
 //Epic
 
 const fetchEpic = ( action$, state$ ) => action$.pipe(
   ofType(FETCH_START),
-  mergeMap(action =>
-    apiMongodb(`get_blocks`).pipe(
+  mergeMap(action =>{
+
+    let { value: { blockdetailPage: { blockdetail: { params } }}} = state$;
+
+    return apiMongodb(`get_blocks${paramsToQuery(params)}`).pipe(
       map(res => fetchFulfilled(res.response)),
       catchError(error => of(fetchRejected(error.response, { status: error.status })))
     )
-  )
+  })
 );
 
 
@@ -47,7 +53,7 @@ export const combinedEpic = combineEpics(
 //Reducer
 const dataInitState = {
   payload: [],
-  error: null
+  error: undefined
 }
 
 const dataReducer = (state=dataInitState, action) => {
@@ -59,7 +65,7 @@ const dataReducer = (state=dataInitState, action) => {
       return {
         ...state,
         payload: action.payload,
-        error: null
+        error: undefined
       };
     case FETCH_REJECTED:
       return {
@@ -86,8 +92,22 @@ const isFetchingReducer = (state = false, action) => {
   }
 };
 
+const paramsReducer = (state = {}, action) => {
+  switch (action.type) {
+    case PARMAS_SET:
+      return {
+        ...state,
+        ...action.params
+      };
+
+    default:
+      return state;
+  }
+};
+
 
 export const combinedReducer = combineReducers({
   data: dataReducer,
   isFetching: isFetchingReducer,
+  params: paramsReducer
 })

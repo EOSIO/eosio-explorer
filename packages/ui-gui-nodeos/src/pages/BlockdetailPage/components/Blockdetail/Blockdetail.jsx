@@ -2,11 +2,16 @@ import React, { useEffect } from 'react';
 
 import { connect } from 'react-redux';
 
-import { fetchStart } from './BlockdetailReducer';
+import { fetchStart, paramsSet } from './BlockdetailReducer';
+import pathNameConsumer from 'helpers/pathname-consumer';
 
 const Blockdetail = (props) => {
 
   useEffect(()=>{
+
+    let { router: { location: {pathname} } } = props;
+    
+    props.paramsSet({id: pathNameConsumer(pathname)});
     props.fetchStart();
   }, [])
 
@@ -24,11 +29,13 @@ const Blockdetail = (props) => {
 }
 
 export default connect(
-  ({ blockdetailPage: { blockdetail }}) => ({
-    blockdetail
+  ({ blockdetailPage: { blockdetail }, router}) => ({
+    blockdetail,
+    router
   }),
   {
     fetchStart,
+    paramsSet,
   }
 
 )(Blockdetail);

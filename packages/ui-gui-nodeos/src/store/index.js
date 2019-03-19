@@ -1,7 +1,11 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import { createEpicMiddleware } from 'redux-observable';
+import { createBrowserHistory } from 'history'
+import { routerMiddleware } from 'connected-react-router'
 import thunk from 'redux-thunk';
 import { rootReducer, rootEpic } from 'reducers';
+
+export const history = createBrowserHistory();
 
 const epicMiddleware = createEpicMiddleware();
 
@@ -9,6 +13,7 @@ const initialState = {};
 const enhancers = [];
 const middleware = [
   thunk,
+  routerMiddleware(history),
   epicMiddleware
 ]
 
@@ -26,7 +31,7 @@ const composedEnhancers = compose(
 )
 
 const store = createStore(
-  rootReducer,
+  rootReducer(history),
   initialState,
   composedEnhancers
 )

@@ -22,7 +22,7 @@ class App extends Component {
         <Switch>
           <WillRoute exact path="/" component={ InfoPage }/>
           <WillRoute exact path="/block-list" component={ BlocklistPage }/>
-          <WillRoute exact path="/block" component={ BlockdetailPage }/>
+          <WillRoute exact path="/block/:id" component={ BlockdetailPage }/>
           <WillRoute exact path="/permissions" component={ PermissionsPage }/>
           <WillRoute exact path="/404" component={ NotFoundPage }/>
           <WillRoute exact path="/privacy" component={ PrivacyPolicyPage }/>

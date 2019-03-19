@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 import { combineEpics } from 'redux-observable';
+import { connectRouter } from 'connected-react-router';
 
 import { counterReducer } from './counter';
 
@@ -14,7 +15,8 @@ export const rootEpic = combineEpics(
   blockdetailPageEpic,
 );
 
-export const rootReducer = combineReducers({
+export const rootReducer = (history) => combineReducers({
+  router: connectRouter(history),
   counter: counterReducer,
   infoPage: infoPageReducer,
   blocklistPage: blocklistPageReducer,

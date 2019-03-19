@@ -8,7 +8,7 @@ export default ( endpoint ) => navigator.userAgent !== "ReactSnap"
     timeout: 1000,
     responseType: "json"
   })
-: //If we are prerending using react snap, return a promise that resolved with a repsonse with { repsonse: null}
+: //If we are prerending using react snap, return a promise that resolved with a repsonse with { repsonse: undefined}
   from(new Promise((resolve, reject)=>{
-    resolve({response: null});
+    resolve({response: undefined});
   }))
