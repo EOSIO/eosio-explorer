@@ -60,32 +60,32 @@ export const combinedEpic = combineEpics(
 
 
 //Reducer
-const initialState = {
+const dataInitState = {
   payload: {},
-  error: null
+  error: undefined
 }
 
-const dataReducer = (state=initialState, action) => {
-    switch (action.type) {
-      case FETCH_START:
-          return initialState;
+const dataReducer = (state=dataInitState, action) => {
+  switch (action.type) {
+    case FETCH_START:
+        return dataInitState;
 
-      case FETCH_FULFILLED:
-        return {
-          ...state,
-          payload: action.payload,
-          error: null
-        };
-      case FETCH_REJECTED:
-        return {
-          ...state,
-          payload: action.payload,
-          error: action.error
-        };
-      default:
-        return state;
-    }
-  };
+    case FETCH_FULFILLED:
+      return {
+        ...state,
+        payload: action.payload,
+        error: undefined
+      };
+    case FETCH_REJECTED:
+      return {
+        ...state,
+        payload: action.payload,
+        error: action.error
+      };
+    default:
+      return state;
+  }
+};
 
 const isFetchingReducer = (state = false, action) => {
   switch (action.type) {
