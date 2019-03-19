@@ -1,16 +1,13 @@
 import './PermissionsPage.scss';
 
 import React, { Component } from 'react';
-import { Card, CardBody, CardHeader, Col } from 'reactstrap';
+import { Card, CardBody, CardHeader } from 'reactstrap';
 
 import { StandardTemplate } from 'templates';
 import CreateAccount from './components/CreateAccount';
 
-
 class PermissionsPage extends Component {
-
   render() {
-
     return (
       <StandardTemplate>
         <div className="PermissionsPage">
