@@ -1,5 +1,3 @@
-import './BlockdetailPage.scss';
-
 import React, { Component } from 'react';
 import { Card, CardBody, CardHeader, Col } from 'reactstrap';
 
