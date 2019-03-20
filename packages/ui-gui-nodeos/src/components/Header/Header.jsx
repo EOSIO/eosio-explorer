@@ -30,6 +30,9 @@ const Header = () =>
         <NavItem className="px-3">
           <Link to="/permission" className="nav-link">Permission</Link>
         </NavItem>
+        <NavItem className="px-3">
+          <Link to="/deployment" className="nav-link">Deployment</Link>
+        </NavItem>
       </Nav>
     </>
 
