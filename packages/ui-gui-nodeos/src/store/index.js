@@ -3,11 +3,22 @@ import { createEpicMiddleware } from 'redux-observable';
 import { createBrowserHistory } from 'history'
 import { routerMiddleware } from 'connected-react-router'
 import thunk from 'redux-thunk';
+import { persistStore, persistReducer } from 'redux-persist'
+import storage from 'redux-persist/lib/storage'
+
 import { rootReducer, rootEpic } from 'reducers';
 
 export const history = createBrowserHistory();
 
 const epicMiddleware = createEpicMiddleware();
+
+const persistConfig = {
+  key: 'root',
+  storage,
+  blacklist: ['router']
+}
+
+const persistedReducer = persistReducer(persistConfig, rootReducer(history))
 
 const initialState = {};
 const enhancers = [];
@@ -31,10 +42,11 @@ const composedEnhancers = compose(
 )
 
 const store = createStore(
-  rootReducer(history),
+  persistedReducer,
   initialState,
   composedEnhancers
 )
+export const persistor = persistStore(store);
 
 epicMiddleware.run(rootEpic);
 

@@ -109,3 +109,10 @@ We decompose each feature into a sinle reducer and compose those reduces into a 
 For example, the `Blocklist` component is cloned from `Headblock` component but more a filter feature more.
 
 Make a new reducer only for the filter feature and compose it into the existing one.
+
+## More sample component
+
+You may try to clone below components as a minimal working sample component.
+
+* `Blocklist` component is having an extra filter feature that demostrate how to add a feature within a component with new actions / reducer / epic
+* `Blockdetail` component is retrieving url params ( get `id` from url `/block/:id` ) and passing it into api calls.

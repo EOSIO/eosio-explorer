@@ -1,23 +1,18 @@
 import React, { Component } from 'react';
-import { Card, CardBody, CardHeader, Col } from 'reactstrap';
+import { Card, CardBody, CardHeader } from 'reactstrap';
 
 import { StandardTemplate } from 'templates';
-import Blocklist from './components/Blocklist';
 
-
-class BlocklistPage extends Component {
-
+class ContractdetailPage extends Component {
   render() {
-
     return (
       <StandardTemplate>
-        <div className="BlocklistPage animated fadeIn">
+        <div className="ContractdetailPage">
           <Card>
             <CardHeader>
-              Blocklist Page
+              Permission Page
             </CardHeader>
             <CardBody>
-              <Blocklist/>
             </CardBody>
           </Card>
         </div>
@@ -26,4 +21,4 @@ class BlocklistPage extends Component {
   }
 }
 
-export default BlocklistPage;
+export default ContractdetailPage;

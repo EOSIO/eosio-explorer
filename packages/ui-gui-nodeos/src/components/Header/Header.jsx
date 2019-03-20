@@ -16,10 +16,19 @@ const Header = () =>
         />
       <Nav className="d-md-down-none" navbar>
         <NavItem className="px-3">
-          <Link to="/" className="nav-link" >Info Page</Link>
+          <Link to="/" className="nav-link" >Info</Link>
         </NavItem>
         <NavItem className="px-3">
-          <Link to="/block-list" className="nav-link">Blocklist Page</Link>
+          <Link to="/block-list" className="nav-link">Block</Link>
+        </NavItem>
+        <NavItem className="px-3">
+          <Link to="/transaction-list" className="nav-link">Transaction</Link>
+        </NavItem>
+        <NavItem className="px-3">
+          <Link to="/action-list" className="nav-link">Action</Link>
+        </NavItem>
+        <NavItem className="px-3">
+          <Link to="/permission" className="nav-link">Permission</Link>
         </NavItem>
       </Nav>
     </>

@@ -2,15 +2,18 @@ import React from 'react';
 import { hydrate, render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
+import { PersistGate } from 'redux-persist/integration/react'
 
-import store, { history } from 'store';
+import store, { history, persistor } from 'store';
 import App from 'app';
 
 const AppBundle = (
   <Provider store={store}>
-    <ConnectedRouter history={history}>
-      <App/>
-    </ConnectedRouter>
+    <PersistGate loading={null} persistor={persistor}>
+      <ConnectedRouter history={history}>
+        <App/>
+      </ConnectedRouter>
+    </PersistGate>
   </Provider>
 );
 

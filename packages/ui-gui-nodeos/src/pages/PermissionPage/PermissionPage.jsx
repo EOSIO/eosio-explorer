@@ -1,19 +1,17 @@
-import './PermissionsPage.scss';
-
 import React, { Component } from 'react';
 import { Card, CardBody, CardHeader } from 'reactstrap';
 
 import { StandardTemplate } from 'templates';
 import CreateAccount from './components/CreateAccount';
 
-class PermissionsPage extends Component {
+class PermissionPage extends Component {
   render() {
     return (
       <StandardTemplate>
-        <div className="PermissionsPage">
+        <div className="PermissionPage">
           <Card>
             <CardHeader>
-              Permissions Page
+              Permission Page
             </CardHeader>
             <CardBody>
               <CreateAccount/>
@@ -25,4 +23,4 @@ class PermissionsPage extends Component {
   }
 }
 
-export default PermissionsPage;
+export default PermissionPage;

@@ -1,6 +1,6 @@
 import Loadable from 'react-loadable';
 
 export default Loadable({
-  loader: () => import('./NotFoundPage'),
+  loader: () => import('./TransactiondetailPage'),
   loading: () => false
 });
