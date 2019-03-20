@@ -9,6 +9,12 @@ Install all dependencies
 yarn install
 ```
 
+### Setup for docker image
+cd into `packages/docker-eosio-nodeos`
+```
+./first_time_setup.sh
+```
+
 ## Development
 Make sure you have `docker` installed and assigned 8Gb Ram for it.
 

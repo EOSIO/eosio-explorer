@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux';
 import { combineEpics } from 'redux-observable';
 
-import { blocklistReducer, blocklistEpic } from './components/Blocklist/BlocklistReducer';
+import { combinedEpic as blocklistEpic, combinedReducer as blocklistReducer } from './components/Blocklist/BlocklistReducer';
 
-export const blocklistPageEpic = combineEpics(
+export const combinedEpic = combineEpics(
   blocklistEpic
 );
 
-export const blocklistPageReducer = combineReducers({
+export const combinedReducer = combineReducers({
   blocklist: blocklistReducer,
 })

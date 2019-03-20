@@ -4,7 +4,7 @@ import api from './index';
 
 const endpoint = 'get_blocks';
 
-api[endpoint]()
+api[endpoint]({"filter": true})
   .then((doc: any)=>{
     console.log(doc);
   })

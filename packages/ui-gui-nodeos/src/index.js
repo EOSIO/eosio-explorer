@@ -1,16 +1,16 @@
 import React from 'react';
 import { hydrate, render } from 'react-dom';
 import { Provider } from 'react-redux';
-import { BrowserRouter } from 'react-router-dom';
+import { ConnectedRouter } from 'connected-react-router';
 
-import store from 'store';
+import store, { history } from 'store';
 import App from 'app';
 
 const AppBundle = (
   <Provider store={store}>
-    <BrowserRouter>
+    <ConnectedRouter history={history}>
       <App/>
-    </BrowserRouter>
+    </ConnectedRouter>
   </Provider>
 );
 

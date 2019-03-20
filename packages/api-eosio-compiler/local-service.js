@@ -22,3 +22,8 @@ app.listen(PORT, () => {
         `Booted up local service server. Listening on ${PORT}`
     );
 });
+
+process.on('uncaughtException', function(err) {
+    console.log("UNCAUGHT EXCEPTION");
+    console.log("[Inside 'uncaughtException' event] " + err.stack || err.message );
+});

@@ -1,0 +1,2 @@
+clang-7: error: no such file or directory: '/opt/eosio/bin/contracts/eosio.bios.cpp'
+clang-7: error: no input files
