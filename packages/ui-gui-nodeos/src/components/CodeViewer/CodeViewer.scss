@@ -1,0 +1,14 @@
+.CodeViewer {
+    .monaco-editor {
+        outline: 1px solid #eee;
+
+        /* Bootstrap padding fix */
+        max-width: 100%;
+        .overflow-guard {
+            max-width: 100%;
+        }
+        .decorationsOverviewRuler, .scrollbar {
+            right: 11px !important;
+        }
+    }
+}
