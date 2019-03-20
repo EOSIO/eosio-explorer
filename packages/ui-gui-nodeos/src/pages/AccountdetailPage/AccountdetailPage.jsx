@@ -3,14 +3,14 @@ import { Card, CardBody, CardHeader } from 'reactstrap';
 
 import { StandardTemplate } from 'templates';
 
-class ContractdetailPage extends Component {
+class AccountdetailPage extends Component {
   render() {
     return (
       <StandardTemplate>
-        <div className="ContractdetailPage">
+        <div className="AccountdetailPage">
           <Card>
             <CardHeader>
-              Contract Detail Page
+              Account Detail Page
             </CardHeader>
             <CardBody>
             </CardBody>
@@ -21,4 +21,4 @@ class ContractdetailPage extends Component {
   }
 }
 
-export default ContractdetailPage;
+export default AccountdetailPage;

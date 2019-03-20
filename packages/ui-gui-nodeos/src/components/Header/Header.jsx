@@ -28,7 +28,19 @@ const Header = () =>
           <Link to="/action-list" className="nav-link">Action</Link>
         </NavItem>
         <NavItem className="px-3">
+          <Link to="/account" className="nav-link">Account</Link>
+        </NavItem>
+        <NavItem className="px-3">
+          <Link to="/contract" className="nav-link">Smart Contract</Link>
+        </NavItem>
+        <NavItem className="px-3">
           <Link to="/permission" className="nav-link">Permission</Link>
+        </NavItem>
+        <NavItem className="px-3">
+          <Link to="/deploy" className="nav-link">Deploy</Link>
+        </NavItem>
+        <NavItem className="px-3">
+          <Link to="/push-action" className="nav-link">Push Action</Link>
         </NavItem>
       </Nav>
     </>
