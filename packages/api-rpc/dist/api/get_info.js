@@ -48,11 +48,11 @@ exports.default = (function (query) { return __awaiter(_this, void 0, void 0, fu
                 return [4 /*yield*/, rpc.get_info()];
             case 1:
                 response = _a.sent();
+                console.log("get_info response: ", response);
                 return [2 /*return*/, response];
             case 2:
                 e_1 = _a.sent();
                 console.log('Caught exception: ' + e_1);
-                ;
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
         }
