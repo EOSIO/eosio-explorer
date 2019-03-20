@@ -9,6 +9,8 @@ import { combinedEpic as blocklistPageEpic, combinedReducer as blocklistPageRedu
 import { combinedEpic as blockdetailPageEpic, combinedReducer as blockdetailPageReducer } from 'pages/BlockdetailPage/BlockdetailPageReducer';
 import { combinedEpic as transactionlistPageEpic, combinedReducer as transactionlistPageReducer } from 'pages/TransactionlistPage/TransactionlistPageReducer';
 import { combinedEpic as transactiondetailPageEpic, combinedReducer as transactiondetailPageReducer } from 'pages/TransactiondetailPage/TransactiondetailPageReducer';
+import { combinedEpic as actionlistPageEpic, combinedReducer as actionlistPageReducer } from 'pages/ActionlistPage/ActionlistPageReducer';
+import { combinedEpic as actiondetailPageEpic, combinedReducer as actiondetailPageReducer } from 'pages/ActiondetailPage/ActiondetailPageReducer';
 
 
 export const rootEpic = combineEpics(
@@ -17,6 +19,8 @@ export const rootEpic = combineEpics(
   blockdetailPageEpic,
   transactionlistPageEpic,
   transactiondetailPageEpic,
+  actionlistPageEpic,
+  actiondetailPageEpic,
 );
 
 export const rootReducer = (history) => combineReducers({
@@ -27,4 +31,6 @@ export const rootReducer = (history) => combineReducers({
   blockdetailPage: blockdetailPageReducer,
   transactionlistPage: transactionlistPageReducer,
   transactiondetailPage: transactiondetailPageReducer,
+  actionlistPage: actionlistPageReducer,
+  actiondetailPage: actiondetailPageReducer,
 })

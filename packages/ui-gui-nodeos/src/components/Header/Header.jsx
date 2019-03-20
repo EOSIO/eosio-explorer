@@ -19,13 +19,16 @@ const Header = () =>
           <Link to="/" className="nav-link" >Info</Link>
         </NavItem>
         <NavItem className="px-3">
-          <Link to="/block-list" className="nav-link">Block List</Link>
+          <Link to="/block-list" className="nav-link">Block</Link>
         </NavItem>
         <NavItem className="px-3">
-          <Link to="/transaction-list" className="nav-link">Transaction List</Link>
+          <Link to="/transaction-list" className="nav-link">Transaction</Link>
         </NavItem>
         <NavItem className="px-3">
-          <Link to="/permissions" className="nav-link">Permission Page</Link>
+          <Link to="/action-list" className="nav-link">Action</Link>
+        </NavItem>
+        <NavItem className="px-3">
+          <Link to="/permissions" className="nav-link">Permission</Link>
         </NavItem>
       </Nav>
     </>

@@ -10,6 +10,8 @@ import BlocklistPage from 'pages/BlocklistPage';
 import BlockdetailPage from 'pages/BlockdetailPage';
 import TransactionlistPage from 'pages/TransactionlistPage';
 import TransactiondetailPage from 'pages/TransactiondetailPage';
+import ActionlistPage from 'pages/ActionlistPage';
+import ActiondetailPage from 'pages/ActiondetailPage';
 import PermissionsPage from 'pages/PermissionsPage';
 import NotFoundPage from 'pages/NotFoundPage';
 import PrivacyPolicyPage from 'pages/PrivacyPolicyPage';
@@ -28,6 +30,8 @@ class App extends Component {
           <WillRoute exact path="/block/:id" component={ BlockdetailPage }/>
           <WillRoute exact path="/transaction-list" component={ TransactionlistPage }/>
           <WillRoute exact path="/transaction/:id" component={ TransactiondetailPage }/>
+          <WillRoute exact path="/action-list" component={ ActionlistPage }/>
+          <WillRoute exact path="/action/:id" component={ ActiondetailPage }/>
           <WillRoute exact path="/permissions" component={ PermissionsPage }/>
           <WillRoute exact path="/404" component={ NotFoundPage }/>
           <WillRoute exact path="/privacy" component={ PrivacyPolicyPage }/>
