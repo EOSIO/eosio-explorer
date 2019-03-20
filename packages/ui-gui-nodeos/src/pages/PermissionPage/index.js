@@ -1,6 +1,6 @@
 import Loadable from 'react-loadable';
 
 export default Loadable({
-  loader: () => import('./SomePage'),
+  loader: () => import('./PermissionPage'),
   loading: () => false
 });

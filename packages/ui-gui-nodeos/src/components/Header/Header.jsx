@@ -28,7 +28,7 @@ const Header = () =>
           <Link to="/action-list" className="nav-link">Action</Link>
         </NavItem>
         <NavItem className="px-3">
-          <Link to="/permissions" className="nav-link">Permission</Link>
+          <Link to="/permission" className="nav-link">Permission</Link>
         </NavItem>
       </Nav>
     </>
