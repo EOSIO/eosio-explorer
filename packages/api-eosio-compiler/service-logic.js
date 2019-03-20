@@ -39,6 +39,9 @@ Router.post("/compile", async (req, res) => {
         results.forEach((file) => console.log("Copied file: ", file["src"]));
         console.log("Target entry file: ", compileTarget);
 
+        if(fs.lstatSync(body["source"]).isDirectory()) 
+            throw new Error(`${body.source} is a directory, not a valid entry file!`);
+
         exec(COMPILE_SCRIPT, {
             cwd: CWD
         }, (err, stdout, stderr) => {
@@ -82,7 +85,8 @@ Router.post("/compile", async (req, res) => {
 
     } catch (ex) {
         res.send({
-            exception: ex,
+            compiled: false,
+            stderr: ex,
             errors: [
                 ex.message
             ]
