@@ -5,7 +5,7 @@ class CreateAccount extends Component {
 
   constructor(){
     super()
-    this.state = { 
+    this.state = {
       ownerPublicKey: "",
       ownerPrivateKey: "",
       activePublicKey: "",
@@ -15,7 +15,7 @@ class CreateAccount extends Component {
 
   componentDidMount(){
     Keygen.generateMasterKeys()
-    .then(keys => { 
+    .then(keys => {
       this.setState({
         ownerPublicKey: keys.publicKeys.owner,
         ownerPrivateKey: keys.privateKeys.owner,
@@ -28,7 +28,8 @@ class CreateAccount extends Component {
 
   render() {
     return (
-      <div className="CreateAccount">
+      <div  style={{border:"1px solid black"}} className="CreateAccount">
+        <div>This is create account panel.</div>
         <div>Owner</div>
         <div className="keys">
           <p>public: {this.state.ownerPublicKey}</p>
