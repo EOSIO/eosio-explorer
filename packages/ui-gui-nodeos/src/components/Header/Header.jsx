@@ -21,6 +21,9 @@ const Header = () =>
         <NavItem className="px-3">
           <Link to="/block-list" className="nav-link">Blocklist Page</Link>
         </NavItem>
+        <NavItem className="px-3">
+          <Link to="/permissions" className="nav-link">Permission Page</Link>
+        </NavItem>
       </Nav>
     </>
 

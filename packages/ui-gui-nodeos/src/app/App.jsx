@@ -10,12 +10,13 @@ import BlocklistPage from 'pages/BlocklistPage';
 import BlockdetailPage from 'pages/BlockdetailPage';
 import PermissionsPage from 'pages/PermissionsPage';
 import NotFoundPage from 'pages/NotFoundPage';
-import { WillRoute } from 'hocs';
 import PrivacyPolicyPage from 'pages/PrivacyPolicyPage';
 import TermsOfUsePage from 'pages/TermsOfUsePage';
-import Headblock from '../pages/InfoPage/components/Headblock';
+
+import { WillRoute } from 'hocs';
 
 class App extends Component {
+
   render() {
     return (
       <div className="App">
