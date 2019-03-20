@@ -28,10 +28,23 @@ const Header = () =>
           <Link to="/action-list" className="nav-link">Action</Link>
         </NavItem>
         <NavItem className="px-3">
+          <Link to="/account" className="nav-link">Account</Link>
+        </NavItem>
+        <NavItem className="px-3">
+          <Link to="/contract" className="nav-link">Smart Contract</Link>
+        </NavItem>
+        <NavItem className="px-3">
           <Link to="/permission" className="nav-link">Permission</Link>
         </NavItem>
         <NavItem className="px-3">
+<<<<<<< HEAD
           <Link to="/deployment" className="nav-link">Deployment</Link>
+=======
+          <Link to="/deploy" className="nav-link">Deploy</Link>
+        </NavItem>
+        <NavItem className="px-3">
+          <Link to="/push-action" className="nav-link">Push Action</Link>
+>>>>>>> 10811104d48412ad21d8db83f140ea28381a33cf
         </NavItem>
       </Nav>
     </>

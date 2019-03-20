@@ -12,8 +12,14 @@ import TransactionlistPage from 'pages/TransactionlistPage';
 import TransactiondetailPage from 'pages/TransactiondetailPage';
 import ActionlistPage from 'pages/ActionlistPage';
 import ActiondetailPage from 'pages/ActiondetailPage';
+import AccountdetailPage from 'pages/AccountdetailPage';
+import ContractdetailPage from 'pages/ContractdetailPage';
 import PermissionPage from 'pages/PermissionPage';
 import DeploymentPage from 'pages/DeploymentPage';
+<<<<<<< HEAD
+=======
+import PushactionPage from 'pages/PushactionPage';
+>>>>>>> 10811104d48412ad21d8db83f140ea28381a33cf
 import PrivacyPolicyPage from 'pages/PrivacyPolicyPage';
 import TermsOfUsePage from 'pages/TermsOfUsePage';
 
@@ -32,8 +38,15 @@ class App extends Component {
           <WillRoute exact path="/transaction/:id" component={ TransactiondetailPage }/>
           <WillRoute exact path="/action-list" component={ ActionlistPage }/>
           <WillRoute exact path="/action/:id" component={ ActiondetailPage }/>
+          <WillRoute exact path="/account" component={ AccountdetailPage }/>
+          <WillRoute exact path="/contract" component={ ContractdetailPage }/>
           <WillRoute exact path="/permission" component={ PermissionPage }/>
+<<<<<<< HEAD
           <WillRoute exact path="/deployment" component={ DeploymentPage }/>
+=======
+          <WillRoute exact path="/deploy" component={ DeploymentPage }/>
+          <WillRoute exact path="/push-action" component={ PushactionPage }/>
+>>>>>>> 10811104d48412ad21d8db83f140ea28381a33cf
           <WillRoute exact path="/privacy" component={ PrivacyPolicyPage }/>
           <WillRoute exact path="/terms" component={ TermsOfUsePage }/>
           <Redirect to="/" />
