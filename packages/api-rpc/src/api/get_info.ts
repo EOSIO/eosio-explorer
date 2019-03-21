@@ -6,11 +6,12 @@ export default async (query:any) => {
   try{
     let { endpoint, privateKey } = query;
     
-    const rpc = new JsonRpc(endpoint);    
-    let response = await rpc.get_info();    
+    const rpc = new JsonRpc(endpoint);
+    let response = await rpc.get_info();
+    console.log("get_info response: ", response);
     return response;
 
   }catch(e){
-    console.log('Caught exception: ' + e);;
+    console.log('Caught exception: ' + e);
   }
 }

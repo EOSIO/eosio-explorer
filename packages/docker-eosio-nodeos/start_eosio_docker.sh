@@ -11,10 +11,11 @@ else
     script="./scripts/init_blockchain.sh"
 fi
 
+# --link is to get access to other container
 echo "=== run docker container from the eosio-gui-nodeos:eos1.6.3 image ==="
 docker run --rm --name eosio_gui_nodeos_container -d \
 -p 8888:8888 -p 9876:9876 \
---net host \
+--link eosio-mongodb \
 --mount type=bind,src="$(pwd)"/contracts,dst=/opt/eosio/bin/contracts \
 --mount type=bind,src="$(pwd)"/scripts,dst=/opt/eosio/bin/scripts \
 --mount type=bind,src="$(pwd)"/data,dst=/mnt/dev/data \

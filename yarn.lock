@@ -3985,7 +3985,6 @@ eosjs-ecc@^4.0.1:
 eosjs-keygen@^1.3.2:
   version "1.3.2"
   resolved "https://registry.yarnpkg.com/eosjs-keygen/-/eosjs-keygen-1.3.2.tgz#8c248de7c584fb4dc8b48482187820dd21d967ec"
-  integrity sha512-myv/FmfD5neHI1lNhYet5sUNfKIgnNG7craBidXg6RApi9sRMLMZMkEaC/+OI41ZszrLRsszr+3ryqEe6jXFPw==
   dependencies:
     eosjs-ecc "^4.0.1"
     history "^4.7.2"
@@ -6594,7 +6593,6 @@ loader-utils@1.2.3, loader-utils@^1.0.1, loader-utils@^1.0.2, loader-utils@^1.1.
 localStorage@^1.0.3:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/localStorage/-/localStorage-1.0.4.tgz#57dfa28084385f81431accb8ae24b196398223f7"
-  integrity sha512-r35zrihcDiX+dqWlJSeIwS9nrF95OQTgqMFm3FB2D/+XgdmZtcutZOb7t0xXkhOEM8a9kpuu7cc28g1g36I5DQ==
 
 locate-path@^2.0.0:
   version "2.0.0"
@@ -9250,6 +9248,10 @@ redent@^2.0.0:
 redux-observable@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/redux-observable/-/redux-observable-1.0.0.tgz#780ff2455493eedcef806616fe286b454fd15d91"
+
+redux-persist@^5.10.0:
+  version "5.10.0"
+  resolved "https://registry.yarnpkg.com/redux-persist/-/redux-persist-5.10.0.tgz#5d8d802c5571e55924efc1c3a9b23575283be62b"
 
 redux-thunk@^2.3.0:
   version "2.3.0"

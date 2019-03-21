@@ -8,14 +8,22 @@ import { Switch, Redirect } from 'react-router-dom';
 import InfoPage from 'pages/InfoPage';
 import BlocklistPage from 'pages/BlocklistPage';
 import BlockdetailPage from 'pages/BlockdetailPage';
-import PermissionsPage from 'pages/PermissionsPage';
-import NotFoundPage from 'pages/NotFoundPage';
-import { WillRoute } from 'hocs';
+import TransactionlistPage from 'pages/TransactionlistPage';
+import TransactiondetailPage from 'pages/TransactiondetailPage';
+import ActionlistPage from 'pages/ActionlistPage';
+import ActiondetailPage from 'pages/ActiondetailPage';
+import AccountdetailPage from 'pages/AccountdetailPage';
+import ContractdetailPage from 'pages/ContractdetailPage';
+import PermissionPage from 'pages/PermissionPage';
+import DeploymentPage from 'pages/DeploymentPage';
+import PushactionPage from 'pages/PushactionPage';
 import PrivacyPolicyPage from 'pages/PrivacyPolicyPage';
 import TermsOfUsePage from 'pages/TermsOfUsePage';
-import Headblock from '../pages/InfoPage/components/Headblock';
+
+import { WillRoute } from 'hocs';
 
 class App extends Component {
+
   render() {
     return (
       <div className="App">
@@ -23,11 +31,18 @@ class App extends Component {
           <WillRoute exact path="/" component={ InfoPage }/>
           <WillRoute exact path="/block-list" component={ BlocklistPage }/>
           <WillRoute exact path="/block/:id" component={ BlockdetailPage }/>
-          <WillRoute exact path="/permissions" component={ PermissionsPage }/>
-          <WillRoute exact path="/404" component={ NotFoundPage }/>
+          <WillRoute exact path="/transaction-list" component={ TransactionlistPage }/>
+          <WillRoute exact path="/transaction/:id" component={ TransactiondetailPage }/>
+          <WillRoute exact path="/action-list" component={ ActionlistPage }/>
+          <WillRoute exact path="/action/:id" component={ ActiondetailPage }/>
+          <WillRoute exact path="/account" component={ AccountdetailPage }/>
+          <WillRoute exact path="/contract" component={ ContractdetailPage }/>
+          <WillRoute exact path="/permission" component={ PermissionPage }/>
+          <WillRoute exact path="/deploy" component={ DeploymentPage }/>
+          <WillRoute exact path="/push-action" component={ PushactionPage }/>
           <WillRoute exact path="/privacy" component={ PrivacyPolicyPage }/>
           <WillRoute exact path="/terms" component={ TermsOfUsePage }/>
-          <Redirect to="/404"/>
+          <Redirect to="/" />
         </Switch>
       </div>
     );
