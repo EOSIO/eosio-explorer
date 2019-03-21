@@ -8,9 +8,9 @@ import { Button, Card, CardBody, CardHeader, Col, Row } from 'reactstrap';
 import { StandardTemplate } from 'templates';
 import { increaseCounter } from 'actions/counter';
 import Headblock from './components/Headblock';
-import CodeViewer from '../../components/CodeViewer';
 
 import axios from 'axios';
+import DragDropCodeViewer from '../../components/DragDropCodeViewer/DragDropCodeViewer';
 
 class InfoPage extends Component {
 
@@ -28,27 +28,19 @@ class InfoPage extends Component {
       .then(({data})=>{
         this.setState({
           text: JSON.stringify(data), 
-          jsonData: JSON.stringify([{"abc":"Hello","test2":[456,789]},{"abc":"Hello","test2":[456,789]},{"abc":"Hello","test2":[456,789]},{"abc":"Hello","test2":[456,789]},{"abc":"Hello","test2":[456,789]},{"abc":"Hello","test2":[456,789]},{"abc":"Hello","test2":[456,789]},{"abc":"Hello","test2":[456,789]},{"abc":"Hello","test2":[456,789]}])
+          jsonData: ""
         });
       })
   }
-
-  editorDidMount(editor, monaco) {
-    editor.focus();
-    this.editor = editor;
-    this.monaco = monaco;
-
-    setTimeout(
-      function() {
-        this.editor.trigger('any', 'editor.action.formatDocument');
-      }
-      .bind(this),
-      250
-    );
+  
+  onDrop(fileContents) {
+    this.setState({
+      text: this.state.text,
+      jsonData: fileContents
+    });
   }
 
   onChange(newValue) {
-    console.log('change', newValue);
     this.setState({
       text: this.state.text,
       jsonData: newValue
@@ -80,17 +72,17 @@ class InfoPage extends Component {
 
                 <Row className="mb-3">
                   <Col col="3" sm="3">
-                    <h2>File List</h2>
+                    <h2>D&amp;D</h2>
                   </Col>
                   <Col col="9" sm="9">
                     <Row>
                       <Col col="12" sm="12" xs="12">
                         <h2>Monaco Editor</h2>
-                        <CodeViewer height="300"
-                                    value={this.state.jsonData} 
-                                    readOnly={false}
-                                    onChange={this.onChange.bind(this)} 
-                                    editorDidMount={this.editorDidMount.bind(this)} />
+
+                        <DragDropCodeViewer height="300px" readOnly={false}
+                                            value={this.state.jsonData} 
+                                            onChange={this.onChange.bind(this)}
+                                            onDrop={this.onDrop.bind(this)} />
                       </Col>
                     </Row>
                   </Col>

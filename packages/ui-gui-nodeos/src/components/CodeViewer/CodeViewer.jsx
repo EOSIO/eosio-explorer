@@ -28,7 +28,7 @@ const monacoOptionsReadOnly = {
     enabled: false
   },
   renderSideBySide: false,
-  lineNumbers: "off",
+  lineNumbers: "on",
   overviewRulerBorder: true,
   overviewRulerLanes: 1,
   renderLineHighlight: "none",

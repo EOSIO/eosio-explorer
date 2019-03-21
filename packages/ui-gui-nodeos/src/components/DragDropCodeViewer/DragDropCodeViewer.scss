@@ -1,0 +1,70 @@
+.dragDropCodeViewerContainer {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #eee;
+    border-radius: 3px;
+
+    .jumbotron {
+      border-radius: 0;
+    }
+
+    .dropzone {
+      height: 100%;
+
+      > div {
+        height:100%;
+      }
+      .jumbotron {
+        height: 100%;
+        margin:0;
+      }
+    }
+  
+    &.hasFileData {
+
+      .CodeViewer {
+        display:block;
+      }
+      .dropzone {
+        position: absolute;
+        top: 0;
+        width: 100%;
+        height: 4em;
+  
+        .jumbotron {
+          padding: 1em;
+          margin: 0;
+          height: 4em;
+  
+          p.lead {
+            font-size: 1em;
+            text-align: left !important;
+            width: 75%;
+            float: left;
+            margin-top: 0.15em;
+          }
+          p.lead.browseButton {
+            width: 25%;
+            text-align: right !important;
+            margin: 0;
+            padding-right: 1em;
+  
+            button {
+              padding: 0.25rem 0.5rem;
+              font-size: 0.76562rem;
+              line-height: 1.5;
+              border-radius: 0.2rem;
+            }
+          }
+          hr {
+            display: none;
+          }
+        }
+      }
+    }
+  
+    .CodeViewer {
+      padding-top: 4em;
+      display: none;
+    }
+  }
