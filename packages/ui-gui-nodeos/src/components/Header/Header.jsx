@@ -2,8 +2,8 @@ import './Header.scss';
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Badge, DropdownItem, DropdownMenu, DropdownToggle, Nav, NavItem, NavLink } from 'reactstrap';
-import { AppAsideToggler, AppHeaderDropdown, AppNavbarBrand, AppSidebarToggler } from '@coreui/react';
+import { Nav, NavItem } from 'reactstrap';
+import { AppNavbarBrand} from '@coreui/react';
 
 const Header = () =>
 
