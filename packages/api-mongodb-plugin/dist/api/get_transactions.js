@@ -39,32 +39,36 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
-var block_1 = __importDefault(require("../models/block"));
+var transactions_1 = __importDefault(require("../models/transactions"));
 exports.default = (function (query) { return __awaiter(_this, void 0, void 0, function () {
-    var filter, result, _a, err_1;
-    return __generator(this, function (_b) {
-        switch (_b.label) {
+    var empty, id, result, err_1;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
             case 0:
-                _b.trys.push([0, 5, , 6]);
-                filter = query.filter;
-                result = void 0;
-                if (!(filter !== 'true')) return [3 /*break*/, 2];
-                return [4 /*yield*/, block_1.default.find({}, {}, { sort: { 'createdAt': -1 } }).limit(100)];
+                _a.trys.push([0, 7, , 8]);
+                empty = query.empty, id = query.id;
+                result = [];
+                if (!(empty !== undefined)) return [3 /*break*/, 2];
+                return [4 /*yield*/, transactions_1.default.find().sort({ 'createdAt': -1 }).limit(10)];
             case 1:
-                _a = result = _b.sent();
-                return [3 /*break*/, 4];
-            case 2: return [4 /*yield*/, block_1.default.find({ "block.transactions": { $ne: [] } }, {}, { sort: { 'createdAt': -1 } }).limit(100)];
+                result = _a.sent();
+                return [3 /*break*/, 6];
+            case 2:
+                if (!(id !== undefined)) return [3 /*break*/, 4];
+                return [4 /*yield*/, transactions_1.default.find({ "trx_id": id }).sort({ 'createdAt': -1 }).limit(1)];
             case 3:
-                _a = result = _b.sent();
-                _b.label = 4;
-            case 4:
-                _a;
-                return [2 /*return*/, result];
+                result = _a.sent();
+                return [3 /*break*/, 6];
+            case 4: return [4 /*yield*/, transactions_1.default.find({ "block_num": { $exists: true } }).sort({ 'createdAt': -1 }).limit(10)];
             case 5:
-                err_1 = _b.sent();
+                result = _a.sent();
+                _a.label = 6;
+            case 6: return [2 /*return*/, result];
+            case 7:
+                err_1 = _a.sent();
                 console.log(err_1);
-                throw (err_1);
-            case 6: return [2 /*return*/];
+                return [3 /*break*/, 8];
+            case 8: return [2 /*return*/];
         }
     });
 }); });
