@@ -3,14 +3,13 @@ import './InfoPage.scss';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { Button, Card, CardBody, CardHeader, Col, Row } from 'reactstrap';
+import { Button, Card, CardBody, CardHeader, Col } from 'reactstrap';
 
 import { StandardTemplate } from 'templates';
 import { increaseCounter } from 'actions/counter';
 import Headblock from './components/Headblock';
 import apiRpc from '@eos-toppings/api-rpc';
 import axios from 'axios';
-import DragDropCodeViewer from '../../components/DragDropCodeViewer/DragDropCodeViewer';
 
 class InfoPage extends Component {
 
@@ -23,10 +22,7 @@ class InfoPage extends Component {
     axios
       .get(`/api/mongodb/get_accounts`)
       .then(({data})=>{
-        this.setState({
-          text: JSON.stringify(data), 
-          jsonData: ""
-        });
+        this.setState({text: JSON.stringify(data)})
       })
     let query = {"endpoint": "http://localhost:8888", "privateKey": "5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3"};  
     apiRpc
@@ -34,20 +30,6 @@ class InfoPage extends Component {
       .then((data) => {
         this.setState({info: JSON.stringify(data)});        
       })
-  }
-  
-  onDrop(fileContents) {
-    this.setState({
-      text: this.state.text,
-      jsonData: fileContents
-    });
-  }
-
-  onChange(newValue) {
-    this.setState({
-      text: this.state.text,
-      jsonData: newValue
-    });
   }
 
   render() {
@@ -72,27 +54,6 @@ class InfoPage extends Component {
                 <p>
                   <Link to={'/some'}>Go to Some Page</Link>
                 </p>
-
-                <Row className="mb-3">
-                  <Col col="3" sm="3">
-                    <h2>D&amp;D</h2>
-                  </Col>
-                  <Col col="9" sm="9">
-                    <Row>
-                      <Col col="12" sm="12" xs="12">
-                        <h2>Monaco Editor</h2>
-
-                        <DragDropCodeViewer height="300px" readOnly={false}
-                                            value={this.state.jsonData} 
-                                            onChange={this.onChange.bind(this)}
-                                            onDrop={this.onDrop.bind(this)} />
-                      </Col>
-                    </Row>
-                  </Col>
-                </Row>
-                
-
-                <p>Json String: {this.state.jsonData}</p>
               </CardBody>
             </Card>
         </div>
