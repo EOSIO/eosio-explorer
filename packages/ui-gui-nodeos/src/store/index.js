@@ -8,6 +8,8 @@ import storage from 'redux-persist/lib/storage'
 
 import { rootReducer, rootEpic } from 'reducers';
 
+import reduxPersistFilters from './redux-persist-filters';
+
 export const history = createBrowserHistory();
 
 const epicMiddleware = createEpicMiddleware();
@@ -15,7 +17,10 @@ const epicMiddleware = createEpicMiddleware();
 const persistConfig = {
   key: 'root',
   storage,
-  blacklist: ['router']
+  blacklist: ['router'],
+  transforms: [
+    ...reduxPersistFilters
+  ]
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer(history))

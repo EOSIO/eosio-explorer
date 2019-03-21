@@ -1,48 +1,48 @@
-import React, { Component }  from 'react';
-import { Keygen } from 'eosjs-keygen';
+import React, { useEffect }  from 'react';
 
-class CreateAccount extends Component {
+import { connect } from 'react-redux';
 
-  constructor(){
-    super()
-    this.state = {
-      ownerPublicKey: "",
-      ownerPrivateKey: "",
-      activePublicKey: "",
-      activePrivateKey: ""
-    }
-  }
+import { fetchStart } from './CreateAccountReducer';
 
-  componentDidMount(){
-    Keygen.generateMasterKeys()
-    .then(keys => {
-      this.setState({
-        ownerPublicKey: keys.publicKeys.owner,
-        ownerPrivateKey: keys.privateKeys.owner,
-        activePublicKey: keys.publicKeys.active,
-        activePrivateKey: keys.privateKeys.active,
-      });
-    })
-    .catch(err => console.log("Internal server error " + err))
-  }
+const CreateAccount = (props) => {
 
-  render() {
-    return (
-      <div  style={{border:"1px solid black"}} className="CreateAccount">
-        <div>This is create account panel.</div>
-        <div>Owner</div>
-        <div className="keys">
-          <p>public: {this.state.ownerPublicKey}</p>
-          <p>private: {this.state.ownerPrivateKey}</p>
-        </div>
-        <div>Active</div>
-        <div className="keys">
-          <p>public: {this.state.activePublicKey}</p>
-          <p>private: {this.state.activePrivateKey}</p>
-        </div>
+  useEffect(()=>{
+    props.fetchStart();
+  }, [])
+
+  let { createAccount: { isFetching, data, params } } = props;
+  let { payload, error } = data;
+
+  return (
+    <div style={{border:"1px solid black"}} className="CreateAccount">
+      <div>{ error                  ? <button onClick={props.fetchStart}>{JSON.stringify(error)} Click to Reload.</button>
+            : isFetching           ? `loading...`
+            : payload.length === 0 ? `No block found with block id = ${params.id}`
+                                    : <>
+                                      <div>This is create account panel.</div>
+                                        <div>Owner</div>
+                                        <div className="keys">
+                                          <p>public: {payload.ownerPublicKey}</p>
+                                          <p>private: {payload.ownerPrivateKey}</p>
+                                        </div>
+                                        <div>Active</div>
+                                        <div className="keys">
+                                          <p>public: {payload.activePublicKey}</p>
+                                          <p>private: {payload.activePrivateKey}</p>
+                                        </div>
+                                      </>}
       </div>
-    )
-  }
+
+    </div>
+  )
 }
 
-export default CreateAccount;
+export default connect(
+  ({ permissionPage: { createAccount }}) => ({
+    createAccount,
+  }),
+  {
+    fetchStart,
+  }
+
+)(CreateAccount);

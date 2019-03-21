@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { pollingStart, pollingStop, filterToggle } from './PermissionlistReducer';
+import { pollingStart, pollingStop } from './PermissionlistReducer';
 
 
 const Permissionlist = (props) => {
