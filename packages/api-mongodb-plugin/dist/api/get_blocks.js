@@ -41,21 +41,30 @@ var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
 var block_1 = __importDefault(require("../models/block"));
 exports.default = (function (query) { return __awaiter(_this, void 0, void 0, function () {
-    var filter, result, err_1;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
+    var filter, result, _a, err_1;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
             case 0:
-                _a.trys.push([0, 2, , 3]);
+                _b.trys.push([0, 5, , 6]);
                 filter = query.filter;
-                return [4 /*yield*/, block_1.default.find({}, {}, { sort: { 'createdAt': -1 } }).limit(filter !== 'true' ? 10 : 2)];
+                result = void 0;
+                if (!(filter !== 'true')) return [3 /*break*/, 2];
+                return [4 /*yield*/, block_1.default.find({}, {}, { sort: { 'createdAt': -1 } }).limit(100)];
             case 1:
-                result = _a.sent();
+                _a = result = _b.sent();
+                return [3 /*break*/, 4];
+            case 2: return [4 /*yield*/, block_1.default.find({ "block.transactions": { $ne: [] } }, {}, { sort: { 'createdAt': -1 } }).limit(100)];
+            case 3:
+                _a = result = _b.sent();
+                _b.label = 4;
+            case 4:
+                _a;
                 return [2 /*return*/, result];
-            case 2:
-                err_1 = _a.sent();
+            case 5:
+                err_1 = _b.sent();
                 console.log(err_1);
-                return [3 /*break*/, 3];
-            case 3: return [2 /*return*/];
+                throw (err_1);
+            case 6: return [2 /*return*/];
         }
     });
 }); });
