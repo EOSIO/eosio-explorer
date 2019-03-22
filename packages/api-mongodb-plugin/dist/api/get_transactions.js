@@ -41,34 +41,32 @@ var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
 var transactions_1 = __importDefault(require("../models/transactions"));
 exports.default = (function (query) { return __awaiter(_this, void 0, void 0, function () {
-    var empty, id, result, err_1;
+    var id, result, query_gen, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                _a.trys.push([0, 7, , 8]);
-                empty = query.empty, id = query.id;
-                result = [];
-                if (!(empty !== undefined)) return [3 /*break*/, 2];
-                return [4 /*yield*/, transactions_1.default.find().sort({ 'createdAt': -1 }).limit(10)];
+                _a.trys.push([0, 2, , 3]);
+                id = query.id;
+                result = void 0;
+                query_gen = transactions_1.default
+                    .find({}, {
+                    "trx_id": 1,
+                    "block_num": 1,
+                    "createdAt": 1
+                });
+                (id !== undefined) ?
+                    query_gen.where({ trx_id: id }) : query_gen.exists("block_num");
+                query_gen.limit(100);
+                query_gen.sort({ createdAt: -1 });
+                return [4 /*yield*/, query_gen.exec()];
             case 1:
                 result = _a.sent();
-                return [3 /*break*/, 6];
+                return [2 /*return*/, result];
             case 2:
-                if (!(id !== undefined)) return [3 /*break*/, 4];
-                return [4 /*yield*/, transactions_1.default.find({ "trx_id": id }).sort({ 'createdAt': -1 }).limit(1)];
-            case 3:
-                result = _a.sent();
-                return [3 /*break*/, 6];
-            case 4: return [4 /*yield*/, transactions_1.default.find({ "block_num": { $exists: true } }).sort({ 'createdAt': -1 }).limit(10)];
-            case 5:
-                result = _a.sent();
-                _a.label = 6;
-            case 6: return [2 /*return*/, result];
-            case 7:
                 err_1 = _a.sent();
                 console.log(err_1);
-                return [3 /*break*/, 8];
-            case 8: return [2 /*return*/];
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
         }
     });
 }); });

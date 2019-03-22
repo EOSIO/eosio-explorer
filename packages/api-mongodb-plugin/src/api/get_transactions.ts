@@ -2,22 +2,24 @@ import TransactionsModel from '../models/transactions';
 
 export default async (query:any) => {
   try{
-    let { empty, id } = query;
+    let { id } = query;
 
-    let result = [];
+    let result: object;
 
-    if(empty !== undefined) //include empty transactions
-    {
-      result = await TransactionsModel.find().sort({ 'createdAt' : -1 }).limit( 10 );
-    }
-    else if(id !== undefined) //search transaction with id
-    {
-      result = await TransactionsModel.find({"trx_id": id}).sort({ 'createdAt' : -1 }).limit( 1 );
-    }
-    else //list non empty transactions
-    {
-      result = await TransactionsModel.find({ "block_num": { $exists: true } }).sort({ 'createdAt' : -1 }).limit( 10 );
-    }
+    let query_gen = TransactionsModel
+      .find({},
+        {
+          "trx_id": 1,
+          "block_num": 1,
+          "createdAt": 1
+        });
+
+    (id !== undefined) ?  
+      query_gen.where({trx_id: id}) : query_gen.exists("block_num");
+
+    query_gen.limit(100);
+    query_gen.sort({createdAt: -1});
+    result = await query_gen.exec();
 
     return result;
   }catch(err){

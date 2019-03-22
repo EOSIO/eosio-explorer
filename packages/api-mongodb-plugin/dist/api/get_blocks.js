@@ -61,7 +61,7 @@ exports.default = (function (query) { return __awaiter(_this, void 0, void 0, fu
                 (id_or_num !== undefined) ? isNaN(Number(id_or_num)) ?
                     query_gen.where({ block_id: id_or_num }) : query_gen.where({ block_num: id_or_num }) : "";
                 query_gen.limit(100);
-                query_gen.sort({ createdDate: -1 });
+                query_gen.sort({ createdAt: -1 });
                 return [4 /*yield*/, query_gen.exec()];
             case 1:
                 result = _a.sent();

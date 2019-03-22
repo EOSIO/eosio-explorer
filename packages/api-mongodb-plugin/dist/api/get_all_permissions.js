@@ -40,22 +40,23 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
 var permissions_1 = __importDefault(require("../models/permissions"));
-exports.default = (function (query) { return __awaiter(_this, void 0, void 0, function () {
-    var result, err_1;
+exports.default = (function () { return __awaiter(_this, void 0, void 0, function () {
+    var result, query_gen, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
                 result = void 0;
-                return [4 /*yield*/, permissions_1.default
-                        .find({}, {
-                        "account": 1,
-                        "permission": 1,
-                        "public_key": 1,
-                        "createdAt": 1
-                    })
-                        .sort({ 'createdAt': -1 })
-                        .limit(100)];
+                query_gen = permissions_1.default
+                    .find({}, {
+                    "account": 1,
+                    "permission": 1,
+                    "public_key": 1,
+                    "createdAt": 1
+                });
+                query_gen.limit(100);
+                query_gen.sort({ createdAt: -1 });
+                return [4 /*yield*/, query_gen.exec()];
             case 1:
                 result = _a.sent();
                 return [2 /*return*/, result];
