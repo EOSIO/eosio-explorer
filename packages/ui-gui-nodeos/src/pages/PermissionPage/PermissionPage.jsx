@@ -13,7 +13,7 @@ class PermissionPage extends Component {
   render() {
 
     const { panelSelect, panel } = this.props;
-    console.log(panel);
+    
     return (
       <StandardTemplate>
         <div className="PermissionPage">
