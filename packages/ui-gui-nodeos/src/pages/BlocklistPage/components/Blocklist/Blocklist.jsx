@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
-import { Card, CardTitle, CardBody, CardHeader, Col, Row, Table,Button,
-  InputGroup, InputGroupAddon, InputGroupText, Input} from 'reactstrap';
+import React, { useEffect, useState } from 'react';
+import { Card, CardTitle, CardBody, Col, Row, Table,Button,Input} from 'reactstrap';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { push } from 'connected-react-router'
 
 import { pollingStart, pollingStop, filterToggle } from './BlocklistReducer';
 
@@ -14,6 +14,8 @@ const Blocklist = (props) => {
     return () => { props.pollingStop() }
   }, [])
 
+  const [inputValue, setInputValue] = useState("");
+
   let { blocklist: { isFetching, data, filter } } = props;
   let { payload, error } = data;
   return (
@@ -24,17 +26,26 @@ const Blocklist = (props) => {
             <Col sm="6">
               <CardTitle>   
                 {filter 
-                  ? <input style={{"-webkit-appearance":"checkbox"}} onClick={props.filterToggle} type="checkbox" checked/>
-                  : <input style={{"-webkit-appearance":"checkbox"}} onClick={props.filterToggle} type="checkbox"/>}           
-                  <label style={{"padding-left":"10px"}}>No empty blocks</label>               
+                  ? <input style={{"WebkitAppearance":"checkbox"}} onChange={props.filterToggle} type="checkbox" checked/>
+                  : <input style={{"WebkitAppearance":"checkbox"}} onChange={props.filterToggle} type="checkbox"/>}           
+                  <label style={{"paddingLeft":"10px"}}>No empty blocks</label>               
               </CardTitle>
             </Col>
             <Col sm="6">
               <CardTitle>
                 <div style={{display:"flex"}}>
                   <label>Search&nbsp;Blocks:&nbsp;&nbsp;</label>
-                  <Input style={{width:"50%","margin-top":"-6px"}} placeholder="username" />
-                  <Button style={{"margin":"-6px 0 0 10px"}} color="secondary">Search</Button>
+                  <Input style={{width:"50%","marginTop":"-6px"}} 
+                        placeholder="username"
+                        value={inputValue}
+                        onChange={evt=>{setInputValue(evt.target.value)}}/>
+                  <Button style={{"margin":"-6px 0 0 10px"}}
+                        color="secondary" 
+                        onClick={evt=> {
+                          setInputValue("")
+                          {inputValue ? props.push('/block/'+inputValue) : console.log("No search text");}                          
+                        }}>
+                  Search</Button>
                 </div>
               </CardTitle>
             </Col>
@@ -78,6 +89,7 @@ export default connect(
     pollingStart,
     pollingStop,
     filterToggle,
+    push
   }
 
 )(Blocklist);
