@@ -3,4 +3,15 @@
   justify-content: space-evenly;
   align-items: center;
   height: 50px;
+
+  /* Remove header responsiveness from Core UI */
+  .navbar-brand {
+    position: initial;
+    top: initial;
+    left: initial;
+    margin-left: initial;
+  }
+  .d-md-down-none {
+    display: inherit !important;
+  }
 }
