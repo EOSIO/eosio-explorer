@@ -61,28 +61,6 @@ export const combinedEpic = combineEpics(
   fetchEpic,
 );
 
-
-//Reducer
-const dataInitState = {
-  list: [
-    {
-      _id: '1',
-      account: 'eosio',
-      permission: 'owner',
-      public_key: '123456',
-      private_key: '789'
-    },
-    {
-      _id: '2',
-      account: 'eosio',
-      permission: 'active',
-      public_key: 'abcdef',
-      private_key: 'zyx'
-    },
-  ],
-  defaultId: "1"
-}
-
 const composePermissionList = (originalList, payloadList) => {
   const len1 = originalList.length;
   let i = 0;
@@ -104,6 +82,8 @@ const composePermissionList = (originalList, payloadList) => {
       }
       composedList.push(originalList[i]);
     }
+  } else if (!originalList && payloadList) {
+    composedList = [...payloadList];
   }
   return composedList;
 }
