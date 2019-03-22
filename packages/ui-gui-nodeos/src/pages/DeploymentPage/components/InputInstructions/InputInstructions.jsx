@@ -14,10 +14,10 @@ class InputInstructions extends Component {
                 </CardHeader>
                 <CardBody>
                     <ListGroup>
-                        <ListGroupItem>1. Step one</ListGroupItem>
-                        <ListGroupItem>2. Step two</ListGroupItem>
-                        <ListGroupItem>3. ???</ListGroupItem>
-                        <ListGroupItem>4. Profit!</ListGroupItem>
+                        <ListGroupItem>1. Drag and drop the chosen entry file to the code viewer area</ListGroupItem>
+                        <ListGroupItem>2. Double check your source code file and dependencies</ListGroupItem>
+                        <ListGroupItem>3. <b>The folder containing this file</b> will be used as the source folder</ListGroupItem>
+                        <ListGroupItem>4. Move to step 2 and generate the ABI file</ListGroupItem>
                     </ListGroup>
                 </CardBody>
             </Card>

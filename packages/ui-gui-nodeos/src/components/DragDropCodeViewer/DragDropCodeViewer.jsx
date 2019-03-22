@@ -40,6 +40,7 @@ class DragDropCodeViewer extends Component {
 
     let self = this;
     let reader = new FileReader();
+    
     reader.onload = function(e) {
       let contents = e.target.result;
       self.setState({
@@ -85,6 +86,7 @@ class DragDropCodeViewer extends Component {
               width={this.props.width}
               readOnly={this.props.readOnly}
               value={this.state.value}
+              language="cpp"
               onChange={(newVal) => this.onChange(newVal)} 
               editorDidMount={(editor, monaco) => this.editorDidMount(editor, monaco)} />
           </div>
