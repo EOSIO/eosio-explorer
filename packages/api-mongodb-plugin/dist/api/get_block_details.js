@@ -41,19 +41,27 @@ var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
 var block_1 = __importDefault(require("../models/block"));
 exports.default = (function (query) { return __awaiter(_this, void 0, void 0, function () {
-    var _a, id, result, err_1;
+    var _a, id_or_num, result, query_gen, err_1;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
                 _b.trys.push([0, 2, , 3]);
-                _a = query.id, id = _a === void 0 ? "" : _a;
-                return [4 /*yield*/, block_1.default
-                        .find({ block_id: id }, {
-                        "block_id": 1,
-                        "block_num": 1,
-                        "createdAt": 1,
-                        "block.transactions.trx.id": 1
-                    })];
+                _a = query.id_or_num, id_or_num = _a === void 0 ? "" : _a;
+                result = void 0;
+                query_gen = block_1.default
+                    .find({}, {
+                    "block_id": 1,
+                    "block_num": 1,
+                    "createdAt": 1,
+                    "block.transactions.trx.id": 1
+                });
+                // check if id is passed
+                // check if its a number or not else it gives parsing error
+                (id_or_num !== undefined) ? isNaN(Number(id_or_num)) ?
+                    query_gen.where({ block_id: id_or_num }) : query_gen.where({ block_num: id_or_num }) : "";
+                query_gen.limit(100);
+                query_gen.sort({ createdDate: -1 });
+                return [4 /*yield*/, query_gen.exec()];
             case 1:
                 result = _b.sent();
                 return [2 /*return*/, result];
