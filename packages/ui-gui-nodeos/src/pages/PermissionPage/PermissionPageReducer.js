@@ -1,7 +1,6 @@
 import { combineReducers } from 'redux';
 import { combineEpics } from 'redux-observable';
 
-import { combinedEpic as permissionlistEpic, combinedReducer as permissionlistReducer } from './components/Permissionlist/PermissionlistReducer';
 import { combinedEpic as createAccountEpic, combinedReducer as createAccountReducer } from './components/CreateAccount/CreateAccountReducer';
 
 // IMPORTANT
@@ -25,12 +24,10 @@ const panelReducer = (state="permission-list", action) => {
 };
 
 export const combinedEpic = combineEpics(
-  permissionlistEpic,
   createAccountEpic
 );
 
 export const combinedReducer = combineReducers({
-  permissionlist: permissionlistReducer,
   createAccount: createAccountReducer,
   panel: panelReducer,
 })
