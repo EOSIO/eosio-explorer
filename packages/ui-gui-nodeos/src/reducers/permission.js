@@ -11,6 +11,7 @@ import { mergeMap, map, catchError } from 'rxjs/operators';
 import { combineEpics, ofType } from 'redux-observable';
 
 import apiMongodb from 'services/api-mongodb';
+import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from 'constants';
 
 // IMPORTANT
 // Must modify action prefix since action types must be unique in the whole app
@@ -33,32 +34,23 @@ export const defaultSet = ( id ) => ({ type: DEFAULT_SET, id });
 const fetchEpic = ( action$, state$ ) => action$.pipe(
   ofType(FETCH_START),
   mergeMap(action =>{
-
-    let { value: { blockdetailPage: { blockdetail: { params } }}} = state$;
-
-    return from(new Promise(
-        (resolve, reject) =>
-          {
-            resolve({ response:
-              [
-                {
-                  id: '1234',
-                  account: 'terry',
-                  permission: 'owner',
-                  public_key: '6666666',
-                },
-                {
-                  id: '2345',
-                  account: 'terry',
-                  permission: 'active',
-                  public_key: 'aaaaaaa',
-                }
-              ]
-            })
+    let {
+      value: {
+        permission: {
+          data: {
+            defaultId,
+            list
           }
-        )
-      ).pipe(
-      map(res => fetchFulfilled(res.response)),
+        }
+      }
+    } = state$;
+
+    return apiMongodb(`get_all_permissions`).pipe(
+      map(res => fetchFulfilled({
+        response: res.response,
+        originalList: list,
+        originalDefault: defaultId
+      })),
       catchError(error => of(fetchRejected(error.response, { status: error.status })))
     )
   })
@@ -74,14 +66,14 @@ export const combinedEpic = combineEpics(
 const dataInitState = {
   list: [
     {
-      id: '1',
+      _id: '1',
       account: 'eosio',
       permission: 'owner',
       public_key: '123456',
       private_key: '789'
     },
     {
-      id: '2',
+      _id: '2',
       account: 'eosio',
       permission: 'active',
       public_key: 'abcdef',
@@ -91,14 +83,33 @@ const dataInitState = {
   defaultId: "1"
 }
 
-const dataReducer = (state=dataInitState, action) => {
+const composePermissionList = (originalList, payloadList) => {
+  const len1 = originalList.length;
+  let i = 0;
+  let composedList = [];
+  if (payloadList) {
+    const len2 = payloadList.length;
+    let j = 0;
+    for (; i < len1; i++) {
+      for (; j < len2; j++) {
+        if (originalList[i]._id === payloadList[j]._id) {
+          composedList.push(payloadList[j]);
+          break;
+        } 
+      }
+      composedList.push(originalList[i]);
+    }
+  }
+  return composedList;
+}
+
+const dataReducer = (state=null, action) => {
   switch (action.type) {
     case FETCH_FULFILLED:
-    return {
-      ...state,
-      list: [...dataInitState.list, ...action.payload], // Todo: merge current list state with the list from payload
-      // error: undefined
-    };
+      let composedList = composePermissionList(action.payload.originalList, action.payload.response);
+      return {
+        list: composedList
+      };
     case DEFAULT_SET:
       return {
         ...state,

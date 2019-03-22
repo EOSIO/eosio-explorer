@@ -1,4 +1,7 @@
 import React, { useEffect } from 'react';
+import {
+  Form, FormGroup, Label, Button, Col
+} from 'reactstrap';
 
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -18,24 +21,63 @@ const Permissionlist = (props) => {
   return (
     <div className="Permissionlist">
       <div>{ isFetching   ? `loading...`
-                            : <table>
-                                <thead>
-                                  <tr>
-                                    <td>Permission List:</td>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  {list.map(permission=>
-                                    <tr key={permission.id}>
-                                      <td style={{border:"1px solid black"}}>{permission.account}</td>
-                                      <td style={{border:"1px solid black"}}>{permission.permission}</td>
-                                      <td style={{border:"1px solid black"}}>{
-                                        permission.id === defaultId
-                                        ? `This is DEFAULT permission`
-                                        : <button onClick={()=>{defaultSet(permission.id)}}>click to set</button>}</td>
-                                    </tr>)}
-                                </tbody>
-                              </table>}
+                            : <div>
+                                <h3>
+                                  <u>Default Signature Account</u>
+                                </h3>
+                                <Form>
+                                  <FormGroup>
+                                    {                                    
+                                      list.map(permission => 
+                                        (
+                                          permission.private_key &&                                         
+                                          <FormGroup key={permission._id+'_editable'} row>
+                                            <Label check htmlFor={permission._id} sm={8}>
+                                              <span>{permission.account}@{permission.permission}</span>
+                                            </Label>
+                                            <Col sm={2}>
+                                              <Button outline color="primary" block>Edit</Button>
+                                            </Col>
+                                            <Col sm={2}>
+                                              <input type="radio" 
+                                                  name={permission._id}
+                                                  style={{
+                                                    WebkitAppearance: 'radio'
+                                                  }}
+                                                  checked={permission._id === defaultId ? true : false}
+                                                  onClick={() => defaultSet(permission.id)}
+                                                  readOnly
+                                                  />
+                                              </Col>
+                                        </FormGroup>
+                                        )
+                                    )}
+                                  </FormGroup>
+                                </Form>
+                                <hr />
+                                <Form>
+                                  <FormGroup>
+                                    {                                    
+                                      list.map(permission => 
+                                        (
+                                          !permission.private_key &&                                         
+                                          <FormGroup key={permission._id+'_importable'} row>
+                                            <Label check htmlFor={permission._id} sm={8}>
+                                              <span>{permission.account}@{permission.permission}</span>
+                                            </Label>
+                                            <Col sm={2}>
+                                              <Button outline color="primary" block>Import</Button>
+                                            </Col>
+                                            <Col sm={2}>
+
+                                              </Col>
+                                        </FormGroup>
+                                        )
+                                    )}
+                                  </FormGroup>
+                                </Form>
+                              </div>
+              }
       </div>
     </div>
   );

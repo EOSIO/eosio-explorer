@@ -34,14 +34,20 @@ class DragDropCodeViewer extends Component {
     );
   }
 
+  handleDropRejected(file, ev) {
+    ev.preventDefault();
+    alert(`${file.name} has an unsupported file type`);
+  }
+
   async onDrop(file) {
     if(file === undefined)
       return;
 
     let self = this;
     let reader = new FileReader();
-    
+
     reader.onload = function(e) {
+      console.log(e);
       let contents = e.target.result;
       self.setState({
         value: contents
@@ -63,8 +69,13 @@ class DragDropCodeViewer extends Component {
   render() {
     return (
       <>
-        <div className={"dragDropCodeViewerContainer " + (this.state.value && this.state.value !== "" ? "hasFileData" : "")}>
-          <Dropzone onDrop={([file]) => this.onDrop(file)} accept={'application/json, .cpp'} >
+        <div 
+          className={"dragDropCodeViewerContainer " + (this.state.value && this.state.value !== "" ? "hasFileData" : "")}
+          >
+          <Dropzone onDrop={([file]) => this.onDrop(file)} 
+            onDropRejected={([file], ev) => this.handleDropRejected(file, ev)}
+            accept={'application/json, .cpp'} 
+            >
             {({getRootProps, getInputProps}) => (
               <section className="dropzone">
                 <div {...getRootProps()}>
