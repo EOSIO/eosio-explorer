@@ -4,8 +4,16 @@ import { Card, CardTitle, CardBody, CardHeader, Col, Row, Table,Button,
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import styled from 'styled-components';
+
 import { pollingStart, pollingStop, filterToggle } from './BlocklistReducer';
 
+import SearchButton from 'styled/SearchButton';
+
+const InputStyled = styled(Input)`
+  width: 50%;
+  margin-top: -6px;
+`
 
 const Blocklist = (props) => {
 
@@ -34,8 +42,8 @@ const Blocklist = (props) => {
               <CardTitle>
                 <div style={{display:"flex"}}>
                   <label>Search&nbsp;Blocks:&nbsp;&nbsp;</label>
-                  <Input style={{width:"50%","margin-top":"-6px"}} placeholder="username" />
-                  <Button style={{"margin":"-6px 0 0 10px"}} color="secondary">Search</Button>
+                  <InputStyled placeholder="username" />
+                  <SearchButton color="secondary">Search</SearchButton>
                 </div>
               </CardTitle>
             </Col>
