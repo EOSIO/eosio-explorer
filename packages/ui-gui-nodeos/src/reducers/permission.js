@@ -93,7 +93,12 @@ const composePermissionList = (originalList, payloadList) => {
     for (; i < len1; i++) {
       for (; j < len2; j++) {
         if (originalList[i]._id === payloadList[j]._id) {
-          composedList.push(payloadList[j]);
+          let origTime = originalList[i].createdAt;
+          let privKey = originalList[i].private_key;
+          if (!privKey || (origTime && origTime < payloadList[j].createdAt))
+            composedList.push(payloadList[j]);
+          else 
+            composedList.push(originalList[i]);
           break;
         } 
       }
@@ -106,9 +111,9 @@ const composePermissionList = (originalList, payloadList) => {
 const dataReducer = (state=null, action) => {
   switch (action.type) {
     case FETCH_FULFILLED:
-      let composedList = composePermissionList(action.payload.originalList, action.payload.response);
       return {
-        list: composedList
+        ...state,
+        list: composePermissionList(action.payload.originalList, action.payload.response)
       };
     case DEFAULT_SET:
       return {
