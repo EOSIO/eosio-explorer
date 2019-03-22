@@ -47,7 +47,7 @@ const fetchEpic = ( action$, state$ ) => action$.pipe(
       mergeMap(action => {
           let { value: {blocklistPage: { blocklist: { filter } }}} = state$;
 
-          return apiMongodb(`get_blocks?filter=${filter?`true`:`false`}`).pipe(
+          return apiMongodb(`get_blocks?show_empty=${filter?`false`:`true`}`).pipe(
             map(res => fetchFulfilled(res.response)),
             catchError(error => of(fetchRejected(error.response, { status: error.status })))
           )
