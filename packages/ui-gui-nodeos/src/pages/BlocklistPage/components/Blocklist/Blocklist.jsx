@@ -33,41 +33,28 @@ const Blocklist = (props) => {
         <div className="Blocklist">
           <Row>
             <Col sm="6">
-<<<<<<< HEAD
               <CardTitle>   
                 {filter 
                   ? <input style={{"WebkitAppearance":"checkbox"}} onChange={props.filterToggle} type="checkbox" checked/>
                   : <input style={{"WebkitAppearance":"checkbox"}} onChange={props.filterToggle} type="checkbox"/>}           
                   <label style={{"paddingLeft":"10px"}}>No empty blocks</label>               
-=======
-              <CardTitle>
-                {filter
-                  ? <input style={{"-webkit-appearance":"checkbox"}} onClick={props.filterToggle} type="checkbox" checked/>
-                  : <input style={{"-webkit-appearance":"checkbox"}} onClick={props.filterToggle} type="checkbox"/>}
-                  <label style={{"padding-left":"10px"}}>No empty blocks</label>
->>>>>>> 71792518ad9bef5eaa5db2d5943fe835169de1cb
               </CardTitle>
             </Col>
             <Col sm="6">
               <CardTitle>
                 <div style={{display:"flex"}}>
                   <label>Search&nbsp;Blocks:&nbsp;&nbsp;</label>
-<<<<<<< HEAD
-                  <Input style={{width:"50%","marginTop":"-6px"}} 
+                  <InputStyled 
                         placeholder="username"
                         value={inputValue}
                         onChange={evt=>{setInputValue(evt.target.value)}}/>
-                  <Button style={{"margin":"-6px 0 0 10px"}}
-                        color="secondary" 
+                  <SearchButton
+                        color="secondary"   
                         onClick={evt=> {
                           setInputValue("")
                           {inputValue ? props.push('/block/'+inputValue) : console.log("No search text");}                          
                         }}>
-                  Search</Button>
-=======
-                  <InputStyled placeholder="username" />
-                  <SearchButton color="secondary">Search</SearchButton>
->>>>>>> 71792518ad9bef5eaa5db2d5943fe835169de1cb
+                  Search</SearchButton>
                 </div>
               </CardTitle>
             </Col>
