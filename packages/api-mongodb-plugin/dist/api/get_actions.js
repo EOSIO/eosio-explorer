@@ -41,46 +41,35 @@ var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
 var actions_1 = __importDefault(require("../models/actions"));
 exports.default = (function (query) { return __awaiter(_this, void 0, void 0, function () {
-    var account_name, result, err_1;
+    var account_name, result, query_gen, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                _a.trys.push([0, 5, , 6]);
+                _a.trys.push([0, 2, , 3]);
                 account_name = query.account_name;
                 result = void 0;
-                if (!(account_name !== undefined)) return [3 /*break*/, 2];
-                return [4 /*yield*/, actions_1.default
-                        .find({ $and: [{ "act.account": account_name }, { "act.name": { $ne: "onblock" } }] }, {
-                        "receipt.act_digest": 1,
-                        "act.name": 1,
-                        "act.account": 1,
-                        "trx_id": 1,
-                        "createdAt": 1
-                    })
-                        .sort({ 'createdAt': -1 })
-                        .limit(100)];
-            case 1:
-                result = _a.sent();
-                return [3 /*break*/, 4];
-            case 2: return [4 /*yield*/, actions_1.default
-                    .find({ "act.name": { $ne: "onblock" } }, {
+                query_gen = actions_1.default
+                    .find({}, {
                     "receipt.act_digest": 1,
                     "act.name": 1,
                     "act.account": 1,
                     "trx_id": 1,
                     "createdAt": 1
-                })
-                    .sort({ 'createdAt': -1 })
-                    .limit(100)];
-            case 3:
+                });
+                (account_name !== undefined) ?
+                    query_gen.where("act.account").equals(account_name) : "";
+                query_gen.where("act.name").ne("onblock");
+                query_gen.limit(100);
+                query_gen.sort({ createdAt: -1 });
+                return [4 /*yield*/, query_gen.exec()];
+            case 1:
                 result = _a.sent();
-                _a.label = 4;
-            case 4: return [2 /*return*/, result];
-            case 5:
+                return [2 /*return*/, result];
+            case 2:
                 err_1 = _a.sent();
                 console.log(err_1);
                 throw err_1;
-            case 6: return [2 /*return*/];
+            case 3: return [2 /*return*/];
         }
     });
 }); });

@@ -20,9 +20,9 @@ export default async (query:any) => {
         query_gen.where({block_id: id_or_num}): query_gen.where({block_num: id_or_num}) : "";
 
     query_gen.limit(100);
-    query_gen.sort({createdDate: -1});
+    query_gen.sort({createdAt: -1});
     result = await query_gen.exec();
-    
+
     return result;
   }catch(err){
     console.log(err);
