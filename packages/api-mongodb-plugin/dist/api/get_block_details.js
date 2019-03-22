@@ -47,7 +47,13 @@ exports.default = (function (query) { return __awaiter(_this, void 0, void 0, fu
             case 0:
                 _b.trys.push([0, 2, , 3]);
                 _a = query.id, id = _a === void 0 ? "" : _a;
-                return [4 /*yield*/, block_1.default.find({ block_id: id })];
+                return [4 /*yield*/, block_1.default
+                        .find({ block_id: id }, {
+                        "block_id": 1,
+                        "block_num": 1,
+                        "createdAt": 1,
+                        "block.transactions.trx.id": 1
+                    })];
             case 1:
                 result = _b.sent();
                 return [2 /*return*/, result];
