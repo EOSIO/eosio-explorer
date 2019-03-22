@@ -3,23 +3,21 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { pollingStart, pollingStop } from './PermissionlistReducer';
+import { fetchStart, defaultSet } from 'reducers/permission';
 
 
 const Permissionlist = (props) => {
 
   useEffect(()=>{
-    props.pollingStart()
-    return () => { props.pollingStop() }
+    props.fetchStart()
   }, [])
 
-  let { permissionlist: { isFetching, data, filter } } = props;
-  let { payload, error } = data;
+  let { permission: { isFetching, data }, defaultSet } = props;
+  let { list,defaultId } = data;
 
   return (
     <div className="Permissionlist">
-      <div>{ error          ? <button onClick={props.pollingStart}>{JSON.stringify(error)} Click to Reload.</button>
-             : isFetching   ? `loading...`
+      <div>{ isFetching   ? `loading...`
                             : <table>
                                 <thead>
                                   <tr>
@@ -27,9 +25,14 @@ const Permissionlist = (props) => {
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  {(payload || []).map(permission=>
-                                    <tr key={permission.account}>
+                                  {list.map(permission=>
+                                    <tr key={permission.id}>
                                       <td style={{border:"1px solid black"}}>{permission.account}</td>
+                                      <td style={{border:"1px solid black"}}>{permission.permission}</td>
+                                      <td style={{border:"1px solid black"}}>{
+                                        permission.id === defaultId
+                                        ? `This is DEFAULT permission`
+                                        : <button onClick={()=>{defaultSet(permission.id)}}>click to set</button>}</td>
                                     </tr>)}
                                 </tbody>
                               </table>}
@@ -39,12 +42,12 @@ const Permissionlist = (props) => {
 }
 
 export default connect(
-  ({ permissionPage: { permissionlist }}) => ({
-    permissionlist
+  ({ permission }) => ({
+    permission
   }),
   {
-    pollingStart,
-    pollingStop,
+    fetchStart,
+    defaultSet,
   }
 
 )(Permissionlist);

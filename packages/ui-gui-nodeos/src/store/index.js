@@ -17,7 +17,7 @@ const epicMiddleware = createEpicMiddleware();
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['blocklistPage'],
+  whitelist: ['blocklistPage', 'permission'],
   transforms: [
     ...reduxPersistFilters
   ]

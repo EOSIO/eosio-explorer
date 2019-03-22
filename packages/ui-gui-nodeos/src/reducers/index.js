@@ -3,6 +3,7 @@ import { combineEpics } from 'redux-observable';
 import { connectRouter } from 'connected-react-router';
 
 import { counterReducer } from './counter';
+import { combinedEpic as permissionEpic, combinedReducer as permissionReducer,  } from './permission';
 
 import { combinedEpic as infoPageEpic, combinedReducer as infoPageReducer } from 'pages/InfoPage/InfoPageReducer';
 import { combinedEpic as blocklistPageEpic, combinedReducer as blocklistPageReducer } from 'pages/BlocklistPage/BlocklistPageReducer';
@@ -19,6 +20,7 @@ import { combinedEpic as pushactionPageEpic, combinedReducer as pushactionPageRe
 
 
 export const rootEpic = combineEpics(
+  permissionEpic,
   infoPageEpic,
   blocklistPageEpic,
   blockdetailPageEpic,
@@ -36,6 +38,7 @@ export const rootEpic = combineEpics(
 export const rootReducer = (history) => combineReducers({
   router: connectRouter(history),
   counter: counterReducer,
+  permission: permissionReducer,
   infoPage: infoPageReducer,
   blocklistPage: blocklistPageReducer,
   blockdetailPage: blockdetailPageReducer,
