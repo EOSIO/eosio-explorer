@@ -14,7 +14,7 @@ const Transactionlist = (props) => {
   }, [])
 
   let { transactionlist: { isFetching, data, filter } } = props;
-  let { payload, error } = data;
+  let { payload = [], error } = data;
 
   return (
     <div className="Transactionlist">

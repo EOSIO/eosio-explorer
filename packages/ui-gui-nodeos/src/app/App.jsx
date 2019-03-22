@@ -4,6 +4,7 @@ import './App.scss';
 
 import React, { Component } from 'react';
 import { Switch, Redirect } from 'react-router-dom';
+import Loadable from 'react-loadable';
 
 import InfoPage from 'pages/InfoPage';
 import BlocklistPage from 'pages/BlocklistPage';
@@ -23,6 +24,10 @@ import TermsOfUsePage from 'pages/TermsOfUsePage';
 import { WillRoute } from 'hocs';
 
 class App extends Component {
+
+  componentDidMount(){
+    setTimeout(()=>{Loadable.preloadAll()}, 1000);
+  }
 
   render() {
     return (

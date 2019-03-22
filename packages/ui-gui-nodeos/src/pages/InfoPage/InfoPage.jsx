@@ -24,11 +24,11 @@ class InfoPage extends Component {
       .then(({data})=>{
         this.setState({text: JSON.stringify(data)})
       })
-    let query = {"endpoint": "http://localhost:8888", "privateKey": "5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3"};  
+    let query = {"endpoint": "http://localhost:8888", "privateKey": "5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3"};
     apiRpc
-      .get_info(query) 
+      .get_info(query)
       .then((data) => {
-        this.setState({info: JSON.stringify(data)});        
+        this.setState({info: JSON.stringify(data)});
       })
   }
 
@@ -227,9 +227,6 @@ class InfoPage extends Component {
                   </Col>
                   <Headblock/>
                   <p>Scroll down</p>
-                  <p>
-                    <Link to={'/some'}>Go to Some Page</Link>
-                  </p>
                 </CardBody>
               </Card>
             </Col>

@@ -15,18 +15,19 @@ const Blocklist = (props) => {
   }, [])
 
   let { blocklist: { isFetching, data, filter } } = props;
-  let { payload, error } = data;
+  let { payload = [], error } = data;
+
   return (
     <Card>
       <CardBody>
-        <div className="Blocklist">         
+        <div className="Blocklist">
           <Row>
             <Col sm="6">
-              <CardTitle>   
-                {filter 
+              <CardTitle>
+                {filter
                   ? <input style={{"-webkit-appearance":"checkbox"}} onClick={props.filterToggle} type="checkbox" checked/>
-                  : <input style={{"-webkit-appearance":"checkbox"}} onClick={props.filterToggle} type="checkbox"/>}           
-                  <label style={{"padding-left":"10px"}}>No empty blocks</label>               
+                  : <input style={{"-webkit-appearance":"checkbox"}} onClick={props.filterToggle} type="checkbox"/>}
+                  <label style={{"padding-left":"10px"}}>No empty blocks</label>
               </CardTitle>
             </Col>
             <Col sm="6">
@@ -38,11 +39,11 @@ const Blocklist = (props) => {
                 </div>
               </CardTitle>
             </Col>
-          </Row>       
+          </Row>
           <div>
-            { error 
+            { error
               ? <button onClick={props.pollingStart}>{JSON.stringify(error)} Click to Reload.</button>
-              : isFetching 
+              : isFetching
                 ? `loading...`
                 : <Table style={{textAlign:"center"}} dark>
                     <thead>
@@ -63,7 +64,7 @@ const Blocklist = (props) => {
                         </tr>)}
                     </tbody>
                   </Table>}
-          </div>      
+          </div>
         </div>
       </CardBody>
     </Card>
