@@ -14,7 +14,7 @@ class BlocklistPage extends Component {
         <div className="BlocklistPage animated fadeIn">
           <Card>
             <CardHeader>
-              Blocklist Page
+              Block List Page
             </CardHeader>
             <CardBody>
               <Blocklist/>

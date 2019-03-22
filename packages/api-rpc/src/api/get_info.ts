@@ -13,5 +13,6 @@ export default async (query:any) => {
 
   }catch(e){
     console.log('Caught exception: ' + e);
+    throw(e);
   }
 }
