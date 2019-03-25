@@ -11,34 +11,46 @@ import { mergeMap, map, catchError } from 'rxjs/operators';
 import { combineEpics, ofType } from 'redux-observable';
 
 import apiMongodb from 'services/api-mongodb';
-import paramsToQuery from 'helpers/params-to-query';
+import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from 'constants';
 
 // IMPORTANT
 // Must modify action prefix since action types must be unique in the whole app
-const actionPrefix = `BlockdetailPage/Blockdetail/`;
+const actionPrefix = `permission/`;
 
 //Action Type
 const FETCH_START = actionPrefix + `FETCH_START`;
 const FETCH_FULFILLED = actionPrefix + `FETCH_FULFILLED`;
 const FETCH_REJECTED = actionPrefix + `FETCH_REJECTED`;
-const PARMAS_SET = actionPrefix + `PARMAS_SET`;
+const DEFAULT_SET = actionPrefix + `DEFAULT_SET`;
 
 //Action Creator
 export const fetchStart = () => ({ type: FETCH_START });
 export const fetchFulfilled = payload => ({ type: FETCH_FULFILLED, payload });
 export const fetchRejected = ( payload, error ) => ({ type: FETCH_REJECTED, payload, error });
-export const paramsSet = (params) => ({ type: PARMAS_SET, params });
+export const defaultSet = ( id ) => ({ type: DEFAULT_SET, id });
 
 //Epic
 
 const fetchEpic = ( action$, state$ ) => action$.pipe(
   ofType(FETCH_START),
   mergeMap(action =>{
+    let {
+      value: {
+        permission: {
+          data: {
+            defaultId,
+            list
+          }
+        }
+      }
+    } = state$;
 
-    let { value: { blockdetailPage: { blockdetail: { params } }}} = state$;
-
-    return apiMongodb(`get_block_details${paramsToQuery(params)}`).pipe(
-      map(res => fetchFulfilled(res.response)),
+    return apiMongodb(`get_all_permissions`).pipe(
+      map(res => fetchFulfilled({
+        response: res.response,
+        originalList: list,
+        originalDefault: defaultId
+      })),
       catchError(error => of(fetchRejected(error.response, { status: error.status })))
     )
   })
@@ -52,26 +64,61 @@ export const combinedEpic = combineEpics(
 
 //Reducer
 const dataInitState = {
-  payload: [],
-  error: undefined
+  list: [
+    {
+      _id: '1',
+      account: 'eosio',
+      permission: 'owner',
+      public_key: '123456',
+      private_key: '789'
+    },
+    {
+      _id: '2',
+      account: 'eosio',
+      permission: 'active',
+      public_key: 'abcdef',
+      private_key: 'zyx'
+    },
+  ],
+  defaultId: "1"
+}
+
+const composePermissionList = (originalList, payloadList) => {
+  const len1 = originalList.length;
+  let i = 0;
+  let composedList = [];
+  if (payloadList) {
+    const len2 = payloadList.length;
+    let j = 0;
+    for (; i < len1; i++) {
+      for (; j < len2; j++) {
+        if (originalList[i]._id === payloadList[j]._id) {
+          let origTime = originalList[i].createdAt;
+          let privKey = originalList[i].private_key;
+          if (!privKey || (origTime && origTime < payloadList[j].createdAt))
+            composedList.push(payloadList[j]);
+          else 
+            composedList.push(originalList[i]);
+          break;
+        } 
+      }
+      composedList.push(originalList[i]);
+    }
+  }
+  return composedList;
 }
 
 const dataReducer = (state=dataInitState, action) => {
   switch (action.type) {
-    case FETCH_START:
-        return dataInitState;
-
     case FETCH_FULFILLED:
       return {
         ...state,
-        payload: action.payload,
-        error: undefined
+        list: composePermissionList(action.payload.originalList, action.payload.response)
       };
-    case FETCH_REJECTED:
+    case DEFAULT_SET:
       return {
         ...state,
-        payload: action.payload,
-        error: action.error
+        defaultId: action.id
       };
     default:
       return state;
@@ -92,22 +139,7 @@ const isFetchingReducer = (state = false, action) => {
   }
 };
 
-const paramsReducer = (state = {}, action) => {
-  switch (action.type) {
-    case PARMAS_SET:
-      return {
-        ...state,
-        ...action.params
-      };
-
-    default:
-      return state;
-  }
-};
-
-
 export const combinedReducer = combineReducers({
   data: dataReducer,
   isFetching: isFetchingReducer,
-  params: paramsReducer
 })

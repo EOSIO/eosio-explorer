@@ -39,23 +39,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
-var transactions_1 = __importDefault(require("../models/transactions"));
-exports.default = (function (query) { return __awaiter(_this, void 0, void 0, function () {
-    var id, result, query_gen, err_1;
+var permissions_1 = __importDefault(require("../models/permissions"));
+exports.default = (function () { return __awaiter(_this, void 0, void 0, function () {
+    var result, query_gen, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                id = query.id;
                 result = void 0;
-                query_gen = transactions_1.default
+                query_gen = permissions_1.default
                     .find({}, {
-                    "trx_id": 1,
-                    "block_num": 1,
+                    "account": 1,
+                    "permission": 1,
+                    "public_key": 1,
                     "createdAt": 1
                 });
-                (id !== undefined) ?
-                    query_gen.where({ trx_id: id }) : query_gen.exists("block_num");
                 query_gen.limit(100);
                 query_gen.sort({ createdAt: -1 });
                 return [4 /*yield*/, query_gen.exec()];
@@ -65,7 +63,7 @@ exports.default = (function (query) { return __awaiter(_this, void 0, void 0, fu
             case 2:
                 err_1 = _a.sent();
                 console.log(err_1);
-                return [3 /*break*/, 3];
+                throw err_1;
             case 3: return [2 /*return*/];
         }
     });

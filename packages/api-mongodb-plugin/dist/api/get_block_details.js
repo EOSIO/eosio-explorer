@@ -39,31 +39,34 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
-var transactions_1 = __importDefault(require("../models/transactions"));
+var block_1 = __importDefault(require("../models/block"));
 exports.default = (function (query) { return __awaiter(_this, void 0, void 0, function () {
-    var id, result, query_gen, err_1;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
+    var _a, id_or_num, result, query_gen, err_1;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
             case 0:
-                _a.trys.push([0, 2, , 3]);
-                id = query.id;
+                _b.trys.push([0, 2, , 3]);
+                _a = query.id_or_num, id_or_num = _a === void 0 ? "" : _a;
                 result = void 0;
-                query_gen = transactions_1.default
+                query_gen = block_1.default
                     .find({}, {
-                    "trx_id": 1,
+                    "block_id": 1,
                     "block_num": 1,
-                    "createdAt": 1
+                    "createdAt": 1,
+                    "block.transactions.trx.id": 1
                 });
-                (id !== undefined) ?
-                    query_gen.where({ trx_id: id }) : query_gen.exists("block_num");
+                // check if id is passed
+                // check if its a number or not else it gives parsing error
+                (id_or_num !== undefined) ? isNaN(Number(id_or_num)) ?
+                    query_gen.where({ block_id: id_or_num }) : query_gen.where({ block_num: id_or_num }) : "";
                 query_gen.limit(100);
                 query_gen.sort({ createdAt: -1 });
                 return [4 /*yield*/, query_gen.exec()];
             case 1:
-                result = _a.sent();
+                result = _b.sent();
                 return [2 /*return*/, result];
             case 2:
-                err_1 = _a.sent();
+                err_1 = _b.sent();
                 console.log(err_1);
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];

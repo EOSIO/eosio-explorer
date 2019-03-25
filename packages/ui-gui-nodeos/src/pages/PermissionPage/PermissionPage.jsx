@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import { Card, CardBody, CardHeader, Button } from 'reactstrap';
+import { 
+  Card, CardBody, CardHeader, 
+  ButtonGroup, Button, Row, Col 
+} from 'reactstrap';
 
 import { StandardTemplate } from 'templates';
 import { connect } from 'react-redux';
@@ -13,26 +16,41 @@ class PermissionPage extends Component {
   render() {
 
     const { panelSelect, panel } = this.props;
-    console.log(panel);
+    
     return (
       <StandardTemplate>
         <div className="PermissionPage">
-          <Card>
-            <CardHeader>
-              Permission Page
-            </CardHeader>
-            <CardBody>
-              { panel === "permission-list"
-                ? <Button color="primary" onClick={()=>{panelSelect("create-account")}}>Create Account</Button>
-                : <Button color="primary" onClick={()=>{panelSelect("permission-list")}}>Back</Button>
-              }
-
-              { panel === "permission-list"
-                ? <Permissionlist/>
-                : <CreateAccount/>
-              }
-            </CardBody>
-          </Card>
+          <Row>
+            <Col sm={{size: 4, offset: 4}} md={{size: 6, offset: 3}}>
+              <Card>
+              <CardHeader>
+                Permission Page
+              </CardHeader>
+              <CardBody>
+                  <Row className="clearfix">
+                    <Col sm={12}>
+                      { panel === "permission-list"
+                        ? <ButtonGroup className="float-right">
+                          <Button color="primary" onClick={()=>{panelSelect("create-account")}}>Create Account</Button>
+                          <Button color="danger">Reset All Permissions</Button>
+                        </ButtonGroup>
+                        : <Button color="primary" className="float-right" onClick={()=>{panelSelect("permission-list")}}>Back</Button>
+                      }
+                    </Col>
+                  </Row>
+                  <hr />
+                  <Row>
+                    <Col sm={12}>
+                      { panel === "permission-list"
+                        ? <Permissionlist/>
+                        : <CreateAccount/>
+                      }
+                    </Col>
+                  </Row>
+              </CardBody>
+            </Card>
+            </Col>
+          </Row>
         </div>
       </StandardTemplate>
     );

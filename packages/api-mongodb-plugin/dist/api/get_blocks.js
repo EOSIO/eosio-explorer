@@ -41,30 +41,36 @@ var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
 var block_1 = __importDefault(require("../models/block"));
 exports.default = (function (query) { return __awaiter(_this, void 0, void 0, function () {
-    var filter, result, _a, err_1;
-    return __generator(this, function (_b) {
-        switch (_b.label) {
+    var show_empty, id_or_num, result, query_gen, err_1;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
             case 0:
-                _b.trys.push([0, 5, , 6]);
-                filter = query.filter;
+                _a.trys.push([0, 2, , 3]);
+                show_empty = query.show_empty, id_or_num = query.id_or_num;
                 result = void 0;
-                if (!(filter !== 'true')) return [3 /*break*/, 2];
-                return [4 /*yield*/, block_1.default.find({}, {}, { sort: { 'createdAt': -1 } }).limit(100)];
+                query_gen = block_1.default.find({}, {
+                    "block_id": 1,
+                    "block_num": 1,
+                    "createdAt": 1,
+                    "block.transactions.trx.id": 1
+                });
+                (show_empty === undefined || show_empty !== 'true') ?
+                    query_gen.exists("block.transactions.status") : "";
+                // check if id is passed
+                // check if its a number or not else it gives parsing error
+                (id_or_num !== undefined) ? isNaN(Number(id_or_num)) ?
+                    query_gen.where({ block_id: id_or_num }) : query_gen.where({ block_num: id_or_num }) : "";
+                query_gen.limit(100);
+                query_gen.sort({ createdAt: -1 });
+                return [4 /*yield*/, query_gen.exec()];
             case 1:
-                _a = result = _b.sent();
-                return [3 /*break*/, 4];
-            case 2: return [4 /*yield*/, block_1.default.find({ "block.transactions": { $ne: [] } }, {}, { sort: { 'createdAt': -1 } }).limit(100)];
-            case 3:
-                _a = result = _b.sent();
-                _b.label = 4;
-            case 4:
-                _a;
+                result = _a.sent();
                 return [2 /*return*/, result];
-            case 5:
-                err_1 = _b.sent();
+            case 2:
+                err_1 = _a.sent();
                 console.log(err_1);
                 throw (err_1);
-            case 6: return [2 /*return*/];
+            case 3: return [2 /*return*/];
         }
     });
 }); });

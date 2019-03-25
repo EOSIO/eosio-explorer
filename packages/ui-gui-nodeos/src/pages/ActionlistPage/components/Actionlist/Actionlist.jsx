@@ -14,7 +14,7 @@ const Actionlist = (props) => {
   }, [])
 
   let { actionlist: { isFetching, data, filter } } = props;
-  let { payload, error } = data;
+  let { payload = [], error } = data;
 
   return (
     <div className="Actionlist">

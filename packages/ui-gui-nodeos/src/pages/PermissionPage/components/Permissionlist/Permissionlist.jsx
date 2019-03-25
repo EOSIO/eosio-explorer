@@ -1,50 +1,95 @@
 import React, { useEffect } from 'react';
+import {
+  Form, FormGroup, Label, Button, Col
+} from 'reactstrap';
 
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { pollingStart, pollingStop } from './PermissionlistReducer';
+import { fetchStart, defaultSet } from 'reducers/permission';
 
 
 const Permissionlist = (props) => {
 
   useEffect(()=>{
-    props.pollingStart()
-    return () => { props.pollingStop() }
+    props.fetchStart()
   }, [])
 
-  let { permissionlist: { isFetching, data, filter } } = props;
-  let { payload, error } = data;
+  let { permission: { isFetching, data }, defaultSet } = props;
+  let { list,defaultId } = data;
 
   return (
     <div className="Permissionlist">
-      <div>{ error          ? <button onClick={props.pollingStart}>{JSON.stringify(error)} Click to Reload.</button>
-             : isFetching   ? `loading...`
-                            : <table>
-                                <thead>
-                                  <tr>
-                                    <td>Permission List:</td>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  {(payload || []).map(permission=>
-                                    <tr key={permission.account}>
-                                      <td style={{border:"1px solid black"}}>{permission.account}</td>
-                                    </tr>)}
-                                </tbody>
-                              </table>}
+      <div>{ isFetching   ? `loading...`
+                            : <div>
+                                <h3>
+                                  <u>Default Signature Account</u>
+                                </h3>
+                                <Form>
+                                  <FormGroup>
+                                    {                                    
+                                      list.map(permission => 
+                                        (
+                                          permission.private_key &&                                         
+                                          <FormGroup key={permission._id+'_editable'} row>
+                                            <Label check htmlFor={permission._id} sm={8}>
+                                              <span>{permission.account}@{permission.permission}</span>
+                                            </Label>
+                                            <Col sm={2}>
+                                              <Button outline color="primary" block>Edit</Button>
+                                            </Col>
+                                            <Col sm={2}>
+                                              <input type="radio" 
+                                                  name={permission._id}
+                                                  style={{
+                                                    WebkitAppearance: 'radio'
+                                                  }}
+                                                  checked={permission._id === defaultId ? true : false}
+                                                  onClick={() => defaultSet(permission.id)}
+                                                  readOnly
+                                                  />
+                                              </Col>
+                                        </FormGroup>
+                                        )
+                                    )}
+                                  </FormGroup>
+                                </Form>
+                                <hr />
+                                <Form>
+                                  <FormGroup>
+                                    {                                    
+                                      list.map(permission => 
+                                        (
+                                          !permission.private_key &&                                         
+                                          <FormGroup key={permission._id+'_importable'} row>
+                                            <Label check htmlFor={permission._id} sm={8}>
+                                              <span>{permission.account}@{permission.permission}</span>
+                                            </Label>
+                                            <Col sm={2}>
+                                              <Button outline color="primary" block>Import</Button>
+                                            </Col>
+                                            <Col sm={2}>
+
+                                              </Col>
+                                        </FormGroup>
+                                        )
+                                    )}
+                                  </FormGroup>
+                                </Form>
+                              </div>
+              }
       </div>
     </div>
   );
 }
 
 export default connect(
-  ({ permissionPage: { permissionlist }}) => ({
-    permissionlist
+  ({ permission }) => ({
+    permission
   }),
   {
-    pollingStart,
-    pollingStop,
+    fetchStart,
+    defaultSet,
   }
 
 )(Permissionlist);

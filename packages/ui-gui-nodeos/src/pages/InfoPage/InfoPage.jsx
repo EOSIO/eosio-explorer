@@ -170,9 +170,6 @@ class InfoPage extends Component {
                   </Col>
                   <Headblock/>
                   <p>Scroll down</p>
-                  <p>
-                    <Link to={'/some'}>Go to Some Page</Link>
-                  </p>
                 </CardBody>
               </Card>
             </Col>

@@ -39,22 +39,36 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
-var block_1 = __importDefault(require("../models/block"));
+var actions_1 = __importDefault(require("../models/actions"));
 exports.default = (function (query) { return __awaiter(_this, void 0, void 0, function () {
-    var _a, id, result, err_1;
-    return __generator(this, function (_b) {
-        switch (_b.label) {
+    var account_name, result, query_gen, err_1;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
             case 0:
-                _b.trys.push([0, 2, , 3]);
-                _a = query.id, id = _a === void 0 ? "" : _a;
-                return [4 /*yield*/, block_1.default.find({ block_id: id })];
+                _a.trys.push([0, 2, , 3]);
+                account_name = query.account_name;
+                result = void 0;
+                query_gen = actions_1.default
+                    .find({}, {
+                    "receipt.act_digest": 1,
+                    "act.name": 1,
+                    "act.account": 1,
+                    "trx_id": 1,
+                    "createdAt": 1
+                });
+                (account_name !== undefined) ?
+                    query_gen.where("act.account").equals(account_name) : "";
+                query_gen.where("act.name").ne("onblock");
+                query_gen.limit(100);
+                query_gen.sort({ createdAt: -1 });
+                return [4 /*yield*/, query_gen.exec()];
             case 1:
-                result = _b.sent();
+                result = _a.sent();
                 return [2 /*return*/, result];
             case 2:
-                err_1 = _b.sent();
+                err_1 = _a.sent();
                 console.log(err_1);
-                return [3 /*break*/, 3];
+                throw err_1;
             case 3: return [2 /*return*/];
         }
     });

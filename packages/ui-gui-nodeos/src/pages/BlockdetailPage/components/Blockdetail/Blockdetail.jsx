@@ -11,7 +11,7 @@ const Blockdetail = (props) => {
 
     let { router: { location: {pathname} } } = props;
 
-    props.paramsSet({id: pathNameConsumer(pathname)});
+    props.paramsSet({id_or_num: pathNameConsumer(pathname)});
     props.fetchStart();
   }, [])
 
@@ -22,7 +22,7 @@ const Blockdetail = (props) => {
     <div className="Blockdetail">
       <div>{ error                  ? <button onClick={props.fetchStart}>{JSON.stringify(error)} Click to Reload.</button>
              : isFetching           ? `loading...`
-             : payload.length === 0 ? `No block found with block id = ${params.id}`
+             : payload.length === 0 ? `No block found with block id = ${params.id_or_num}`
                                     : JSON.stringify(payload)}
       </div>
     </div>
