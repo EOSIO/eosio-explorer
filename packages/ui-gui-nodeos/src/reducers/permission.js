@@ -22,12 +22,14 @@ const FETCH_START = actionPrefix + `FETCH_START`;
 const FETCH_FULFILLED = actionPrefix + `FETCH_FULFILLED`;
 const FETCH_REJECTED = actionPrefix + `FETCH_REJECTED`;
 const DEFAULT_SET = actionPrefix + `DEFAULT_SET`;
+const ACCOUNT_UPDATE = actionPrefix + `ACCOUNT_UPDATE`;
 
 //Action Creator
 export const fetchStart = () => ({ type: FETCH_START });
 export const fetchFulfilled = payload => ({ type: FETCH_FULFILLED, payload });
 export const fetchRejected = ( payload, error ) => ({ type: FETCH_REJECTED, payload, error });
 export const defaultSet = ( id ) => ({ type: DEFAULT_SET, id });
+export const accountUpdate = accountData => ({ type: ACCOUNT_UPDATE, accountData });
 
 //Epic
 
@@ -83,28 +85,16 @@ const dataInitState = {
   defaultId: "1"
 }
 
+const accountState = {
+  keysData: []
+}
+
 const composePermissionList = (originalList, payloadList) => {
-  const len1 = originalList.length;
-  let i = 0;
-  let composedList = [];
-  if (payloadList) {
-    const len2 = payloadList.length;
-    let j = 0;
-    for (; i < len1; i++) {
-      for (; j < len2; j++) {
-        if (originalList[i]._id === payloadList[j]._id) {
-          let origTime = originalList[i].createdAt;
-          let privKey = originalList[i].private_key;
-          if (!privKey || (origTime && origTime < payloadList[j].createdAt))
-            composedList.push(payloadList[j]);
-          else 
-            composedList.push(originalList[i]);
-          break;
-        } 
-      }
-      composedList.push(originalList[i]);
-    }
-  }
+  let composedList = originalList.concat(
+    payloadList.filter(item => {
+      return originalList.findIndex(el => el._id === item._id) < 0
+    })
+  );
   return composedList;
 }
 
@@ -125,6 +115,18 @@ const dataReducer = (state=dataInitState, action) => {
   }
 };
 
+const accountReducer = (state=accountState, action) => {
+  switch (action.type) {
+    case ACCOUNT_UPDATE:
+      return {
+        ...state,
+        keysData: action.accountData
+      };
+    default:
+      return state;
+  }
+}
+
 const isFetchingReducer = (state = false, action) => {
   switch (action.type) {
     case FETCH_START:
@@ -142,4 +144,5 @@ const isFetchingReducer = (state = false, action) => {
 export const combinedReducer = combineReducers({
   data: dataReducer,
   isFetching: isFetchingReducer,
+  account: accountReducer
 })

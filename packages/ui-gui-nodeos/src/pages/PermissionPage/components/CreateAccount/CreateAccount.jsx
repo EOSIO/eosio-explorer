@@ -22,7 +22,7 @@ const CreateAccount = (props) => {
     createAccount: { isFetching, data, submitForm }, 
   } = props;
   let { payload, error } = data;
-  let { origState, submitError, isSubmitting } = submitForm;
+  let { submitError, isSubmitting, creationSuccess } = submitForm;
 
   function createAccount () {
     props.createStart({
@@ -41,6 +41,9 @@ const CreateAccount = (props) => {
           error         ? <Button onClick={props.fetchStart}>Retry Generation</Button>
           : isFetching  ? <Spinner style={{ width: '3rem', height: '3rem' }} />
           : <>
+              <h3>
+                <u>Generate Account</u>
+              </h3>
               <Form onSubmit={
                 handleSubmit
               }>
@@ -119,7 +122,17 @@ const CreateAccount = (props) => {
                   </Col>
                 </FormGroup>
                 <FormGroup row>
-                  <Col sm={8}></Col>
+                  <Col sm={8}>
+                    {
+                      creationSuccess &&
+                      <h4>Account {values.accountName} successfully created</h4>
+                    }
+                    {
+                      ((!creationSuccess) && submitError) ?
+                        <h4>{submitError}</h4>
+                      : null
+                    }
+                  </Col>
                   <Col sm={4} clearfix="true">
                     <Button className="float-right" 
                       color="primary" 
