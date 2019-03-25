@@ -19,7 +19,7 @@ const persistConfig = {
   storage,
   whitelist: ['blocklistPage', 'permission'],
   transforms: [
-    ...reduxPersistFilters
+    // ...reduxPersistFilters
   ]
 }
 

@@ -34,24 +34,38 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
-var eosjs_1 = require("eosjs");
+var account_details_1 = __importDefault(require("../models/account_details"));
 exports.default = (function (query) { return __awaiter(_this, void 0, void 0, function () {
-    var endpoint, privateKey, rpc, response, e_1;
+    var account_name, result, query_gen, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                endpoint = query.endpoint, privateKey = query.privateKey;
-                rpc = new eosjs_1.JsonRpc(endpoint);
-                return [4 /*yield*/, rpc.get_info()];
+                account_name = query.account_name;
+                result = void 0;
+                query_gen = account_details_1.default
+                    .find({}, {
+                    "account": 1,
+                    "permission": 1,
+                    "public_key": 1,
+                    "createdAt": 1
+                });
+                if (account_name !== undefined) {
+                    query_gen.where("account").equals(account_name);
+                }
+                query_gen.sort({ createdAt: -1 }).limit(100);
+                return [4 /*yield*/, query_gen.exec()];
             case 1:
-                response = _a.sent();
-                return [2 /*return*/, response];
+                result = _a.sent();
+                return [2 /*return*/, result];
             case 2:
-                e_1 = _a.sent();
-                console.log('Caught exception: ' + e_1);
+                err_1 = _a.sent();
+                console.log(err_1);
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
         }
