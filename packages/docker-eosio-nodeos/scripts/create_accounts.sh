@@ -22,8 +22,13 @@ mkdir -p ~/bin && curl -sSL -o ~/bin/jq https://github.com/stedolan/jq/releases/
 
 jq -c '.[]' accounts.json | while read i; do
   name=$(jq -r '.name' <<< "$i")
+  priv=$(jq -r '.privateKey' <<< "$i")  
   pub=$(jq -r '.publicKey' <<< "$i")
+  wallet=$(jq -r '.wallet' <<< "$i")
+  
+  cleos wallet import -n $wallet --private-key $priv
 
   # to simplify, we use the same key for owner and active key of each account
   cleos create account eosio $name $pub $pub
+
 done
