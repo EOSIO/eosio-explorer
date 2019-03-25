@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import { fetchStart, paramsSet } from './BlockdetailReducer';
 import pathNameConsumer from 'helpers/pathname-consumer';
-import { Card, CardTitle, CardBody, Col, Row,CardText, Table,Button,Label, Input, Form, FormGroup} from 'reactstrap';
+import { Card, CardTitle, CardBody, Col, Row, Form, FormGroup} from 'reactstrap';
 import styled from 'styled-components';
 import CodeViewer from '../../../../components/CodeViewer';
 
@@ -76,27 +76,32 @@ const Blockdetail = (props) => {
                           </Card>
                         </Col>
                       </Row>
-                      <Row>
-                        <Col sm="12">
-                          <Card>
-                            <CardBody>
-                              <CardTitleStyled>Transaction List</CardTitleStyled>                              
-                              <Form> 
-                                <FormGroup row>
-                                  <ColBoldUnderlineStyled sm={2}>Index</ColBoldUnderlineStyled>
-                                  <ColBoldUnderlineStyled sm={10}>Transaction ID</ColBoldUnderlineStyled>
-                                </FormGroup>
-                                {(payload[0].block.transactions).map((eachTransaction,index)=>
-                                 <FormGroup key={index} row>
-                                   <Col sm={2}>{index+1}</Col>
-                                   <Col sm={10}>{eachTransaction.trx.id}</Col>
-                                 </FormGroup>
-                                )}                              
-                              </Form>
-                            </CardBody>
-                          </Card>
-                        </Col>
-                      </Row>
+                      
+                      {(payload[0].block.transactions).length > 0 
+                        ?<Row>
+                          <Col sm="12">
+                            <Card>
+                              <CardBody>
+                                <CardTitleStyled>Transaction List</CardTitleStyled>                              
+                                <Form> 
+                                  <FormGroup row>
+                                    <ColBoldUnderlineStyled sm={2}>Index</ColBoldUnderlineStyled>
+                                    <ColBoldUnderlineStyled sm={10}>Transaction ID</ColBoldUnderlineStyled>
+                                  </FormGroup>
+                                  {(payload[0].block.transactions).map((eachTransaction,index)=>
+                                  <FormGroup key={index} row>
+                                    <Col sm={2}>{index+1}</Col>
+                                    <Col sm={10}>{eachTransaction.trx.id}</Col>
+                                  </FormGroup>
+                                  )}                              
+                                </Form>
+                              </CardBody>
+                            </Card>
+                          </Col>
+                        </Row>
+                        : console.log("No transactions") 
+                      }  
+
                       <Row>
                         <Col sm="12">
                           <Card>

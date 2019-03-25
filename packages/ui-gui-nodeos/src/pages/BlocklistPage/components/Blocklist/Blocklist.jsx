@@ -65,13 +65,13 @@ const Blocklist = (props) => {
                 <DivFlexStyled>
                   <SearchLabel>Search&nbsp;Blocks:</SearchLabel>
                   <SearchInputStyled 
-                        placeholder="username"
+                        placeholder="Block number, Block ID"
                         value={inputValue}
                         onKeyDown={
                           evt => {
                             if (evt.key === 'Enter') {
                               setInputValue("")
-                              {inputValue ? props.push('/block/'+inputValue) : console.log("No search text");} 
+                               {inputValue ? props.push('/block/'+inputValue) : console.log("No search text");} 
                             }
                           }
                         }
