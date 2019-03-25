@@ -49,12 +49,7 @@ exports.default = (function (query) { return __awaiter(_this, void 0, void 0, fu
                 _a = query.id_or_num, id_or_num = _a === void 0 ? "" : _a;
                 result = void 0;
                 query_gen = block_1.default
-                    .find({}, {
-                    "block_id": 1,
-                    "block_num": 1,
-                    "createdAt": 1,
-                    "block.transactions.trx.id": 1
-                });
+                    .find({});
                 // check if id is passed
                 // check if its a number or not else it gives parsing error
                 (id_or_num !== undefined) ? isNaN(Number(id_or_num)) ?
