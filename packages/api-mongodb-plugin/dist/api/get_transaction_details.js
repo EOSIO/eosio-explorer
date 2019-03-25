@@ -49,13 +49,7 @@ exports.default = (function (query) { return __awaiter(_this, void 0, void 0, fu
                 trx_id = query.trx_id;
                 result = void 0;
                 query_gen = transactions_1.default
-                    .find({}, {
-                    "trx_id": 1,
-                    "block_num": 1,
-                    "createdAt": 1,
-                    "actions.account": 1,
-                    "actions.name": 1
-                });
+                    .find({});
                 if (trx_id === undefined || trx_id.trim() === "") {
                     throw ("invalid transaction id");
                 }
