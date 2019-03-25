@@ -3,18 +3,38 @@ import { Card, CardTitle, CardBody, Col, Row, Table,Button,Input} from 'reactstr
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { push } from 'connected-react-router'
-
 import styled from 'styled-components';
 
 import { pollingStart, pollingStop, filterToggle } from './BlocklistReducer';
 
 import SearchButton from 'styled/SearchButton';
 
-const InputStyled = styled(Input)`
+const CheckBoxStyled = styled.input`
+  -webkit-appearance: checkbox; 
+`
+
+const LabelFilterStyled = styled.label`
+  padding-left: 10px;
+  font-weight: bold;
+`
+
+const SearchInputStyled = styled(Input)`
   width: 50%;
   margin-top: -6px;
 `
 
+const DivFlexStyled = styled.div`
+  display: flex;
+`
+
+const TableStyled = styled(Table)`
+  text-align: center;
+  font-family: monospace, monospace; 
+`
+const SearchLabel = styled.label`
+  font-weight: bold;
+  padding-right: 10px;
+`
 const Blocklist = (props) => {
 
   useEffect(()=>{
@@ -28,34 +48,42 @@ const Blocklist = (props) => {
   let { payload = [], error } = data;
 
   return (
-    <Card>
-      <CardBody>
-        <div className="Blocklist">
+    <div className="Blocklist">
+      <Card>
+        <CardBody>        
           <Row>
             <Col sm="6">
               <CardTitle>   
                 {filter 
-                  ? <input style={{"WebkitAppearance":"checkbox"}} onChange={props.filterToggle} type="checkbox" checked/>
-                  : <input style={{"WebkitAppearance":"checkbox"}} onChange={props.filterToggle} type="checkbox"/>}           
-                  <label style={{"paddingLeft":"10px"}}>No empty blocks</label>               
+                  ? <CheckBoxStyled onChange={props.filterToggle} type="checkbox" checked/>
+                  : <CheckBoxStyled onChange={props.filterToggle} type="checkbox"/>}           
+                  <LabelFilterStyled>No empty blocks</LabelFilterStyled>               
               </CardTitle>
             </Col>
             <Col sm="6">
               <CardTitle>
-                <div style={{display:"flex"}}>
-                  <label>Search&nbsp;Blocks:&nbsp;&nbsp;</label>
-                  <InputStyled 
+                <DivFlexStyled>
+                  <SearchLabel>Search&nbsp;Blocks:</SearchLabel>
+                  <SearchInputStyled 
                         placeholder="username"
                         value={inputValue}
+                        onKeyDown={
+                          evt => {
+                            if (evt.key === 'Enter') {
+                              setInputValue("")
+                              {inputValue ? props.push('/block/'+inputValue) : console.log("No search text");} 
+                            }
+                          }
+                        }
                         onChange={evt=>{setInputValue(evt.target.value)}}/>
                   <SearchButton
-                        color="secondary"   
+                        color="secondary"                           
                         onClick={evt=> {
                           setInputValue("")
                           {inputValue ? props.push('/block/'+inputValue) : console.log("No search text");}                          
                         }}>
                   Search</SearchButton>
-                </div>
+                </DivFlexStyled>
               </CardTitle>
             </Col>
           </Row>
@@ -64,7 +92,7 @@ const Blocklist = (props) => {
               ? <button onClick={props.pollingStart}>{JSON.stringify(error)} Click to Reload.</button>
               : isFetching
                 ? `loading...`
-                : <Table style={{textAlign:"center"}} dark>
+                : <TableStyled dark>
                     <thead>
                       <tr>
                         <th>Block Number</th>
@@ -79,14 +107,14 @@ const Blocklist = (props) => {
                           <th>{eachBlock.block_num}</th>
                           <th><Link to={`/block/${eachBlock.block_id}`}>{eachBlock.block_id}</Link></th>
                           <th>{eachBlock.block.transactions.length}</th>
-                          <th>{eachBlock.block.timestamp}</th>
+                          <th>{eachBlock.createdAt}</th>
                         </tr>)}
                     </tbody>
-                  </Table>}
-          </div>
-        </div>
-      </CardBody>
-    </Card>
+                  </TableStyled>}
+          </div>        
+        </CardBody>
+      </Card>
+    </div>
   );
 }
 
