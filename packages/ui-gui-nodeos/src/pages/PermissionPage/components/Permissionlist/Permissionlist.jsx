@@ -45,7 +45,7 @@ const Permissionlist = (props) => {
                                                     WebkitAppearance: 'radio'
                                                   }}
                                                   checked={permission._id === defaultId ? true : false}
-                                                  onClick={() => defaultSet(permission.id)}
+                                                  onClick={() => defaultSet(permission._id)}
                                                   readOnly
                                                   />
                                               </Col>
