@@ -6,6 +6,7 @@ import { fetchStart, paramsSet } from './BlockdetailReducer';
 import pathNameConsumer from 'helpers/pathname-consumer';
 import { Card, CardTitle, CardBody, Col, Row,CardText, Table,Button,Label, Input, Form, FormGroup} from 'reactstrap';
 import styled from 'styled-components';
+import CodeViewer from '../../../../components/CodeViewer';
 
 const CardTitleStyled = styled(CardTitle)`
   text-decoration: underline;
@@ -94,6 +95,20 @@ const Blockdetail = (props) => {
                               </Form>
                             </CardBody>
                           </Card>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col sm="12">
+                          <Card>
+                            <CardBody>
+                            <CodeViewer
+                                language="json"
+                                value={JSON.stringify(payload, null, 2)}
+                                readOnly={true}
+                                height={600}
+                                />
+                            </CardBody>        
+                          </Card>          
                         </Col>
                       </Row>
                     </div>}    
