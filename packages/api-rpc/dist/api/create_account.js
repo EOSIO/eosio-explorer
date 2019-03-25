@@ -39,33 +39,61 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
-var transactions_1 = __importDefault(require("../models/transactions"));
+var eosjs_1 = require("eosjs");
+var eosjs_jssig_1 = __importDefault(require("eosjs/dist/eosjs-jssig"));
+var text_encoding_1 = require("text-encoding");
 exports.default = (function (query) { return __awaiter(_this, void 0, void 0, function () {
-    var trx_id, result, query_gen, err_1;
+    var endpoint, creator_private_key, creator_account_name, new_account_name, new_account_owner_key, new_account_active_key, rpc, signatureProvider, api, result, e_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                trx_id = query.trx_id;
-                result = void 0;
-                query_gen = transactions_1.default
-                    .find({});
-                if (trx_id === undefined || trx_id.trim() === "") {
-                    throw ("invalid transaction id");
-                }
-                else {
-                    query_gen.where({ trx_id: trx_id });
-                }
-                query_gen.limit(100);
-                query_gen.sort({ createdAt: -1 });
-                return [4 /*yield*/, query_gen.exec()];
+                endpoint = query.endpoint, creator_private_key = query.creator_private_key, creator_account_name = query.creator_account_name, new_account_name = query.new_account_name, new_account_owner_key = query.new_account_owner_key, new_account_active_key = query.new_account_active_key;
+                rpc = new eosjs_1.JsonRpc(endpoint);
+                signatureProvider = new eosjs_jssig_1.default([creator_private_key]);
+                api = new eosjs_1.Api({ rpc: rpc, signatureProvider: signatureProvider, textDecoder: new text_encoding_1.TextDecoder(), textEncoder: new text_encoding_1.TextEncoder() });
+                return [4 /*yield*/, api.transact({
+                        actions: [{
+                                account: 'eosio',
+                                name: 'newaccount',
+                                authorization: [{
+                                        actor: creator_account_name,
+                                        permission: 'active',
+                                    }],
+                                data: {
+                                    creator: creator_account_name,
+                                    name: new_account_name,
+                                    owner: {
+                                        threshold: 1,
+                                        keys: [{
+                                                key: new_account_owner_key,
+                                                weight: 1
+                                            }],
+                                        accounts: [],
+                                        waits: []
+                                    },
+                                    active: {
+                                        threshold: 1,
+                                        keys: [{
+                                                key: new_account_active_key,
+                                                weight: 1
+                                            }],
+                                        accounts: [],
+                                        waits: []
+                                    },
+                                },
+                            }]
+                    }, {
+                        blocksBehind: 3,
+                        expireSeconds: 30,
+                    })];
             case 1:
                 result = _a.sent();
                 return [2 /*return*/, result];
             case 2:
-                err_1 = _a.sent();
-                console.log(err_1);
-                throw (err_1);
+                e_1 = _a.sent();
+                console.log('Caught exception: ' + e_1);
+                throw (e_1);
             case 3: return [2 /*return*/];
         }
     });
