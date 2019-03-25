@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import { interval, of, from } from 'rxjs';
-import { mergeMap, mapTo, map, takeUntil, catchError } from 'rxjs/operators';
+import { mergeMap, mapTo, map, takeUntil, delay, catchError } from 'rxjs/operators';
 
 import { combineEpics, ofType } from 'redux-observable';
 
@@ -14,17 +14,22 @@ const actionPrefix = `PermissionPage/CreateAccount/`;
 const FETCH_START = actionPrefix + `FETCH_START`;
 const FETCH_FULFILLED = actionPrefix + `FETCH_FULFILLED`;
 const FETCH_REJECTED = actionPrefix + `FETCH_REJECTED`;
+const CREATE_START = actionPrefix + `CREATE_START`;
+const CREATE_FULFILLED = actionPrefix + `CREATE_FULFILLED`;
+const CREATE_REJECTED = actionPrefix + `CREATE_REJECTED`;
 
 //Action Creator
 export const fetchStart = () => ({ type: FETCH_START });
 export const fetchFulfilled = payload => ({ type: FETCH_FULFILLED, payload });
 export const fetchRejected = ( payload, error ) => ({ type: FETCH_REJECTED, payload, error });
+export const createStart = account => ({ type: CREATE_START, account });
+export const createFulfilled = payload => ({ type: CREATE_FULFILLED, payload });
+export const createRejected = ( payload, error ) => ({ type: CREATE_REJECTED, payload, error });
 
 //Epic
 const fetchEpic = ( action$, state$ ) => action$.pipe(
   ofType(FETCH_START),
   mergeMap(action =>{
-
     return from(new Promise(
         (resolve, reject) =>
           {
@@ -50,9 +55,22 @@ const fetchEpic = ( action$, state$ ) => action$.pipe(
   })
 );
 
+const createEpic = ( action$, state$ ) => action$.pipe(
+  ofType(CREATE_START),
+  mergeMap(action => {
+    console.table(action.account);
+    return from(new Promise(
+        resolve => setTimeout(() => resolve(action.account), 2000)
+      )).pipe(
+        map(res => createFulfilled(res))
+      )
+  })
+);
+
 
 export const combinedEpic = combineEpics(
   fetchEpic,
+  createEpic,
 );
 
 
@@ -66,6 +84,12 @@ const dataInitState = {
   },
   error: undefined
 }
+
+const formSubmissionState = {
+  isSubmitting: false,
+  origState: {},
+  error: undefined
+};
 
 const dataReducer = (state=dataInitState, action) => {
   switch (action.type) {
@@ -89,6 +113,31 @@ const dataReducer = (state=dataInitState, action) => {
   }
 };
 
+const createReducer = (state=formSubmissionState, action) => {
+  switch (action.type) {
+    case CREATE_START:
+      return {
+        ...state,
+        isSubmitting: true
+      };
+    case CREATE_FULFILLED:
+      return {
+        ...state,
+        origState: action.payload,
+        isSubmitting: false
+      };
+    case CREATE_REJECTED:
+      return {
+        ...state,
+        origState: action.payload,
+        submitError: action.error,
+        isSubmitting: false
+      };
+    default:
+      return state;
+  }
+}
+
 const isFetchingReducer = (state = false, action) => {
   switch (action.type) {
     case FETCH_START:
@@ -107,4 +156,5 @@ const isFetchingReducer = (state = false, action) => {
 export const combinedReducer = combineReducers({
   data: dataReducer,
   isFetching: isFetchingReducer,
+  submitForm: createReducer,
 })

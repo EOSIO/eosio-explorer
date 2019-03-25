@@ -1,4 +1,4 @@
-import React, { useEffect, useState }  from 'react';
+import React, { useEffect }  from 'react';
 import {
   Button, Form, FormGroup, Label, Input, FormFeedback, FormText,
   Spinner, Col
@@ -6,24 +6,32 @@ import {
 
 import { connect } from 'react-redux';
 
-import { fetchStart } from './CreateAccountReducer';
-import useForm from '../../../../helpers/useForm';
+import { fetchStart, createStart } from './CreateAccountReducer';
+import useForm from 'helpers/useForm';
 import validate from './CreateAccountValidatorEngine/CreateAccountValidatorEngine';
 
 const CreateAccount = (props) => {
 
-  const [ isProcessing, setIsProcessing ] = useState(false);
   const { values, handleChange, handleSubmit, errors } = useForm(createAccount, validate);
 
   useEffect(()=>{
     props.fetchStart();
   }, [])
 
-  let { createAccount: { isFetching, data, params } } = props;
+  let { 
+    createAccount: { isFetching, data, submitForm }, 
+  } = props;
   let { payload, error } = data;
+  let { origState, submitError, isSubmitting } = submitForm;
 
   function createAccount () {
-    console.log(values, isProcessing);
+    props.createStart({
+      accountName: values.accountName,
+      ownerPrivateKey: payload.ownerPrivateKey,
+      ownerPublicKey: payload.ownerPublicKey,
+      activePrivateKey: payload.activePrivateKey,
+      activePublicKey: payload.activePublicKey
+    });
   }
 
   return (
@@ -33,7 +41,9 @@ const CreateAccount = (props) => {
           error         ? <Button onClick={props.fetchStart}>Retry Generation</Button>
           : isFetching  ? <Spinner style={{ width: '3rem', height: '3rem' }} />
           : <>
-              <Form onSubmit={handleSubmit}>
+              <Form onSubmit={
+                handleSubmit
+              }>
                 <FormGroup row>
                   <Label htmlFor="accountName" sm={2}>Account Name</Label>
                   <Col sm={10}>
@@ -46,6 +56,12 @@ const CreateAccount = (props) => {
                       invalid={!!errors.accountName}
                       required
                       />
+                    {
+                      errors.accountName && 
+                      <FormFeedback invalid="true">
+                        {errors.accountName}
+                      </FormFeedback>
+                    }
                     <FormText>
                       The account name must start with a letter, must be 12 characters, and can only contain the characters:
                       . (period) [a-z] [1-5]
@@ -107,7 +123,7 @@ const CreateAccount = (props) => {
                   <Col sm={4} clearfix="true">
                     <Button className="float-right" 
                       color="primary" 
-                      disabled={!values.accountName || isProcessing}
+                      disabled={!values.accountName || isSubmitting}
                       block
                       >
                       Submit
@@ -129,6 +145,7 @@ export default connect(
   }),
   {
     fetchStart,
+    createStart
   }
 
 )(CreateAccount);
