@@ -1,16 +1,15 @@
 import './InfoPage.scss';
 
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Button, Card, CardBody, CardHeader, Col, Row, InputGroup, InputGroupAddon, Form, FormGroup, Input, Label } from 'reactstrap';
 
 import { StandardTemplate } from 'templates';
 import { increaseCounter } from 'actions/counter';
-import Headblock from './components/Headblock';
-import apiRpc from '@eos-toppings/api-rpc';
 import axios from 'axios';
+import Headblock from './components/Headblock';
 import BlockchainInfo from './components/BlockchainInfo';
+import LastIrreversibleBlockInfo from './components/LastIrreversibleBlockInfo';
 
 class InfoPage extends Component {
 
@@ -25,14 +24,6 @@ class InfoPage extends Component {
       .then(({data})=>{
         this.setState({text: JSON.stringify(data)})
       })
-    // let query = {"endpoint": "http://localhost:8888", "privateKey": "5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3"};  
-    // apiRpc
-    //   .get_info(query) 
-    //   .then((data) => {
-    //     this.setState({
-    //       blockchainInfo: JSON.stringify(data)
-    //     });
-    //   })
   }
 
   render() {
@@ -132,30 +123,13 @@ class InfoPage extends Component {
                   Last Irreversible Block Information
                 </CardHeader>
                 <CardBody>
-                  <Form className="form-horizontal">
-                    <FormGroup row className="mb-0">
-                      <Col xs="2">
-                        <Label><strong>Block Number</strong></Label>
-                      </Col>
-                      <Col xs="10">
-                        <p className="form-control-static">42671296</p>
-                      </Col>
-                    </FormGroup>
-                    <FormGroup row className="mb-0">
-                      <Col xs="2">
-                        <Label><strong>Block ID</strong></Label>
-                      </Col>
-                      <Col xs="10">
-                        <p className="form-control-static">0000d86d5dba32b2ead57692f03fce45403331340451e296dae7295c180c3064</p>
-                      </Col>
-                    </FormGroup>
-                  </Form>
+                  <LastIrreversibleBlockInfo />
                 </CardBody>
               </Card>
             </Col>
           </Row>
 
-          <Row>
+          {/* <Row>
             <Col xs="12">
               <Card>
                 <CardHeader>
@@ -168,12 +142,10 @@ class InfoPage extends Component {
                   <Col col="4" sm="8" md="4" className="mb-3 text-center">
                     <Button block color="primary" onClick={()=>{this.props.updateCounter(2)}}>Click here to increase counter by 2</Button>
                   </Col>
-                  <Headblock/>
-                  <p>Scroll down</p>
                 </CardBody>
               </Card>
             </Col>
-          </Row>
+          </Row> */}
 
         </div>
       </StandardTemplate>

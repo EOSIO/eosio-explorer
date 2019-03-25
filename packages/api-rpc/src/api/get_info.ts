@@ -8,7 +8,6 @@ export default async (query:any) => {
     
     const rpc = new JsonRpc(endpoint);
     let response = await rpc.get_info();
-    console.log("get_info response: ", response);
     return response;
 
   }catch(e){

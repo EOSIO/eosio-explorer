@@ -4,21 +4,21 @@ import { connect } from 'react-redux';
 
 import { Col, Form, FormGroup, Label, Button } from 'reactstrap';
 
-import { pollingStart, pollingStop } from './HeadblockReducer';
+import { pollingStart, pollingStop } from './LastIrreversibleBlockInfoReducer';
 
 import { LoadingSpinner } from 'components';
 
 
-const Headblock = (props) => {
+const LastIrreversibleBlockInfo = (props) => {
 
   useEffect(()=>{
     props.pollingStart()
     return () => { props.pollingStop() }
   }, [])
 
-  let { headblock: { isFetching, data }} = props;
+  let { lastIrreversibleBlockInfo: { isFetching, data } } = props;
   let { payload, error } = data;
-
+  
   return (
     <>
       { error ? 
@@ -35,7 +35,7 @@ const Headblock = (props) => {
               <Label><strong>Block Number</strong></Label>
             </Col>
             <Col xs="10">
-              <p className="form-control-static">{payload.block_num}</p>
+              <p className="form-control-static">{payload.last_irreversible_block_num}</p>
             </Col>
           </FormGroup>
           <FormGroup row className="mb-0">
@@ -43,23 +43,7 @@ const Headblock = (props) => {
               <Label><strong>Block ID</strong></Label>
             </Col>
             <Col xs="10">
-              <p className="form-control-static">{payload.block_id}</p>
-            </Col>
-          </FormGroup>
-          <FormGroup row className="mb-0">
-            <Col xs="2">
-              <Label><strong>Timestamp</strong></Label>
-            </Col>
-            <Col xs="10">
-              <p className="form-control-static">{payload.block && payload.block.timestamp}</p>
-            </Col>
-          </FormGroup>
-          <FormGroup row className="mb-0">
-            <Col xs="2">
-              <Label><strong>Block Producer</strong></Label>
-            </Col>
-            <Col xs="10">
-              <p className="form-control-static">{payload.block && payload.block.producer}</p>
+              <p className="form-control-static">{payload.last_irreversible_block_id}</p>
             </Col>
           </FormGroup>
       </Form>
@@ -69,12 +53,12 @@ const Headblock = (props) => {
 }
 
 export default connect(
-  ({ infoPage: { headblock }}) => ({
-    headblock
+  ({ infoPage: { lastIrreversibleBlockInfo }}) => ({
+    lastIrreversibleBlockInfo
   }),
   {
     pollingStart,
     pollingStop
   }
 
-)(Headblock);
+)(LastIrreversibleBlockInfo);
