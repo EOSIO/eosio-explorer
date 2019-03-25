@@ -5,3 +5,63 @@ h2.pageTitle {
 .main .container-fluid {
     min-width: 992px;
 }
+
+
+/* Loading Spinner */
+.circonf {
+    $size:2em;
+    $speed: .7s;
+    margin: 1em;
+    display:inline-block;
+    width:$size;
+    height:$size;
+    border-radius:50%;
+    border:4px solid silver;
+    animation: circ-anim $speed linear infinite; 
+}
+.circonf-1 {
+    border-bottom-color: grey;
+}
+@keyframes circ-anim {
+    from {
+        transform: rotate(0);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+@keyframes color1 {
+    0% {
+        stroke: #D8334A;
+    }
+    10% {
+        stroke: #FC6E51;
+    }
+    20% {
+        stroke: #FFCE54;
+    }
+    30% {
+        stroke: #A0D468;
+    }
+    40% {
+        stroke: #A0CECB;
+    }
+    50% {
+        stroke: #4FC1E9;
+    }
+    60% {
+        stroke: #8067B7;
+    }
+    70% {
+        stroke: #BAA286;
+    }
+    80% {
+        stroke: #CCD1D9;
+    }
+    90% {
+        stroke: #2ECC71;
+    }
+    100% {
+        stroke: #D8334A;
+    }
+}

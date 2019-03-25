@@ -2,7 +2,11 @@ import React, { useEffect } from 'react';
 
 import { connect } from 'react-redux';
 
+import { Col, Form, FormGroup, Label } from 'reactstrap';
+
 import { pollingStart, pollingStop } from './HeadblockReducer';
+
+import { LoadingSpinner } from 'components';
 
 
 const Headblock = (props) => {
@@ -13,14 +17,48 @@ const Headblock = (props) => {
   }, [])
 
   let { headblock: { isFetching, data }} = props;
-  let { error } = data;
-
+  
   return (
-    <div className="Headblock">
-      <div>{ error          ? <button onClick={props.pollingStart}>{JSON.stringify(error)} Click to Reload.</button>
-             : isFetching   ? `loading...`
-                            : JSON.stringify(data.payload)}</div>
-    </div>
+    <>
+      {isFetching ? (
+        <LoadingSpinner />
+      ) : (
+        <Form className="form-horizontal">
+          <FormGroup row className="mb-0">
+            <Col xs="2">
+              <Label><strong>Block Number</strong></Label>
+            </Col>
+            <Col xs="10">
+              <p className="form-control-static">{data.payload.block_num}</p>
+            </Col>
+          </FormGroup>
+          <FormGroup row className="mb-0">
+            <Col xs="2">
+              <Label><strong>Block ID</strong></Label>
+            </Col>
+            <Col xs="10">
+              <p className="form-control-static">{data.payload.block_id}</p>
+            </Col>
+          </FormGroup>
+          <FormGroup row className="mb-0">
+            <Col xs="2">
+              <Label><strong>Timestamp</strong></Label>
+            </Col>
+            <Col xs="10">
+              <p className="form-control-static">{data.payload.block && data.payload.block.timestamp}</p>
+            </Col>
+          </FormGroup>
+          <FormGroup row className="mb-0">
+            <Col xs="2">
+              <Label><strong>Block Producer</strong></Label>
+            </Col>
+            <Col xs="10">
+              <p className="form-control-static">{data.payload.block && data.payload.block.producer}</p>
+            </Col>
+          </FormGroup>
+      </Form>
+      )}
+    </>
   );
 }
 

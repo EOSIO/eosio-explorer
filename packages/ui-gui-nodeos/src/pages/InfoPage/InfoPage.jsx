@@ -10,12 +10,13 @@ import { increaseCounter } from 'actions/counter';
 import Headblock from './components/Headblock';
 import apiRpc from '@eos-toppings/api-rpc';
 import axios from 'axios';
+import BlockchainInfo from './components/BlockchainInfo';
 
 class InfoPage extends Component {
 
   constructor(){
     super()
-    this.state = { text: `default`, info: `default`}
+    this.state = { text: `default`, blockchainInfo: `default`}
   }
 
   componentDidMount(){
@@ -24,17 +25,19 @@ class InfoPage extends Component {
       .then(({data})=>{
         this.setState({text: JSON.stringify(data)})
       })
-    let query = {"endpoint": "http://localhost:8888", "privateKey": "5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3"};  
-    apiRpc
-      .get_info(query) 
-      .then((data) => {
-        this.setState({info: JSON.stringify(data)});        
-      })
+    // let query = {"endpoint": "http://localhost:8888", "privateKey": "5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3"};  
+    // apiRpc
+    //   .get_info(query) 
+    //   .then((data) => {
+    //     this.setState({
+    //       blockchainInfo: JSON.stringify(data)
+    //     });
+    //   })
   }
 
   render() {
 
-    let { text, info } = this.state;
+    let { text, blockchainInfo } = this.state;
     return (
       <StandardTemplate>
         <div className="InfoPage animated fadeIn">
@@ -100,37 +103,10 @@ class InfoPage extends Component {
             <Col xs="12">
               <Card>
                 <CardHeader>
-                  Block Information
+                  Blockchain Information
                 </CardHeader>
                 <CardBody>
-
-                  <Form className="form-horizontal">
-                    <FormGroup row className="mb-0">
-                      <Col xs="2">
-                        <Label><strong>Server Version</strong></Label>
-                      </Col>
-                      <Col xs="10">
-                        <p className="form-control-static">9cc225b8</p>
-                      </Col>
-                    </FormGroup>
-                    <FormGroup row className="mb-0">
-                      <Col xs="2">
-                        <Label><strong>Server Version String</strong></Label>
-                      </Col>
-                      <Col xs="10">
-                        <p className="form-control-static">mainnet-1.6.0</p>
-                      </Col>
-                    </FormGroup>
-                    <FormGroup row className="mb-0">
-                      <Col xs="2">
-                        <Label><strong>Chain ID</strong></Label>
-                      </Col>
-                      <Col xs="10">
-                        <p className="form-control-static">aca376f206b8fc25a6ed44</p>
-                      </Col>
-                    </FormGroup>
-                  </Form>
-
+                  <BlockchainInfo />
                 </CardBody>
               </Card>
             </Col>
@@ -143,40 +119,7 @@ class InfoPage extends Component {
                   Head Block Information
                 </CardHeader>
                 <CardBody>
-                  <Form className="form-horizontal">
-                    <FormGroup row className="mb-0">
-                      <Col xs="2">
-                        <Label><strong>Block Number</strong></Label>
-                      </Col>
-                      <Col xs="10">
-                        <p className="form-control-static">4261597</p>
-                      </Col>
-                    </FormGroup>
-                    <FormGroup row className="mb-0">
-                      <Col xs="2">
-                        <Label><strong>Block ID</strong></Label>
-                      </Col>
-                      <Col xs="10">
-                        <p className="form-control-static">0000d86d5dba32b2ead57692f03fce45403331340451e296dae7295c180c3064</p>
-                      </Col>
-                    </FormGroup>
-                    <FormGroup row className="mb-0">
-                      <Col xs="2">
-                        <Label><strong>Timestamp</strong></Label>
-                      </Col>
-                      <Col xs="10">
-                        <p className="form-control-static">2019-03-19T10:32:10.000</p>
-                      </Col>
-                    </FormGroup>
-                    <FormGroup row className="mb-0">
-                      <Col xs="2">
-                        <Label><strong>Block Producer</strong></Label>
-                      </Col>
-                      <Col xs="10">
-                        <p className="form-control-static">eosio</p>
-                      </Col>
-                    </FormGroup>
-                  </Form>
+                  <Headblock/>
                 </CardBody>
               </Card>
             </Col>
@@ -220,7 +163,7 @@ class InfoPage extends Component {
                 </CardHeader>
                 <CardBody>
                   <p><strong>Calls from mongodb:</strong> {text}</p>
-                  <p><strong>Blockchain info from RPC API: </strong> {info}</p>
+                  <p><strong>Blockchain info from RPC API: </strong> {blockchainInfo}</p>
                   <p><strong>Counter:</strong> {this.props.count}</p>
                   <Col col="4" sm="8" md="4" className="mb-3 text-center">
                     <Button block color="primary" onClick={()=>{this.props.updateCounter(2)}}>Click here to increase counter by 2</Button>
