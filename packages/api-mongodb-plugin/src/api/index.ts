@@ -1,5 +1,6 @@
 
 import get_accounts from './get_accounts';
+import get_account_details from './get_account_details';
 import get_block_latest from './get_block_latest';
 import get_blocks from './get_blocks';
 import get_block_details from './get_block_details';
@@ -11,6 +12,7 @@ import get_actions_by_account_name from './get_actions_by_account_name';
 
 export default {
   get_accounts,
+  get_account_details,
   get_block_latest,
   get_blocks,
   get_block_details,

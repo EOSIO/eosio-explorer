@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var get_accounts_1 = __importDefault(require("./get_accounts"));
+var get_account_details_1 = __importDefault(require("./get_account_details"));
 var get_block_latest_1 = __importDefault(require("./get_block_latest"));
 var get_blocks_1 = __importDefault(require("./get_blocks"));
 var get_block_details_1 = __importDefault(require("./get_block_details"));
@@ -14,6 +15,7 @@ var get_all_permissions_1 = __importDefault(require("./get_all_permissions"));
 var get_actions_by_account_name_1 = __importDefault(require("./get_actions_by_account_name"));
 exports.default = {
     get_accounts: get_accounts_1.default,
+    get_account_details: get_account_details_1.default,
     get_block_latest: get_block_latest_1.default,
     get_blocks: get_blocks_1.default,
     get_block_details: get_block_details_1.default,
