@@ -20,6 +20,7 @@ import DeploymentPage from 'pages/DeploymentPage';
 import PushactionPage from 'pages/PushactionPage';
 import PrivacyPolicyPage from 'pages/PrivacyPolicyPage';
 import TermsOfUsePage from 'pages/TermsOfUsePage';
+import TestRPCPage from 'pages/TestRPCPage';
 
 import { WillRoute } from 'hocs';
 
@@ -47,6 +48,8 @@ class App extends Component {
           <WillRoute exact path="/push-action" component={ PushactionPage }/>
           <WillRoute exact path="/privacy" component={ PrivacyPolicyPage }/>
           <WillRoute exact path="/terms" component={ TermsOfUsePage }/>
+          <WillRoute exact path="/rpc" component={ TestRPCPage }/>
+
           <Redirect to="/" />
         </Switch>
       </div>
