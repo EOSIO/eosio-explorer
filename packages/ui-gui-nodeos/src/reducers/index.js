@@ -2,7 +2,6 @@ import { combineReducers } from 'redux';
 import { combineEpics } from 'redux-observable';
 import { connectRouter } from 'connected-react-router';
 
-import { counterReducer } from './counter';
 import { combinedEpic as permissionEpic, combinedReducer as permissionReducer } from './permission';
 import { combinedEpic as endpointEpic, combinedReducer as endpointReducer } from './endpoint';
 
@@ -39,7 +38,6 @@ export const rootEpic = combineEpics(
 
 export const rootReducer = (history) => combineReducers({
   router: connectRouter(history),
-  counter: counterReducer,
   permission: permissionReducer,
   endpoint: endpointReducer,
   infoPage: infoPageReducer,
