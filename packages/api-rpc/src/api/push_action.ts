@@ -4,7 +4,7 @@ import { TextDecoder, TextEncoder } from 'text-encoding';
 
 export default async (query:any) => {
   try{
-    let { endpoint, account_name, private_key, actor, permission,  action_name, payload } = query;
+    let { endpoint, account_name, private_key, permission,  action_name, payload } = query;
     
     const rpc = new JsonRpc(endpoint);
     const signatureProvider = new JsSignatureProvider([private_key]);
@@ -12,10 +12,10 @@ export default async (query:any) => {
 
     const result = await api.transact({
       actions: [{
-        account: account_name,
+        account: 'eosio',
         name: action_name,
         authorization: [{
-          actor: actor,
+          actor: account_name,
           permission: permission,
         }],
         data: payload,
