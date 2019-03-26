@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux';
 import { combineEpics } from 'redux-observable';
 
-export const combinedEpic = combineEpics(
+import { combinedEpic as accountdetailEpic, combinedReducer as accountdetailReducer } from './components/AccountDetail/AccountdetailReducer';
 
+export const combinedEpic = combineEpics(
+  accountdetailEpic
 );
 
 export const combinedReducer = combineReducers({
-  dummy: ()=>({})
+  accountdetail: accountdetailReducer
 })
