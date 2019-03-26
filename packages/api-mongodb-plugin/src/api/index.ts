@@ -7,7 +7,7 @@ import get_transactions from './get_transactions';
 import get_transaction_details from './get_transaction_details';
 import get_actions from './get_actions';
 import get_all_permissions from './get_all_permissions';
-import get_actions_by_account_name from './get_actions_by_account_name';
+import get_action_details from './get_action_details';
 import get_abi from './get_abi';
 
 export default {
@@ -18,7 +18,7 @@ export default {
   get_transactions,
   get_transaction_details,
   get_actions,
-  get_actions_by_account_name,
+  get_action_details,
   get_all_permissions,
   get_abi
 };
