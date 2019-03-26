@@ -1,7 +1,7 @@
 import React, { useEffect }  from 'react';
 import {
   Button, Form, FormGroup, Label, Input, FormFeedback, FormText,
-  Spinner, Col
+  Spinner, Col, Alert
 } from 'reactstrap';
 
 import { connect } from 'react-redux';
@@ -48,6 +48,19 @@ const CreateAccount = (props) => {
               <h3>
                 <u>Generate Account</u>
               </h3>
+              {
+                creationSuccess &&
+                    <Alert color="success">
+                      Account {values.accountName} successfully created
+                    </Alert>
+              }
+              {
+                ((!creationSuccess) && submitError) ?
+                    <Alert color="danger">
+                      submitError
+                    </Alert>
+                  : null
+              }
               <Form onSubmit={
                 handleSubmit
               }>
@@ -61,6 +74,7 @@ const CreateAccount = (props) => {
                       value={values.accountName || ''}
                       onChange={handleChange}
                       invalid={!!errors.accountName}
+                      readOnly={creationSuccess}
                       required
                       />
                     {
@@ -82,7 +96,10 @@ const CreateAccount = (props) => {
                     <Input type="text"
                       name="ownerPublic"
                       id="ownerPublic"
-                      value={values.ownerPublic || payload.ownerPublicKey}
+                      value={
+                        values.ownerPublic 
+                        || payload.ownerPublicKey
+                      }
                       onInput={handleChange}
                       readOnly
                       />
@@ -94,7 +111,10 @@ const CreateAccount = (props) => {
                     <Input type="text"
                         name="ownerPrivate"
                         id="ownerPrivate"
-                        value={values.ownerPrivate || payload.ownerPrivateKey}
+                        value={
+                          values.ownerPrivate
+                          || payload.ownerPrivateKey
+                        }
                         onInput={handleChange}
                         readOnly
                         />
@@ -107,7 +127,10 @@ const CreateAccount = (props) => {
                     <Input type="text"
                       name="activePublic"
                       id="activePublic"
-                      value={values.activePublic || payload.activePublicKey}
+                      value={
+                        values.activePublic
+                        || payload.activePublicKey
+                      }
                       onInput={handleChange}
                       readOnly
                       />
@@ -119,7 +142,10 @@ const CreateAccount = (props) => {
                     <Input type="text"
                         name="activePrivate"
                         id="activePrivate"
-                        value={values.activePrivate || payload.activePrivateKey}
+                        value={
+                          values.activePrivate
+                          || payload.activePrivateKey
+                        }
                         onInput={handleChange}
                         readOnly
                         />
@@ -127,20 +153,11 @@ const CreateAccount = (props) => {
                 </FormGroup>
                 <FormGroup row>
                   <Col sm={8}>
-                    {
-                      creationSuccess &&
-                      <h4>Account {values.accountName} successfully created</h4>
-                    }
-                    {
-                      ((!creationSuccess) && submitError) ?
-                        <h4>{submitError}</h4>
-                      : null
-                    }
                   </Col>
                   <Col sm={4} clearfix="true">
                     <Button className="float-right" 
                       color="primary" 
-                      disabled={!values.accountName || isSubmitting}
+                      disabled={!values.accountName || isSubmitting || creationSuccess}
                       block
                       >
                       Submit
