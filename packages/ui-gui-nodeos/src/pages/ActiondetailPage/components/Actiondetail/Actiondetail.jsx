@@ -22,7 +22,7 @@ const Actiondetail = (props) => {
     <div className="Actiondetail">
       <div>{ error                  ? <button onClick={props.fetchStart}>{JSON.stringify(error)} Click to Reload.</button>
              : isFetching           ? `loading...`
-             : payload.length === 0 ? `No block found with block id = ${params.id}`
+             : payload.length === 0 ? `No action found with action id = ${params.id}`
                                     : JSON.stringify(payload)}
       </div>
     </div>

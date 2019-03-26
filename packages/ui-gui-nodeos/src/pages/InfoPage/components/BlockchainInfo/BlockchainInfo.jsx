@@ -32,7 +32,7 @@ const BlockchainInfo = (props) => {
               <Label><strong>Server Version</strong></Label>
             </Col>
             <Col xs="10">
-              <p className="form-control-static">{payload.server_version}</p>
+              <p className="form-control-static">{payload && payload.server_version}</p>
             </Col>
           </FormGroup>
           <FormGroup row className="mb-0">
@@ -40,7 +40,7 @@ const BlockchainInfo = (props) => {
               <Label><strong>Server Version String</strong></Label>
             </Col>
             <Col xs="10">
-              <p className="form-control-static">{payload.server_version_string}</p>
+              <p className="form-control-static">{payload && payload.server_version_string}</p>
             </Col>
           </FormGroup>
           <FormGroup row className="mb-0">
@@ -48,7 +48,7 @@ const BlockchainInfo = (props) => {
               <Label><strong>Chain ID</strong></Label>
             </Col>
             <Col xs="10">
-              <p className="form-control-static">{payload.chain_id}</p>
+              <p className="form-control-static">{payload && payload.chain_id}</p>
             </Col>
           </FormGroup>
       </Form>

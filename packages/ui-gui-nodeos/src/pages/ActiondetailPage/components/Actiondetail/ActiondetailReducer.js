@@ -34,10 +34,8 @@ export const paramsSet = (params) => ({ type: PARMAS_SET, params });
 const fetchEpic = ( action$, state$ ) => action$.pipe(
   ofType(FETCH_START),
   mergeMap(action =>{
-
     let { value: { actiondetailPage: { actiondetail: { params } }}} = state$;
-
-    return apiMongodb(`get_block${paramsToQuery(params)}`).pipe(
+    return apiMongodb(`get_action_details${paramsToQuery(params)}`).pipe(
       map(res => fetchFulfilled(res.response)),
       catchError(error => of(fetchRejected(error.response, { status: error.status })))
     )

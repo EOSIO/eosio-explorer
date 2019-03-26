@@ -70,12 +70,28 @@ echo "=== deploy smart contract ==="
 # $2 account holder name of the smart contract
 # $3 wallet for unlock the account
 # $4 password for unlocking the wallet
-deploy_contract.sh helloworld helloacc hellowal $(cat hello_wallet_password.txt)
-deploy_contract.sh testnote noteacc notewal $(cat note_wallet_password.txt)
+# $5 to deploy?
+deploy_contract.sh helloworld helloacc hellowal $(cat hello_wallet_password.txt) true
+deploy_contract.sh testnote noteacc notewal $(cat note_wallet_password.txt) true
 
 echo "=== create user accounts ==="
 # script for create data into blockchain
 create_accounts.sh
+
+echo "=== compiling smart contract ==="
+deploy_contract.sh hiworld useraaaaaaaa notewal $(cat note_wallet_password.txt) false
+deploy_contract.sh byeworld useraaaaaaab notewal $(cat note_wallet_password.txt) false
+deploy_contract.sh tataworld useraaaaaaac notewal $(cat note_wallet_password.txt) false
+
+echo "=== copying compiled contracts ==="
+cp compiled_contracts/hiworld/hiworld.abi contracts/hiworld
+cp compiled_contracts/hiworld/hiworld.wasm contracts/hiworld
+
+cp compiled_contracts/byeworld/byeworld.abi contracts/byeworld
+cp compiled_contracts/byeworld/byeworld.wasm contracts/byeworld
+
+cp compiled_contracts/tataworld/tataworld.abi contracts/tataworld
+cp compiled_contracts/tataworld/tataworld.wasm contracts/tataworld
 
 echo "=== send test transactions ==="
 # script for create data into blockchain

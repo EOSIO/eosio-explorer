@@ -3,10 +3,15 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import { Button, Col, Form, FormGroup, Input, Label, FormFeedback } from 'reactstrap';
+import styled from 'styled-components';
 
 import { connectStart } from 'reducers/endpoint';
 import useForm from 'helpers/useForm';
 import validate from './NodeswitchValidatorEngine';
+
+const CenteredLabel = styled(Label)`
+  margin-top: 6px;
+`
 
 const Nodeswitch = (props) => {
 
@@ -31,10 +36,10 @@ const Nodeswitch = (props) => {
     <div className="Nodeswitch">
       <Form onSubmit={ handleSubmit }>
         <FormGroup row className="mb-0">
-          <Col xs="4">
-            <Label htmlFor="nodeosEndPoint">Connected Nodeos</Label>
+          <Col xs="2">
+            <CenteredLabel htmlFor="nodeosEndPoint">Connected Nodeos</CenteredLabel>
           </Col>
-          <Col xs="8">
+          <Col xs="4">
             <Input
               type="text"
               id="nodeosEndPoint"
@@ -51,10 +56,10 @@ const Nodeswitch = (props) => {
                 </FormFeedback>
               }
           </Col>
-          <Col xs="4">
-            <Label htmlFor="mongodbEndPoint">Connected Mongodb</Label>
+          <Col xs="2">
+            <CenteredLabel htmlFor="mongodbEndPoint">Connected MongoDB</CenteredLabel>
           </Col>
-          <Col xs="8">
+          <Col xs="4">
             <Input
               type="text"
               id="mongodbEndPoint"
@@ -71,8 +76,8 @@ const Nodeswitch = (props) => {
               </FormFeedback>
             }
           </Col>
-          <Col xs="12">
-            <Button type="submit" color="primary" disabled={ !isDirtyForm }>Connect</Button>
+          <Col xs="12" className="text-right mt-3">
+            <Button type="submit" color="primary" size="sm" disabled={ !isDirtyForm }>Connect</Button>
           </Col>
         </FormGroup>
       </Form>
