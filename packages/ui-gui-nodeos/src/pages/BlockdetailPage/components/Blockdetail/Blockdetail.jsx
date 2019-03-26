@@ -12,14 +12,15 @@ const CardTitleStyled = styled(CardTitle)`
   text-decoration: underline;
   font-weight: bold;
 `
+
 const ColBoldStyled = styled(Col)`
   font-weight: bold;
 `
+
 const ColBoldUnderlineStyled = styled(Col)`
   font-weight: bold;
   text-decoration: underline;
 `
-
 
 const Blockdetail = (props) => {
 
@@ -76,7 +77,7 @@ const Blockdetail = (props) => {
                           </Card>
                         </Col>
                       </Row>
-                      
+
                       {(payload[0].block.transactions).length > 0 
                         ?<Row>
                           <Col sm="12">
