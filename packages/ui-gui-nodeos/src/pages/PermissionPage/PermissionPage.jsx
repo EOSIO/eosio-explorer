@@ -12,12 +12,18 @@ import Permissionlist from './components/Permissionlist';
 import ImportAccount from './components/ImportAccount';
 
 import { panelSelect } from './PermissionPageReducer';
-import { accountClear } from 'reducers/permission';
+import { fetchStart, accountClear } from 'reducers/permission';
 
 class PermissionPage extends Component {
   render() {
 
-    const { panelSelect, panel, accountClear } = this.props;
+    const { panelSelect, panel, accountClear, fetchStart } = this.props;
+
+    // Initialize local redux store state, then re-fetch MongoDB permissions
+    function reInitialize () {
+      accountClear();
+      fetchStart();
+    }
     
     return (
       <StandardTemplate>
@@ -34,7 +40,7 @@ class PermissionPage extends Component {
                       { panel === "permission-list"
                         ? <ButtonGroup className="float-right">
                             <Button color="primary" onClick={()=>{panelSelect("create-account")}}>Create Account</Button>
-                            <Button color="danger" onClick={()=>accountClear()}>Reset All Permissions</Button>
+                            <Button color="danger" onClick={()=>reInitialize()}>Reset All Permissions</Button>
                           </ButtonGroup>
                         : <Button color="primary" className="float-right" onClick={()=>{panelSelect("permission-list")}}>Back</Button>
                       }
@@ -65,6 +71,7 @@ export default connect(
   }),
   {
     panelSelect,
+    fetchStart,
     accountClear
   }
 )(PermissionPage);

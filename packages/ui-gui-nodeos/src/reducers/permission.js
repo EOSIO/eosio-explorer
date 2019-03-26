@@ -5,13 +5,17 @@
 */
 
 import { combineReducers } from 'redux';
-import { of } from 'rxjs';
-import { mergeMap, map, catchError } from 'rxjs/operators';
+import { of, from } from 'rxjs';
+import { mergeMap, map, concat, catchError } from 'rxjs/operators';
 
 import { combineEpics, ofType } from 'redux-observable';
 
 import apiMongodb from 'services/api-mongodb';
+import apiRpc from '@eos-toppings/api-rpc';
+import paramsToQuery from 'helpers/params-to-query';
+
 import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from 'constants';
+
 
 // IMPORTANT
 // Must modify action prefix since action types must be unique in the whole app
@@ -25,6 +29,9 @@ const DEFAULT_SET = actionPrefix + `DEFAULT_SET`;
 const ACCOUNT_ADD = actionPrefix + `ACCOUNT_ADD`;
 const ACCOUNT_IMPORT = actionPrefix + `ACCOUNT_IMPORT`;
 const ACCOUNT_CLEAR = actionPrefix + `ACCOUNT_CLEAR`;
+const CREATE_START = actionPrefix + `CREATE_START`;
+const CREATE_FULFILLED = actionPrefix + `CREATE_FULFILLED`;
+const CREATE_REJECTED = actionPrefix + `CREATE_REJECTED`;
 
 //Action Creator
 export const fetchStart = () => ({ type: FETCH_START });
@@ -34,6 +41,9 @@ export const defaultSet = ( id ) => ({ type: DEFAULT_SET, id });
 export const accountAdd = accountData => ({ type: ACCOUNT_ADD, accountData });
 export const accountImport = accountData => ({ type: ACCOUNT_IMPORT, accountData });
 export const accountClear = () => ({ type: ACCOUNT_CLEAR });
+export const createStart = account => ({ type: CREATE_START, account });
+export const createFulfilled = payload => ({ type: CREATE_FULFILLED, payload });
+export const createRejected = ( payload, error ) => ({ type: CREATE_REJECTED, payload, error });
 
 //Epic
 
@@ -62,11 +72,52 @@ const fetchEpic = ( action$, state$ ) => action$.pipe(
   })
 );
 
+const createAccountPromise = (
+  query, owner_private_key, active_private_key, accountName
+) => new Promise(
+  (resolve, reject) => {
+    apiRpc.create_account(query)
+      .then(res => resolve({
+        ownerPrivateKey: owner_private_key,
+        activePrivateKey: active_private_key,
+        accountName: accountName
+      }))
+      .catch(err => reject(err));
+  }
+);
+
+const createEpic = action$ => action$.pipe(
+  ofType(CREATE_START),
+  mergeMap(
+    action => {
+      let { account: { accountName, ownerPublicKey, activePublicKey, ownerPrivateKey, activePrivateKey }} = action;
+      let query = {
+        endpoint: 'http://localhost:8888',
+        creator_private_key: '5K7mtrinTFrVTduSxizUc5hjXJEtTjVTsqSHeBHes1Viep86FP5',
+        creator_account_name: 'useraaaaaaaa',
+        new_account_name: accountName,
+        new_account_owner_key: ownerPublicKey,
+        new_account_active_key: activePublicKey
+      };
+      return from(createAccountPromise(query, ownerPrivateKey, activePrivateKey, accountName))
+        .pipe(mergeMap(response => {
+          return apiMongodb(`get_account_details${paramsToQuery({account_name: accountName})}`)
+            .pipe(
+              map(res => createFulfilled({
+                baseData: response,
+                queryData: res.response
+              })),
+              catchError(err => of(createRejected(err.response, { status: err.status })))
+            );
+        }));
+    }
+  )
+);
 
 export const combinedEpic = combineEpics(
   fetchEpic,
+  createEpic
 );
-
 
 //Reducer
 const dataInitState = {
@@ -88,11 +139,10 @@ const dataInitState = {
   ],
   importSuccess: false,
   importError: null,
+  submitError: null,
+  isSubmitting: false,
+  creationSuccess: false,
   defaultId: "1"
-}
-
-const accountState = {
-  keysData: []
 }
 
 // Sort permission list by alphabetical order
@@ -125,29 +175,76 @@ const addKeysToAccount = (accountData, list) => {
   return updatedList;
 }
 
+const storeNewAccount = (createResponse, list) => {
+  let {
+    baseData: { ownerPrivateKey, activePrivateKey },
+    queryData
+  } = createResponse;
+  queryData[0]["private_key"] = (queryData[0].permission === 'owner') ? ownerPrivateKey : activePrivateKey;
+  queryData[1]["private_key"] = (queryData[1].permission === 'owner') ? ownerPrivateKey : activePrivateKey;
+  let oldList = list.slice(0);
+  let updatedList = oldList.concat(queryData);
+  updatedList.sort(alphabeticalSort);
+  return updatedList;
+}
+
 const dataReducer = (state=dataInitState, action) => {
   switch (action.type) {
     case FETCH_FULFILLED:
       return {
         ...state,
+        creationSuccess: false,
+        isSubmitting: false,
+        submitError: null,
         list: composePermissionList(action.payload.originalList, action.payload.response)
       };
     case DEFAULT_SET:
       return {
         ...state,
+        creationSuccess: false,
+        submitError: null,
+        isSubmitting: false,
         defaultId: action.id
       };
     case ACCOUNT_ADD:
       return {
         ...state,
         list: addKeysToAccount(action.accountData, state.list),
+        creationSuccess: false,
+        isSubmitting: false,
+        submitError: null,
         importSuccess: true
       };
     case ACCOUNT_IMPORT:
       return {
         ...state,
         keysData: action.accountData,
+        creationSuccess: false,
+        isSubmitting: false,
+        submitError: null,
         importSuccess: false
+      };
+    case CREATE_START:
+      return {
+        ...state,
+        creationSuccess: false,
+        submitError: null,
+        isSubmitting: true
+      };
+    case CREATE_FULFILLED:
+      return {
+        ...state,
+        list: storeNewAccount(action.payload, state.list),
+        isSubmitting: false,
+        submitError: null,
+        creationSuccess: true
+      };
+    case CREATE_REJECTED:
+      return {
+        ...state,
+        submitError: action.error,
+        creationSuccess: false,
+        isSubmitting: false
       };
     case ACCOUNT_CLEAR:
       return dataInitState;

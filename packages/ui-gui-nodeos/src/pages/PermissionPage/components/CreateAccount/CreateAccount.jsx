@@ -6,7 +6,8 @@ import {
 
 import { connect } from 'react-redux';
 
-import { fetchStart, createStart } from './CreateAccountReducer';
+import { fetchStart } from './CreateAccountReducer';
+import { createStart } from 'reducers/permission';
 import useForm from 'helpers/useForm';
 import validate from './CreateAccountValidatorEngine/CreateAccountValidatorEngine';
 
@@ -19,10 +20,13 @@ const CreateAccount = (props) => {
   }, [])
 
   let { 
-    createAccount: { isFetching, data, submitForm }, 
+    createAccount: { isFetching, data, }, 
+    permission
   } = props;
   let { payload, error } = data;
-  let { submitError, isSubmitting, creationSuccess } = submitForm;
+  let { 
+    data: { list, submitError, isSubmitting, creationSuccess }
+  } = permission;
 
   function createAccount () {
     props.createStart({
@@ -153,8 +157,8 @@ const CreateAccount = (props) => {
 }
 
 export default connect(
-  ({ permissionPage: { createAccount }}) => ({
-    createAccount,
+  ({ permissionPage: { createAccount }, permission}) => ({
+    createAccount, permission
   }),
   {
     fetchStart,
