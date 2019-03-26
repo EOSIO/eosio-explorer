@@ -2,11 +2,12 @@ import './InfoPage.scss';
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Button, Card, CardBody, CardHeader, Col, Row, InputGroup, InputGroupAddon, Form, FormGroup, Input, Label } from 'reactstrap';
+import { Button, Card, CardBody, CardHeader, Col, Row, } from 'reactstrap';
 
 import { StandardTemplate } from 'templates';
 import { increaseCounter } from 'actions/counter';
 import axios from 'axios';
+import Nodeswitch from './components/Nodeswitch';
 import Headblock from './components/Headblock';
 import BlockchainInfo from './components/BlockchainInfo';
 import LastIrreversibleBlockInfo from './components/LastIrreversibleBlockInfo';
@@ -39,52 +40,13 @@ class InfoPage extends Component {
           </Row>
 
           <Row>
-            <Col xs="6">
+            <Col xs="12">
               <Card>
                 <CardHeader>
-                  Nodeos
+                  Node Information
                 </CardHeader>
                 <CardBody>
-                  <Form action="" method="post" className="form-horizontal">
-                    <FormGroup row className="mb-0">
-                      <Col xs="4">
-                        <Label htmlFor="nodeosEndPoint">Connected Nodeos</Label>
-                      </Col>
-                      <Col xs="8">
-                        <InputGroup>
-                          <Input type="email" id="nodeosEndPoint" name="nodeosEndPoint" placeholder="Enter Endpoint..." />
-                          <InputGroupAddon addonType="append">
-                            <Button type="button" color="primary">Connect</Button>
-                          </InputGroupAddon>
-                        </InputGroup>
-                      </Col>
-                    </FormGroup>
-                  </Form>
-                </CardBody>
-              </Card>
-            </Col>
-
-            <Col xs="6">
-              <Card>
-                <CardHeader>
-                  Mongodb
-                </CardHeader>
-                <CardBody>
-                  <Form action="" method="post" className="form-horizontal">
-                    <FormGroup row className="mb-0">
-                      <Col xs="4">
-                        <Label htmlFor="mongodbEndPoint">Connected Mongodb</Label>
-                      </Col>
-                      <Col xs="8">
-                        <InputGroup>
-                          <Input type="email" id="mongodbEndPoint" name="mongodbEndPoint" placeholder="Enter Endpoint..." />
-                          <InputGroupAddon addonType="append">
-                            <Button type="button" color="primary">Connect</Button>
-                          </InputGroupAddon>
-                        </InputGroup>
-                      </Col>
-                    </FormGroup>
-                  </Form>
+                  <Nodeswitch/>
                 </CardBody>
               </Card>
             </Col>
