@@ -6,16 +6,7 @@ export default async (query:any) => {
 	let result: object;
 
 	let query_gen = ActionsModel
-	.find({}, 
-	{
-	  "receipt.act_digest": 1,
-	  "act.name": 1,
-	  "act.account": 1,
-	  "trx_id": 1,
-	  "createdAt": 1,
-	  "act.authorization.actor": 1,
-	  "act.authorization.permission": 1
-	});
+	.find({});
 
   if(account_name === undefined || account_name.trim() === ""){
     throw("invalid account name");
