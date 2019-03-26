@@ -37,10 +37,19 @@ const Actionlist = (props) => {
       <Row>
         <Col xs="12" className="text-right">
           <CardTitle>
-            <Form onSubmit={(e) => {e.preventDefault(); props.smartContractNameSearch(e.target.smartContractNameSearch.value)}} style={{display:"inline-flex"}}>
+            <Form onSubmit={(e) => {
+                e.preventDefault();
+                let val = e.target.smartContractNameSearch.value;
+                if(smartContractName) {
+                  props.smartContractNameSearch("");
+                  e.target.smartContractNameSearch.value = "";
+                } else {
+                  props.smartContractNameSearch(val);
+                }
+              }} style={{display:"inline-flex"}}>
               <label>Filter&nbsp;by&nbsp;Smart&nbsp;Contract&nbsp;Name:&nbsp;&nbsp;</label>
-              <InputStyled name="smartContractNameSearch" placeholder="Smart Contract Name..." defaultValue={smartContractName} />
-              <SearchButton color="primary">Filter</SearchButton>
+              <InputStyled disabled={!!smartContractName} name="smartContractNameSearch" placeholder="Smart Contract Name..." defaultValue={smartContractName} />
+              <SearchButton color="primary">{smartContractName ? "Clear" : "Filter"}</SearchButton>
             </Form>
           </CardTitle>
         </Col>
@@ -92,7 +101,7 @@ export default connect(
   {
     pollingStart,
     pollingStop,
-    smartContractNameSearch
+    smartContractNameSearch,
   }
 
 )(Actionlist);

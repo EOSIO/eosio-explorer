@@ -27,7 +27,7 @@ class InfoPage extends Component {
             <Col xs="12">
               <Card>
                 <CardHeader>
-                  Node Information
+                  Connections
                 </CardHeader>
                 <CardBody>
                   <Nodeswitch/>
