@@ -2,7 +2,6 @@ import { combineReducers } from 'redux';
 import { combineEpics } from 'redux-observable';
 
 import { combinedEpic as createAccountEpic, combinedReducer as createAccountReducer } from './components/CreateAccount/CreateAccountReducer';
-import { combinedEpic as importAccountEpic, combinedReducer as importAccountReducer } from './components/ImportAccount/ImportAccountReducer';
 
 // IMPORTANT
 // Must modify action prefix since action types must be unique in the whole app
@@ -25,12 +24,10 @@ const panelReducer = (state="permission-list", action) => {
 };
 
 export const combinedEpic = combineEpics(
-  createAccountEpic,
-  importAccountEpic
+  createAccountEpic
 );
 
 export const combinedReducer = combineReducers({
   createAccount: createAccountReducer,
-  importAccount: importAccountReducer,
   panel: panelReducer,
 })

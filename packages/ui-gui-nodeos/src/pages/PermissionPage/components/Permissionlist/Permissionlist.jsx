@@ -6,7 +6,7 @@ import {
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { fetchStart, accountUpdate, defaultSet } from 'reducers/permission';
+import { fetchStart, accountImport, defaultSet } from 'reducers/permission';
 import { panelSelect } from 'pages/PermissionPage/PermissionPageReducer';
 
 const Permissionlist = (props) => {
@@ -23,7 +23,7 @@ const Permissionlist = (props) => {
 
   function getKeysData (accName, list) {
     const keysData = list.filter(acct => acct["account"] === accName);
-    props.accountUpdate(keysData);
+    props.accountImport(keysData);
     panelSelect("import-account");
   }
 
@@ -111,7 +111,7 @@ export default connect(
   {
     fetchStart,
     defaultSet,
-    accountUpdate,
+    accountImport,
     panelSelect
   }
 )(Permissionlist);

@@ -6,27 +6,30 @@ import {
 
 import { connect } from 'react-redux';
 
-import { importStart } from './ImportAccountReducer';
+import { accountAdd } from 'reducers/permission';
+import validate from './ImportAccountValidatorEngine/ImportAccountValidatorEngine';
 import useForm from 'helpers/useForm';
 
 const ImportAccount = (props) => {
 
-    const { values, handleChange, handleSubmit, errors } = useForm(importAccount, null);
+    const { values, handleChange, handleSubmit, errors } = useForm(importAccount, validate);
 
     let {
         permission: {
-            account: {
-                keysData
+            data: {
+                keysData,
+                importSuccess
             }
         },
-        importAccount: {
-            importKeys
-        }
+        accountAdd
     } = props;
-    let { isSubmitting, origState, submitError } = importKeys;
 
     function importAccount() {
-        console.log("OK!");
+        accountAdd({
+            accountName: keysData[0].account,
+            ownerPrivate: values.ownerPrivate,
+            activePrivate: values.activePrivate
+        });
     }
 
     return (
@@ -45,7 +48,7 @@ const ImportAccount = (props) => {
                                 <Input type="text"
                                     name="accountName"
                                     id="accountName"
-                                    value={keysData[0].account}
+                                    defaultValue={keysData[0].account}
                                     readOnly
                                     />
                             </Col>
@@ -62,7 +65,7 @@ const ImportAccount = (props) => {
                                         keysData[0].public_key
                                         : keysData[1].public_key
                                 }
-                                onInput={handleChange}
+                                onChange={handleChange}
                                 readOnly
                                 />
                             </Col> 
@@ -73,12 +76,12 @@ const ImportAccount = (props) => {
                                 <Input type="text"
                                     name="ownerPrivate"
                                     id="ownerPrivate"
-                                    value={
+                                    defaultValue={
                                         keysData[0].permission === "owner" ? 
                                             keysData[0].private_key
                                             : keysData[1].private_key
                                     }
-                                    onInput={handleChange}
+                                    onChange={handleChange}
                                     />
                             </Col>
                         </FormGroup>
@@ -94,7 +97,7 @@ const ImportAccount = (props) => {
                                             keysData[1].public_key
                                             : keysData[0].public_key
                                     }
-                                    onInput={handleChange}
+                                    onChange={handleChange}
                                     readOnly
                                 />
                             </Col> 
@@ -105,21 +108,26 @@ const ImportAccount = (props) => {
                                 <Input type="text"
                                     name="activePrivate"
                                     id="activePrivate"
-                                    value={
+                                    defaultValue={
                                         keysData[1].permission === "active" ? 
                                             keysData[1].private_key
                                             : keysData[0].private_key
                                     }
-                                    onInput={handleChange}
+                                    onChange={handleChange}
                                     />
                             </Col>
                         </FormGroup>
                         <FormGroup row>
-                            <Col sm={8}></Col>
+                            <Col sm={8}>
+                            {
+                                importSuccess &&
+                                <h4>Private keys for {keysData[0].account} successfully updated</h4>
+                            }
+                            </Col>
                             <Col sm={4} clearfix="true">
                                 <Button className="float-right" 
                                 color="primary" 
-                                disabled={!(values.activePrivate && values.ownerPrivate) || isSubmitting}
+                                disabled={!(values.activePrivate && values.ownerPrivate)}
                                 block
                                 >
                                 Submit
@@ -136,9 +144,9 @@ const ImportAccount = (props) => {
 
 export default connect(
     ({ permission, permissionPage: { importAccount } }) => ({
-        permission, importAccount
+        permission
     }),
     {
-        importStart
+        accountAdd
     }
 )(ImportAccount);

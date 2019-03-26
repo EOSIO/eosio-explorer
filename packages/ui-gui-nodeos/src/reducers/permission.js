@@ -22,14 +22,18 @@ const FETCH_START = actionPrefix + `FETCH_START`;
 const FETCH_FULFILLED = actionPrefix + `FETCH_FULFILLED`;
 const FETCH_REJECTED = actionPrefix + `FETCH_REJECTED`;
 const DEFAULT_SET = actionPrefix + `DEFAULT_SET`;
-const ACCOUNT_UPDATE = actionPrefix + `ACCOUNT_UPDATE`;
+const ACCOUNT_ADD = actionPrefix + `ACCOUNT_ADD`;
+const ACCOUNT_IMPORT = actionPrefix + `ACCOUNT_IMPORT`;
+const ACCOUNT_CLEAR = actionPrefix + `ACCOUNT_CLEAR`;
 
 //Action Creator
 export const fetchStart = () => ({ type: FETCH_START });
 export const fetchFulfilled = payload => ({ type: FETCH_FULFILLED, payload });
 export const fetchRejected = ( payload, error ) => ({ type: FETCH_REJECTED, payload, error });
 export const defaultSet = ( id ) => ({ type: DEFAULT_SET, id });
-export const accountUpdate = accountData => ({ type: ACCOUNT_UPDATE, accountData });
+export const accountAdd = accountData => ({ type: ACCOUNT_ADD, accountData });
+export const accountImport = accountData => ({ type: ACCOUNT_IMPORT, accountData });
+export const accountClear = () => ({ type: ACCOUNT_CLEAR });
 
 //Epic
 
@@ -82,6 +86,8 @@ const dataInitState = {
       private_key: 'zyx'
     },
   ],
+  importSuccess: false,
+  importError: null,
   defaultId: "1"
 }
 
@@ -89,13 +95,34 @@ const accountState = {
   keysData: []
 }
 
+// Sort permission list by alphabetical order
+const alphabeticalSort = (a, b) => {
+  let acctNameA = a.account,
+      acctNameB = b.account;
+  if (acctNameA < acctNameB) 
+    return -1;
+  if (acctNameA > acctNameB)
+    return 1;
+  return 0;
+}
+
 const composePermissionList = (originalList, payloadList) => {
-  let composedList = originalList.concat(
-    payloadList.filter(item => {
-      return originalList.findIndex(el => el._id === item._id) < 0
-    })
-  );
+  let hash = Object.create(null);
+  originalList.concat(payloadList).forEach(el => {
+    hash[el._id] = Object.assign(hash[el._id] || {}, el);
+  })
+  let composedList = Object.keys(hash).map(k => hash[k]);
+  composedList.sort(alphabeticalSort);
   return composedList;
+}
+
+const addKeysToAccount = (accountData, list) => {
+  let updatedList = list.slice(0);
+  let activeItem = updatedList.findIndex(el => (accountData.accountName === el.account && el.permission === 'active'));
+  let ownerItem = updatedList.findIndex(el => (accountData.accountName === el.account && el.permission === 'owner'));
+  updatedList[activeItem]["private_key"] = accountData.activePrivate;
+  updatedList[ownerItem]["private_key"] = accountData.ownerPrivate;
+  return updatedList;
 }
 
 const dataReducer = (state=dataInitState, action) => {
@@ -110,22 +137,24 @@ const dataReducer = (state=dataInitState, action) => {
         ...state,
         defaultId: action.id
       };
+    case ACCOUNT_ADD:
+      return {
+        ...state,
+        list: addKeysToAccount(action.accountData, state.list),
+        importSuccess: true
+      };
+    case ACCOUNT_IMPORT:
+      return {
+        ...state,
+        keysData: action.accountData,
+        importSuccess: false
+      };
+    case ACCOUNT_CLEAR:
+      return dataInitState;
     default:
       return state;
   }
 };
-
-const accountReducer = (state=accountState, action) => {
-  switch (action.type) {
-    case ACCOUNT_UPDATE:
-      return {
-        ...state,
-        keysData: action.accountData
-      };
-    default:
-      return state;
-  }
-}
 
 const isFetchingReducer = (state = false, action) => {
   switch (action.type) {
@@ -143,6 +172,5 @@ const isFetchingReducer = (state = false, action) => {
 
 export const combinedReducer = combineReducers({
   data: dataReducer,
-  isFetching: isFetchingReducer,
-  account: accountReducer
+  isFetching: isFetchingReducer
 })
