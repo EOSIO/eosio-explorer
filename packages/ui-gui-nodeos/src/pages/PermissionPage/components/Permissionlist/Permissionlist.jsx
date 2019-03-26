@@ -6,8 +6,8 @@ import {
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { fetchStart, defaultSet } from 'reducers/permission';
-
+import { fetchStart, accountImport, defaultSet } from 'reducers/permission';
+import { panelSelect } from 'pages/PermissionPage/PermissionPageReducer';
 
 const Permissionlist = (props) => {
 
@@ -15,20 +15,29 @@ const Permissionlist = (props) => {
     props.fetchStart()
   }, [])
 
-  let { permission: { isFetching, data }, defaultSet } = props;
-  let { list,defaultId } = data;
+  let { 
+    permission: { isFetching, data, account }, 
+    panel, panelSelect, defaultSet 
+  } = props;
+  let { list, defaultId } = data;
+
+  function getKeysData (accName, list) {
+    const keysData = list.filter(acct => acct["account"] === accName);
+    props.accountImport(keysData);
+    panelSelect("import-account");
+  }
 
   return (
     <div className="Permissionlist">
       <div>{ isFetching   ? `loading...`
-                            : <div>
+                          : <div>
                                 <h3>
                                   <u>Default Signature Account</u>
                                 </h3>
                                 <Form>
                                   <FormGroup>
                                     {                                    
-                                      list.map(permission => 
+                                      list.map((permission) => 
                                         (
                                           permission.private_key &&                                         
                                           <FormGroup key={permission._id+'_editable'} row>
@@ -36,7 +45,13 @@ const Permissionlist = (props) => {
                                               <span>{permission.account}@{permission.permission}</span>
                                             </Label>
                                             <Col sm={2}>
-                                              <Button outline color="primary" block>Edit</Button>
+                                              <Button outline 
+                                                color="primary" 
+                                                onClick={() => getKeysData(permission.account, list)}
+                                                block
+                                                >
+                                                Edit
+                                              </Button>
                                             </Col>
                                             <Col sm={2}>
                                               <input type="radio" 
@@ -66,11 +81,17 @@ const Permissionlist = (props) => {
                                               <span>{permission.account}@{permission.permission}</span>
                                             </Label>
                                             <Col sm={2}>
-                                              <Button outline color="primary" block>Import</Button>
+                                              <Button outline 
+                                                color="primary" 
+                                                onClick={() => getKeysData(permission.account, list)}
+                                                block
+                                                >
+                                                Import
+                                              </Button>
                                             </Col>
                                             <Col sm={2}>
 
-                                              </Col>
+                                            </Col>
                                         </FormGroup>
                                         )
                                     )}
@@ -84,12 +105,13 @@ const Permissionlist = (props) => {
 }
 
 export default connect(
-  ({ permission }) => ({
-    permission
+  ({ permission, permissionPage: { panel }}) => ({
+    permission, panel
   }),
   {
     fetchStart,
     defaultSet,
+    accountImport,
+    panelSelect
   }
-
 )(Permissionlist);

@@ -39,31 +39,40 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
-var block_1 = __importDefault(require("../models/block"));
+var eosjs_1 = require("eosjs");
+var eosjs_jssig_1 = __importDefault(require("eosjs/dist/eosjs-jssig"));
+var text_encoding_1 = require("text-encoding");
 exports.default = (function (query) { return __awaiter(_this, void 0, void 0, function () {
-    var _a, id_or_num, result, query_gen, err_1;
-    return __generator(this, function (_b) {
-        switch (_b.label) {
+    var endpoint, account_name, private_key, permission, action_name, payload, rpc, signatureProvider, api, result, e_1;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
             case 0:
-                _b.trys.push([0, 2, , 3]);
-                _a = query.id_or_num, id_or_num = _a === void 0 ? "" : _a;
-                result = void 0;
-                query_gen = block_1.default
-                    .find({});
-                // check if id is passed
-                // check if its a number or not else it gives parsing error
-                (id_or_num !== undefined) ? isNaN(Number(id_or_num)) ?
-                    query_gen.where({ block_id: id_or_num }) : query_gen.where({ block_num: id_or_num }) : "";
-                query_gen.limit(100);
-                query_gen.sort({ createdAt: -1 });
-                return [4 /*yield*/, query_gen.exec()];
+                _a.trys.push([0, 2, , 3]);
+                endpoint = query.endpoint, account_name = query.account_name, private_key = query.private_key, permission = query.permission, action_name = query.action_name, payload = query.payload;
+                rpc = new eosjs_1.JsonRpc(endpoint);
+                signatureProvider = new eosjs_jssig_1.default([private_key]);
+                api = new eosjs_1.Api({ rpc: rpc, signatureProvider: signatureProvider, textDecoder: new text_encoding_1.TextDecoder(), textEncoder: new text_encoding_1.TextEncoder() });
+                return [4 /*yield*/, api.transact({
+                        actions: [{
+                                account: 'eosio',
+                                name: action_name,
+                                authorization: [{
+                                        actor: account_name,
+                                        permission: permission,
+                                    }],
+                                data: payload,
+                            }]
+                    }, {
+                        blocksBehind: 3,
+                        expireSeconds: 30,
+                    })];
             case 1:
-                result = _b.sent();
+                result = _a.sent();
                 return [2 /*return*/, result];
             case 2:
-                err_1 = _b.sent();
-                console.log(err_1);
-                return [3 /*break*/, 3];
+                e_1 = _a.sent();
+                console.log('Caught exception: ' + e_1);
+                throw (e_1);
             case 3: return [2 /*return*/];
         }
     });

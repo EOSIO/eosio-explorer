@@ -14,7 +14,7 @@ class BlockdetailPage extends Component {
         <div className="BlockdetailPage animated fadeIn">
           <Card>
             <CardHeader>
-              Blockdetail Page
+              Block Detail Page
             </CardHeader>
             <CardBody>
               <Blockdetail/>

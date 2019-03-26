@@ -14,11 +14,11 @@ const BlockchainInfo = (props) => {
   }, [])
 
   let { blockchainInfo: { isFetching, data }} = props;
-  let { payload, error } = data;
-  
+  let { payload = {}, error } = data;
+
   return (
     <>
-      { error ? 
+      { error ?
         <div className="text-center">
           <p className="text-danger">{JSON.stringify(error)}</p>
           <Button color="primary" onClick={props.fetchStart}>Click to Reload</Button>

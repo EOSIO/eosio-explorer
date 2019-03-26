@@ -14,7 +14,7 @@ class TransactionlistPage extends Component {
         <div className="TransactionlistPage animated fadeIn">
           <Card>
             <CardHeader>
-              Transactionlist Page
+              Transactions List Page
             </CardHeader>
             <CardBody>
               <Transactionlist/>

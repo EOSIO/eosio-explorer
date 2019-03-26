@@ -6,13 +6,7 @@ export default async (query:any) => {
     let result: Object;
 
     let query_gen = BlockModel
-      .find({},
-      {
-        "block_id": 1,
-        "block_num": 1,
-        "createdAt": 1,
-        "block.transactions.trx.id": 1
-      });
+      .find({});
 
     // check if id is passed
     // check if its a number or not else it gives parsing error

@@ -13,9 +13,7 @@ const PANEL_SELECT = actionPrefix + `PANEL_SELECT`;
 //Action Creator
 export const panelSelect = (panel) => ({ type: PANEL_SELECT, panel });
 
-//permission-list
-
-const panelReducer = (state="create-account", action) => {
+const panelReducer = (state="permission-list", action) => {
   switch (action.type) {
     case PANEL_SELECT:
         return action.panel;

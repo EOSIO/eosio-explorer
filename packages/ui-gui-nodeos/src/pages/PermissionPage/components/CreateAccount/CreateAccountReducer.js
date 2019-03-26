@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import { interval, of, from } from 'rxjs';
-import { mergeMap, mapTo, map, takeUntil, catchError } from 'rxjs/operators';
+import { mergeMap, mapTo, map, takeUntil, delay, catchError } from 'rxjs/operators';
 
 import { combineEpics, ofType } from 'redux-observable';
 
@@ -24,7 +24,6 @@ export const fetchRejected = ( payload, error ) => ({ type: FETCH_REJECTED, payl
 const fetchEpic = ( action$, state$ ) => action$.pipe(
   ofType(FETCH_START),
   mergeMap(action =>{
-
     return from(new Promise(
         (resolve, reject) =>
           {

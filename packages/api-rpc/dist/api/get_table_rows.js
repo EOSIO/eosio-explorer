@@ -34,36 +34,30 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
-var block_1 = __importDefault(require("../models/block"));
+var eosjs_1 = require("eosjs");
 exports.default = (function (query) { return __awaiter(_this, void 0, void 0, function () {
-    var _a, id_or_num, result, query_gen, err_1;
-    return __generator(this, function (_b) {
-        switch (_b.label) {
+    var endpoint, contract_name, table_name, rpc, result, e_1;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
             case 0:
-                _b.trys.push([0, 2, , 3]);
-                _a = query.id_or_num, id_or_num = _a === void 0 ? "" : _a;
-                result = void 0;
-                query_gen = block_1.default
-                    .find({});
-                // check if id is passed
-                // check if its a number or not else it gives parsing error
-                (id_or_num !== undefined) ? isNaN(Number(id_or_num)) ?
-                    query_gen.where({ block_id: id_or_num }) : query_gen.where({ block_num: id_or_num }) : "";
-                query_gen.limit(100);
-                query_gen.sort({ createdAt: -1 });
-                return [4 /*yield*/, query_gen.exec()];
+                _a.trys.push([0, 2, , 3]);
+                endpoint = query.endpoint, contract_name = query.contract_name, table_name = query.table_name;
+                rpc = new eosjs_1.JsonRpc(endpoint);
+                return [4 /*yield*/, rpc.get_table_rows({
+                        "json": true,
+                        "code": contract_name,
+                        "scope": contract_name,
+                        "table": table_name // name of the table as specified by the contract abi
+                    })];
             case 1:
-                result = _b.sent();
-                return [2 /*return*/, result];
+                result = _a.sent();
+                return [2 /*return*/, result.rows];
             case 2:
-                err_1 = _b.sent();
-                console.log(err_1);
-                return [3 /*break*/, 3];
+                e_1 = _a.sent();
+                console.log('Caught exception: ' + e_1);
+                throw (e_1);
             case 3: return [2 /*return*/];
         }
     });

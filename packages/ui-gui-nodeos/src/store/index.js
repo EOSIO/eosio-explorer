@@ -4,24 +4,16 @@ import { createBrowserHistory } from 'history'
 import { routerMiddleware } from 'connected-react-router'
 import thunk from 'redux-thunk';
 import { persistStore, persistReducer } from 'redux-persist'
-import storage from 'redux-persist/lib/storage'
 
 import { rootReducer, rootEpic } from 'reducers';
 
-import reduxPersistFilters from './redux-persist-filters';
+import reduxPersistConfig from './redux-persist-config';
 
 export const history = createBrowserHistory();
 
 const epicMiddleware = createEpicMiddleware();
 
-const persistConfig = {
-  key: 'root',
-  storage,
-  whitelist: [],
-  transforms: [
-    // ...reduxPersistFilters
-  ]
-}
+const persistConfig = reduxPersistConfig;
 
 const persistedReducer = persistReducer(persistConfig, rootReducer(history))
 

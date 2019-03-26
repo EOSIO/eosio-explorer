@@ -11,7 +11,7 @@ const Header = () =>
 
     <>
       <AppNavbarBrand
-          full={{ src: null, width: 89, height: 25, alt: 'Nodeos GUI' }}
+          full={{ src: "https://cdn-images-1.medium.com/max/900/1*zkkZqd1_ShN9rRqBG_Wu3A@2x.png", width: 70, height: 56, alt: 'Nodeos GUI' }}
         />
       <Nav className="d-md-down-none" navbar>
         <NavItem className="px-3">

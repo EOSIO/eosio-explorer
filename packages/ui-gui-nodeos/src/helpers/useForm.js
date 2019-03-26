@@ -31,6 +31,7 @@ const useForm = (cb, validate) => {
         handleChange,
         handleSubmit,
         values,
+        setValues,
         errors,
     }
 
