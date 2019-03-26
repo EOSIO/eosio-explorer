@@ -49,15 +49,7 @@ exports.default = (function (query) { return __awaiter(_this, void 0, void 0, fu
                 account_name = query.account_name;
                 result = void 0;
                 query_gen = actions_1.default
-                    .find({}, {
-                    "receipt.act_digest": 1,
-                    "act.name": 1,
-                    "act.account": 1,
-                    "trx_id": 1,
-                    "createdAt": 1,
-                    "act.authorization.actor": 1,
-                    "act.authorization.permission": 1
-                });
+                    .find({});
                 if (account_name === undefined || account_name.trim() === "") {
                     throw ("invalid account name");
                 }
