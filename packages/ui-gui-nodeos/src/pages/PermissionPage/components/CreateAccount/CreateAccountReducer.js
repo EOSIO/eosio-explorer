@@ -6,6 +6,8 @@ import { combineEpics, ofType } from 'redux-observable';
 
 import { Keygen } from 'eosjs-keygen';
 
+import apiRpc from '@eos-toppings/api-rpc';
+
 // IMPORTANT
 // Must modify action prefix since action types must be unique in the whole app
 const actionPrefix = `PermissionPage/CreateAccount/`;
@@ -58,12 +60,26 @@ const fetchEpic = ( action$, state$ ) => action$.pipe(
 const createEpic = ( action$, state$ ) => action$.pipe(
   ofType(CREATE_START),
   mergeMap(action => {
-    console.table(action.account);
+    let { account: { accountName, ownerPublicKey, activePublicKey }} = action;
+    let query = {
+      endpoint: 'http://localhost:8888',
+      creator_private_key: '5K7mtrinTFrVTduSxizUc5hjXJEtTjVTsqSHeBHes1Viep86FP5',
+      creator_account_name: 'useraaaaaaaa',
+      new_account_name: accountName,
+      new_account_owner_key: ownerPublicKey,
+      new_account_active_key: activePublicKey
+    };
+
     return from(new Promise(
-        resolve => setTimeout(() => resolve(action.account), 2000)
-      )).pipe(
-        map(res => createFulfilled(res))
-      )
+      (resolve, reject) => {
+        apiRpc.create_account(query)
+          .then(res=>{resolve(res)})
+          .catch(err=>reject(err))
+      }
+    )).pipe(
+      map(res => createFulfilled(res)),
+      catchError(err => of(createRejected(err.response, { status: err.status })))
+    )
   })
 );
 
@@ -87,6 +103,7 @@ const dataInitState = {
 
 const formSubmissionState = {
   isSubmitting: false,
+  creationSuccess: false,
   origState: {},
   error: undefined
 };
@@ -124,7 +141,8 @@ const createReducer = (state=formSubmissionState, action) => {
       return {
         ...state,
         origState: action.payload,
-        isSubmitting: false
+        isSubmitting: false,
+        creationSuccess: true
       };
     case CREATE_REJECTED:
       return {

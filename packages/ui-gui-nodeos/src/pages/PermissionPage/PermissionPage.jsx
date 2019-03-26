@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 
 import CreateAccount from './components/CreateAccount';
 import Permissionlist from './components/Permissionlist';
+import ImportAccount from './components/ImportAccount';
 
 import { panelSelect } from './PermissionPageReducer';
 
@@ -31,9 +32,9 @@ class PermissionPage extends Component {
                     <Col sm={12}>
                       { panel === "permission-list"
                         ? <ButtonGroup className="float-right">
-                          <Button color="primary" onClick={()=>{panelSelect("create-account")}}>Create Account</Button>
-                          <Button color="danger">Reset All Permissions</Button>
-                        </ButtonGroup>
+                            <Button color="primary" onClick={()=>{panelSelect("create-account")}}>Create Account</Button>
+                            <Button color="danger">Reset All Permissions</Button>
+                          </ButtonGroup>
                         : <Button color="primary" className="float-right" onClick={()=>{panelSelect("permission-list")}}>Back</Button>
                       }
                     </Col>
@@ -41,9 +42,9 @@ class PermissionPage extends Component {
                   <hr />
                   <Row>
                     <Col sm={12}>
-                      { panel === "permission-list"
-                        ? <Permissionlist/>
-                        : <CreateAccount/>
+                      { panel === "permission-list" ? <Permissionlist/>
+                        : panel === "create-account" ? <CreateAccount/>
+                        : <ImportAccount />
                       }
                     </Col>
                   </Row>
