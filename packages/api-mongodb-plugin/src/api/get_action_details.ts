@@ -2,20 +2,18 @@ import ActionsModel from '../models/actions';
 
 export default async (query:any) => {
   try{
-	let { account_name } = query;
+	let { action_digest } = query;
 	let result: object;
 
 	let query_gen = ActionsModel
 	.find({});
 
-  if(account_name === undefined || account_name.trim() === ""){
-    throw("invalid account name");
+  if(action_digest === undefined || action_digest.trim() === ""){
+    throw("invalid action digest");
   } 
   else {
-    query_gen.where("act.account").equals(account_name);
+    query_gen.where("receipt.act_digest").equals(action_digest);
   }
-    
-	query_gen.where("act.name").ne("onblock");
 
 	query_gen.limit(100);
 	query_gen.sort({createdAt: -1});
