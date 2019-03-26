@@ -14,7 +14,7 @@ class ActionlistPage extends Component {
         <div className="ActionlistPage animated fadeIn">
           <Card>
             <CardHeader>
-              Actionlist Page
+              Action List Page
             </CardHeader>
             <CardBody>
               <Actionlist/>
