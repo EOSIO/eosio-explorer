@@ -10,9 +10,7 @@ import { mergeMap, map, catchError } from 'rxjs/operators';
 
 import { combineEpics, ofType } from 'redux-observable';
 
-import apiMongodb from 'services/api-mongodb';
 import apiRpc from '@eos-toppings/api-rpc';
-import paramsToQuery from 'helpers/params-to-query';
 
 // IMPORTANT
 // Must modify action prefix since action types must be unique in the whole app
@@ -39,10 +37,7 @@ const fetchEpic = ( action$, state$ ) => action$.pipe(
     let { value: { accountdetailPage: { accountdetail: { params } }}} = state$;
 
     return from(apiRpc.get_account_details(params)).pipe(
-      map(res => {
-        console.log("account res ",res)
-        return fetchFulfilled(res)
-      }),
+      map(res => fetchFulfilled(res)),
       catchError(error => of(fetchRejected(error.response, { status: error.status })))
     )
   })

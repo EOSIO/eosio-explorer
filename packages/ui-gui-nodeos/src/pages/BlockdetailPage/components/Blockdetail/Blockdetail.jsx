@@ -6,7 +6,7 @@ import { fetchStart, paramsSet } from './BlockdetailReducer';
 import pathNameConsumer from 'helpers/pathname-consumer';
 import { Card, CardTitle, CardBody, Col, Row, Form, FormGroup} from 'reactstrap';
 import styled from 'styled-components';
-import CodeViewer from '../../../../components/CodeViewer';
+import { CodeViewer } from 'components';
 
 const CardTitleStyled = styled(CardTitle)`
   text-decoration: underline;
@@ -26,7 +26,6 @@ const Blockdetail = (props) => {
 
   useEffect(()=>{
     let { router: { location: {pathname} } } = props;
-    console.log("pathname ", pathname);
     props.paramsSet({id_or_num: pathNameConsumer(pathname)});
     props.fetchStart();
   }, [])

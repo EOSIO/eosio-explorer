@@ -8,7 +8,7 @@ import { push } from 'connected-react-router'
 
 import { Card, CardTitle, CardBody, Col, Row, Form, FormGroup, Input} from 'reactstrap';
 import styled from 'styled-components';
-import CodeViewer from '../../../../components/CodeViewer';
+import { CodeViewer } from 'components';
 import SearchButton from 'styled/SearchButton';
 
 const CardTitleStyled = styled(CardTitle)`
@@ -18,11 +18,6 @@ const CardTitleStyled = styled(CardTitle)`
 
 const ColBoldStyled = styled(Col)`
   font-weight: bold;
-`
-
-const ColBoldUnderlineStyled = styled(Col)`
-  font-weight: bold;
-  text-decoration: underline;
 `
 
 const SearchLabel = styled.label`
