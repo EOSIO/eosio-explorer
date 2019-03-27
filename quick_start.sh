@@ -26,17 +26,17 @@ echo "[quick_start.sh] BUILDING DOCKER"
 echo "=============================="
 (cd $EOSDOCKER && ./first_time_setup.sh && printf "${GREEN}done${NC}")
 
-echo " "
-echo "=============================="
-echo "[quick_start.sh] REBUILDING MONGODB APIs"
-echo "=============================="
-(cd $MONGOAPI && rm -rf dist && tsc && cd $SCRIPTPATH && printf "${GREEN}done${NC}")
+# echo " "
+# echo "=============================="
+# echo "[quick_start.sh] REBUILDING MONGODB APIs"
+# echo "=============================="
+# (cd $MONGOAPI && rm -rf dist && tsc && cd $SCRIPTPATH && printf "${GREEN}done${NC}")
 
-echo " "
-echo "=============================="
-echo "[quick_start.sh] REBUILDING RPC APIs"
-echo "=============================="
-(cd $RPCAPI && rm -rf dist && tsc && cd $SCRIPTPATH && printf "${GREEN}done${NC}")
+# echo " "
+# echo "=============================="
+# echo "[quick_start.sh] REBUILDING RPC APIs"
+# echo "=============================="
+# (cd $RPCAPI && rm -rf dist && tsc && cd $SCRIPTPATH && printf "${GREEN}done${NC}")
 
 # remove existing dockers
 echo " "

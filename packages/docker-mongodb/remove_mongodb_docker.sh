@@ -5,10 +5,10 @@ set -o errexit
 cd "$(dirname "$0")"
 if [ "$(docker ps -q -f name=eosio-mongodb)" ]; then
   docker stop eosio-mongodb
-
+fi
   rm -rf data
 
   mkdir data
 
-  docker rm eosio-mongodb
-fi
+  docker rm eosio-mongodb || true
+
