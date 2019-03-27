@@ -1,10 +1,5 @@
-import React, { useEffect } from 'react';
-
+import React from 'react';
 import { connect } from 'react-redux';
-
-import { Button, Card, CardBody, CardHeader, Col, Row, Form, FormGroup, Label } from 'reactstrap';
-
-import pathNameConsumer from 'helpers/pathname-consumer';
 
 import { CodeViewer } from 'components';
 
@@ -15,12 +10,17 @@ const Actionjson = (props) => {
 
   return (
     <>
-      <CodeViewer
-        language="json"
-        value={JSON.stringify(payload, null, 2)}
-        readOnly={true}
-        height={600}
-      />                            
+      {payload && (payload.length > 0 ?
+          <CodeViewer
+            language="json"
+            value={JSON.stringify(payload, null, 2)}
+            readOnly={true}
+            height={600} />
+        :
+          <div className="text-center">
+            <p className="text-danger mb-0">Action data empty</p>
+          </div>
+      )}              
     </>
   );
 }

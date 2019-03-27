@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
@@ -12,7 +11,8 @@ const Actiondetail = (props) => {
 
   return (
     <>
-      { payload.map((action, index) =>
+      { payload && (payload.length > 0 ? (
+        payload.map((action, index) =>
         <Form key={index} className="form-horizontal">
           <FormGroup row className="mb-0">
             <Col xs="3">
@@ -43,7 +43,6 @@ const Actiondetail = (props) => {
               <Label><strong>Transaction ID</strong></Label>
             </Col>
             <Col xs="9">
-              {/* <Link to={`/transaction/${eachTransaction.trx_id}`}>{eachTransaction.trx_id}</Link> */}
               <p className="form-control-static">
                 {action && <Link to={`/transaction/${action.trx_id}`}>{action.trx_id}</Link> }
               </p>
@@ -64,6 +63,10 @@ const Actiondetail = (props) => {
             </Col>
           </FormGroup>
         </Form>
+      )) :
+        <div className="text-center">
+          <p className="text-danger mb-0">Action data empty</p>
+        </div>
       )}
     </>
   );
