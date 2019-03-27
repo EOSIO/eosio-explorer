@@ -34,38 +34,18 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
 var eosjs_1 = require("eosjs");
-var eosjs_jssig_1 = __importDefault(require("eosjs/dist/eosjs-jssig"));
-var text_encoding_1 = require("text-encoding");
 exports.default = (function (query) { return __awaiter(_this, void 0, void 0, function () {
-    var endpoint, account_name, private_key, actor, permission, action_name, payload, rpc, signatureProvider, api, result, e_1;
+    var endpoint, account_name, rpc, result, e_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                endpoint = query.endpoint, account_name = query.account_name, private_key = query.private_key, actor = query.actor, permission = query.permission, action_name = query.action_name, payload = query.payload;
+                endpoint = query.endpoint, account_name = query.account_name;
                 rpc = new eosjs_1.JsonRpc(endpoint);
-                signatureProvider = new eosjs_jssig_1.default([private_key]);
-                api = new eosjs_1.Api({ rpc: rpc, signatureProvider: signatureProvider, textDecoder: new text_encoding_1.TextDecoder(), textEncoder: new text_encoding_1.TextEncoder() });
-                return [4 /*yield*/, api.transact({
-                        actions: [{
-                                account: account_name,
-                                name: action_name,
-                                authorization: [{
-                                        actor: actor,
-                                        permission: permission,
-                                    }],
-                                data: payload,
-                            }]
-                    }, {
-                        blocksBehind: 3,
-                        expireSeconds: 30,
-                    })];
+                return [4 /*yield*/, rpc.get_account(account_name)];
             case 1:
                 result = _a.sent();
                 return [2 /*return*/, result];

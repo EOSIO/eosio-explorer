@@ -40,7 +40,7 @@ const Transactiondetail = (props) => {
               : isFetching           
                 ? `loading...`
                 : payload.length === 0 
-                  ? `No block found with block id = ${params.trx_id}`
+                  ? `No transaction found with transaction id = ${params.trx_id}`
                   : <div>
                       <Row>
                         <Col sm="12">

@@ -6,7 +6,7 @@
 
 import { combineReducers } from 'redux';
 import { of, from } from 'rxjs';
-import { mergeMap, map, concat, catchError } from 'rxjs/operators';
+import { mergeMap, map, catchError } from 'rxjs/operators';
 
 import { combineEpics, ofType } from 'redux-observable';
 
@@ -232,6 +232,7 @@ const dataReducer = (state=dataInitState, action) => {
         isSubmitting: true
       };
     case CREATE_FULFILLED:
+    console.log(action.payload);
       return {
         ...state,
         list: storeNewAccount(action.payload, state.list),

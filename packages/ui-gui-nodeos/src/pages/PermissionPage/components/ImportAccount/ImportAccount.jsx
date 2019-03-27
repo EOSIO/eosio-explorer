@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
-    Button, Form, FormGroup, Label, Input, FormFeedback, FormText,
-    Spinner, Col
+    Button, Form, FormGroup, Label, Input, FormFeedback,
+    Col, Alert
   } from 'reactstrap';
 
 import { connect } from 'react-redux';
@@ -39,9 +39,19 @@ const ImportAccount = (props) => {
                     <h3>
                         <u>Import/Edit Account</u>
                     </h3>
+                    {
+                        importSuccess &&
+                        <Alert color="success">
+                            Private keys for {keysData[0].account} successfully updated
+                        </Alert>
+                    }
+                    <Alert color="light">
+                        Ensure that the private keys you use are <code>base58 WIF</code> compliant! The form will 
+                        notify you if any of your keys are invalid upon submission.
+                    </Alert>
                     <Form onSubmit={
                         handleSubmit
-                    }>
+                    }>                    
                         <FormGroup row>
                             <Label htmlFor="accountName" sm={2}>Account Name</Label>
                             <Col sm={10}>
@@ -82,7 +92,15 @@ const ImportAccount = (props) => {
                                             : keysData[1].private_key
                                     }
                                     onChange={handleChange}
+                                    invalid={!!errors.ownerPrivate}
+                                    required
                                     />
+                                {
+                                    errors.ownerPrivate && 
+                                    <FormFeedback invalid="true">
+                                        {errors.ownerPrivate}
+                                    </FormFeedback>
+                                }
                             </Col>
                         </FormGroup>
                         <h4>Active</h4>
@@ -114,15 +132,20 @@ const ImportAccount = (props) => {
                                             : keysData[0].private_key
                                     }
                                     onChange={handleChange}
+                                    invalid={!!errors.activePrivate}
+                                    required
                                     />
+                                {
+                                    errors.activePrivate && 
+                                    <FormFeedback invalid="true">
+                                        {errors.activePrivate}
+                                    </FormFeedback>
+                                }
                             </Col>
                         </FormGroup>
                         <FormGroup row>
                             <Col sm={8}>
-                            {
-                                importSuccess &&
-                                <h4>Private keys for {keysData[0].account} successfully updated</h4>
-                            }
+
                             </Col>
                             <Col sm={4} clearfix="true">
                                 <Button className="float-right" 

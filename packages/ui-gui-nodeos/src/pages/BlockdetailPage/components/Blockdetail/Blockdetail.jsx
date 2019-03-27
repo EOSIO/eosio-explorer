@@ -26,6 +26,7 @@ const Blockdetail = (props) => {
 
   useEffect(()=>{
     let { router: { location: {pathname} } } = props;
+    console.log("pathname ", pathname);
     props.paramsSet({id_or_num: pathNameConsumer(pathname)});
     props.fetchStart();
   }, [])
@@ -40,7 +41,7 @@ const Blockdetail = (props) => {
               : isFetching 
                 ? `loading...`
                 : payload.length === 0 
-                  ? `No block found with block id = ${params.id_or_num}`
+                  ? `No block found with block id/ block number = ${params.id_or_num}`
                   : <div>
                       <Row>
                         <Col sm="12">
