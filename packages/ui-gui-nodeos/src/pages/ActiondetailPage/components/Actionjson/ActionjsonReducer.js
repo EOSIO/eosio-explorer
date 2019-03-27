@@ -15,7 +15,7 @@ import paramsToQuery from 'helpers/params-to-query';
 
 // IMPORTANT
 // Must modify action prefix since action types must be unique in the whole app
-const actionPrefix = `ActiondetailPage/Actiondetail/`;
+const actionPrefix = `ActiondetailPage/Actionjson/`;
 
 //Action Type
 const FETCH_START = actionPrefix + `FETCH_START`;
@@ -34,7 +34,7 @@ export const paramsSet = (params) => ({ type: PARMAS_SET, params });
 const fetchEpic = ( action$, state$ ) => action$.pipe(
   ofType(FETCH_START),
   mergeMap(action =>{
-    let { value: { actiondetailPage: { actiondetail: { params } }}} = state$;
+    let { value: { actiondetailPage: { actionjson: { params } }}} = state$;
     
     console.log(params);
     let temp = "?action_digest=" + params.id;

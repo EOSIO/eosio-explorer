@@ -51,7 +51,7 @@ const BlockchainInfo = (props) => {
               <p className="form-control-static">{payload && payload.chain_id}</p>
             </Col>
           </FormGroup>
-      </Form>
+        </Form>
       )}
     </>
   );

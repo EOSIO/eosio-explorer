@@ -4,11 +4,11 @@ import { connect } from 'react-redux';
 
 import { Button, Card, CardBody, CardHeader, Col, Row, Form, FormGroup, Label } from 'reactstrap';
 
-import { fetchStart, paramsSet } from './ActiondetailReducer';
+import { fetchStart, paramsSet } from './ActionjsonReducer';
 import pathNameConsumer from 'helpers/pathname-consumer';
 import { LoadingSpinner } from 'components';
 
-const Actiondetail = (props) => {
+const Actionjson = (props) => {
 
   useEffect(()=>{
     let { router: { location: {pathname} } } = props;
@@ -16,7 +16,7 @@ const Actiondetail = (props) => {
     props.fetchStart();
   }, [])
 
-  let { actiondetail: { isFetching, data } } = props;
+  let { actionjson: { isFetching, data } } = props;
   let { payload, error } = data;
   return (
     <>
@@ -78,15 +78,15 @@ const Actiondetail = (props) => {
               </p>
             </Col>
           </FormGroup>
-        </Form>
+        </Form> 
       ))}
     </>
   );
 }
 
 export default connect(
-  ({ actiondetailPage: { actiondetail }, router}) => ({
-    actiondetail,
+  ({ actiondetailPage: { actionjson }, router}) => ({
+    actionjson,
     router
   }),
   {
@@ -94,4 +94,4 @@ export default connect(
     paramsSet,
   }
 
-)(Actiondetail);
+)(Actionjson);

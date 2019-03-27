@@ -77,7 +77,7 @@ const Actionlist = (props) => {
                 <tr><td colSpan="3" className="text-center">No actions could be found for the given Smart Contract name</td></tr>
               : payload.map(action=>
                 <Route key={action._id} render={({ history }) => (
-                  <TrClickable onClick={() => { history.push(`/action/${action._id}`)}}>
+                  <TrClickable onClick={() => { history.push(`/action/${action.receipt.act_digest}`) }}>
                     <td>{action.act.account}</td>
                     <td>{action.act.name}</td>
                     <td>{action.createdAt}</td>

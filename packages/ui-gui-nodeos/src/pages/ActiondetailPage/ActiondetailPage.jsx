@@ -3,6 +3,7 @@ import { Card, CardBody, CardHeader, Col } from 'reactstrap';
 
 import { StandardTemplate } from 'templates';
 import Actiondetail from './components/Actiondetail';
+import Actionjson from './components/Actionjson';
 
 
 class ActiondetailPage extends Component {
@@ -18,6 +19,14 @@ class ActiondetailPage extends Component {
             </CardHeader>
             <CardBody>
               <Actiondetail/>
+            </CardBody>
+          </Card>
+          <Card>
+            <CardHeader>
+              Action Raw JSON
+            </CardHeader>
+            <CardBody>
+              <Actionjson/>
             </CardBody>
           </Card>
         </div>
