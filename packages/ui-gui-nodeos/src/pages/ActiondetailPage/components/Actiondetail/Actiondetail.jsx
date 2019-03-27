@@ -1,36 +1,18 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
-import { Button, Card, CardBody, CardHeader, Col, Row, Form, FormGroup, Label } from 'reactstrap';
-
-import { fetchStart, paramsSet } from './ActiondetailReducer';
-import pathNameConsumer from 'helpers/pathname-consumer';
-import { LoadingSpinner } from 'components';
+import { Col, Form, FormGroup, Label } from 'reactstrap';
 
 const Actiondetail = (props) => {
 
-  useEffect(()=>{
-    let { router: { location: {pathname} } } = props;
-    props.paramsSet({id: pathNameConsumer(pathname)});
-    props.fetchStart();
-  }, [])
+  let { actiondetailPage: { data } } = props;
+  let { payload } = data;
 
-  let { actiondetail: { isFetching, data } } = props;
-  let { payload, error } = data;
   return (
     <>
-      {/* { JSON.stringify(payload) } */}
-
-      { error ? 
-        <div className="text-center">
-          <p className="text-danger">{JSON.stringify(error)}</p>
-          <Button color="primary" onClick={props.pollingStart}>Click to Reload</Button>
-        </div>
-      : isFetching ? (
-        <LoadingSpinner />
-      ) : (
-       payload.map((action, index) =>
+      { payload.map((action, index) =>
         <Form key={index} className="form-horizontal">
           <FormGroup row className="mb-0">
             <Col xs="3">
@@ -61,7 +43,10 @@ const Actiondetail = (props) => {
               <Label><strong>Transaction ID</strong></Label>
             </Col>
             <Col xs="9">
-              <p className="form-control-static">{action && action.trx_id}</p>
+              {/* <Link to={`/transaction/${eachTransaction.trx_id}`}>{eachTransaction.trx_id}</Link> */}
+              <p className="form-control-static">
+                {action && <Link to={`/transaction/${action.trx_id}`}>{action.trx_id}</Link> }
+              </p>
             </Col>
           </FormGroup>
           <FormGroup row className="mb-0">
@@ -79,19 +64,14 @@ const Actiondetail = (props) => {
             </Col>
           </FormGroup>
         </Form>
-      ))}
+      )}
     </>
   );
 }
 
 export default connect(
-  ({ actiondetailPage: { actiondetail }, router}) => ({
-    actiondetail,
+  ({ actiondetailPage, router}) => ({
+    actiondetailPage,
     router
-  }),
-  {
-    fetchStart,
-    paramsSet,
-  }
-
+  })
 )(Actiondetail);
