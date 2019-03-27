@@ -2,10 +2,17 @@ import BlockModel from '../models/block';
 
 export default async () => {
   try{
-    let result = await BlockModel.findOne({}, {}, { sort: { 'createdAt' : -1 } });
-    console.log("get_block_latest response: ", result);
+    let result: Object;
+    let query_gen = BlockModel
+      .find({});
+
+    query_gen.limit(1);
+    query_gen.sort({createdAt: -1});
+    result = await query_gen.exec();
+
     return result;
   }catch(err){
     console.log(err);
+    throw(err);
   }
 }

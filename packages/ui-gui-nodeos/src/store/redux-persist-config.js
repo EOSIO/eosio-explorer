@@ -13,7 +13,7 @@ const reduxPersistFilters = [
 export default {
   key: 'root',
   storage,
-  whitelist: ['blocklistPage', 'permission', 'endpoint'],
+  whitelist: ['blocklistPage', 'permission'],
   transforms: [
     ...reduxPersistFilters
   ]

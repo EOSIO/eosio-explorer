@@ -1,15 +1,14 @@
 const mongoose = require('mongoose')
-const DB_URL = process.env.MONGO_URI
-// const loadModels = require('../models')
 
-export default () => {
-  const connect = () => {
+export default async (DB_URL: string) => {
+  const connect = (DB_URL: string) => {
     mongoose.Promise = global.Promise
     mongoose.connect(
       DB_URL,
       {
         keepAlive: true,
-        reconnectTries: Number.MAX_VALUE,
+        reconnectTries: 2,
+        reconnectInterval: 100,
         useNewUrlParser: true
       },
       (err: any) => {
@@ -31,11 +30,28 @@ export default () => {
     )
     mongoose.set('useCreateIndex', true)
     mongoose.set('useFindAndModify', false)
-  }
-  connect()
 
-  mongoose.connection.on('error', console.log)
-  mongoose.connection.on('disconnected', connect)
+  }
+  connect(DB_URL)
+
+  mongoose.connection.once('error', (err: Error)=>{
+    console.log("-->error");
+    console.log(err);
+    console.log("-->error");
+  })
+  mongoose.connection.once('reconnected', ()=>{
+    console.log("-->reconnected");
+    console.log(DB_URL);
+    console.log("-->reconnected");
+  })
+  mongoose.connection.once('disconnected', ()=>{
+    console.log("-->disconnected");
+    console.log(DB_URL);
+    console.log("-->disconnected");
+  })
+
+  return await mongoose;
+
 
   // loadModels()
 }

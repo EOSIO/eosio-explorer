@@ -61,7 +61,7 @@ export const combinedEpic = combineEpics(
 
 //Reducer
 const dataInitState = {
-  payload: {},
+  payload: [],
   error: undefined
 }
 
