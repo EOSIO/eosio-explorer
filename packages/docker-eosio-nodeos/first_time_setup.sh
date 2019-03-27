@@ -30,6 +30,8 @@ fi
 # force remove the perivous container if any
 # create a clean data folder in eosio_docker to preserve block data
 echo "=== setup/reset data ==="
-docker rm --force eosio_gui_nodeos_container
-rm -rf "./data"
-mkdir -p "./data"
+if [ "$(docker ps -q -f name=eosio_gui_nodeos_container)" ]; then
+  docker rm --force eosio_gui_nodeos_container
+  rm -rf "./data"
+  mkdir -p "./data"
+fi 
