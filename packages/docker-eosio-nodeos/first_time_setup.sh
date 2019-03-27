@@ -29,9 +29,17 @@ fi
 
 # force remove the perivous container if any
 # create a clean data folder in eosio_docker to preserve block data
-echo "=== setup/reset data ==="
+echo "=== clean up data remnants ==="
+echo "1. Check if previous container is running... "
 if [ "$(docker ps -q -f name=eosio_gui_nodeos_container)" ]; then
-  docker rm --force eosio_gui_nodeos_container
-  rm -rf "./data"
-  mkdir -p "./data"
-fi 
+    if [ "$(docker ps -aq -f status=running -f name=eosio_gui_nodeos_container)" ]; then
+        echo "=== Previous container is running, stopping... ==="
+        docker rm --force eosio_gui_nodeos_container
+    fi
+fi
+if [ ! "$(docker ps -q -f name=eosio_gui_nodeos_container)" ]; then
+  echo "=== No container running. Moving to step 2..."
+fi
+echo "2. Re-initializing block log folder"
+rm -rf "./data"
+mkdir -p "./data"
