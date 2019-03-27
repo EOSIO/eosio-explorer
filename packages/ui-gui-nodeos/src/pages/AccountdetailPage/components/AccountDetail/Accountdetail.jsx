@@ -43,21 +43,19 @@ const SearchCardTitle = styled(CardTitle)`
 `
 const Accountdetail = (props) => {
 
+  const [inputValue, setInputValue] = useState("");
+  const [showDetailsSection, setShowDetailsSection ] = useState(false);
+
   useEffect(()=>{
     let { router: { location: {pathname} } } = props;
-    console.log("pathname ",pathname);
     if(pathname == '/account' || pathname == '/account/'){
-      console.log(); 
       setShowDetailsSection(false);
     }else{
       setShowDetailsSection(true)
-      props.paramsSet({account_name:  pathNameConsumer(pathname) });
+      props.paramsSet({endpoint: 'http://localhost:8888',account_name:  pathNameConsumer(pathname) });
       props.fetchStart();  
     }       
-  }, [])
-
-  const [inputValue, setInputValue] = useState("");
-  const [showDetailsSection, setShowDetailsSection ] = useState(false);
+  }, [])  
   
   let { accountdetail: { isFetching, data, params } } = props;
   let { payload, error } = data;
@@ -106,9 +104,7 @@ const Accountdetail = (props) => {
                         ? <button onClick={props.fetchStart}>{JSON.stringify(error)} Click to Reload.</button>
                         : isFetching
                           ? `loading...`
-                          : payload.length === 0
-                            ? `No account found for Account name: ${params.account_name}`
-                            : <div>
+                          :  <div>
                                 <Row>
                                   <Col sm="12">
                                     <Card> 
@@ -118,25 +114,29 @@ const Accountdetail = (props) => {
                                           <FormGroup row>
                                             <ColBoldStyled sm={2}>Account Name:</ColBoldStyled>
                                             <Col sm={10}>
-                                              {payload[0].account}
+                                              {payload.account_name}
                                             </Col>
                                           </FormGroup>
                                           <FormGroup row>
                                             <ColBoldStyled sm={2}>Account Creation Date:</ColBoldStyled>
                                             <Col sm={10}>
-                                              {payload[0].createdAt}
+                                              {payload.created}
                                             </Col>
                                           </FormGroup>
                                           <FormGroup row>
                                             <ColBoldStyled sm={2}>Owner Public Key:</ColBoldStyled>
-                                            <Col sm={10}>
-                                              {payload[0].permission == "owner" ? payload[0].public_key : payload[1].public_key}
+                                            <Col sm={10}>                                            
+                                              {payload.permissions[0].perm_name == "owner" 
+                                                ? payload.permissions[0].required_auth.keys[0].key 
+                                                : payload.permissions[1].required_auth.keys[0].key}
                                             </Col>
                                           </FormGroup>
                                           <FormGroup row>
                                             <ColBoldStyled sm={2}>Active Public Key:</ColBoldStyled>
                                             <Col sm={10}>
-                                              {payload[0].permission == "active" ? payload[0].public_key : payload[1].public_key}
+                                              {payload.permissions[0].perm_name == "active" 
+                                                ? payload.permissions[0].required_auth.keys[0].key 
+                                                : payload.permissions[1].required_auth.keys[0].key}
                                             </Col>
                                           </FormGroup>
                                         </Form>
@@ -150,7 +150,7 @@ const Accountdetail = (props) => {
                                       language="json"
                                       value={JSON.stringify(payload, null, 2)}
                                       readOnly={true}
-                                      height={300}
+                                      height={600}
                                     />
                                   </Col>  
                                 </Row>        

@@ -5,12 +5,13 @@
 */
 
 import { combineReducers } from 'redux';
-import { of } from 'rxjs';
+import { of, from } from 'rxjs';
 import { mergeMap, map, catchError } from 'rxjs/operators';
 
 import { combineEpics, ofType } from 'redux-observable';
 
 import apiMongodb from 'services/api-mongodb';
+import apiRpc from '@eos-toppings/api-rpc';
 import paramsToQuery from 'helpers/params-to-query';
 
 // IMPORTANT
@@ -37,10 +38,10 @@ const fetchEpic = ( action$, state$ ) => action$.pipe(
 
     let { value: { accountdetailPage: { accountdetail: { params } }}} = state$;
 
-    return apiMongodb(`get_account_details${paramsToQuery(params)}`).pipe(
+    return from(apiRpc.get_account_details(params)).pipe(
       map(res => {
         console.log("account res ",res)
-        return fetchFulfilled(res.response)
+        return fetchFulfilled(res)
       }),
       catchError(error => of(fetchRejected(error.response, { status: error.status })))
     )
@@ -55,7 +56,7 @@ export const combinedEpic = combineEpics(
 
 //Reducer
 const dataInitState = {
-  payload: [],
+  payload: {},
   error: undefined
 }
 
