@@ -78,7 +78,7 @@ echo " "
 echo "=============================="
 echo "[quick_start.sh] Starting gui docker"
 echo "=============================="
-# cd packages/ui-gui-nodeos/ && yarn start
+cd packages/ui-gui-nodeos/ && yarn start
 
 P1=$!
 
