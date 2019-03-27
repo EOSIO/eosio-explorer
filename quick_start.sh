@@ -4,6 +4,15 @@ RED='\033[0;31m'
 NC='\033[0m' # No Color
 GREEN='\033[0;32m'
 
+SCRIPTPATH="$( pwd -P )"
+EOSDOCKER="$SCRIPTPATH/packages/docker-eosio-nodeos"
+MONGODOCKER="$SCRIPTPATH/packages/docker-mongodb"
+MONGOAPI="$SCRIPTPATH/packages/api-mongodb-plugin"
+RPCAPI="$SCRIPTPATH/packages/api-rpc"
+GUI="$SCRIPTPATH/packages/ui-gui-nodeos"
+
+echo $EXECPATH
+
 # make sure everything is clean and well setup
 echo "=============================="
 echo "[quick_start.sh] INSTALLING DEPENDENCIES"
@@ -15,52 +24,45 @@ echo " "
 echo "=============================="
 echo "[quick_start.sh] BUILDING DOCKER"
 echo "=============================="
-./packages/docker-eosio-nodeos/first_time_setup.sh
-printf "${GREEN}done${NC}"
+(cd $EOSDOCKER && ./first_time_setup.sh && printf "${GREEN}done${NC}")
 
 echo " "
 echo "=============================="
 echo "[quick_start.sh] REBUILDING MONGODB APIs"
 echo "=============================="
-cd packages/api-mongodb-plugin && rm -rf dist && tsc && cd ../..
-printf "${GREEN}done${NC}"
+(cd $MONGOAPI && rm -rf dist && tsc && cd $SCRIPTPATH && printf "${GREEN}done${NC}")
 
 echo " "
 echo "=============================="
 echo "[quick_start.sh] REBUILDING RPC APIs"
 echo "=============================="
-cd packages/api-rpc && rm -rf dist && tsc && cd ../..
-printf "${GREEN}done${NC}"
+(cd $RPCAPI && rm -rf dist && tsc && cd $SCRIPTPATH && printf "${GREEN}done${NC}")
 
 # remove existing dockers
 echo " "
 echo "=============================="
 echo "[quick_start.sh] CLEANING EXISTING EOSIO DOCKER"
 echo "=============================="
-./packages/docker-eosio-nodeos/remove_eosio_docker.sh 
-printf "${GREEN}done${NC}"
+(cd $EOSDOCKER && ./remove_eosio_docker.sh && printf "${GREEN}done${NC}")
 
 echo " "
 echo "=============================="
 echo "[quick_start.sh] CLEANING EXISTING MONGODB DOCKER"
 echo "=============================="
-./packages/docker-mongodb/remove_mongodb_docker.sh 
-printf "${GREEN}done${NC}"
+(cd $MONGODOCKER && ./remove_mongodb_docker.sh && printf "${GREEN}done${NC}")
 
 # start blockchain and put in background
 echo " "
 echo "=============================="
 echo "[quick_start.sh] STARTING MONGODB DOCKER"
 echo "=============================="
-./packages/docker-mongodb/start_mongodb_docker.sh 
-printf "${GREEN}done${NC}"
+(cd $MONGODOCKER && ./start_mongodb_docker.sh && printf "${GREEN}done${NC}")
 
 echo " "
 echo "=============================="
 echo "[quick_start.sh] STARTING EOSIO DOCKER"
 echo "=============================="
-./packages/docker-eosio-nodeos/start_eosio_docker.sh --nolog
-printf "${GREEN}done${NC}"
+(cd $EOSDOCKER && ./start_eosio_docker.sh --nolog && printf "${GREEN}done${NC}")
 
 # wait until eosio blockchain to be started
 until $(curl --output /dev/null \
@@ -78,7 +80,7 @@ echo " "
 echo "=============================="
 echo "[quick_start.sh] Starting gui docker"
 echo "=============================="
-cd packages/ui-gui-nodeos/ && yarn start
+(cd $GUI && yarn start)
 
 P1=$!
 
