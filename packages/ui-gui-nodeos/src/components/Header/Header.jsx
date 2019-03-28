@@ -3,7 +3,9 @@ import './Header.scss';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Nav, NavItem } from 'reactstrap';
-import { AppNavbarBrand} from '@coreui/react';
+import { AppNavbarBrand } from '@coreui/react';
+
+import ConnectionIndicator from './components/ConnectionIndicator';
 
 const Header = () =>
 
@@ -40,6 +42,9 @@ const Header = () =>
         </NavItem>
         <NavItem className="px-3">
           <Link to="/push-action" className="nav-link">Push Action</Link>
+        </NavItem>
+        <NavItem className="px-3">
+          <ConnectionIndicator/>
         </NavItem>
       </Nav>
     </>

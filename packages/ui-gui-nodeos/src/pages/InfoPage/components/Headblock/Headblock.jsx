@@ -4,17 +4,15 @@ import { connect } from 'react-redux';
 
 import { Col, Form, FormGroup, Label, Button } from 'reactstrap';
 
-import { pollingStart, pollingStop } from './HeadblockReducer';
 
 import { LoadingSpinner } from 'components';
 
 
 const Headblock = (props) => {
 
-  useEffect(()=>{
-    props.pollingStart()
-    return () => { props.pollingStop() }
-  }, [])
+  // useEffect(()=>{
+  //   return () => { props.pollingStop() }
+  // }, [])
 
   let { headblock: { isFetching, data }} = props;
   let { payload : [{block_num, block_id, block}={}]= [], error } = data;
@@ -69,12 +67,10 @@ const Headblock = (props) => {
 }
 
 export default connect(
-  ({ infoPage: { headblock }}) => ({
+  ({ headblock }) => ({
     headblock
   }),
   {
-    pollingStart,
-    pollingStop
   }
 
 )(Headblock);

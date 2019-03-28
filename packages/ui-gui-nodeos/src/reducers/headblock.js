@@ -14,7 +14,7 @@ import apiMongodb from 'services/api-mongodb';
 
 // IMPORTANT
 // Must modify action prefix since action types must be unique in the whole app
-const actionPrefix = `InfoPage/Headblock/`;
+const actionPrefix = `headblock/`;
 
 //Action Type
 const FETCH_START = actionPrefix + `FETCH_START`;

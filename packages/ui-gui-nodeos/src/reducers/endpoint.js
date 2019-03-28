@@ -15,7 +15,7 @@ import paramsToQuery from 'helpers/params-to-query';
 
 // IMPORTANT
 // Must modify action prefix since action types must be unique in the whole app
-const actionPrefix = `InfoPage/Nodeswitch/`;
+const actionPrefix = `endpoint/`;
 
 //Action Type
 export const CONNECT_START = actionPrefix + `CONNECT_START`;

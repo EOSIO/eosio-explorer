@@ -25,6 +25,7 @@ import TestRPCPage from 'pages/TestRPCPage';
 
 import { WillRoute } from 'hocs';
 import { connectStart } from 'reducers/endpoint';
+import { pollingStart } from 'reducers/headblock';
 
 class App extends Component {
 
@@ -33,6 +34,7 @@ class App extends Component {
 
     let { endpoint: {nodeos, mongodb} } = this.props;
     this.props.connectStart(nodeos, mongodb);
+    this.props.pollingStart();
   }
 
   render() {
@@ -69,7 +71,8 @@ export default connect(
     endpoint
   }),
   {
-    connectStart
+    connectStart,
+    pollingStart,
   }
 
 )(App);
