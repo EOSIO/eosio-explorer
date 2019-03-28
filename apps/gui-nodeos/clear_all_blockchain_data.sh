@@ -13,7 +13,7 @@ if [ "$(docker ps -q -f name=eosio_gui_nodeos_container)" ]; then
 fi
 
 echo "=== reinitializing nodeos with cleared blockchain ==="
-(cd ${ROOTPATH}/packages/ && exec docker-eosio-nodeos/first_time_setup.sh)
+(cd ${ROOTPATH}/packages/ && exec docker-eosio-nodeos/build_eosio_docker.sh)
 
 echo "=== reinitializing mongodb ==="
 (cd ${ROOTPATH}/packages/ && exec docker-mongodb/remove_mongodb_docker.sh)

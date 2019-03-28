@@ -45,7 +45,7 @@ Router.post("/compile", async (req, res) => {
 
         const directories = Helper.parseDirectoriesToInclude(path.dirname(body["source"]));
         results = await copy(path.dirname(body["source"]), DEST);
-        COMPILE_SCRIPT = "./quick_start.sh "+compileTarget+" "+directories.join(' ');
+        COMPILE_SCRIPT = "./setup_eosio_cdt_docker.sh "+compileTarget+" "+directories.join(' ');
 
         console.log("Deleted files:\n", deletedFiles.join('\n'));
         results.forEach((file) => console.log("Copied file: ", file["src"]));

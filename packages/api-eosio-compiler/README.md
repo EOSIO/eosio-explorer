@@ -20,7 +20,7 @@ The `./quick_start.sh` script is **hard coded** to compile the **eosio.token** s
 
 ### First Time Setup
 
-First time setup can be initialized by running `./first_time_setup.sh`
+First time setup can be initialized by running `./build_eosio_cdt_docker.sh`
 
 ### Docker 
 

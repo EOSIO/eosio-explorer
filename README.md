@@ -12,7 +12,7 @@ yarn install
 ### Setup for docker image
 cd into `packages/docker-eosio-nodeos`
 ```
-./first_time_setup.sh
+./build_eosio_docker.sh
 ```
 
 ## Development
