@@ -11,7 +11,7 @@ import { mergeMap, map, catchError } from 'rxjs/operators';
 import { combineEpics, ofType } from 'redux-observable';
 
 import apiMongodb from 'services/api-mongodb';
-import apiRpc from '@eos-toppings/api-rpc';
+import apiRpc from 'services/api-rpc';
 import paramsToQuery from 'helpers/params-to-query';
 
 import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from 'constants';
@@ -76,7 +76,7 @@ const createAccountPromise = (
   query, owner_private_key, active_private_key, accountName
 ) => new Promise(
   (resolve, reject) => {
-    apiRpc.create_account(query)
+    apiRpc("create_account", query)
       .then(res => resolve({
         ownerPrivateKey: owner_private_key,
         activePrivateKey: active_private_key,
@@ -92,7 +92,6 @@ const createEpic = action$ => action$.pipe(
     action => {
       let { account: { accountName, ownerPublicKey, activePublicKey, ownerPrivateKey, activePrivateKey }} = action;
       let query = {
-        endpoint: 'http://localhost:8888',
         creator_private_key: '5K7mtrinTFrVTduSxizUc5hjXJEtTjVTsqSHeBHes1Viep86FP5',
         creator_account_name: 'useraaaaaaaa',
         new_account_name: accountName,
@@ -149,7 +148,7 @@ const dataInitState = {
 const alphabeticalSort = (a, b) => {
   let acctNameA = a.account,
       acctNameB = b.account;
-  if (acctNameA < acctNameB) 
+  if (acctNameA < acctNameB)
     return -1;
   if (acctNameA > acctNameB)
     return 1;

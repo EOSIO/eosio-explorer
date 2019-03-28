@@ -11,7 +11,7 @@ import { mergeMap, mapTo, map, takeUntil, catchError } from 'rxjs/operators';
 import { combineEpics, ofType } from 'redux-observable';
 
 import apiMongodb from 'services/api-mongodb';
-import apiRpc from '@eos-toppings/api-rpc';
+import apiRpc from 'services/api-rpc';
 
 // IMPORTANT
 // Must modify action prefix since action types must be unique in the whole app
@@ -31,7 +31,7 @@ export const fetchRejected = ( payload, error ) => ({ type: FETCH_REJECTED, payl
 export const pollingStart = () => ({ type: POLLING_START });
 export const pollingStop = () => ({ type: POLLING_STOP });
 
-const query = {"endpoint": "http://localhost:8888", "privateKey": "5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3"}; 
+const query = { "privateKey": "5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3"};
 
 //Epic
 const startEpic = action$ => action$.pipe(
@@ -44,7 +44,7 @@ const fetchEpic = action$ => action$.pipe(
   mergeMap(action =>
     interval(500).pipe(
       mergeMap(action =>
-        from(apiRpc.get_info(query)).pipe(
+        from(apiRpc("get_info", query)).pipe(
           map(res => fetchFulfilled(res)),
           catchError(error => of(fetchRejected(error.response, { status: error.status })))
         )

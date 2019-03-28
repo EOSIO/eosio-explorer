@@ -56,12 +56,10 @@ const Nodeswitch = (props) => {
                 </FormFeedback>
               }
           </Col>
-          <br/>
-          <br/>
-          <Col xs="3">
+          <Col xs="3" style={{marginTop: "10px"}}>
             <CenteredLabel htmlFor="mongodbEndPoint">Connected MongoDB</CenteredLabel>
           </Col>
-          <Col xs="9">
+          <Col xs="9" style={{marginTop: "10px"}}>
             <Input
               type="text"
               id="mongodbEndPoint"

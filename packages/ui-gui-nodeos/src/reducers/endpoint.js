@@ -18,7 +18,7 @@ import paramsToQuery from 'helpers/params-to-query';
 const actionPrefix = `InfoPage/Nodeswitch/`;
 
 //Action Type
-const CONNECT_START = actionPrefix + `CONNECT_START`;
+export const CONNECT_START = actionPrefix + `CONNECT_START`;
 const CONNECT_FULFILLED = actionPrefix + `CONNECT_FULFILLED`;
 const CONNECT_REJECTED = actionPrefix + `CONNECT_REJECTED`;
 const CONNECT_RESET = actionPrefix + `CONNECT_RESET`;

@@ -47,11 +47,11 @@ const Accountdetail = (props) => {
       setShowDetailsSection(false);
     }else{
       setShowDetailsSection(true)
-      props.paramsSet({endpoint: 'http://localhost:8888',account_name:  pathNameConsumer(pathname) });
-      props.fetchStart();  
-    }       
-  }, [])  
-  
+      props.paramsSet({account_name: pathNameConsumer(pathname) });
+      props.fetchStart();
+    }
+  }, [])
+
   let { accountdetail: { isFetching, data, params } } = props;
   let { payload, error } = data;
 
@@ -59,33 +59,33 @@ const Accountdetail = (props) => {
     <div className="Accountdetail">
       <div>{ error
               ? <button onClick={props.fetchStart}>{JSON.stringify(error)} Click to Reload.</button>
-              : isFetching 
+              : isFetching
                 ? `loading...`
                 : <div>
                     <Row>
                       <Col sm="12">
-                        <Card> 
-                          <CardBody>                       
+                        <Card>
+                          <CardBody>
                             <SearchCardTitle>
                               <DivFlexStyled>
                                 <SearchLabel>Search Account Name:</SearchLabel>
-                                <SearchInputStyled 
+                                <SearchInputStyled
                                       placeholder="Account Name"
                                       value={inputValue}
                                       onKeyDown={
                                         evt => {
                                           if (evt.key === 'Enter') {
                                             setInputValue("")
-                                            { inputValue ? props.push('/account/'+inputValue) : console.log("No search text")} 
+                                            { inputValue ? props.push('/account/'+inputValue) : console.log("No search text")}
                                           }
                                         }
                                       }
                                       onChange={evt=>{setInputValue(evt.target.value)}}/>
                                 <SearchButton
-                                      color="secondary"                           
+                                      color="secondary"
                                       onClick={evt=> {
                                         setInputValue("")
-                                        {inputValue ? props.push('/account/'+inputValue) : console.log("No search text") }                          
+                                        {inputValue ? props.push('/account/'+inputValue) : console.log("No search text") }
                                       }}>
                                 Search</SearchButton>
                               </DivFlexStyled>
@@ -93,8 +93,8 @@ const Accountdetail = (props) => {
                           </CardBody>
                         </Card>
                       </Col>
-                    </Row>                       
-                    {showDetailsSection                     
+                    </Row>
+                    {showDetailsSection
                       ? error
                         ? <button onClick={props.fetchStart}>{JSON.stringify(error)} Click to Reload.</button>
                         : isFetching
@@ -102,10 +102,10 @@ const Accountdetail = (props) => {
                           :  <div>
                                 <Row>
                                   <Col sm="12">
-                                    <Card> 
-                                      <CardBody>  
+                                    <Card>
+                                      <CardBody>
                                         <CardTitleStyled>Account Detail</CardTitleStyled>
-                                        <Form> 
+                                        <Form>
                                           <FormGroup row>
                                             <ColBoldStyled sm={2}>Account Name:</ColBoldStyled>
                                             <Col sm={10}>
@@ -120,17 +120,17 @@ const Accountdetail = (props) => {
                                           </FormGroup>
                                           <FormGroup row>
                                             <ColBoldStyled sm={2}>Owner Public Key:</ColBoldStyled>
-                                            <Col sm={10}>                                            
-                                              {payload.permissions[0].perm_name == "owner" 
-                                                ? payload.permissions[0].required_auth.keys[0].key 
+                                            <Col sm={10}>
+                                              {payload.permissions[0].perm_name == "owner"
+                                                ? payload.permissions[0].required_auth.keys[0].key
                                                 : payload.permissions[1].required_auth.keys[0].key}
                                             </Col>
                                           </FormGroup>
                                           <FormGroup row>
                                             <ColBoldStyled sm={2}>Active Public Key:</ColBoldStyled>
                                             <Col sm={10}>
-                                              {payload.permissions[0].perm_name == "active" 
-                                                ? payload.permissions[0].required_auth.keys[0].key 
+                                              {payload.permissions[0].perm_name == "active"
+                                                ? payload.permissions[0].required_auth.keys[0].key
                                                 : payload.permissions[1].required_auth.keys[0].key}
                                             </Col>
                                           </FormGroup>
@@ -147,11 +147,11 @@ const Accountdetail = (props) => {
                                       readOnly={true}
                                       height={600}
                                     />
-                                  </Col>  
-                                </Row>        
-                              </div> 
+                                  </Col>
+                                </Row>
+                              </div>
                         : console.log("No details section") }
-            </div>}                              
+            </div>}
       </div>
     </div>
   );
