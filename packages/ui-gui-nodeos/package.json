@@ -44,7 +44,8 @@
     "build": "react-app-rewired build",
     "postbuild": "react-snap",
     "test": "react-app-rewired test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "serve": "node serve.js"
   },
   "browserslist": [
     ">0.2%",

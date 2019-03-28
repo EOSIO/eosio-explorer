@@ -8,7 +8,7 @@ FULLFILEPATH=$1
 
 # Verify everything is clean and setup properly
 echo "[Quick Start Engage] First time setup..."
-./first_time_setup.sh
+./build_eosio_cdt_docker.sh
 
 # Checks if the Docker container is already running. If it is, then compile the contract as normal.
 if [ "$(docker ps -q -f name=eosio_gui_nodeos_cdt_container)" ]; then

@@ -14,7 +14,7 @@ cd into package root `/packages/docker-eosio-nodeos`
 ## Initial setup
 
 ```sh
-./first_time_setup.sh
+./build_eosio_docker.sh
 ```
 
 ## Start

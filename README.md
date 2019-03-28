@@ -4,31 +4,29 @@ A monorepo with tools working on top of nodeos
 # Development
 
 ## First time setup
-Install all dependencies
-```
-yarn install
-```
-
-### Setup for docker image
-cd into `packages/docker-eosio-nodeos`
-```
+For first time setup, run
+```sh
 ./first_time_setup.sh
 ```
+The above command will execute the following in sequence
+
+1. Install all required dependencies
+2. Build the docker images
+3. Check and remove any existing docker with names `eosio-mongodb` and `eosio_gui_nodeos_container`
+4. Start the dockers
+5. Setup compiler api 
+6. Start the GUI 
+
+## Other important scripts
+`quick_start.sh` - Start/Restart dockers, compiler service, & gui
+`remove_dockers.sh` - Remove `eosio-mongodb` and `eosio_gui_nodeos_container` dockers
+`pause_dockers.sh` - Pause `eosio-mongodb` and `eosio_gui_nodeos_container` dockers
 
 ## Development
 Make sure you have `docker` installed and assigned 8Gb Ram for it.
 
-Make 2 terminals.
-
-First terminal, start dockers for mongodb/nodeos.
-```
-yarn start-dockers
-```
-
-Second terminal, start dockers for gui ( create-react-app ) and the api service.
-```
-yarn start-gui
-```
+To Start
+`./quick_start.sh`
 
 Start development on browser at http://localhost:3000
 
