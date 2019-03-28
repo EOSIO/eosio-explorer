@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Card, CardBody, CardHeader } from 'reactstrap';
 
 import { StandardTemplate } from 'templates';
+import Contractdetail from './components/Contractdetail';
 
 class ContractdetailPage extends Component {
   render() {
@@ -10,9 +11,10 @@ class ContractdetailPage extends Component {
         <div className="ContractdetailPage">
           <Card>
             <CardHeader>
-              Contract Detail Page
+              Smart Contract Detail Page
             </CardHeader>
             <CardBody>
+              <Contractdetail />
             </CardBody>
           </Card>
         </div>

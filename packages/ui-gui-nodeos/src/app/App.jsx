@@ -44,6 +44,7 @@ class App extends Component {
           <WillRoute exact path="/account" component={ AccountdetailPage }/>
           <WillRoute exact path="/account/:id" component={ AccountdetailPage }/>
           <WillRoute exact path="/contract" component={ ContractdetailPage }/>
+          <WillRoute exact path="/contract/:id" component={ ContractdetailPage }/>
           <WillRoute exact path="/permission" component={ PermissionPage }/>
           <WillRoute exact path="/deploy" component={ DeploymentPage }/>
           <WillRoute exact path="/push-action" component={ PushactionPage }/>
