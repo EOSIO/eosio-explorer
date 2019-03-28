@@ -21,8 +21,8 @@ export default async ( apiPath, query ) => {
     }
   }else{ //If we are prerending using react snap, return a promise that resolved with a repsonse with { repsonse: undefined}
 
-    from(new Promise((resolve, reject)=>{
+    return new Promise((resolve, reject)=>{
       resolve({response: undefined});
-    }))
+    })
   }
 }
