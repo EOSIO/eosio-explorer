@@ -2,10 +2,10 @@ import React, { useEffect } from 'react';
 
 import { connect } from 'react-redux';
 
-import { Button, Col, Form, FormGroup, Input, Label, FormFeedback } from 'reactstrap';
+import { Button, ButtonGroup, Col, Form, FormGroup, Input, Label, FormFeedback } from 'reactstrap';
 import styled from 'styled-components';
 
-import { connectStart } from 'reducers/endpoint';
+import { connectStart, connectReset, endpointInitState } from 'reducers/endpoint';
 import useForm from 'helpers/useForm';
 import validate from './NodeswitchValidatorEngine';
 
@@ -36,16 +36,16 @@ const Nodeswitch = (props) => {
     <div className="Nodeswitch">
       <Form onSubmit={ handleSubmit }>
         <FormGroup row className="mb-0">
-          <Col xs="2">
+          <Col xs="3">
             <CenteredLabel htmlFor="nodeosEndPoint">Connected Nodeos</CenteredLabel>
           </Col>
-          <Col xs="4">
+          <Col xs="9">
             <Input
               type="text"
               id="nodeosEndPoint"
               name="nodeosEndPoint"
               placeholder="Enter nodeos endpoint..."
-              value={values.nodeosEndPoint}
+              defaultValue={values.nodeosEndPoint}
               onChange={handleChange}
               invalid={!!errors.nodeosEndPoint}
               />
@@ -56,16 +56,18 @@ const Nodeswitch = (props) => {
                 </FormFeedback>
               }
           </Col>
-          <Col xs="2">
+          <br/>
+          <br/>
+          <Col xs="3">
             <CenteredLabel htmlFor="mongodbEndPoint">Connected MongoDB</CenteredLabel>
           </Col>
-          <Col xs="4">
+          <Col xs="9">
             <Input
               type="text"
               id="mongodbEndPoint"
               name="mongodbEndPoint"
               placeholder="Enter mongodb endpoint..."
-              value={values.mongodbEndPoint}
+              defaultValue={values.mongodbEndPoint}
               onChange={handleChange}
               invalid={!!errors.mongodbEndPoint}
             />
@@ -77,7 +79,16 @@ const Nodeswitch = (props) => {
             }
           </Col>
           <Col xs="12" className="text-right mt-3">
-            <Button type="submit" color="primary" size="sm" disabled={ !isDirtyForm }>Connect</Button>
+            <ButtonGroup className="float-right">
+              <Button type="submit" color="primary" size="sm" disabled={ !isDirtyForm }>Connect</Button>
+              <Button
+                color="danger"
+                onClick={()=>{
+                  props.connectReset();
+                  setValues({nodeosEndPoint: endpointInitState.nodeos, mongodbEndPoint: endpointInitState.mongodb});
+                }}
+              >Reset Connections</Button>
+            </ButtonGroup>
           </Col>
         </FormGroup>
       </Form>
@@ -90,7 +101,8 @@ export default connect(
     endpoint
   }),
   {
-    connectStart
+    connectStart,
+    connectReset
   }
 
 )(Nodeswitch);

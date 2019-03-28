@@ -21,11 +21,13 @@ const actionPrefix = `InfoPage/Nodeswitch/`;
 const CONNECT_START = actionPrefix + `CONNECT_START`;
 const CONNECT_FULFILLED = actionPrefix + `CONNECT_FULFILLED`;
 const CONNECT_REJECTED = actionPrefix + `CONNECT_REJECTED`;
+const CONNECT_RESET = actionPrefix + `CONNECT_RESET`;
 
 //Action Creator
 export const connectStart = (nodeos, mongodb) => ({ type: CONNECT_START, nodeos, mongodb });
 export const connectFulfilled = payload => ({ type: CONNECT_FULFILLED, payload });
 export const connectRejected = ( payload, error ) => ({ type: CONNECT_REJECTED, payload, error });
+export const connectReset = () => ({ type: CONNECT_RESET });
 // Epic
 const connectEpic = ( action$, state$ ) => action$.pipe(
   ofType(CONNECT_START),
@@ -41,13 +43,20 @@ const connectEpic = ( action$, state$ ) => action$.pipe(
   )
 );
 
+const resetEpic = ( action$, state$ ) => action$.pipe(
+  ofType(CONNECT_RESET),
+  mapTo(connectStart(endpointInitState.nodeos, endpointInitState.mongodb)),
+);
+
+
 export const combinedEpic = combineEpics(
-  connectEpic
+  connectEpic,
+  resetEpic,
 );
 
 
 //Reducer
-const endpointInitState = {
+export const endpointInitState = {
   nodeos: "http://localhost:8888",
   mongodb: "mongodb://localhost:27017/mongopluginmainnet",
 }
@@ -63,6 +72,8 @@ const endpointReducer = (state=endpointInitState, action) => {
     case CONNECT_FULFILLED:
     case CONNECT_REJECTED:
       return state;
+    case CONNECT_RESET:
+      return {...endpointInitState};
     default:
       return state;
   }
