@@ -32,7 +32,7 @@ echo " "
 echo "=============================="
 echo "STARTING CONTRACT COMPILER SERVICE"
 echo "=============================="
-(cd $COMPILER && yarn start > compiler.log && printf "${GREEN}done${NC}")
+(cd $COMPILER && yarn start > compiler.log &)
 
 # wait until eosio blockchain to be started
 waitcounter=0
@@ -62,7 +62,7 @@ echo " "
 echo "=============================="
 echo "STARTING GUI"
 echo "=============================="
-# (cd $GUI && yarn start)
+(cd $GUI && yarn start)
 
 P1=$!
 
