@@ -20,7 +20,7 @@ The above command will execute the following in sequence
 ## Other important scripts
 `quick_start.sh` - Start/Restart dockers, compiler service, & gui \
 `remove_dockers.sh` - Remove `eosio-mongodb` and `eosio_gui_nodeos_container` dockers \
-`pause_dockers.sh` - Pause `eosio-mongodb` and `eosio_gui_nodeos_container` dockers \
+`pause_dockers.sh` - Pause `eosio-mongodb` and `eosio_gui_nodeos_container` dockers
 
 ## Development
 Make sure you have `docker` installed and assigned 8Gb Ram for it.

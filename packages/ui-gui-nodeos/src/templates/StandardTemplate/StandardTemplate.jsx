@@ -2,7 +2,7 @@ import './StandardTemplate.scss';
 import React from 'react';
 import { Container } from 'reactstrap';
 
-import { Footer, Header } from 'components';
+import { Footer, Header, HelpFAB } from 'components';
 
 import {
   AppFooter,
@@ -17,6 +17,7 @@ const StandardTemplate = ({
       <Header />
     </AppHeader>
     <div className="app-body">
+      <HelpFAB />
       <main className="main">
         <Container fluid>
           {children}

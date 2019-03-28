@@ -35,7 +35,8 @@
     "redux-persist-transform-filter": "^0.0.18",
     "redux-thunk": "^2.3.0",
     "rxjs": "^6.4.0",
-    "simple-line-icons": "^2.4.1"
+    "simple-line-icons": "^2.4.1",
+    "@material-ui/core": "latest"
   },
   "scripts": {
     "prestart": "MODE=development node serve.js &",

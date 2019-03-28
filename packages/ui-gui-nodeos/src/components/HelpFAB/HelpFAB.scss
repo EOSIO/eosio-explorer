@@ -1,0 +1,15 @@
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+.HelpFAB {
+  .fab {
+    margin: 0px;
+    top: auto;
+    right: 20px;
+    bottom: 20px;
+    left: auto;
+    position: fixed;
+    z-index: 1;
+};
+  .help_icon {
+    font-size: 30px;
+  }
+}
