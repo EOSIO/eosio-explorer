@@ -23,9 +23,10 @@ const CardTitleStyled = styled(CardTitle)`
 `
 const DivFlexStyled = styled.div`
   display: flex;
+  justify-content: flex-end;
 `
 const SearchInputStyled = styled(Input)`
-  width: 50%;
+  width: 30%;
   margin-top: -6px;
 `
 const Transactionlist = (props) => {
@@ -43,36 +44,32 @@ const Transactionlist = (props) => {
   return (
     <div className="Transactionlist">
       <Card>
-        <CardBody>
-          <Row>
-            <Col sm="6"></Col>
-            <Col sm="6">
-              <CardTitle>
-                <DivFlexStyled>
-                  <SearchLabel>Search Transactions:</SearchLabel>
-                  <SearchInputStyled 
-                        placeholder="Transaction ID"
-                        value={inputValue}
-                        onKeyDown={
-                          evt => {
-                            if (evt.key === 'Enter') {
-                              setInputValue("")
-                               {inputValue ? props.push('/transaction/'+inputValue) : console.log("No search text");} 
-                            }
-                          }
-                        }
-                        onChange={evt=>{setInputValue(evt.target.value)}}/>
-                  <SearchButton
-                        color="secondary"                           
-                        onClick={evt=> {
+        <CardBody>         
+          <CardTitle>
+            <DivFlexStyled>
+              <SearchLabel>Search Transactions:</SearchLabel>
+              <SearchInputStyled 
+                    placeholder="Transaction ID"
+                    value={inputValue}
+                    onKeyDown={
+                      evt => {
+                        if (evt.key === 'Enter') {
                           setInputValue("")
-                          {inputValue ? props.push('/transaction/'+inputValue) : console.log("No search text");}                          
-                        }}>
-                  Search</SearchButton>
-                </DivFlexStyled>
-              </CardTitle>
-            </Col>
-          </Row>
+                            {inputValue ? props.push('/transaction/'+inputValue) : console.log("No search text");} 
+                        }
+                      }
+                    }
+                    onChange={evt=>{setInputValue(evt.target.value)}}/>
+              <SearchButton
+                    color="secondary"                           
+                    onClick={evt=> {
+                      setInputValue("")
+                      {inputValue ? props.push('/transaction/'+inputValue) : console.log("No search text");}                          
+                    }}>
+              Search</SearchButton>
+            </DivFlexStyled>
+          </CardTitle>
+           
           <CardTitleStyled>Transaction List</CardTitleStyled>
           <div>{error
               ? <button onClick={props.pollingStart}>{JSON.stringify(error)} Click to Reload.</button>

@@ -19,12 +19,13 @@ const LabelFilterStyled = styled.label`
 `
 
 const SearchInputStyled = styled(Input)`
-  width: 50%;
+  width: 60%;
   margin-top: -6px;
 `
 
 const DivFlexStyled = styled.div`
   display: flex;
+  justify-content: flex-end;
 `
 
 const TableStyled = styled(Table)`
