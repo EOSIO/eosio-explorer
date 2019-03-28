@@ -1,10 +1,10 @@
 import { from } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
 
-export default ( endpoint ) => navigator.userAgent !== "ReactSnap"
+export default ( apiPath ) => navigator.userAgent !== "ReactSnap"
 ?
   ajax({
-    url :`/api/mongodb/${endpoint}`,
+    url :`/api/mongodb/${apiPath}`,
     timeout: 1000,
     responseType: "json"
   })

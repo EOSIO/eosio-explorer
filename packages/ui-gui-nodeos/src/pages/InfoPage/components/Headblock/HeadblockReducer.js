@@ -61,7 +61,7 @@ export const combinedEpic = combineEpics(
 
 //Reducer
 const dataInitState = {
-  payload: {},
+  payload: [],
   error: undefined
 }
 
@@ -73,13 +73,13 @@ const dataReducer = (state=dataInitState, action) => {
     case FETCH_FULFILLED:
       return {
         ...state,
-        payload: action.payload,
+        payload: action.payload !== null ? action.payload : [],
         error: undefined
       };
     case FETCH_REJECTED:
       return {
         ...state,
-        payload: action.payload,
+        payload: action.payload !== null ? action.payload : [],
         error: action.error
       };
     default:

@@ -6,11 +6,12 @@
 
 import { combineReducers } from 'redux';
 import { of, from } from 'rxjs';
-import { mergeMap, map, catchError } from 'rxjs/operators';
+import { mergeMap, map, catchError, mapTo } from 'rxjs/operators';
 
 import { combineEpics, ofType } from 'redux-observable';
 
-import apiRpc from '@eos-toppings/api-rpc';
+import apiRpc from 'services/api-rpc';
+import { CONNECT_START } from 'reducers/endpoint';
 
 // IMPORTANT
 // Must modify action prefix since action types must be unique in the whole app
@@ -28,20 +29,27 @@ export const fetchRejected = ( payload, error ) => ({ type: FETCH_REJECTED, payl
 
 //Epic
 
-const query = {"endpoint": "http://localhost:8888", "privateKey": "5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3"}; 
+const query = {"privateKey": "5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3"};
 
 const fetchEpic = action$ => action$.pipe(
   ofType(FETCH_START),
   mergeMap(action =>
-    from(apiRpc.get_info(query)).pipe(
+    from(apiRpc("get_info", query)).pipe(
       map(res => fetchFulfilled(res)),
       catchError(error => of(fetchRejected(error.response, { status: error.status })))
     )
   ),
 );
 
+const endpointConnectEpic = action$ => action$.pipe(
+  ofType(CONNECT_START),
+  mapTo(fetchStart())
+);
+
+
 export const combinedEpic = combineEpics(
-  fetchEpic
+  fetchEpic,
+  endpointConnectEpic
 );
 
 

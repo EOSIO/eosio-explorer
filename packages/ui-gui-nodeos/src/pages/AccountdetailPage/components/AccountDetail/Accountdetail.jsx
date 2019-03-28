@@ -47,11 +47,11 @@ const Accountdetail = (props) => {
       setShowDetailsSection(false);
     }else{
       setShowDetailsSection(true)
-      props.paramsSet({endpoint: 'http://localhost:8888',account_name:  pathNameConsumer(pathname) });
-      props.fetchStart();  
-    }       
-  }, [])  
-  
+      props.paramsSet({account_name: pathNameConsumer(pathname) });
+      props.fetchStart();
+    }
+  }, [])
+
   let { accountdetail: { isFetching, data, params } } = props;
   let { payload, error } = data;
 

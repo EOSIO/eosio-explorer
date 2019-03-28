@@ -5,6 +5,7 @@ import './App.scss';
 import React, { Component } from 'react';
 import { Switch, Redirect } from 'react-router-dom';
 import Loadable from 'react-loadable';
+import { connect } from 'react-redux';
 
 import InfoPage from 'pages/InfoPage';
 import BlocklistPage from 'pages/BlocklistPage';
@@ -23,11 +24,15 @@ import TermsOfUsePage from 'pages/TermsOfUsePage';
 import TestRPCPage from 'pages/TestRPCPage';
 
 import { WillRoute } from 'hocs';
+import { connectStart } from 'reducers/endpoint';
 
 class App extends Component {
 
   componentDidMount(){
     setTimeout(()=>{Loadable.preloadAll()}, 1000);
+
+    let { endpoint: {nodeos, mongodb} } = this.props;
+    this.props.connectStart(nodeos, mongodb);
   }
 
   render() {
@@ -59,4 +64,12 @@ class App extends Component {
   }
 }
 
-export default App;
+export default connect(
+  ({ endpoint }) => ({
+    endpoint
+  }),
+  {
+    connectStart
+  }
+
+)(App);
