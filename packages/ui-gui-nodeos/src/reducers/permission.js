@@ -157,7 +157,7 @@ const alphabeticalSort = (a, b) => {
 
 const composePermissionList = (originalList, payloadList) => {
   let hash = Object.create(null);
-  originalList.concat(payloadList).forEach(el => {
+  originalList.concat(payloadList).forEach((el={}) => {
     hash[el._id] = Object.assign(hash[el._id] || {}, el);
   })
   let composedList = Object.keys(hash).map(k => hash[k]);
