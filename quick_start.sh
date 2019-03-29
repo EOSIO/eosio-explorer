@@ -33,12 +33,14 @@ if [ "$(docker ps -q -f status=paused -f name=eosio_gui_nodeos_container)" ]; th
   echo 'resuming eosio docker'
   docker unpause eosio_gui_nodeos_container
 else
-  if find "$EOSDOCKER/data" -mindepth 1 -print -quit 2>/dev/null | grep -q .; then
-      echo "eosio docker is not running, but data folder exists"
-      echo "cleaning data now"
-      rm -r $EOSDOCKER/data/*
+  if [ ! "$(docker ps -q -f name=eosio_gui_nodeos_container)" ]; then
+    if find "$EOSDOCKER/data" -mindepth 1 -print -quit 2>/dev/null | grep -q .; then
+        echo "eosio docker is not running, but data folder exists"
+        echo "cleaning data now"
+        rm -r $EOSDOCKER/data/*
+        sleep 10 #else docker fails  sometimes
+    fi
   fi
-  sleep 10 #else docker fails  sometimes
   (cd $EOSDOCKER && ./start_eosio_docker.sh --nolog && printf "${GREEN}done${NC}")
 fi
 
