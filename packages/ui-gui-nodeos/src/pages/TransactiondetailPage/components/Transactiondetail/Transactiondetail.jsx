@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 
 import { connect } from 'react-redux';
-
+import { Link } from 'react-router-dom';
 import { fetchStart, paramsSet } from './TransactiondetailReducer';
 import pathNameConsumer from 'helpers/pathname-consumer';
 import { Card, CardTitle, CardBody, Col, Row, Form, FormGroup} from 'reactstrap';
@@ -26,7 +26,7 @@ const Transactiondetail = (props) => {
 
   useEffect(()=>{
     let { router: { location: {pathname} } } = props;
-    props.paramsSet({trx_id: pathNameConsumer(pathname)});
+    props.paramsSet({id: pathNameConsumer(pathname)});
     props.fetchStart();
   }, [])
 
@@ -40,7 +40,7 @@ const Transactiondetail = (props) => {
               : isFetching           
                 ? `loading...`
                 : payload.length === 0 
-                  ? `No transaction found with transaction id = ${params.trx_id}`
+                  ? `No transaction found with transaction id = ${params.id}`
                   : <div>
                       <Row>
                         <Col sm="12">
@@ -51,7 +51,7 @@ const Transactiondetail = (props) => {
                                 <FormGroup row>
                                   <ColBoldStyled sm={2}>Transaction ID:</ColBoldStyled>
                                   <Col sm={10}>
-                                    {payload[0].trx_id}
+                                    {payload[0].id}
                                   </Col>
                                 </FormGroup>
                                 <FormGroup row>
@@ -69,7 +69,7 @@ const Transactiondetail = (props) => {
                                 <FormGroup row>
                                   <ColBoldStyled sm={2}>Number of Actions:</ColBoldStyled>
                                   <Col sm={10}>
-                                    {payload[0].actions.length}
+                                    {payload[0].action_traces.length}
                                   </Col>
                                 </FormGroup>
                               </Form>
@@ -78,7 +78,7 @@ const Transactiondetail = (props) => {
                         </Col>
                       </Row>
 
-                      {(payload[0].actions.length) > 0
+                      {(payload[0].action_traces.length) > 0
                         ? <Row>
                             <Col sm={12}>
                               <Card>
@@ -90,11 +90,11 @@ const Transactiondetail = (props) => {
                                       <ColBoldUnderlineStyled sm={3}>Action Name</ColBoldUnderlineStyled>
                                       <ColBoldUnderlineStyled sm={7}>Smart Contract Name</ColBoldUnderlineStyled>
                                     </FormGroup>
-                                    {(payload[0].actions).map((eachAction, index)=> 
+                                    {(payload[0].action_traces).map((eachAction, index)=> 
                                       <FormGroup key={index} row>
                                         <Col sm={2}>{index+1}</Col>    
-                                        <Col sm={3}>{eachAction.name}</Col>
-                                        <Col sm={7}>{eachAction.account}</Col>
+                                        <Col sm={3}><Link to={`/action/${eachAction.receipt.act_digest}`}>{eachAction.act.name}</Link></Col>
+                                        <Col sm={7}>{eachAction.act.account}</Col>
                                       </FormGroup>                                    
                                     )}
                                   </Form>
