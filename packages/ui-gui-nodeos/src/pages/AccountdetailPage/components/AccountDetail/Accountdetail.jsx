@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 
 import { connect } from 'react-redux';
-
+import { Link } from 'react-router-dom';
 import { fetchStart, paramsSet } from './AccountdetailReducer';
 import pathNameConsumer from 'helpers/pathname-consumer';
 import { push } from 'connected-react-router'
 
-import { Card, CardTitle, CardBody, Col, Row, Form, FormGroup, Input} from 'reactstrap';
+import { Card, CardTitle, CardBody, Col, Row, Form, FormGroup, Input, Button} from 'reactstrap';
 import styled from 'styled-components';
 import { CodeViewer } from 'components';
 import SearchButton from 'styled/SearchButton';
@@ -31,6 +31,7 @@ const SearchInputStyled = styled(Input)`
 
 const DivFlexStyled = styled.div`
   display: flex;
+  justify-content: flex-end;
 `
 
 const SearchCardTitle = styled(CardTitle)`
@@ -53,7 +54,7 @@ const Accountdetail = (props) => {
   }, [])
 
   let { accountdetail: { isFetching, data, params } } = props;
-  let { payload, error } = data;
+  let { payload={}, error } = data;
 
   return (
     <div className="Accountdetail">
@@ -95,7 +96,9 @@ const Accountdetail = (props) => {
             ? `No account found with Account name: ${params.account_name}`
             : isFetching
               ? `loading...`
-              :  <div>
+              : (Object.keys(payload).length === 0 && payload.constructor === Object) 
+                ? `loading...`
+                : <div>
                     <Row>
                       <Col sm="12">
                         <Card> 
@@ -129,6 +132,9 @@ const Accountdetail = (props) => {
                                     ? payload.permissions[0].required_auth.keys[0].key 
                                     : payload.permissions[1].required_auth.keys[0].key}
                                 </Col>
+                              </FormGroup>
+                              <FormGroup>
+                              <Link to={`/contract/${payload.account_name}`}><Button color="secondary">View Smart Contract</Button></Link>
                               </FormGroup>
                             </Form>
                           </CardBody>

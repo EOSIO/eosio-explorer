@@ -10,7 +10,7 @@ if [ "$(docker ps -q -f status=exited -f name=eosio-mongodb)" ]; then
 fi
 
 if [ ! "$(docker ps -q -f name=eosio-mongodb)" ]; then
-  docker run -d -p 27017:27017 --name eosio-mongodb -v $(pwd)/data:/data/db mongo
+  docker run -d --rm -p 27017:27017 --name eosio-mongodb -v $(pwd)/data:/data/db mongo
 else
   echo "docker already running"
 fi
