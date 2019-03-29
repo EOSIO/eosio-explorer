@@ -30,12 +30,12 @@ echo "BUILDING COMPILER DOCKER"
 echo "=============================="
 (cd $COMPILER && ./build_eosio_cdt_docker.sh && printf "${GREEN}done${NC}")
 
-# # make sure everything is clean and well setup
-# echo " "
-# echo "=============================="
-# echo "BUILDING APPLICATION"
-# echo "=============================="
-# (cd $GUI && yarn build && printf "${GREEN}done${NC}")
+# make sure everything is clean and well setup
+echo " "
+echo "=============================="
+echo "BUILDING APPLICATION"
+echo "=============================="
+(cd $GUI && yarn build && printf "${GREEN}done${NC}")
 
 # echo 'build done'
 # remove existing dockers 

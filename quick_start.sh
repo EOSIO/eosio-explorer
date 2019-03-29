@@ -14,18 +14,33 @@ if [ "$1" == "-d" -o "$1" == "--delete" ]; then
   ./remove_dockers.sh
 fi
 
-# start blockchain and put in background
 echo " "
 echo "=============================="
 echo "STARTING MONGODB DOCKER"
 echo "=============================="
-(cd $MONGODOCKER && ./start_mongodb_docker.sh && printf "${GREEN}done${NC}")
+if [ "$(docker ps -q -f status=paused -f name=eosio-mongodb)" ]; then
+  echo 'resuming mongodb docker'
+  docker unpause eosio-mongodb
+else
+  (cd $MONGODOCKER && ./start_mongodb_docker.sh && printf "${GREEN}done${NC}")
+fi
 
 echo " "
 echo "=============================="
 echo "STARTING EOSIO DOCKER"
 echo "=============================="
-(cd $EOSDOCKER && ./start_eosio_docker.sh --nolog && printf "${GREEN}done${NC}")
+if [ "$(docker ps -q -f status=paused -f name=eosio_gui_nodeos_container)" ]; then
+  echo 'resuming eosio docker'
+  docker unpause eosio_gui_nodeos_container
+else
+  if find "$EOSDOCKER/data" -mindepth 1 -print -quit 2>/dev/null | grep -q .; then
+      echo "eosio docker is not running, but data folder exists"
+      echo "cleaning data now"
+      rm -r $EOSDOCKER/data/*
+  fi
+  sleep 10 #else docker fails  sometimes
+  (cd $EOSDOCKER && ./start_eosio_docker.sh --nolog && printf "${GREEN}done${NC}")
+fi
 
 # start compiler service in background
 echo " "
