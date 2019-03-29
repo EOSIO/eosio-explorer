@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { connect } from 'react-redux';
 
@@ -19,6 +19,8 @@ const Nodeswitch = (props) => {
     props.connectStart(values.nodeosEndPoint, values.mongodbEndPoint);
   }, validate);
 
+  const [key, setKey] = useState(Date.now());
+
   let { endpoint: { nodeos, mongodb } } = props;
 
 
@@ -34,7 +36,7 @@ const Nodeswitch = (props) => {
 
   return (
     <div className="Nodeswitch">
-      <Form onSubmit={ handleSubmit }>
+      <Form key={key} onSubmit={ handleSubmit }>
         <FormGroup row className="mb-0">
           <Col xs="3">
             <CenteredLabel htmlFor="nodeosEndPoint">Connected Nodeos</CenteredLabel>
@@ -84,6 +86,7 @@ const Nodeswitch = (props) => {
                 onClick={()=>{
                   props.connectReset();
                   setValues({nodeosEndPoint: endpointInitState.nodeos, mongodbEndPoint: endpointInitState.mongodb});
+                  setKey(Date.now());
                 }}
               >Reset Connections</Button>
             </ButtonGroup>
