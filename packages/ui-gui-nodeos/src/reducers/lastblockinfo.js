@@ -10,16 +10,15 @@ import { mergeMap, mapTo, map, takeUntil, catchError } from 'rxjs/operators';
 
 import { combineEpics, ofType } from 'redux-observable';
 
-import apiMongodb from 'services/api-mongodb';
 import apiRpc from 'services/api-rpc';
 
 // IMPORTANT
 // Must modify action prefix since action types must be unique in the whole app
-const actionPrefix = `InfoPage/LastIrreversibleBlockInfo/`;
+const actionPrefix = `lastblockinfo/`;
 
 //Action Type
 const FETCH_START = actionPrefix + `FETCH_START`;
-const FETCH_FULFILLED = actionPrefix + `FETCH_FULFILLED`;
+export const FETCH_FULFILLED = actionPrefix + `FETCH_FULFILLED`;
 const FETCH_REJECTED = actionPrefix + `FETCH_REJECTED`;
 const POLLING_START = actionPrefix + `POLLING_START`;
 const POLLING_STOP = actionPrefix + `POLLING_STOP`;

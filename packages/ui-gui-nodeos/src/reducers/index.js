@@ -5,6 +5,8 @@ import { connectRouter } from 'connected-react-router';
 import { combinedEpic as permissionEpic, combinedReducer as permissionReducer } from './permission';
 import { combinedEpic as endpointEpic, combinedReducer as endpointReducer } from './endpoint';
 import { combinedEpic as headblockEpic, combinedReducer as headblockReducer} from './headblock';
+import { combinedEpic as lastblockinfoEpic, combinedReducer as lastblockinfoReducer} from './lastblockinfo';
+import { combinedEpic as connectionIndicatorEpic, combinedReducer as connectionIndicatorReducer} from 'components/Header/components/ConnectionIndicator/ConnectionIndicatorReducer';
 
 import { combinedEpic as infoPageEpic, combinedReducer as infoPageReducer } from 'pages/InfoPage/InfoPageReducer';
 import { combinedEpic as blocklistPageEpic, combinedReducer as blocklistPageReducer } from 'pages/BlocklistPage/BlocklistPageReducer';
@@ -24,6 +26,8 @@ export const rootEpic = combineEpics(
   permissionEpic,
   endpointEpic,
   headblockEpic,
+  lastblockinfoEpic,
+  connectionIndicatorEpic,
   infoPageEpic,
   blocklistPageEpic,
   blockdetailPageEpic,
@@ -43,6 +47,8 @@ export const rootReducer = (history) => combineReducers({
   permission: permissionReducer,
   endpoint: endpointReducer,
   headblock: headblockReducer,
+  lastblockinfo: lastblockinfoReducer,
+  connectionIndicator: connectionIndicatorReducer,
   infoPage: infoPageReducer,
   blocklistPage: blocklistPageReducer,
   blockdetailPage: blockdetailPageReducer,

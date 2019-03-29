@@ -18,7 +18,7 @@ const actionPrefix = `headblock/`;
 
 //Action Type
 const FETCH_START = actionPrefix + `FETCH_START`;
-const FETCH_FULFILLED = actionPrefix + `FETCH_FULFILLED`;
+export const FETCH_FULFILLED = actionPrefix + `FETCH_FULFILLED`;
 const FETCH_REJECTED = actionPrefix + `FETCH_REJECTED`;
 const POLLING_START = actionPrefix + `POLLING_START`;
 const POLLING_STOP = actionPrefix + `POLLING_STOP`;

@@ -4,19 +4,13 @@ import { connect } from 'react-redux';
 
 import { Col, Form, FormGroup, Label, Button } from 'reactstrap';
 
-import { pollingStart, pollingStop } from './LastIrreversibleBlockInfoReducer';
 
 import { LoadingSpinner } from 'components';
 
 
 const LastIrreversibleBlockInfo = (props) => {
 
-  useEffect(()=>{
-    props.pollingStart()
-    return () => { props.pollingStop() }
-  }, [])
-
-  let { lastIrreversibleBlockInfo: { isFetching, data } } = props;
+  let { lastblockinfo: { isFetching, data } } = props;
   let { payload = {}, error } = data;
 
   return (
@@ -53,12 +47,10 @@ const LastIrreversibleBlockInfo = (props) => {
 }
 
 export default connect(
-  ({ infoPage: { lastIrreversibleBlockInfo }}) => ({
-    lastIrreversibleBlockInfo
+  ({ lastblockinfo }) => ({
+    lastblockinfo
   }),
   {
-    pollingStart,
-    pollingStop
   }
 
 )(LastIrreversibleBlockInfo);
