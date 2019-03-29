@@ -73,8 +73,8 @@ const Actionlist = (props) => {
             <tbody>
               {payload.length < 1 ?
                 <tr><td colSpan="3" className="text-center">No actions could be found for the given Smart Contract name</td></tr>
-              : payload.map(action=>
-                <TrClickable onClick={() => { window.open(`/action/${action.receipt.global_sequence}`, "_blank") }}>
+              : payload.map((action, index)=>
+                <TrClickable key={index} onClick={() => { window.open(`/action/${action.receipt.act_digest}`, "_blank") }}>
                   <td>{action.act.account}</td>
                   <td>{action.act.name}</td>
                   <td>{action.createdAt}</td>

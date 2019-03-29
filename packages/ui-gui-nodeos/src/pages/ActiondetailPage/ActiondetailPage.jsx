@@ -20,8 +20,6 @@ const ActiondetailPage = (props) => {
    let { actiondetailPage: { data, isFetching } } = props;
    let { payload, error } = data;
 
-   console.log(isFetching);
-
   return (
     <StandardTemplate>
       <div className="ActiondetailPage animated fadeIn">

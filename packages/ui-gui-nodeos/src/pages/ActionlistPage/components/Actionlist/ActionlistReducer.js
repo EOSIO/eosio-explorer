@@ -6,8 +6,7 @@
 
 import { combineReducers } from 'redux';
 import { of } from 'rxjs';
-import { mergeMap, mapTo, map, takeUntil, catchError } from 'rxjs/operators';
-
+import { mergeMap, mapTo, map, catchError } from 'rxjs/operators';
 import { combineEpics, ofType } from 'redux-observable';
 
 import apiMongodb from 'services/api-mongodb';

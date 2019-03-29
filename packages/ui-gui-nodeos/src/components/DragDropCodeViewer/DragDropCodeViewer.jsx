@@ -67,9 +67,7 @@ class DragDropCodeViewer extends Component {
   render() {
     return (
       <>
-        <div 
-          className={"dragDropCodeViewerContainer " + (this.state.value && this.state.value !== "" ? "hasFileData" : "")}
-          >
+        <div className={"dragDropCodeViewerContainer " + (this.state.value && this.state.value !== "" ? "hasFileData" : "")} >
           <Dropzone onDrop={([file]) => this.onDrop(file)} 
             accept={'application/json, .cpp'} 
             >
@@ -81,7 +79,7 @@ class DragDropCodeViewer extends Component {
                       <p className="lead text-center">Drag and Drop files <strong>here</strong> or click <strong>browse</strong> to choose a file.</p>
                       <hr className="my-4" />
                       <p className="lead text-center browseButton">
-                        <Button color="primary">Browse</Button>
+                        <Button onClick={(e) => e.preventDefault()} color="primary">Browse</Button>
                       </p>
                     </Jumbotron>
                 </div>

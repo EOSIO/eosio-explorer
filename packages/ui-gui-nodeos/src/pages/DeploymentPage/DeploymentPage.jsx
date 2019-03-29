@@ -9,8 +9,7 @@ import { StandardTemplate } from 'templates';
 import { connect } from 'react-redux';
 
 import InputInstructions from './components/InputInstructions';
-import DragDropCodeViewer from '../../components/DragDropCodeViewer';
-import CodeViewer from '../../components/CodeViewer';
+import { DragDropCodeViewer, CodeViewer } from 'components';
 
 import { defaultSet } from 'reducers/permission';
 import { folderSet } from './DeploymentPageReducer';
