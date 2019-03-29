@@ -41,20 +41,20 @@ var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
 var actions_1 = __importDefault(require("../models/actions"));
 exports.default = (function (query) { return __awaiter(_this, void 0, void 0, function () {
-    var action_digest, result, query_gen, err_1;
+    var global_sequence, result, query_gen, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                action_digest = query.action_digest;
+                global_sequence = query.global_sequence;
                 result = void 0;
                 query_gen = actions_1.default
                     .find({});
-                if (action_digest === undefined || action_digest.trim() === "") {
-                    throw ("invalid action digest");
+                if (global_sequence === undefined || global_sequence.trim() === "") {
+                    throw ("invalid global sequence");
                 }
                 else {
-                    query_gen.where("receipt.act_digest").equals(action_digest);
+                    query_gen.where({ "receipt.global_sequence": parseInt(global_sequence) });
                 }
                 query_gen.limit(100);
                 query_gen.sort({ createdAt: -1 });
