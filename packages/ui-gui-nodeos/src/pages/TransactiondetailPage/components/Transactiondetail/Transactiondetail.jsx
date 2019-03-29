@@ -93,7 +93,7 @@ const Transactiondetail = (props) => {
                                     {(payload[0].action_traces).map((eachAction, index)=> 
                                       <FormGroup key={index} row>
                                         <Col sm={2}>{index+1}</Col>    
-                                        <Col sm={3}><Link to={`/action/${eachAction.receipt.act_digest}`}>{eachAction.act.name}</Link></Col>
+                                        <Col sm={3}><Link to={`/action/${eachAction.receipt.global_sequence}`}>{eachAction.act.name}</Link></Col>
                                         <Col sm={7}>{eachAction.act.account}</Col>
                                       </FormGroup>                                    
                                     )}
