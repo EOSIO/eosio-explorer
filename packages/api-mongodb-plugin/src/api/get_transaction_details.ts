@@ -1,19 +1,20 @@
-import TransactionsModel from '../models/transactions';
+import TransactionTracesModel from '../models/transaction_traces';
 
 export default async (query:any) => {
   try{
-    let { trx_id } = query;
+    let { id } = query;
 
     let result: object;
 
-    let query_gen = TransactionsModel
+    let query_gen = TransactionTracesModel
       .find({});
 
-    if(trx_id === undefined || trx_id.trim() === ""){
+    console.log("trx id is ", id);
+    if(id === undefined || id.trim() === ""){
       throw("invalid transaction id");
     } 
     else {
-      query_gen.where({trx_id: trx_id});
+      query_gen.where({id: id});
     }
 
     query_gen.limit(100);

@@ -39,22 +39,23 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
-var transactions_1 = __importDefault(require("../models/transactions"));
+var transaction_traces_1 = __importDefault(require("../models/transaction_traces"));
 exports.default = (function (query) { return __awaiter(_this, void 0, void 0, function () {
-    var trx_id, result, query_gen, err_1;
+    var id, result, query_gen, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                trx_id = query.trx_id;
+                id = query.id;
                 result = void 0;
-                query_gen = transactions_1.default
+                query_gen = transaction_traces_1.default
                     .find({});
-                if (trx_id === undefined || trx_id.trim() === "") {
+                console.log("trx id is ", id);
+                if (id === undefined || id.trim() === "") {
                     throw ("invalid transaction id");
                 }
                 else {
-                    query_gen.where({ trx_id: trx_id });
+                    query_gen.where({ id: id });
                 }
                 query_gen.limit(100);
                 query_gen.sort({ createdAt: -1 });
