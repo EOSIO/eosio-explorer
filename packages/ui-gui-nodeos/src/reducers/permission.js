@@ -231,7 +231,6 @@ const dataReducer = (state=dataInitState, action) => {
         isSubmitting: true
       };
     case CREATE_FULFILLED:
-    console.log(action.payload);
       return {
         ...state,
         list: storeNewAccount(action.payload, state.list),

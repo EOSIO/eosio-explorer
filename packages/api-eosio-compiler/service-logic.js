@@ -22,14 +22,14 @@ const SHUTDOWN_CMD = './remove_eosio_cdt_docker.sh';
 
 /**
  * How to test:
- * localhost:8081/api/eosio/compile
+ * localhost:8081/api/eosio/deploy
  * POST request
  * 1. <source> - Absolute source file path
  * 2. <endpoint> - Blockchain endpoint
  * 3. <account_name> - account name on which the smart contract would be deployed
  * 4. <private_key> - private key of account to sign the transaction
  */
-Router.post("/compile", async (req, res) => {
+Router.post("/deploy", async (req, res) => {
     const { body } = req;
 
     try {
@@ -123,6 +123,118 @@ Router.post("/compile", async (req, res) => {
         })
     }
 });
+
+/**
+ * How to test:
+ * localhost:8081/api/eosio/compile
+ * POST request
+ * 1. <source> - Absolute source file path
+ */
+Router.post("/compile", async (req, res) => {
+    const { body } = req;
+
+    try {
+      const deletedFiles = await del(DEL_TARGETS);
+      let results = null;
+      let compileTarget = path.basename(body["source"]);
+      let COMPILE_SCRIPT = "";
+      const directories = Helper.parseDirectoriesToInclude(path.dirname(body["source"]));
+      results = await copy(path.dirname(body["source"]), DEST);
+      COMPILE_SCRIPT = "./setup_eosio_cdt_docker.sh "+compileTarget+" "+directories.join(' ');
+
+      console.log("Deleted files:\n", deletedFiles.join('\n'));
+      results.forEach((file) => console.log("Copied file: ", file["src"]));
+      console.log("Target entry file: ", compileTarget);
+
+      if(fs.lstatSync(body["source"]).isDirectory()) 
+          throw new Error(`${body.source} is a directory, not a valid entry file!`);
+
+      exec(COMPILE_SCRIPT, {
+        cwd: CWD
+      }, (err, stdout, stderr) => {
+        execSync(SHUTDOWN_CMD, {
+            cwd: CWD
+        })
+        let parsedStdOut = Helper.parseLog(fs.readFileSync(LOG_DEST, 'utf-8'));
+        let parsedStdErr = Helper.parseLog(fs.readFileSync(ERR_DEST, 'utf-8'));
+        if (err) {
+            res.send({
+                compiled: false,
+                errors: Helper.parseLog(err.message),
+                stdout: parsedStdOut,
+                stderr: parsedStdErr
+            });
+        } else {
+          const COMPILED_CONTRACTS = path.resolve(
+            "./docker-eosio-cdt/compiled_contracts/" + 
+            path.basename(compileTarget, '.cpp')
+        );
+          const { wasmPath, abiPath, programErrors } = Helper.fetchDeployableFilesFromDirectory(COMPILED_CONTRACTS);
+          if (programErrors.length > 0) {
+              res.send({
+                  compiled: false,
+                  errors: programErrors,
+                  stdout: parsedStdOut,
+                  stderr: parsedStdErr
+              })
+          } else {
+            res.send({
+              compiled: true,
+              wasmLocation: wasmPath,
+              abi: abiPath,
+              errors: programErrors,
+              stdout: parsedStdOut,
+              stderr: parsedStdErr
+            });
+          }
+        }
+      })
+    } catch (ex) {
+      res.send({
+        compiled: false,
+        stderr: ex,
+        errors: [
+            ex.message
+        ]
+      })
+    }
+});
+
+/****
+ * How to test:
+ * localhost:8081/api/eosio/import
+ * The page should handle this for you.
+ * 1. <abiName>
+ * 2. <content>
+ */
+Router.post("/import", async (req, res) => {
+    const { body } = req;
+    const DESTINATION = path.resolve("./docker-eosio-cdt/"+body["abiName"]);
+    try {
+      fs.writeFile(DESTINATION, body["content"], (err) => {
+        if (err) {
+          res.send({
+            imported: false,
+            errors: [
+              err.message
+            ]
+          });
+        } else {
+          res.send({
+            imported: true,
+            abiPath: DESTINATION
+          });
+        }
+      })
+    } catch (ex) {
+      res.send({
+        imported: false,
+        errors: [
+          ex.message
+        ]
+      })
+    }
+})
 
 async function deployContract(blockchainUrl, account_name, private_key, wasm_path, abi_path){
   if(blockchainUrl.indexOf("http://") < 0)

@@ -34,17 +34,16 @@ class DragDropCodeViewer extends Component {
     );
   }
 
-  handleDropRejected(file, ev) {
-    ev.preventDefault();
-    alert(`${file.name} has an unsupported file type`);
-  }
-
   async onDrop(file) {
     if(file === undefined)
       return;
 
     let self = this;
     let reader = new FileReader();
+
+    // Optional props so we can set the current file name of the parent component...
+    if (this.props.setCurrentFile)
+      this.props.setCurrentFile(file.name);
 
     reader.onload = function(e) {
       let contents = e.target.result;
@@ -72,7 +71,6 @@ class DragDropCodeViewer extends Component {
           className={"dragDropCodeViewerContainer " + (this.state.value && this.state.value !== "" ? "hasFileData" : "")}
           >
           <Dropzone onDrop={([file]) => this.onDrop(file)} 
-            onDropRejected={([file], ev) => this.handleDropRejected(file, ev)}
             accept={'application/json, .cpp'} 
             >
             {({getRootProps, getInputProps}) => (
@@ -80,13 +78,12 @@ class DragDropCodeViewer extends Component {
                 <div {...getRootProps()}>
                   <input {...getInputProps()} />
                     <Jumbotron>
-                      <p className="lead text-center">Drag and Drop files here or click <strong>browse</strong> to choose a file.</p>
+                      <p className="lead text-center">Drag and Drop files <strong>here</strong> or click <strong>browse</strong> to choose a file.</p>
                       <hr className="my-4" />
                       <p className="lead text-center browseButton">
                         <Button color="primary">Browse</Button>
                       </p>
                     </Jumbotron>
-                  
                 </div>
               </section>
             )}
