@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-set -o errexit
 
 # change to script's directory
 cd "$(dirname "$0")"
@@ -17,6 +16,13 @@ else
 fi
 
 if [ ! "$(docker ps -q -f name=eosio_gui_nodeos_container)" ]; then
+    # check if data folder is empty else we'll have dirty flag problem in blockchain
+    if find "$(pwd)/data" -mindepth 1 -print -quit 2>/dev/null | grep -q .; then
+        echo "eosio docker is not running, but data folder exists"
+        echo "cleaning data now"
+        rm -r "$(pwd)"/data/*
+    fi
+
     # --link is to get access to other container
     echo "=== run docker container from the eosio-gui-nodeos:eos1.6.3 image ==="
     docker run --rm --name eosio_gui_nodeos_container -d \
