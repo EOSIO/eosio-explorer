@@ -27,7 +27,7 @@ export const paramsSet = (params) => ({ type: PARAMS_SET, params });
 const mapParams = (params) => {
   let newParams = {};
   Object.keys(params).map(function(key, index) {
-    let newKey = key === "id" ? "action_digest" : key;
+    let newKey = key === "id" ? "global_sequence" : key;
     newParams[newKey] = params[key];
   });
   return newParams;
