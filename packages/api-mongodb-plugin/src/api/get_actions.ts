@@ -8,7 +8,7 @@ export default async (query:any) => {
     let query_gen = ActionsModel
     .find({}, 
     {
-      "receipt.act_digest": 1,
+      "receipt.global_sequence": 1,
       "act.name": 1,
       "act.account": 1,
       "trx_id": 1,
