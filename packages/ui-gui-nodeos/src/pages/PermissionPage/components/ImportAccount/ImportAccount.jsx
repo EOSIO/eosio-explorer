@@ -1,7 +1,7 @@
 import React from 'react';
 import {
     Button, Form, FormGroup, Label, Input, FormFeedback,
-    Col, Alert
+    Col, Alert, UncontrolledAlert
   } from 'reactstrap';
 
 import { connect } from 'react-redux';
@@ -41,13 +41,23 @@ const ImportAccount = (props) => {
                     </h3>
                     {
                         importSuccess &&
-                        <Alert color="success">
+                        <UncontrolledAlert color="success">
                             Private keys for {keysData[0].account} successfully updated
-                        </Alert>
+                        </UncontrolledAlert>
                     }
-                    <Alert color="light">
-                        Ensure that the private keys you use are <code>base58 WIF</code> compliant! The form will 
-                        notify you if any of your keys are invalid upon submission.
+                    <Alert color="dark">
+                        <h5 className="alert-heading">Before you update your private keys...</h5>
+                        <p>
+                            Ensure that the private keys you use are <code>base58 WIF</code> compliant! The form will 
+                            notify you if any of your keys are invalid upon submission.
+                        </p>
+                        <hr />
+                        <p className="mb-0">
+                            Your private keys will be saved locally in your browser. However, please be sure NEVER to share
+                            your private key to anybody. If someone asks you for your private key, please do not give it
+                            to them. Private keys are very sensitive information and should be kept to yourself as much
+                            as possible.
+                        </p>
                     </Alert>
                     <Form onSubmit={
                         handleSubmit

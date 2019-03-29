@@ -1,7 +1,7 @@
 import React, { useEffect }  from 'react';
 import {
   Button, Form, FormGroup, Label, Input, FormFeedback, FormText,
-  Spinner, Col, Alert
+  Spinner, Col, UncontrolledAlert
 } from 'reactstrap';
 
 import { connect } from 'react-redux';
@@ -50,15 +50,15 @@ const CreateAccount = (props) => {
               </h3>
               {
                 creationSuccess &&
-                    <Alert color="success">
+                    <UncontrolledAlert color="success">
                       Account {values.accountName} successfully created
-                    </Alert>
+                    </UncontrolledAlert>
               }
               {
                 ((!creationSuccess) && submitError) ?
-                    <Alert color="danger">
+                    <UncontrolledAlert color="danger">
                       submitError
-                    </Alert>
+                    </UncontrolledAlert>
                   : null
               }
               <Form onSubmit={

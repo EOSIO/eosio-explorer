@@ -47,7 +47,6 @@ class DragDropCodeViewer extends Component {
     let reader = new FileReader();
 
     reader.onload = function(e) {
-      console.log(e);
       let contents = e.target.result;
       self.setState({
         value: contents
