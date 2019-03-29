@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 
 import { connect } from 'react-redux';
-
+import { Link } from 'react-router-dom';
 import { fetchStart, paramsSet } from './BlockdetailReducer';
 import pathNameConsumer from 'helpers/pathname-consumer';
 import { Card, CardTitle, CardBody, Col, Row, Form, FormGroup} from 'reactstrap';
@@ -92,7 +92,7 @@ const Blockdetail = (props) => {
                                   {(payload[0].block.transactions).map((eachTransaction,index)=>
                                   <FormGroup key={index} row>
                                     <Col sm={2}>{index+1}</Col>
-                                    <Col sm={10}>{eachTransaction.trx.id}</Col>
+                                    <Col sm={10}><Link to={`/transaction/${eachTransaction.trx.id}`}>{eachTransaction.trx.id}</Link></Col>
                                   </FormGroup>
                                   )}                              
                                 </Form>

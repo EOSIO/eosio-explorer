@@ -84,7 +84,7 @@ const Contractdetail = (props) => {
           : isFetching
             ? `loading...`
             : !(payload.length !== 0 && payload[0].hasOwnProperty("abi") === true)
-              ? `No Smart Contract found for the account name: ${params.account_name}`
+              ? `No Smart Contract found with the name: ${params.account_name}`
               : <div>
                   <CodeViewer 
                     language="json"
