@@ -6,6 +6,7 @@ import React, { Component } from 'react';
 import { Switch, Redirect } from 'react-router-dom';
 import Loadable from 'react-loadable';
 import { connect } from 'react-redux';
+import { withRouter } from "react-router";
 
 import InfoPage from 'pages/InfoPage';
 import BlocklistPage from 'pages/BlocklistPage';
@@ -68,7 +69,7 @@ class App extends Component {
   }
 }
 
-export default connect(
+export default withRouter(connect(
   ({ endpoint }) => ({
     endpoint
   }),
@@ -78,4 +79,4 @@ export default connect(
     lastblockinfo_pollingStart,
   }
 
-)(App);
+)(App));
