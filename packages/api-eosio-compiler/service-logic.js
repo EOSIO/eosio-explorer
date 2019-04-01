@@ -28,6 +28,7 @@ const SHUTDOWN_CMD = './remove_eosio_cdt_docker.sh';
  * 2. <endpoint> - Blockchain endpoint
  * 3. <account_name> - account name on which the smart contract would be deployed
  * 4. <private_key> - private key of account to sign the transaction
+ * 5. <abiSource> - Optional path to supply as replacement ABI in case we imported
  */
 Router.post("/deploy", async (req, res) => {
     const { body } = req;
@@ -88,13 +89,15 @@ Router.post("/deploy", async (req, res) => {
                     })
                 } else {
                     console.log(`stdout: ${stdout}`);
-                    deployContract(endpoint, account_name, private_key, wasmPath, abiPath)
+                    let abi = (body["abiSource"] && body["abiSource"] != "null") ? body["abiSource"] : abiPath;
+                    console.log(body["abiSource"], abiPath, abi, typeof body["abiSource"]);
+                    deployContract(endpoint, account_name, private_key, wasmPath, abi)
                     .then(result => {
                       console.log("Contract deployed successfully ", result);
                       res.send({
                         compiled: true,
                         wasmLocation: wasmPath,
-                        abi: abiPath,
+                        abi: abi,
                         deployed: true,
                         abiContents: abiContents,
                         errors: [],
@@ -109,7 +112,7 @@ Router.post("/deploy", async (req, res) => {
                       res.send({
                         compiled: true,
                         wasmLocation: wasmPath,
-                        abi: abiPath,
+                        abi: abi,
                         abiContents: abiContents,
                         deployed: false,
                         errors: [

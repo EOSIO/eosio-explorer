@@ -36,7 +36,7 @@ const importEpic = ( action$ ) => action$.pipe(
           abiContents: action["fileContent"].content,
           imported: imported,
           abiPath: abiPath,
-          errors: errors.join("\n")
+          errors: (errors.length > 0) ? errors.join("\n") : []
         })
       }),
       catchError(err => of(processFail(err, err.errors)))
@@ -57,7 +57,8 @@ const compileEpic = ( action$ ) => action$.pipe(
           stdoutLog: stdout,
           stderrLog: stderr,
           compiled: compiled,
-          errors: errors
+          errors: errors,
+          imported: false
         })
       }),
       catchError(err => of(processFail(err, err.errors)))
@@ -87,6 +88,7 @@ const deployEpic = ( action$ ) => action$.pipe(
           stderrLog: stderr,
           compiled: compiled,
           deployed: deployed,
+          imported: false,
           output: (actualOutput) ? actualOutput : null,
           errors: errors
         })
