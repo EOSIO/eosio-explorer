@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Table, Button, Row, Col, CardTitle, Input, Form } from 'reactstrap';
 import styled from 'styled-components';
-
+import { Link } from 'react-router-dom';
 import { pollingStart, pollingStop, smartContractNameSearch } from './ActionlistReducer';
 import { LoadingSpinner } from 'components';
 import SearchButton from 'styled/SearchButton';
@@ -13,7 +13,6 @@ const InputStyled = styled(Input)`
   margin-top: -6px;
 `
 const TrClickable = styled.tr`
-  cursor: pointer;
   :hover {
     background: rgba(32, 168, 216, 0.07) !important;
     color: #1ea7d8;
@@ -74,10 +73,12 @@ const Actionlist = (props) => {
               {payload.length < 1 ?
                 <tr><td colSpan="3" className="text-center">No actions could be found for the given Smart Contract name</td></tr>
               : payload.map(action=>
-                <TrClickable onClick={() => { window.open(`/action/${action.receipt.global_sequence}`, "_blank") }}>
-                  <td>{action.act.account}</td>
-                  <td>{action.act.name}</td>
-                  <td>{action.createdAt}</td>
+                <TrClickable>
+                
+                    <td>{action.act.account}</td>
+                    <td><Link to={`/action/${action.receipt.global_sequence}`}>{action.act.name}</Link></td>
+                    <td>{action.createdAt}</td>
+                 
                 </TrClickable>
               )}
             </tbody>
