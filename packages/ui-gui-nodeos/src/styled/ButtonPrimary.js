@@ -16,6 +16,10 @@ export default styled(Button)`
     opacity: 1;
     color: #ffffff;
   }
+  :disabled:hover{
+    background-color: #4d9cc3;
+    cursor: not-allowed;
+  }
   :hover{
     background-color: #407893;
     opacity: 1;
