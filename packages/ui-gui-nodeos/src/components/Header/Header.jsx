@@ -6,9 +6,7 @@ import { Nav, NavItem } from 'reactstrap';
 import { AppNavbarBrand } from '@coreui/react';
 
 import ConnectionIndicator from './components/ConnectionIndicator';
-const MyComponent = styled(InputStyled)`
 
-`
 const Header = () =>
 
   <div className="Header">
