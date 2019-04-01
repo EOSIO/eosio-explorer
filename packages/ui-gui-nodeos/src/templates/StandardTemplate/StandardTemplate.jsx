@@ -24,9 +24,7 @@ const StandardTemplate = ({
         </Container>
       </main>
     </div>
-    <AppFooter>
-      <Footer/>
-    </AppFooter>
+    <Footer/>
   </div>
 )
 

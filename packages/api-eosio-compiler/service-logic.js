@@ -64,9 +64,12 @@ Router.post("/deploy", async (req, res) => {
             let parsedStdOut = Helper.parseLog(fs.readFileSync(LOG_DEST, 'utf-8'));
             let parsedStdErr = Helper.parseLog(fs.readFileSync(ERR_DEST, 'utf-8'));
             if (err) {
+                let message = (err.message) ? err.message : message;
                 res.send({
                     compiled: false,
-                    errors: Helper.parseLog(err.message),
+                    errors: [
+                      message
+                    ],
                     stdout: parsedStdOut,
                     stderr: parsedStdErr
                 });
@@ -75,7 +78,7 @@ Router.post("/deploy", async (req, res) => {
                     "./docker-eosio-cdt/compiled_contracts/" + 
                     path.basename(compileTarget, '.cpp')
                 );
-                const { wasmPath, abiPath, programErrors } = Helper.fetchDeployableFilesFromDirectory(COMPILED_CONTRACTS);
+                const { wasmPath, abiPath, abiContents = {}, programErrors } = Helper.fetchDeployableFilesFromDirectory(COMPILED_CONTRACTS);
                 if (programErrors.length > 0) {
                     res.send({
                         compiled: false,
@@ -93,19 +96,25 @@ Router.post("/deploy", async (req, res) => {
                         wasmLocation: wasmPath,
                         abi: abiPath,
                         deployed: true,
+                        abiContents: abiContents,
+                        errors: [],
                         output: result,
                         stdout: parsedStdOut,
                         stderr: parsedStdErr
                       });
                     })
                     .catch((err) => {
-                      console.log(err);
+                      let message = (err.message) ? err.message : err;
+                      console.log("Caught error: ", err, message);
                       res.send({
                         compiled: true,
                         wasmLocation: wasmPath,
                         abi: abiPath,
+                        abiContents: abiContents,
                         deployed: false,
-                        errors: err,
+                        errors: [
+                          message
+                        ],
                         stdout: parsedStdOut,
                         stderr: parsedStdErr
                       });
@@ -114,6 +123,7 @@ Router.post("/deploy", async (req, res) => {
             }
         });
     } catch (ex) {
+        console.log(ex);
         res.send({
             compiled: false,
             stderr: ex,
@@ -169,7 +179,7 @@ Router.post("/compile", async (req, res) => {
             "./docker-eosio-cdt/compiled_contracts/" + 
             path.basename(compileTarget, '.cpp')
         );
-          const { wasmPath, abiPath, programErrors } = Helper.fetchDeployableFilesFromDirectory(COMPILED_CONTRACTS);
+          const { wasmPath, abiPath, abiContents = {}, programErrors } = Helper.fetchDeployableFilesFromDirectory(COMPILED_CONTRACTS);
           if (programErrors.length > 0) {
               res.send({
                   compiled: false,
@@ -182,6 +192,7 @@ Router.post("/compile", async (req, res) => {
               compiled: true,
               wasmLocation: wasmPath,
               abi: abiPath,
+              abiContents: abiContents,
               errors: programErrors,
               stdout: parsedStdOut,
               stderr: parsedStdErr
@@ -209,10 +220,20 @@ Router.post("/compile", async (req, res) => {
  */
 Router.post("/import", async (req, res) => {
     const { body } = req;
-    const DESTINATION = path.resolve("./docker-eosio-cdt/"+body["abiName"]);
+    const IMPORT_FOLDER = path.resolve("./docker-eosio-cdt/imported_abi/");
+    const DESTINATION = path.resolve("./docker-eosio-cdt/imported_abi/"+body["abiName"]);
     try {
+
+      if (!fs.lstatSync(IMPORT_FOLDER).isDirectory())
+        fs.mkdirSync(IMPORT_FOLDER, {recursive:true});
+      else {
+        const clearImport = await del(["./docker-eosio-cdt/imported_abi/"+body["abiName"]]);
+        console.log("Cleared old import: ", clearImport);
+      }
+
       fs.writeFile(DESTINATION, body["content"], (err) => {
         if (err) {
+          console.log(err);
           res.send({
             imported: false,
             errors: [
@@ -220,9 +241,11 @@ Router.post("/import", async (req, res) => {
             ]
           });
         } else {
+          console.log("ABI imported to path: "+DESTINATION);
           res.send({
             imported: true,
-            abiPath: DESTINATION
+            abiPath: DESTINATION.toString(),
+            errors: []
           });
         }
       })

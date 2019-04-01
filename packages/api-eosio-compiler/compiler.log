@@ -1,4 +1,253 @@
 yarn run v1.15.2
 $ node local-service.js
+<<<<<<< HEAD
 /Users/varshanagaraja/Desktop/Projects/GUIforNodeos/eosio-toppings/packages/api-eosio-compiler
+=======
+/Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler
+>>>>>>> 8a486ad1bfa0ef3157091ce9db71b7862bc38446
 Booted up local service server. Listening on 8081
+Deleted files:
+ /Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/byeworld.abi
+/Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/byeworld.cpp
+/Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/byeworld.wasm
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/byeworld
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/byeworld/byeworld.abi
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/byeworld/byeworld.cpp
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/byeworld/byeworld.wasm
+Target entry file:  byeworld.cpp
+Deleted files:
+ /Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/byeworld.abi
+/Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/byeworld.cpp
+/Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/byeworld.wasm
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.abi
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.cpp
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.wasm
+Target entry file:  tataworld.cpp
+Deleted files:
+ /Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.abi
+/Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.cpp
+/Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.wasm
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.abi
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.cpp
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.wasm
+Target entry file:  tataworld.cpp
+Deleted files:
+ /Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.abi
+/Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.cpp
+/Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.wasm
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.wasm
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.cpp
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.abi
+Target entry file:  tataworld.cpp
+Cleared old import:  [ '/Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/imported_abi/tataworld.abi' ]
+ABI imported to path: /Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/imported_abi/tataworld.abi
+Deleted files:
+ /Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.abi
+/Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.cpp
+/Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.wasm
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.abi
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.cpp
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.wasm
+Target entry file:  tataworld.cpp
+Cleared old import:  [ '/Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/imported_abi/tataworld.abi' ]
+ABI imported to path: /Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/imported_abi/tataworld.abi
+Deleted files:
+ /Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.abi
+/Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.cpp
+/Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.wasm
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.abi
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.cpp
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.wasm
+Target entry file:  tataworld.cpp
+Deleted files:
+ /Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.abi
+/Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.cpp
+/Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.wasm
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.cpp
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.abi
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.wasm
+Target entry file:  tataworld.cpp
+Deleted files:
+ /Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.abi
+/Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.cpp
+/Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.wasm
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.wasm
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.abi
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.cpp
+Target entry file:  tataworld.cpp
+Deleted files:
+ /Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.abi
+/Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.cpp
+/Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.wasm
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.cpp
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.abi
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.wasm
+Target entry file:  tataworld.cpp
+Cleared old import:  [ '/Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/imported_abi/tataworld.abi' ]
+ABI imported to path: /Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/imported_abi/tataworld.abi
+Deleted files:
+ /Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.abi
+/Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.cpp
+/Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.wasm
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.abi
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.cpp
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.wasm
+Target entry file:  tataworld.cpp
+Deleted files:
+ /Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.abi
+/Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.cpp
+/Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.wasm
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/byeworld
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/byeworld/byeworld.abi
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/byeworld/byeworld.cpp
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/byeworld/byeworld.wasm
+Target entry file:  tataworld.cpp
+Deleted files:
+ /Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/byeworld.abi
+/Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/byeworld.cpp
+/Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/byeworld.wasm
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.abi
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.cpp
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.wasm
+Target entry file:  tataworld.cpp
+Deleted files:
+ /Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.abi
+/Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.cpp
+/Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.wasm
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.cpp
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.abi
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.wasm
+Target entry file:  tataworld.cpp
+Deleted files:
+ /Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.abi
+/Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.cpp
+/Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.wasm
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.abi
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.cpp
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.wasm
+Target entry file:  tataworld.cpp
+Deleted files:
+ /Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.abi
+/Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.cpp
+/Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.wasm
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/byeworld
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/byeworld/byeworld.abi
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/byeworld/byeworld.cpp
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/byeworld/byeworld.wasm
+Target entry file:  tataworld.cpp
+Deleted files:
+ /Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/byeworld.abi
+/Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/byeworld.cpp
+/Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/byeworld.wasm
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.cpp
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.abi
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.wasm
+Target entry file:  tataworld.cpp
+Deleted files:
+ /Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.abi
+/Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.cpp
+/Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.wasm
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/byeworld
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/byeworld/byeworld.cpp
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/byeworld/byeworld.abi
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/byeworld/byeworld.wasm
+Target entry file:  byeworld.cpp
+Cleared old import:  [ '/Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/imported_abi/byeworld.abi' ]
+ABI imported to path: /Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/imported_abi/byeworld.abi
+Deleted files:
+ /Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/byeworld.abi
+/Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/byeworld.cpp
+/Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/byeworld.wasm
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.cpp
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.abi
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.wasm
+Target entry file:  tataworld.cpp
+Deleted files:
+ /Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.abi
+/Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.cpp
+/Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.wasm
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.abi
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.cpp
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.wasm
+Target entry file:  tataworld.cpp
+Deleted files:
+ /Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.abi
+/Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.cpp
+/Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.wasm
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.abi
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.wasm
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.cpp
+Target entry file:  tataworld.cpp
+Deleted files:
+ /Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.abi
+/Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.cpp
+/Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.wasm
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.cpp
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.abi
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.wasm
+Target entry file:  tataworld.cpp
+Cleared old import:  [ '/Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/imported_abi/tataworld.abi' ]
+ABI imported to path: /Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/imported_abi/tataworld.abi
+Deleted files:
+ /Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.abi
+/Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.cpp
+/Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.wasm
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.abi
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.cpp
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.wasm
+Target entry file:  tataworld.cpp
+Deleted files:
+ /Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.abi
+/Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.cpp
+/Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.wasm
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.cpp
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.abi
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.wasm
+Target entry file:  tataworld.cpp
+Deleted files:
+ /Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.abi
+/Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.cpp
+/Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.wasm
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.abi
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.cpp
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.wasm
+Target entry file:  tataworld.cpp
+Deleted files:
+ /Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.abi
+/Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.cpp
+/Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.wasm
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.abi
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.cpp
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.wasm
+Target entry file:  tataworld.cpp
+Deleted files:
+ /Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.abi
+/Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.cpp
+/Users/jonathan.cardenas/eosio-toppings/packages/api-eosio-compiler/docker-eosio-cdt/contracts/tataworld.wasm
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.cpp
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.abi
+Copied file:  /Users/jonathan.cardenas/eosio-toppings/packages/docker-eosio-nodeos/contracts/tataworld/tataworld.wasm
+Target entry file:  tataworld.cpp
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.

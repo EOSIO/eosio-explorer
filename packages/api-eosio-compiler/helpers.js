@@ -46,6 +46,8 @@ const fetchDeployableFilesFromDirectory = (directory) => {
         if (abiIsEmpty(fs.readFileSync(path.join(directory, abiFileName)), 'utf-8')) {
             response["programErrors"].push(`Warning: Unfortunately, the contract structure is too complex for --abigen to generate correct ABI file`);
             response["programErrors"].push(`Warning: That's normal for complex projects. ABI should be created manually. Please refer to https://developers.eos.io/eosio-home/docs/the-abi`);
+        } else {
+            response["abiContents"] = fs.readFileSync(path.join(directory, abiFileName), "utf-8");
         }
     }
 
