@@ -13,12 +13,12 @@ export default styled(Button)`
 
   :disabled{
     background-color: #4d9cc3;
-    opacity: 1;
+    cursor: not-allowed;
     color: #ffffff;
   }
   :disabled:hover{
     background-color: #4d9cc3;
-    cursor: not-allowed;
+    opacity: 0.65;
   }
   :hover{
     background-color: #407893;
