@@ -10,7 +10,7 @@ import { mergeMap, map, catchError } from 'rxjs/operators';
 
 import { combineEpics, ofType } from 'redux-observable';
 
-import apiRpc from '@eosio-toppings/api-rpc';
+import apiRpc from 'services/api-rpc';
 
 // IMPORTANT
 // Must modify action prefix since action types must be unique in the whole app
@@ -36,10 +36,8 @@ const fetchEpic = ( action$, state$ ) => action$.pipe(
 
     let { value: { contractdetailPage: { multiIndex: { params } }}} = state$;
 
-    return from(apiRpc.get_table_rows(params)).pipe(
-      map(res => {
-        console.log("res ",res);
-        return fetchFulfilled(res)}),
+    return from(apiRpc("get_table_rows", params)).pipe(
+      map(res => fetchFulfilled(res)),
       catchError(error => of(fetchRejected(error.response, { status: error.status })))
     )
   })

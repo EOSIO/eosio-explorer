@@ -42,7 +42,7 @@ const MultiIndex = (props) => {
                   key={eachTable.name} 
                   onClick={()=>{ 
                     setSelectedValue(eachTable.name);
-                    props.paramsSet({endpoint: 'http://localhost:8888',  contract_name: abiData.name, table_name: eachTable.name });
+                    props.paramsSet({contract_name: abiData.name, table_name: eachTable.name });
                     props.fetchStart();
                     setShowDetailsSection(true);   
                   }}>
