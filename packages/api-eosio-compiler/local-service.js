@@ -2,6 +2,7 @@
 
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const app = express();
 const serviceLogic = require('./service-logic');
 
@@ -10,7 +11,7 @@ const PORT = 8081;
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
-app.use("/api/eosio/", serviceLogic);
+app.use("/api/eosio/", cors(), serviceLogic);
 
 app.on('error', (err) => {
     console.log('exec error: ', err);
