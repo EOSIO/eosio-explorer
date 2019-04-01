@@ -15,7 +15,7 @@ const reduxPersistFilters = [
   createBlacklistFilter(
     'deploymentPage',
     [
-      'deployContainer.imported', 'deployContainer.compiled', 'deployContainer.deployed'
+      'deployContainer.compiled', 'deployContainer.deployed'
     ]
   )
 ]

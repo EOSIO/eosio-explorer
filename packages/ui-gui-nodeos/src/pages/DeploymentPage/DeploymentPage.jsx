@@ -39,7 +39,7 @@ const DeploymentPage = (props) => {
     } = props;
     let { path, stdoutLog, stderrLog, 
         wasmPath, abiPath, abiContents, 
-        errors, output
+        errors, output, imported
     } = deployContainer;
     let { list, defaultId } = data;
 
@@ -80,7 +80,8 @@ const DeploymentPage = (props) => {
         let deployer = {
             endpoint: nodeos,
             account_name: currentPermission["account"],
-            private_key: currentPermission["private_key"]
+            private_key: currentPermission["private_key"],
+            abiSource: (imported) ? abiPath : null
         }
         logClear();
         contractDeploy(fullPath, deployer);
@@ -140,8 +141,8 @@ const DeploymentPage = (props) => {
                                     position: "absolute", 
                                     top: "50%", 
                                     left: "50%",
-                                    width: "3rem",
-                                    height: "3rem",
+                                    width: "5rem",
+                                    height: "5rem",
                                     zIndex: 3 
                                 }}
                             />
@@ -178,6 +179,11 @@ const DeploymentPage = (props) => {
                                             disabled={isProcessing}
                                             >
                                             Import ABI
+                                        </Button>
+                                        <Button 
+                                            onClick={()=>logClear()}
+                                            >
+                                            Clear Logs
                                         </Button>
                                     </ButtonGroup>
                                     <input type="file" 
@@ -296,7 +302,7 @@ const DeploymentPage = (props) => {
                             </Row>
                             <Row>
                                 <Col sm={12}>
-                                    Current ABI Path: <code>{abiPath}</code>
+                                    Current ABI Path: <code>{abiPath}</code> (Is imported? {imported.toString()})
                                 </Col>
                             </Row>                            
                             <Row>
