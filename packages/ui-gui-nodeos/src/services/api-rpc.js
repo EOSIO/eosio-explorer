@@ -1,5 +1,5 @@
 import { from } from 'rxjs';
-import apiRpc from '@eos-toppings/api-rpc';
+import apiRpc from '@eosio-toppings/api-rpc';
 import store from "store";
 
 export default async ( apiPath, query ) => {

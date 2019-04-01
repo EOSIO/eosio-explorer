@@ -1,13 +1,13 @@
 {
-  "name": "@eos-toppings/ui-gui-nodeos",
+  "name": "@eosio-toppings/ui-gui-nodeos",
   "version": "0.0.0",
   "private": true,
   "license": "MIT",
   "dependencies": {
     "@coreui/coreui": "^2.1.8",
     "@coreui/react": "^2.1.5",
-    "@eos-toppings/api-mongodb-plugin": "^0.0.0",
-    "@eos-toppings/api-rpc": "0.0.0",
+    "@eosio-toppings/api-mongodb-plugin": "^0.0.0",
+    "@eosio-toppings/api-rpc": "0.0.0",
     "axios": "^0.18.0",
     "connected-react-router": "^6.3.2",
     "eosjs-keygen": "^1.3.2",

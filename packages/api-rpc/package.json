@@ -1,5 +1,5 @@
 {
-  "name": "@eos-toppings/api-rpc",
+  "name": "@eosio-toppings/api-rpc",
   "version": "0.0.0",
   "main": "dist/index.js",
   "license": "MIT",

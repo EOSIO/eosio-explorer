@@ -13,6 +13,6 @@ fi
 
 if [ ! "$(docker ps -q -f name=eosio_gui_nodeos_container)" ]; then
     echo "=== Resuming blockchain container... ==="
-    echo "Script location: ${HOME}/eos-toppings/packages/docker-eosio-nodeos"
+    echo "Script location: ${HOME}/eosio-toppings/packages/docker-eosio-nodeos"
     (cd ${ROOTPATH}/packages/ && exec docker-eosio-nodeos/start_eosio_docker.sh )
 fi

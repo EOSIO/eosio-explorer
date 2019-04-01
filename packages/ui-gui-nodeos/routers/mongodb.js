@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const url = require('url');
-const apiMongodbPlugin = require('@eos-toppings/api-mongodb-plugin').default;
-const connectMongo = require('@eos-toppings/api-mongodb-plugin').connectMongo;
+const apiMongodbPlugin = require('@eosio-toppings/api-mongodb-plugin').default;
+const connectMongo = require('@eosio-toppings/api-mongodb-plugin').connectMongo;
 
 router.get("*", (req, res) => {
   let { pathname, query } = url.parse(req.url, true);

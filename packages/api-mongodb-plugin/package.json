@@ -1,5 +1,5 @@
 {
-  "name": "@eos-toppings/api-mongodb-plugin",
+  "name": "@eosio-toppings/api-mongodb-plugin",
   "version": "0.0.0",
   "main": "dist/index.js",
   "license": "MIT",

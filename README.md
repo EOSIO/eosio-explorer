@@ -14,8 +14,8 @@ The above command will execute the following in sequence
 2. Build the docker images
 3. Check and remove any existing docker with names `eosio-mongodb` and `eosio_gui_nodeos_container`
 4. Start the dockers
-5. Setup compiler api 
-6. Start the GUI 
+5. Setup compiler api
+6. Start the GUI
 
 ## Other important scripts
 `quick_start.sh` - Start/Restart dockers, compiler service, & gui \
@@ -38,7 +38,7 @@ Instead, we should use below command to add a dependency in a package.
 
 For example, adding `express` in `packages/ui-gui-nodeos`
 ```
-yarn workspace @eos-toppings/ui-gui-nodeos add express
+yarn workspace @eosio-toppings/ui-gui-nodeos add express
 ```
 ## License
 
