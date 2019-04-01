@@ -1,2 +1,7 @@
-import Footer from './Footer';
-export default Footer;
+
+import Loadable from 'react-loadable';
+
+export default Loadable({
+  loader: () => import('./SectionFooterStyled'),
+  loading: () => false
+});
