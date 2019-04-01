@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import { Col, Form, FormGroup, Label, Button } from 'reactstrap';
 
-
+import { pollingStart } from 'reducers/headblock';
 import { LoadingSpinner } from 'components';
 
 
@@ -71,6 +71,7 @@ export default connect(
     headblock
   }),
   {
+    pollingStart
   }
 
 )(Headblock);
