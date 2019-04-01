@@ -9,7 +9,7 @@ import Nodeswitch from './components/Nodeswitch';
 import Headblock from './components/Headblock';
 import BlockchainInfo from './components/BlockchainInfo';
 import LastIrreversibleBlockInfo from './components/LastIrreversibleBlockInfo';
-
+import { CardStyled, CardHeaderStyled } from 'styled';
 class InfoPage extends Component {
 
   render() {
@@ -25,53 +25,53 @@ class InfoPage extends Component {
 
           <Row>
             <Col xs="12">
-              <Card>
-                <CardHeader>
+              <CardStyled>
+                <CardHeaderStyled>
                   Connections
-                </CardHeader>
+                </CardHeaderStyled>
                 <CardBody>
                   <Nodeswitch/>
                 </CardBody>
-              </Card>
+              </CardStyled>
             </Col>
           </Row>
 
           <Row>
             <Col xs="12">
-              <Card>
-                <CardHeader>
+              <CardStyled>
+                <CardHeaderStyled>
                   Blockchain Information
-                </CardHeader>
+                </CardHeaderStyled>
                 <CardBody>
                   <BlockchainInfo />
                 </CardBody>
-              </Card>
+              </CardStyled>
             </Col>
           </Row>
 
           <Row>
             <Col xs="12">
-              <Card>
-                <CardHeader>
+              <CardStyled>
+                <CardHeaderStyled>
                   Head Block Information
-                </CardHeader>
+                </CardHeaderStyled>
                 <CardBody>
                   <Headblock/>
                 </CardBody>
-              </Card>
+              </CardStyled>
             </Col>
           </Row>
 
           <Row>
             <Col xs="12">
-              <Card>
-                <CardHeader>
+              <CardStyled>
+                <CardHeaderStyled>
                   Last Irreversible Block Information
-                </CardHeader>
+                </CardHeaderStyled>
                 <CardBody>
                   <LastIrreversibleBlockInfo />
                 </CardBody>
-              </Card>
+              </CardStyled>
             </Col>
           </Row>
         </div>
