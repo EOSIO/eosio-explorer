@@ -1,4 +1,4 @@
-yarn run v1.15.2
+yarn run v1.13.0
 $ node local-service.js
-/Users/jonathan.cardenas/eos-toppings/packages/api-eosio-compiler
+/Users/matthew.kelly/Documents/EOSIO/eos-toppings/packages/api-eosio-compiler
 Booted up local service server. Listening on 8081

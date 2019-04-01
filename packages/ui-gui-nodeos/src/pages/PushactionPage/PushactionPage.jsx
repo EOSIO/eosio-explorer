@@ -5,11 +5,21 @@ import {
   Dropdown, DropdownToggle, DropdownMenu, DropdownItem, Input
 } from 'reactstrap';
 
-import { pollingStart, pollingStop, smartContractNameSearch, actionDigestSet } from './PushactionPageReducer';
+import { pollingStart, pollingStop, smartContractNameSearch, actionDigestSet, updateActionToPush, actionPush } from './PushactionPageReducer';
 import { CodeViewer, LoadingSpinner } from 'components';
 import { StandardTemplate } from 'templates';
 import { defaultSet } from 'reducers/permission';
 import Actionhistory from './components/Actionhistory';
+
+const updateAction = (event, action, callback) => {
+  console.log(event.target.name);
+  if (event.target.name === "smartContractName") { 
+    action.act.account = event.target.value;
+  } else if(event.target.name === "actionType") {
+    action.act.name = event.target.value;
+  }
+  callback(action);
+};
 
 const PushactionPage = (props) => {
 
@@ -19,11 +29,12 @@ const PushactionPage = (props) => {
   }, [])
 
   const [ isOpenDropDown, toggleDropDown] = useState(false);
-  let { permission: { isFetching, data }, defaultSet, pushactionPage: { data: { actionToPush, error }, actionDigest } } = props;
+  let { permission: { isFetching, data }, defaultSet, pushactionPage: { data: { actionToPush, error }, action, actionDigest } } = props;
   let { list, defaultId } = data;
   
   let selectedPermission = list.find(permission => defaultId === permission._id);
-  let action = actionToPush ? actionToPush : {};
+  if(action.act.authorization)
+    selectedPermission = list.find(p => p.account === action.act.authorization.actor && p.permission === action.act.authorization.permission) || selectedPermission;
 
   console.log(action);
 
@@ -58,8 +69,8 @@ const PushactionPage = (props) => {
                     </Col>
                     <Col xs="9">
                       <Input type="text" id="smartContractName" name="smartContractName" placeholder="Smart Contract Name..." 
-                      defaultValue={action && (action.act && action.act.account)}
-                      /* // onChange={handleChange} // invalid={!!errors.nodeosEndPoint}*/ />
+                      value={action && (action.act && action.act.account)}
+                      onChange={(e) => { updateAction(e, action, props.updateActionToPush) } } />
                     </Col>
                   </FormGroup>
                   <FormGroup row>
@@ -69,7 +80,7 @@ const PushactionPage = (props) => {
                     <Col xs="9">
                       <Input type="text" id="actionType" name="actionType" placeholder="Action Type..." 
                       value={action && (action.act && action.act.name)}
-                      /* // onChange={handleChange} // invalid={!!errors.nodeosEndPoint}*/ />
+                      onChange={(e) => { updateAction(e, action, props.updateActionToPush) } } />
                     </Col>
                   </FormGroup>
                   <FormGroup row>
@@ -82,8 +93,9 @@ const PushactionPage = (props) => {
                           <option key={permission._id} value={permission._id}>{permission.account}@{permission.permission}</option>
                         )}
                       </Input> */}
-                      <p>{action && (action.act && (action.act.authorization && ( JSON.stringify(action.act.authorization) )))}</p>
-                      <Input type="select" name="permission" id="permission" onChange={(e)=> defaultSet(e.target.value) } value={selectedPermission._id}>
+                      {/* <p>{action && (action.act && (action.act.authorization && ( JSON.stringify(action.act.authorization) )))}</p> */}
+                          {console.log(JSON.stringify(selectedPermission))}
+                      <Input type="select" name="permission" id="permission" onChange={(e)=> defaultSet(e.target.value)} value={selectedPermission._id}>
                         { list.map((permission) =>
                           <option key={permission._id} value={permission._id}>{permission.account}@{permission.permission}</option>
                         )}
@@ -95,12 +107,12 @@ const PushactionPage = (props) => {
                       <Label><strong>Payload</strong></Label>
                     </Col>
                     <Col xs="12">
-                      <CodeViewer readOnly={false} height="300" value={JSON.stringify(action.json, null, 2)} />
+                      <CodeViewer readOnly={false} height="300" value={JSON.stringify(action.payload, null, 2)} />
                     </Col>
                   </FormGroup>
                   <FormGroup row className="mb-0">
                     <Col xs="12" className="text-right">
-                      <Button onClick={(e) => alert('Submit!')} color="primary">Push</Button>
+                      <Button onClick={(e) => { props.actionPush(action) }} color="primary">Push</Button>
                     </Col>
                   </FormGroup>
                 </Form>
@@ -148,7 +160,9 @@ export default connect(
     pollingStart,
     pollingStop,
     smartContractNameSearch,
-    actionDigestSet
+    actionDigestSet,
+    updateActionToPush,
+    actionPush
   }
 
 )(PushactionPage);

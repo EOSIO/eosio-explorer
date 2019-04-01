@@ -10,7 +10,8 @@ import { mergeMap, mapTo, map, catchError } from 'rxjs/operators';
 import { combineEpics, ofType } from 'redux-observable';
 
 import apiMongodb from 'services/api-mongodb';
-import apiRpc from '@eos-toppings/api-rpc';
+import apiRpc from 'services/api-rpc';
+import { CONNECT_START } from 'reducers/endpoint';
 
 // IMPORTANT
 // Must modify action prefix since action types must be unique in the whole app
@@ -24,6 +25,10 @@ const POLLING_START = actionPrefix + `POLLING_START`;
 const POLLING_STOP = actionPrefix + `POLLING_STOP`;
 const SMART_CONTRACT_NAME_UPDATE = actionPrefix + `SMART_CONTRACT_NAME_UPDATE`;
 const ACTION_DIGEST_SET = actionPrefix + `ACTION_DIGEST_SET`;
+const ACTION_UPDATE = actionPrefix + `ACTION_UPDATE`;
+const ACTION_PREFILL = actionPrefix + `ACTION_PREFILL`;
+const ACTION_PUSH = actionPrefix + `ACTION_PUSH`;
+const ACTION_PUSH_FULFILLED = actionPrefix + `ACTION_PUSH_FULFILLED`;
 
 //Action Creator
 export const fetchStart = () => ({ type: FETCH_START });
@@ -33,6 +38,10 @@ export const pollingStart = () => ({ type: POLLING_START });
 export const pollingStop = () => ({ type: POLLING_STOP });
 export const smartContractNameSearch = (name) => ({ type: SMART_CONTRACT_NAME_UPDATE , smartContractName: name});
 export const actionDigestSet = (act_digest) => ({ type: ACTION_DIGEST_SET, actionDigest: act_digest });
+export const updateActionToPush = (updatedAction) => ({ type: ACTION_UPDATE, updatedAction });
+export const prefillActionToPush = (updatedAction) => ({ type: ACTION_PREFILL, updatedAction });
+export const actionPush = (action) => ({ type: ACTION_PUSH, actionToPush: action });
+export const actionPushFulfilled = (response) => ({ type: ACTION_PUSH_FULFILLED, response });
 
 //Epic
 const startEpic = action$ => action$.pipe(
@@ -66,7 +75,10 @@ const fetchEpic = ( action$, state$ ) => action$.pipe(
         mergeMap(actionsListResponse => {
           return apiMongodb(`get_action_details${actionDigestQuery}`)
           .pipe(
-            map(actionResponse => fetchFulfilled(actionsListResponse.response, actionResponse.response)),
+            mergeMap(actionResponse => [
+              fetchFulfilled(actionsListResponse.response, actionResponse.response),
+              prefillActionToPush(actionResponse.response)
+            ]),
             catchError(error => of(fetchRejected(error.response, { status: error.status })))
           );
         }),
@@ -93,12 +105,40 @@ const actionDigestSetEpic = action$ => action$.pipe(
   mapTo(pollingStart()),
 );
 
+const endpointConnectEpic = action$ => action$.pipe(
+  ofType(CONNECT_START),
+  mapTo(fetchStart())
+);
+
+const actionPushEpic = action$ => action$.pipe(
+  ofType(ACTION_PUSH),
+  mergeMap(action => {
+    console.log("Got: " + JSON.stringify(action.actionToPush));
+    const query = {
+      "private_key": "5K7mtrinTFrVTduSxizUc5hjXJEtTjVTsqSHeBHes1Viep86FP5",
+      "actor": action.actionToPush.act.authorization.actor,
+      "permission": action.actionToPush.act.authorization.permission,
+      "action_name": action.actionToPush.act.name,
+      "account_name": action.actionToPush.act.account,
+      "payload" : action.actionToPush.payload
+    };
+    console.log("Query: " + JSON.stringify(query))
+
+    return from(apiRpc("push_action", query)).pipe(
+      map(result => actionPushFulfilled(result)),
+      catchError(error => of(fetchRejected(error.response, { status: error.status })))
+    )
+  })
+);
+
 
 export const combinedEpic = combineEpics(
   startEpic,
   fetchEpic,
   smartContractNameToggleEpic,
-  actionDigestSetEpic
+  actionDigestSetEpic,
+  actionPushEpic,
+  endpointConnectEpic
 );
 
 
@@ -106,14 +146,14 @@ export const combinedEpic = combineEpics(
 const actionToPushInitState = {
   _id: "",
   act: {
-    account: "",
+    account: "test",
     name: "",
     authorization: [{
       actor: "",
       permission: ""
     }]
   },
-  json: undefined
+  payload: undefined
 }
 
 const dataInitState = {
@@ -134,7 +174,7 @@ const mapPrefilledAction = (prefilledAction) => {
       name: action.act.name,
       authorization: action.act.authorization.find(x => x !== undefined),
     },
-    json: action
+    payload: action.act.data
   }
 }
 
@@ -196,9 +236,31 @@ const actionDigestReducer = (state = "", action) => {
   }
 };
 
+const actionReducer = (state = actionToPushInitState, action) => {
+  switch(action.type) {
+    case ACTION_UPDATE:
+      console.log("Updating: " + JSON.stringify(action.updatedAction));
+      return action.updatedAction;
+      
+    case ACTION_PREFILL:
+      return mapPrefilledAction(action.updatedAction);
+
+    case ACTION_PUSH:
+      return state;
+
+    case ACTION_PUSH_FULFILLED:
+      console.log("Fulfilled: " + JSON.stringify(action.response));
+      return state;
+
+    default:
+      return state;
+  }
+};
+
 export const combinedReducer = combineReducers({
   data: dataReducer,
   isFetching: isFetchingReducer,
   smartContractName: smartContractNameReducer,
-  actionDigest: actionDigestReducer
+  actionDigest: actionDigestReducer,
+  action: actionReducer
 })
