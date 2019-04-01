@@ -9,7 +9,13 @@ import Nodeswitch from './components/Nodeswitch';
 import Headblock from './components/Headblock';
 import BlockchainInfo from './components/BlockchainInfo';
 import LastIrreversibleBlockInfo from './components/LastIrreversibleBlockInfo';
-import { CardStyled, CardHeaderStyled } from 'styled';
+import { CardStyled, CardHeaderStyled, PageTitleDivStyled } from 'styled';
+import styled from 'styled-components';
+
+const CardModified = styled(CardStyled)`
+  border-top: solid 2px #1173a4;
+`
+
 class InfoPage extends Component {
 
   render() {
@@ -19,20 +25,20 @@ class InfoPage extends Component {
         <div className="InfoPage animated fadeIn">
           <Row>
             <Col xs="12">
-              <h2 className="pageTitle text-center mb-4">Info Page</h2>
+              <PageTitleDivStyled>Info Page</PageTitleDivStyled>
             </Col>
           </Row>
 
           <Row>
             <Col xs="12">
-              <CardStyled>
+              <CardModified>
                 <CardHeaderStyled>
                   Connections
                 </CardHeaderStyled>
                 <CardBody>
                   <Nodeswitch/>
                 </CardBody>
-              </CardStyled>
+              </CardModified>
             </Col>
           </Row>
 

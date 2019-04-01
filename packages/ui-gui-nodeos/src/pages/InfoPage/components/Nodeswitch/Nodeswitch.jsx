@@ -8,7 +8,19 @@ import styled from 'styled-components';
 import { connectStart, connectReset, endpointInitState } from 'reducers/endpoint';
 import useForm from 'helpers/useForm';
 import validate from './NodeswitchValidatorEngine';
+import { InputStyled, ButtonPrimary, ButtonSecondary } from 'styled';
 
+
+const ButtonNow = styled(Button)`
+   width: 130px;
+    height: 40px;
+    border-radius: 2px;
+    background-color: #4d9cc3;
+    opacity: 1;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 500;
+`
 const CenteredLabel = styled(Label)`
   margin-top: 6px;
 `
@@ -42,11 +54,11 @@ const Nodeswitch = (props) => {
             <CenteredLabel htmlFor="nodeosEndPoint">Connected Nodeos</CenteredLabel>
           </Col>
           <Col xs="9">
-            <Input
+            <InputStyled
               type="text"
               id="nodeosEndPoint"
               name="nodeosEndPoint"
-              placeholder="Enter nodeos endpoint..."
+              placeholder="Please enter your end point"
               defaultValue={values.nodeosEndPoint}
               onChange={handleChange}
               invalid={!!errors.nodeosEndPoint}
@@ -62,7 +74,7 @@ const Nodeswitch = (props) => {
             <CenteredLabel htmlFor="mongodbEndPoint">Connected MongoDB</CenteredLabel>
           </Col>
           <Col xs="9" style={{marginTop: "10px"}}>
-            <Input
+            <InputStyled
               type="text"
               id="mongodbEndPoint"
               name="mongodbEndPoint"
@@ -80,15 +92,14 @@ const Nodeswitch = (props) => {
           </Col>
           <Col xs="12" className="text-right mt-3">
             <ButtonGroup className="float-right">
-              <Button type="submit" color="primary" size="sm" disabled={ !isDirtyForm }>Connect</Button>
-              <Button
-                color="danger"
+              <ButtonPrimary type="submit" disabled={ !isDirtyForm }>CONNECT</ButtonPrimary>
+              <ButtonSecondary
                 onClick={()=>{
                   props.connectReset();
                   setValues({nodeosEndPoint: endpointInitState.nodeos, mongodbEndPoint: endpointInitState.mongodb});
                   setKey(Date.now());
                 }}
-              >Reset Connections</Button>
+              >RESET</ButtonSecondary>
             </ButtonGroup>
           </Col>
         </FormGroup>
