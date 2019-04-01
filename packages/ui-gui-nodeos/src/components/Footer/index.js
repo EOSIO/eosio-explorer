@@ -2,6 +2,6 @@
 import Loadable from 'react-loadable';
 
 export default Loadable({
-  loader: () => import('./SectionFooterStyled'),
+  loader: () => import('./Footer'),
   loading: () => false
 });

@@ -126,7 +126,7 @@ const Footer = ({
     renderDataList = sectionSocialJson,
 }) => (
   // <!--Footer section-->
-  <Wrapper className="SectionFooterStyled">
+  <Wrapper className="Footer">
     <Container>
       <Row>
         <BlockOneCol>
