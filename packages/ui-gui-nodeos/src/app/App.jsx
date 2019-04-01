@@ -1,5 +1,3 @@
-import './reset.scss';
-import './site.scss';
 import './App.scss';
 
 import React, { Component } from 'react';

@@ -3,6 +3,9 @@
   justify-content: space-evenly;
   align-items: center;
   height: 50px;
+  font-weight: 600;
+  letter-spacing: 0.02rem;
+  font-size: 11px;
 
   /* Remove header responsiveness from Core UI */
   .navbar-brand {
@@ -13,5 +16,7 @@
   }
   .d-md-down-none {
     display: inherit !important;
+  }
+  .nav-items{
   }
 }
