@@ -33,7 +33,7 @@ const Actionhistory = (props) => {
                   <td>{action.act.account}</td>
                   <td>{action.act.name}</td>
                   <td>{action.createdAt}</td>
-                  <td><Button block color="primary" size="sm" onClick={(e) => { e.preventDefault(); props.prefillCallback(action.receipt.act_digest) }}>Prefill</Button></td>
+                  <td><Button block color="primary" size="sm" onClick={(e) => { e.preventDefault(); props.prefillCallback(action.receipt.global_sequence); }}>Prefill</Button></td>
                 </tr>
               )}
             </tbody>

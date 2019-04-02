@@ -24,7 +24,7 @@ const FETCH_REJECTED = actionPrefix + `FETCH_REJECTED`;
 const POLLING_START = actionPrefix + `POLLING_START`;
 const POLLING_STOP = actionPrefix + `POLLING_STOP`;
 const SMART_CONTRACT_NAME_UPDATE = actionPrefix + `SMART_CONTRACT_NAME_UPDATE`;
-const ACTION_DIGEST_SET = actionPrefix + `ACTION_DIGEST_SET`;
+const ACTION_ID_SET = actionPrefix + `ACTION_ID_SET`;
 const ACTION_UPDATE = actionPrefix + `ACTION_UPDATE`;
 const ACTION_PREFILL = actionPrefix + `ACTION_PREFILL`;
 const ACTION_PUSH = actionPrefix + `ACTION_PUSH`;
@@ -37,7 +37,7 @@ export const fetchRejected = ( payload, error ) => ({ type: FETCH_REJECTED, payl
 export const pollingStart = () => ({ type: POLLING_START });
 export const pollingStop = () => ({ type: POLLING_STOP });
 export const smartContractNameSearch = (name) => ({ type: SMART_CONTRACT_NAME_UPDATE , smartContractName: name});
-export const actionDigestSet = (act_digest) => ({ type: ACTION_DIGEST_SET, actionDigest: act_digest });
+export const actionIdSet = (act_id) => ({ type: ACTION_ID_SET, actionId: act_id });
 export const updateActionToPush = (updatedAction) => ({ type: ACTION_UPDATE, updatedAction });
 export const prefillActionToPush = (updatedAction) => ({ type: ACTION_PREFILL, updatedAction });
 export const actionPush = (action) => ({ type: ACTION_PUSH, actionToPush: action });
@@ -59,7 +59,7 @@ const fetchEpic = ( action$, state$ ) => action$.pipe(
               smartContractName 
             }
           },
-          actionDigest
+          actionId
         }
       } 
     } = state$;
@@ -68,12 +68,12 @@ const fetchEpic = ( action$, state$ ) => action$.pipe(
                         "?account_name=" + smartContractName.toLowerCase() : 
                         "";
 
-    let actionDigestQuery = actionDigest ? "?action_digest=" + actionDigest : "";
+    let getActionQuery = actionId ? "?global_sequence=" + actionId : "";
 
-    if(actionDigestQuery) {
+    if(getActionQuery) {
       return apiMongodb(`get_actions${searchString}`).pipe(
         mergeMap(actionsListResponse => {
-          return apiMongodb(`get_action_details${actionDigestQuery}`)
+          return apiMongodb(`get_action_details${getActionQuery}`)
           .pipe(
             mergeMap(actionResponse => [
               fetchFulfilled(actionsListResponse.response, actionResponse.response),
@@ -100,8 +100,8 @@ const smartContractNameToggleEpic = action$ => action$.pipe(
   mapTo(pollingStart()),
 );
 
-const actionDigestSetEpic = action$ => action$.pipe(
-  ofType(ACTION_DIGEST_SET),
+const actionIdSetEpic = action$ => action$.pipe(
+  ofType(ACTION_ID_SET),
   mapTo(pollingStart()),
 );
 
@@ -110,23 +110,24 @@ const endpointConnectEpic = action$ => action$.pipe(
   mapTo(fetchStart())
 );
 
-const actionPushEpic = action$ => action$.pipe(
+const actionPushEpic = (action$, state$) => action$.pipe(
   ofType(ACTION_PUSH),
   mergeMap(action => {
-    console.log("Got: " + JSON.stringify(action.actionToPush));
+
+    let actionPayload = JSON.parse(action.actionToPush.payload);
+
     const query = {
       "private_key": "5K7mtrinTFrVTduSxizUc5hjXJEtTjVTsqSHeBHes1Viep86FP5",
       "actor": action.actionToPush.act.authorization.actor,
       "permission": action.actionToPush.act.authorization.permission,
       "action_name": action.actionToPush.act.name,
       "account_name": action.actionToPush.act.account,
-      "payload" : action.actionToPush.payload
+      "payload" : actionPayload
     };
-    console.log("Query: " + JSON.stringify(query))
 
     return from(apiRpc("push_action", query)).pipe(
       map(result => actionPushFulfilled(result)),
-      catchError(error => of(fetchRejected(error.response, { status: error.status })))
+      catchError(error => of(fetchRejected(error.response, { status: error/*.status*/ })))
     )
   })
 );
@@ -136,7 +137,7 @@ export const combinedEpic = combineEpics(
   startEpic,
   fetchEpic,
   smartContractNameToggleEpic,
-  actionDigestSetEpic,
+  actionIdSetEpic,
   actionPushEpic,
   endpointConnectEpic
 );
@@ -146,7 +147,7 @@ export const combinedEpic = combineEpics(
 const actionToPushInitState = {
   _id: "",
   act: {
-    account: "test",
+    account: "",
     name: "",
     authorization: [{
       actor: "",
@@ -174,7 +175,22 @@ const mapPrefilledAction = (prefilledAction) => {
       name: action.act.name,
       authorization: action.act.authorization.find(x => x !== undefined),
     },
-    payload: action.act.data
+    payload: JSON.stringify(action.act.data, null, 2)
+  }
+}
+
+const mapUpdatedAction = (updatedAction) => {
+  if(!updatedAction)
+    return actionToPushInitState;
+
+  return {
+    _id: updatedAction._id,
+    act: {
+      account: updatedAction.act.account,
+      name: updatedAction.act.name,
+      authorization: updatedAction.act.authorization,
+    },
+    payload: updatedAction.payload
   }
 }
 
@@ -193,8 +209,6 @@ const dataReducer = (state=dataInitState, action) => {
     case FETCH_REJECTED:
       return {
         ...state,
-        actionsList: action.actionsList,
-        actionToPush: action.actionToPush,
         error: action.error
       };
     default:
@@ -226,10 +240,10 @@ const smartContractNameReducer = (state = "", action) => {
   }
 };
 
-const actionDigestReducer = (state = "", action) => {
+const actionIdReducer = (state = "", action) => {
   switch (action.type) {
-    case ACTION_DIGEST_SET:
-      return action.actionDigest;
+    case ACTION_ID_SET:
+      return action.actionId;
 
     default:
       return state;
@@ -239,8 +253,7 @@ const actionDigestReducer = (state = "", action) => {
 const actionReducer = (state = actionToPushInitState, action) => {
   switch(action.type) {
     case ACTION_UPDATE:
-      console.log("Updating: " + JSON.stringify(action.updatedAction));
-      return action.updatedAction;
+      return mapUpdatedAction(action.updatedAction);
       
     case ACTION_PREFILL:
       return mapPrefilledAction(action.updatedAction);
@@ -249,7 +262,7 @@ const actionReducer = (state = actionToPushInitState, action) => {
       return state;
 
     case ACTION_PUSH_FULFILLED:
-      console.log("Fulfilled: " + JSON.stringify(action.response));
+      alert("Action Pushed!");
       return state;
 
     default:
@@ -261,6 +274,6 @@ export const combinedReducer = combineReducers({
   data: dataReducer,
   isFetching: isFetchingReducer,
   smartContractName: smartContractNameReducer,
-  actionDigest: actionDigestReducer,
+  actionId: actionIdReducer,
   action: actionReducer
 })
