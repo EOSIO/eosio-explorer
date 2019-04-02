@@ -16,13 +16,13 @@ Make sure you have installed all of the following prerequisites on your developm
 * Typescript - [Download & Install typescript](https://www.typescriptlang.org/#download-links)
 
 ### Cloning The GitHub Repository
-The recommended way to get MEAN.js is to use git to directly clone the MEAN.JS repository:
+The recommended way to get eosio-toppings is to use git to directly clone the eosio-toppings repository:
 
 ```bash
 $ git clone https://github.com/EOSIO/eosio-toppings/ eosio-toppings
 ```
 
-This will clone the latest version of the MEAN.JS repository to a **meanjs** folder.
+This will clone the latest version of the eosio-toppings repository to a **eosio-toppings** folder.
 
 ### Downloading The Repository Zip File
 Another way to use the eosio-toppings is to download a zip copy from the [master branch on GitHub](https://github.com/EOSIO/eosio-toppings/archive/master.zip). You can also do this using the `wget` command:
@@ -60,6 +60,22 @@ $ ./quick_start.sh
 Your application should run on port 3000 with the *development* environment configuration, so in your browser just go to [http://localhost:3000](http://localhost:3000)
 
 That's it! Your application should be running. To proceed with your development, check the other sections in this documentation.
+
+## Pausing The Blockchain
+
+Pause the blockchain/dockers using this:
+
+```bash
+$ ./pause_dockers.sh
+```
+
+This will pause the running dockers (blockchain and mongodb).
+
+You can resume the dockers using
+```bash
+$ ./quick_start.sh
+```
+
 
 ## Project structure
 ```bash
