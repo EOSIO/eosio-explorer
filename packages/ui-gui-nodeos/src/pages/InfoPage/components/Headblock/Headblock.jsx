@@ -30,7 +30,7 @@ const Headblock = (props) => {
         <Form className="form-horizontal">
           <FormGroup row className="mb-0">
             <Col xs="2">
-              <Label>Block Number</Label>
+              <Label>Block Number:</Label>
             </Col>
             <Col xs="10">
               <p className="form-control-static">{block_num}</p>
@@ -38,7 +38,7 @@ const Headblock = (props) => {
           </FormGroup>
           <FormGroup row className="mb-0">
             <Col xs="2">
-              <Label>Block ID</Label>
+              <Label>Block ID:</Label>
             </Col>
             <Col xs="10">
               <p className="form-control-static">{block_id}</p>
@@ -46,7 +46,7 @@ const Headblock = (props) => {
           </FormGroup>
           <FormGroup row className="mb-0">
             <Col xs="2">
-              <Label>Timestamp</Label>
+              <Label>Timestamp:</Label>
             </Col>
             <Col xs="10">
               <p className="form-control-static">{block && block.timestamp}</p>
@@ -54,7 +54,7 @@ const Headblock = (props) => {
           </FormGroup>
           <FormGroup row className="mb-0">
             <Col xs="2">
-              <Label>Block Producer</Label>
+              <Label>Block Producer:</Label>
             </Col>
             <Col xs="10">
               <p className="form-control-static">{block && block.producer}</p>

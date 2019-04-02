@@ -2,24 +2,23 @@ import React, { useEffect } from 'react';
 
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { push } from 'connected-react-router'
 import { fetchStart, paramsSet } from './BlockdetailReducer';
 import pathNameConsumer from 'helpers/pathname-consumer';
-import { Card, CardTitle, CardBody, Col, Row, Form, FormGroup} from 'reactstrap';
+import { CardBody, Col, Row, Form, FormGroup} from 'reactstrap';
 import styled from 'styled-components';
 import { CodeViewer } from 'components';
+import { CardStyled, CardHeaderStyled, TableStyled } from 'styled';
 
-const CardTitleStyled = styled(CardTitle)`
-  text-decoration: underline;
-  font-weight: bold;
+
+const CardModified = styled(CardStyled)`
+  border-top: solid 2px #1173a4;
 `
 
-const ColBoldStyled = styled(Col)`
-  font-weight: bold;
-`
-
-const ColBoldUnderlineStyled = styled(Col)`
-  font-weight: bold;
-  text-decoration: underline;
+const CustomTable = styled(TableStyled)`
+ thead tr{
+  background-color: #ffffff;
+}
 `
 
 const Blockdetail = (props) => {
@@ -44,77 +43,76 @@ const Blockdetail = (props) => {
                   : <div>
                       <Row>
                         <Col sm="12">
-                          <Card>
+                          <CardModified>
+                            <CardHeaderStyled>Block Detail</CardHeaderStyled>
                             <CardBody>
-                              <CardTitleStyled>Block Detail</CardTitleStyled>
                               <Form> 
                                 <FormGroup row>
-                                  <ColBoldStyled sm={2}>Block Number:</ColBoldStyled>
+                                  <Col sm={2}>Block Number:</Col>
                                   <Col sm={10}>
                                     {payload[0].block_num}
                                   </Col>
                                 </FormGroup>
                                 <FormGroup row>
-                                  <ColBoldStyled sm={2}>Block ID:</ColBoldStyled>
+                                  <Col sm={2}>Block ID:</Col>
                                   <Col sm={10}>
                                     {payload[0].block_id}
                                   </Col>
                                 </FormGroup>
                                 <FormGroup row>
-                                  <ColBoldStyled sm={2}>Timestamp:</ColBoldStyled>
+                                  <Col sm={2}>Timestamp:</Col>
                                   <Col sm={10}>
                                     {payload[0].createdAt}
                                   </Col>
                                 </FormGroup>
                                 <FormGroup row>
-                                  <ColBoldStyled sm={2}>Number of Transactions:</ColBoldStyled>
+                                  <Col sm={2}>Number of Transactions:</Col>
                                   <Col sm={10}>
                                     {payload[0].block.transactions.length}
                                   </Col>
                                 </FormGroup>
                               </Form>
                             </CardBody>
-                          </Card>
+                          </CardModified>
                         </Col>
                       </Row>
 
                       {(payload[0].block.transactions).length > 0 
                         ?<Row>
                           <Col sm="12">
-                            <Card>
+                            <CardStyled>
+                              <CardHeaderStyled>Transaction List</CardHeaderStyled>
                               <CardBody>
-                                <CardTitleStyled>Transaction List</CardTitleStyled>                              
-                                <Form> 
-                                  <FormGroup row>
-                                    <ColBoldUnderlineStyled sm={2}>Index</ColBoldUnderlineStyled>
-                                    <ColBoldUnderlineStyled sm={10}>Transaction ID</ColBoldUnderlineStyled>
-                                  </FormGroup>
+                                <CustomTable borderless>
+                                <thead>
+                                  <tr>
+                                    <th width="16%">Index</th>
+                                    <th width="84%">Transaction ID</th>                                    
+                                  </tr>
+                                </thead>
+                                <tbody>
                                   {(payload[0].block.transactions).map((eachTransaction,index)=>
-                                  <FormGroup key={index} row>
-                                    <Col sm={2}>{index+1}</Col>
-                                    <Col sm={10}><Link to={`/transaction/${eachTransaction.trx.id}`}>{eachTransaction.trx.id}</Link></Col>
-                                  </FormGroup>
-                                  )}                              
-                                </Form>
+                                    <tr onClick={evt=> props.push(`/transaction/${eachTransaction.trx.id}`)} key={eachTransaction.trx.id}>
+                                      <td>{index+1}</td>
+                                      <td>{eachTransaction.trx.id}</td>                                      
+                                    </tr>)}
+                                </tbody>
+                                </CustomTable>                               
                               </CardBody>
-                            </Card>
+                            </CardStyled>
                           </Col>
                         </Row>
                         : console.log("No transactions") 
                       }  
-
                       <Row>
                         <Col sm="12">
-                          <Card>
-                            <CardBody>
-                            <CodeViewer
-                                language="json"
-                                value={JSON.stringify(payload, null, 2)}
-                                readOnly={true}
-                                height={600}
-                                />
-                            </CardBody>        
-                          </Card>          
+                          <CodeViewer
+                              language="json"
+                              value={JSON.stringify(payload, null, 2)}
+                              readOnly={true}
+                              height={600}
+                              />  
+                          <br/><br/>    
                         </Col>
                       </Row>
                     </div>}    
@@ -131,6 +129,7 @@ export default connect(
   {
     fetchStart,
     paramsSet,
+    push
   }
 
 )(Blockdetail);

@@ -9,6 +9,7 @@ export default styled(Table)`
   tbody tr:nth-of-type(even){
     background-color: #fbfbfc;
   }
+  
   tbody tr:hover{
     background-color: #d5e0eb;
   }

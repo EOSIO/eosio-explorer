@@ -26,7 +26,7 @@ const LastIrreversibleBlockInfo = (props) => {
         <Form className="form-horizontal">
           <FormGroup row className="mb-0">
             <Col xs="2">
-              <Label>Block Number</Label>
+              <Label>Block Number:</Label>
             </Col>
             <Col xs="10">
               <p className="form-control-static">{payload && payload.last_irreversible_block_num}</p>
@@ -34,7 +34,7 @@ const LastIrreversibleBlockInfo = (props) => {
           </FormGroup>
           <FormGroup row className="mb-0">
             <Col xs="2">
-              <Label>Block ID</Label>
+              <Label>Block ID:</Label>
             </Col>
             <Col xs="10">
               <p className="form-control-static">{payload && payload.last_irreversible_block_id}</p>

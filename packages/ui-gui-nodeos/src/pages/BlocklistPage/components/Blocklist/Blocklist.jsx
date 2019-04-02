@@ -4,19 +4,22 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { push } from 'connected-react-router'
 import styled from 'styled-components';
-import { CardStyled, TableStyled, ButtonPrimary, CheckBoxStyled, InputStyled} from 'styled';
+import { CardStyled,CardHeaderStyled, TableStyled, ButtonPrimary, CheckBoxDivStyled, InputStyled} from 'styled';
 
 import { pollingStart, pollingStop, filterToggle } from './BlocklistReducer';
 
+const CardModified = styled(CardStyled)`
+  border-top: solid 2px #1173a4;
+`
 
-
-const LabelFilterStyled = styled.label`
-  padding-left: 10px;
+const SearchLabel = styled.label`
+  padding-right: 10px;
   margin-top: 10px;
 `
 
+
 const SearchInputStyled = styled(InputStyled)`
-  width: 70%;
+  width: 65%;
 `
 
 const DivFlexStyled = styled.div`
@@ -24,7 +27,6 @@ const DivFlexStyled = styled.div`
   justify-content: space-between;
   padding-bottom: 20px;
 `
-
 
 const Blocklist = (props) => {
 
@@ -40,39 +42,46 @@ const Blocklist = (props) => {
 
   return (
     <div className="Blocklist">
-      <CardStyled>
+      <CardModified>
+        <CardHeaderStyled>Block List</CardHeaderStyled>
         <CardBody>        
           <Row>
-            <Col sm="8">               
-              {filter 
-                ? <CheckBoxStyled onChange={props.filterToggle} type="checkbox" checked/>
-                : <CheckBoxStyled onChange={props.filterToggle} type="checkbox"/>}           
-                <LabelFilterStyled>No empty blocks</LabelFilterStyled>               
+            <Col sm="6">  
+              <CheckBoxDivStyled>
+                <label className="checkboxContainer">No empty blocks
+
+                  {filter 
+                  ? <input onChange={props.filterToggle} type="checkbox" checked/>
+                  : <input onChange={props.filterToggle} type="checkbox"/>}
+                 
+                  <span className="checkmark"></span>
+                </label>   
+              </CheckBoxDivStyled>          
+                            
             </Col>
-            <Col sm="4">
-              
-                <DivFlexStyled>
-                  <SearchInputStyled 
-                        placeholder="Search by Block number / Block ID"
-                        value={inputValue}
-                        onKeyDown={
-                          evt => {
-                            if (evt.key === 'Enter') {
-                              setInputValue("")
-                               {inputValue ? props.push('/block/'+inputValue) : console.log("No search text");} 
-                            }
+            <Col sm="6">              
+              <DivFlexStyled>
+              <SearchLabel>Search Blocks:</SearchLabel>
+                <SearchInputStyled 
+                      placeholder="Block number / Block ID"
+                      value={inputValue}
+                      onKeyDown={
+                        evt => {
+                          if (evt.key === 'Enter') {
+                            setInputValue("")
+                              {inputValue ? props.push('/block/'+inputValue) : console.log("No search text");} 
                           }
                         }
-                        onChange={evt=>{setInputValue(evt.target.value)}}/>
-                  <ButtonPrimary
-                        color="secondary"                           
-                        onClick={evt=> {
-                          setInputValue("")
-                          {inputValue ? props.push('/block/'+inputValue) : console.log("No search text");}                          
-                        }}>
-                  SEARCH</ButtonPrimary>
-                </DivFlexStyled>
-              
+                      }
+                      onChange={evt=>{setInputValue(evt.target.value)}}/>
+                <ButtonPrimary
+                      color="secondary"                           
+                      onClick={evt=> {
+                        setInputValue("")
+                        {inputValue ? props.push('/block/'+inputValue) : console.log("No search text");}                          
+                      }}>
+                SEARCH</ButtonPrimary>
+              </DivFlexStyled>              
             </Col>
           </Row>
           <div>
@@ -83,10 +92,10 @@ const Blocklist = (props) => {
                 : <TableStyled borderless>
                     <thead>
                       <tr>
-                        <th>Block Number</th>
-                        <th>Block ID</th>
-                        <th>Number of Transactions</th>
-                        <th>Timestamp</th>
+                        <th width="20%">Block Number</th>
+                        <th width="35%">Block ID</th>
+                        <th width="25%" className="text-center">Number of Transactions</th>
+                        <th width="20%">Timestamp</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -94,14 +103,14 @@ const Blocklist = (props) => {
                         <tr onClick={evt=>props.push(`/block/${eachBlock.block_id}`)} key={eachBlock.block_id}>
                           <td>{eachBlock.block_num}</td>
                           <td>{eachBlock.block_id}</td>
-                          <td>{eachBlock.block.transactions.length}</td>
+                          <td className="text-center">{eachBlock.block.transactions.length}</td>
                           <td>{eachBlock.createdAt}</td>
                         </tr>)}
                     </tbody>
                   </TableStyled>}
           </div>        
         </CardBody>
-      </CardStyled>
+      </CardModified>
     </div>
   );
 }

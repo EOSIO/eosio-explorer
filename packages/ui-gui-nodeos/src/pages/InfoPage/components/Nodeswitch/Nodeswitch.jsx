@@ -51,7 +51,7 @@ const Nodeswitch = (props) => {
       <Form key={key} onSubmit={ handleSubmit }>
         <FormGroup row className="mb-0">
           <Col xs="3">
-            <CenteredLabel htmlFor="nodeosEndPoint">Connected Nodeos</CenteredLabel>
+            <CenteredLabel htmlFor="nodeosEndPoint">Connected Nodeos:</CenteredLabel>
           </Col>
           <Col xs="9">
             <InputStyled
@@ -71,7 +71,7 @@ const Nodeswitch = (props) => {
               }
           </Col>
           <Col xs="3" style={{marginTop: "10px"}}>
-            <CenteredLabel htmlFor="mongodbEndPoint">Connected MongoDB</CenteredLabel>
+            <CenteredLabel htmlFor="mongodbEndPoint">Connected MongoDB:</CenteredLabel>
           </Col>
           <Col xs="9" style={{marginTop: "10px"}}>
             <InputStyled
