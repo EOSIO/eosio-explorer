@@ -6,10 +6,13 @@ import { STATUS_NORMAL, STATUS_STOPPED } from './ConnectionIndicatorReducer'
 import styled from 'styled-components';
 
 const StyledWrapper = styled.div`
-
+  position: relative;
+  top: -1px;
 `
 
 const Indicator = styled.i`
+  position: relative;
+  top: 1px;
   display: inline-block;
   flex: 0 0 10px;
   height: 10px;
