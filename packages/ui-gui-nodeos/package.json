@@ -29,6 +29,7 @@
     "react-router-dom": "^4.3.1",
     "react-scripts": "^2.1.5",
     "react-snap": "^1.23.0",
+    "react-gtm-module": "^2.0.4",
     "redux": "^4.0.1",
     "redux-observable": "^1.0.0",
     "redux-persist": "^5.10.0",
