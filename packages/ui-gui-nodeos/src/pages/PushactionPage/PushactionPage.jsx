@@ -43,19 +43,13 @@ const validateAction = (action) => {
   };
   if(!action.act.account)
     validation.errors.push("Please add a smart contract name");
-  if(!action.act.account)
+  if(!action.act.name)
     validation.errors.push("Please add an action type");
-  if(!action.act.authorization.actor || !action.act.authorization.permission)
-    validation.errors.push("Please select a permission");
-
-  if(action.payload) {
-    if(!tryParseJSON(action.payload)) {
-      console.log("Could not parse Payload JSON.");
-      validation.errors.push("Please enter a valid JSON string");
-    }
+  
+  if(!tryParseJSON(action.payload)) {
+    console.log("Could not parse Payload JSON.");
+    validation.errors.push("Please enter a valid JSON string");
   }
-
-  console.log("Errors: " + JSON.stringify(validation.errors));
 
   validation.valid = validation.errors.length < 1;
   return validation;
@@ -96,17 +90,25 @@ const PushactionPage = (props) => {
                 <LoadingSpinner />
               ) : (
               <Form className="form-horizontal">
-                { error &&
-                  <div className="text-center">
-                    <p className="text-danger"><strong>Error(s)</strong></p>
-                    <p className="text-danger">{JSON.stringify(error)}</p>
-                  </div>
+                { action.error &&
+                <Card className="text-white bg-danger text-center">
+                  <CardBody>
+                    <p className="mb-1"><strong>Error(s)</strong></p>
+                    <p className="mb-1">{action.error.error}</p>
+                  </CardBody>
+                </Card>
                 }
                 { validationErrors && ( validationErrors.length > 0 && 
-                  <div className="text-center">
-                    <p className="text-danger"><strong>Error(s)</strong></p>
-                    <p className="text-danger">{JSON.stringify(validationErrors)}</p>
-                  </div>
+                  <Card className="text-white bg-danger text-center">
+                    <CardBody>
+                      <p className="mb-1"><strong>Error(s)</strong></p>
+                      <ul className="list-unstyled mb-0">
+                        {validationErrors.map((error, index) => 
+                          <li key={index}>{error}</li>
+                        )}
+                      </ul>
+                    </CardBody>
+                  </Card>
                 )}
                 <FormGroup row>
                     <Col xs="3">
@@ -134,9 +136,10 @@ const PushactionPage = (props) => {
                       <Input type="select" name="permission" id="permission" value={selectedPermission._id}
                         onChange={(e) => { 
                           let newPermission = list.find(p => e.target.value === p._id); 
-                          updateAction(e.target.name, action, { actor: newPermission.account, permission: newPermission.permission }, props.updateActionToPush); 
+                          updateAction(e.target.name, action, { actor: newPermission.account, permission: newPermission.permission }, props.updateActionToPush);
+                          defaultSet(newPermission._id);
                         }}>
-                        { list.map((permission) =>
+                        { list.map((permission) =>  permission.private_key &&
                           <option key={permission._id} value={permission._id}>{permission.account}@{permission.permission}</option>
                         )}
                       </Input>
@@ -157,13 +160,14 @@ const PushactionPage = (props) => {
                     <Col xs="12" className="text-right">
                       <Button onClick={(e) => {
                         let validation = validateAction(action);
-                        if(validation.valid) 
-                          props.actionPush(action); 
+                        if(validation.valid) {
+                          props.actionPush(action);
+                        }
                         else {
                           console.log("Validation Failed");
                           setValidationErrors(validation.errors);
-                          console.log(validationErrors);
                         }
+                        window.scrollTo(0, 0);
                       }} color="primary">Push</Button>
                     </Col>
                   </FormGroup>
@@ -180,7 +184,7 @@ const PushactionPage = (props) => {
                 Action History Viewer
               </CardHeader>
               <CardBody>
-                <Actionhistory prefillCallback={(act_id) => { props.actionIdSet(act_id); window.scrollTo(0, 0); } } />
+                <Actionhistory prefillCallback={(act_id) => { props.actionIdSet(act_id); setValidationErrors([]); window.scrollTo(0, 0); } } />
               </CardBody>
             </Card>
           </Col>

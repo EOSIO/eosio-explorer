@@ -8,3 +8,4 @@ yarn-debug.log*
 yarn-error.log*
 
 **/compiler.log
+packages/api-eosio-compiler/compiler.log

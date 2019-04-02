@@ -29,6 +29,7 @@ const ACTION_UPDATE = actionPrefix + `ACTION_UPDATE`;
 const ACTION_PREFILL = actionPrefix + `ACTION_PREFILL`;
 const ACTION_PUSH = actionPrefix + `ACTION_PUSH`;
 const ACTION_PUSH_FULFILLED = actionPrefix + `ACTION_PUSH_FULFILLED`;
+const ACTION_PUSH_REJECTED = actionPrefix + `ACTION_PUSH_REJECTED`;
 
 //Action Creator
 export const fetchStart = () => ({ type: FETCH_START });
@@ -42,6 +43,7 @@ export const updateActionToPush = (updatedAction) => ({ type: ACTION_UPDATE, upd
 export const prefillActionToPush = (updatedAction) => ({ type: ACTION_PREFILL, updatedAction });
 export const actionPush = (action) => ({ type: ACTION_PUSH, actionToPush: action });
 export const actionPushFulfilled = (response) => ({ type: ACTION_PUSH_FULFILLED, response });
+export const actionPushRejected = ( payload, error ) => ({ type: ACTION_PUSH_REJECTED, payload, error });
 
 //Epic
 const startEpic = action$ => action$.pipe(
@@ -52,26 +54,14 @@ const startEpic = action$ => action$.pipe(
 const fetchEpic = ( action$, state$ ) => action$.pipe(
   ofType(FETCH_START),
   mergeMap(action => {
-    let { value: {
-      pushactionPage: { 
-        data: {
-            actionsList: { 
-              smartContractName 
-            }
-          },
-          actionId
-        }
-      } 
-    } = state$;
-
-    let searchString =  smartContractName ? 
-                        "?account_name=" + smartContractName.toLowerCase() : 
-                        "";
-
-    let getActionQuery = actionId ? "?global_sequence=" + actionId : "";
-
+    let { value: { pushactionPage: { actionId } } } = state$;
+    
+    let getActionQuery =  actionId !== undefined && actionId !== null && actionId !== "" ? 
+                          "?global_sequence=" + actionId :
+                          "";
+                          
     if(getActionQuery) {
-      return apiMongodb(`get_actions${searchString}`).pipe(
+      return apiMongodb(`get_actions`).pipe(
         mergeMap(actionsListResponse => {
           return apiMongodb(`get_action_details${getActionQuery}`)
           .pipe(
@@ -85,13 +75,11 @@ const fetchEpic = ( action$, state$ ) => action$.pipe(
         catchError(error => of(fetchRejected(error.response, { status: error.status })))
       )
     } else {
-      return apiMongodb(`get_actions${searchString}`).pipe(
+      return apiMongodb(`get_actions`).pipe(
         map(actionsListResponse => fetchFulfilled(actionsListResponse.response, null)),
         catchError(error => of(fetchRejected(error.response, { status: error.status })))
       )
     }
-
-
   }),
 );
 
@@ -113,11 +101,9 @@ const endpointConnectEpic = action$ => action$.pipe(
 const actionPushEpic = (action$, state$) => action$.pipe(
   ofType(ACTION_PUSH),
   mergeMap(action => {
-
     let actionPayload = JSON.parse(action.actionToPush.payload);
 
     const query = {
-      "private_key": "5K7mtrinTFrVTduSxizUc5hjXJEtTjVTsqSHeBHes1Viep86FP5",
       "actor": action.actionToPush.act.authorization.actor,
       "permission": action.actionToPush.act.authorization.permission,
       "action_name": action.actionToPush.act.name,
@@ -127,7 +113,7 @@ const actionPushEpic = (action$, state$) => action$.pipe(
 
     return from(apiRpc("push_action", query)).pipe(
       map(result => actionPushFulfilled(result)),
-      catchError(error => of(fetchRejected(error.response, { status: error/*.status*/ })))
+      catchError(error => of(actionPushRejected(error.json, { error: error.message })))
     )
   })
 );
@@ -157,6 +143,8 @@ const actionToPushInitState = {
   payload: undefined
 }
 
+const genericError = "There was an error pushing this action";
+
 const dataInitState = {
   actionsList: [],
   actionToPush: actionToPushInitState,
@@ -166,7 +154,7 @@ const dataInitState = {
 const mapPrefilledAction = (prefilledAction) => {
   if(!prefilledAction)
     return actionToPushInitState;
-
+  
   let action = prefilledAction.find(x => x !== undefined);
   return {
     _id: action._id,
@@ -194,23 +182,45 @@ const mapUpdatedAction = (updatedAction) => {
   }
 }
 
+const mapErrorsToJson = (error) => {
+  if(!error)
+    return genericError;
+  
+  let errors = [];
+
+  if(error.json.error) {
+    errors.push(error.json.error.code + ": " + error.json.error.what);
+    for(let detail in error.json.error.details) {
+      errors.push(detail.message);
+    }
+  }
+
+  return errors;
+}
+
 const dataReducer = (state=dataInitState, action) => {
   switch (action.type) {
     case FETCH_START:
       return dataInitState;
 
     case FETCH_FULFILLED:
+      console.log(JSON.stringify("FETCH_FULFILLED"));  
       return {
         ...state,
         actionsList: action.actionsList,
         actionToPush: mapPrefilledAction(action.actionToPush),
         error: undefined
       };
+
     case FETCH_REJECTED:
+      console.log(JSON.stringify("FETCH_REJECTED"));
+      console.log(JSON.stringify(action));
+      
       return {
         ...state,
         error: action.error
       };
+
     default:
       return state;
   }
@@ -263,7 +273,16 @@ const actionReducer = (state = actionToPushInitState, action) => {
 
     case ACTION_PUSH_FULFILLED:
       alert("Action Pushed!");
-      return state;
+      fetchStart();
+      return actionToPushInitState;
+
+    case ACTION_PUSH_REJECTED:
+    console.log("ACTION_PUSH_REJECTED");
+    console.log(action.error);
+      return {
+        ...state,
+        error: action.error
+      };
 
     default:
       return state;

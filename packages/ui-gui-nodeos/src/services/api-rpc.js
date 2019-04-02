@@ -7,6 +7,13 @@ export default async ( apiPath, query ) => {
   if ( navigator.userAgent !== "ReactSnap" ){
     try{
       const state = store.getState();
+
+      // Get private key of the currently selected permission
+      let selectedPermission = state.permission.data.list.find(permission => permission._id === state.permission.data.defaultId);
+      if(selectedPermission) {
+        query.private_key = selectedPermission.private_key;
+      }
+
       let { endpoint: { nodeos } } = state;
       let result = await apiRpc[apiPath]({
         ...query,
