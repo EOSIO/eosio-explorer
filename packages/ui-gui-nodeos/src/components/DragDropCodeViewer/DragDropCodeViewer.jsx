@@ -29,7 +29,6 @@ class DragDropCodeViewer extends Component {
       height: this.props.height || 500,
       width: this.props.width || 1190
     })
-    console.log(editor.getLayoutInfo());
 
     setTimeout(
       function() {
