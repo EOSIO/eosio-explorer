@@ -1,5 +1,3 @@
-import './reset.scss';
-import './site.scss';
 import './App.scss';
 
 import React, { Component } from 'react';
@@ -58,8 +56,8 @@ class App extends Component {
           <WillRoute exact path="/permission" component={ PermissionPage }/>
           <WillRoute exact path="/deploy" component={ DeploymentPage }/>
           <WillRoute exact path="/push-action" component={ PushactionPage }/>
-          <WillRoute exact path="/privacy" component={ PrivacyPolicyPage }/>
-          <WillRoute exact path="/terms" component={ TermsOfUsePage }/>
+          <WillRoute exact path="/privacy-policy" component={ PrivacyPolicyPage }/>
+          <WillRoute exact path="/terms-of-use" component={ TermsOfUsePage }/>
           <WillRoute exact path="/rpc" component={ TestRPCPage }/>
 
           <Redirect to="/" />

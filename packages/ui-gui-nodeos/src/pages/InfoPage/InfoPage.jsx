@@ -9,6 +9,12 @@ import Nodeswitch from './components/Nodeswitch';
 import Headblock from './components/Headblock';
 import BlockchainInfo from './components/BlockchainInfo';
 import LastIrreversibleBlockInfo from './components/LastIrreversibleBlockInfo';
+import { CardStyled, CardHeaderStyled, PageTitleDivStyled } from 'styled';
+import styled from 'styled-components';
+
+const CardModified = styled(CardStyled)`
+  border-top: solid 2px #1173a4;
+`
 
 class InfoPage extends Component {
 
@@ -19,59 +25,59 @@ class InfoPage extends Component {
         <div className="InfoPage animated fadeIn">
           <Row>
             <Col xs="12">
-              <h2 className="pageTitle text-center mb-4">Info Page</h2>
+              <PageTitleDivStyled>Info Page</PageTitleDivStyled>
             </Col>
           </Row>
 
           <Row>
             <Col xs="12">
-              <Card>
-                <CardHeader>
+              <CardModified>
+                <CardHeaderStyled>
                   Connections
-                </CardHeader>
+                </CardHeaderStyled>
                 <CardBody>
                   <Nodeswitch/>
                 </CardBody>
-              </Card>
+              </CardModified>
             </Col>
           </Row>
 
           <Row>
             <Col xs="12">
-              <Card>
-                <CardHeader>
+              <CardStyled>
+                <CardHeaderStyled>
                   Blockchain Information
-                </CardHeader>
+                </CardHeaderStyled>
                 <CardBody>
                   <BlockchainInfo />
                 </CardBody>
-              </Card>
+              </CardStyled>
             </Col>
           </Row>
 
           <Row>
             <Col xs="12">
-              <Card>
-                <CardHeader>
+              <CardStyled>
+                <CardHeaderStyled>
                   Head Block Information
-                </CardHeader>
+                </CardHeaderStyled>
                 <CardBody>
                   <Headblock/>
                 </CardBody>
-              </Card>
+              </CardStyled>
             </Col>
           </Row>
 
           <Row>
             <Col xs="12">
-              <Card>
-                <CardHeader>
+              <CardStyled>
+                <CardHeaderStyled>
                   Last Irreversible Block Information
-                </CardHeader>
+                </CardHeaderStyled>
                 <CardBody>
                   <LastIrreversibleBlockInfo />
                 </CardBody>
-              </Card>
+              </CardStyled>
             </Col>
           </Row>
         </div>
