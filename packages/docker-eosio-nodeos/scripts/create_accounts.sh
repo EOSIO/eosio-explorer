@@ -1,7 +1,7 @@
 #!/bin/bash
 set -o errexit
 
-echo "=== start deploy data ==="
+echo "deploying data"
 
 # set PATH
 PATH="$PATH:/opt/eosio/bin"
@@ -9,7 +9,7 @@ PATH="$PATH:/opt/eosio/bin"
 # change to script directory
 cd "$(dirname "$0")"
 
-echo "=== start create accounts in blockchain ==="
+echo "creating accounts in blockchain"
 
 # download jq for json reader, we use jq here for reading the json file ( accounts.json )
 mkdir -p ~/bin && curl -sSL -o ~/bin/jq https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 && chmod +x ~/bin/jq && export PATH=$PATH:~/bin

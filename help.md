@@ -63,10 +63,10 @@ That's it! Your application should be running. To proceed with your development,
 
 ## Project structure
 ```bash
-eosio-toppings
+eosio-toppings # project directory
 ├── LICENSE
 ├── README.md
-├── apps
+├── apps # general scripts for blockchain
 │   └── gui-nodeos
 │       ├── README.md
 │       ├── build_dockers.sh
@@ -74,13 +74,13 @@ eosio-toppings
 │       ├── pause_blockchain.sh
 │       ├── resume_blockchain.sh
 │       └── start_blockchain.sh
-├── first_time_setup.sh
+├── first_time_setup.sh # first time setup script
 ├── help.md
 ├── lerna.json
 ├── package.json
-├── packages
+├── packages # Each folder in packages reperesent a service runs on top of EOSIO blockchain or as a helper for other services in this same folde
 │   ├── README.md
-│   ├── api-eosio-compiler
+│   ├── api-eosio-compiler # Service to compile and deploy contract
 │   │   ├── README.md
 │   │   ├── compiler.log
 │   │   ├── docker-eosio-cdt
@@ -100,7 +100,7 @@ eosio-toppings
 │   │   ├── local-service.js
 │   │   ├── package.json
 │   │   └── service-logic.js
-│   ├── api-mongodb-plugin
+│   ├── api-mongodb-plugin # APIs to fetch details from MongoDB
 │   │   ├── README.md
 │   │   ├── package.json
 │   │   ├── src
@@ -129,7 +129,7 @@ eosio-toppings
 │   │   │   │   └── transactions.ts
 │   │   │   └── run.ts
 │   │   └── tsconfig.json
-│   ├── api-rpc
+│   ├── api-rpc # APIs to fetch details from EOSIO blockchain
 │   │   ├── README.md
 │   │   ├── package.json
 │   │   ├── src
@@ -141,11 +141,11 @@ eosio-toppings
 │   │   │   │   └── push_action.ts
 │   │   │   └── index.ts
 │   │   └── tsconfig.json
-│   ├── *docker-eosio-nodeos
+│   ├── *docker-eosio-nodeos # EOSIO docker
 │   │   ├── Dockerfile
 │   │   ├── README.md
-│   │   ├── build_eosio_docker.sh
-│   │   ├── contracts
+│   │   ├── build_eosio_docker.sh 
+│   │   ├── contracts # dummy contracts
 │   │   │   ├── byeworld
 │   │   │   │   ├── byeworld.abi
 │   │   │   │   ├── byeworld.cpp
@@ -162,19 +162,19 @@ eosio-toppings
 │   │   │   │   └── tataworld.wasm
 │   │   │   └── testnote
 │   │   │       └── testnote.cpp
-│   │   ├── remove_eosio_docker.sh
-│   │   ├── scripts
-│   │   │   ├── accounts.json
-│   │   │   ├── continue_blockchain.sh
-│   │   │   ├── create_accounts.sh
-│   │   │   ├── deploy_contract.sh
-│   │   │   └── init_blockchain.sh
-│   │   └── start_eosio_docker.sh
-│   ├── *docker-mongodb
+│   │   ├── remove_eosio_docker.sh # remove eosio docker and its content
+│   │   ├── scripts # Scripts for docker containers
+│   │   │   ├── accounts.json # list of sample account 
+│   │   │   ├── continue_blockchain.sh # resume blockchain 
+│   │   │   ├── create_accounts.sh # create dummy accounts 
+│   │   │   ├── deploy_contract.sh # deploy contract
+│   │   │   └── init_blockchain.sh # initialize blockchain 
+│   │   └── start_eosio_docker.sh # start eosio docker
+│   ├── *docker-mongodb # Mongodb Docker
 │   │   ├── README.md
 │   │   ├── remove_mongodb_docker.sh
 │   │   └── start_mongodb_docker.sh
-│   └── ui-gui-nodeos
+│   └── ui-gui-nodeos # GUI for EOSIO blockchain
 │       ├── README.md
 │       ├── config-overrides.js
 │       ├── package.json
@@ -195,7 +195,7 @@ eosio-toppings
 │           │   ├── App.jsx
 │           │   ├── App.scss
 │           │   └── index.js
-│           ├── components
+│           ├── components # common components used in GUI
 │           │   ├── CodeViewer
 │           │   │   ├── CodeViewer.jsx
 │           │   │   ├── CodeViewer.scss
@@ -234,7 +234,7 @@ eosio-toppings
 │           │   ├── WillRoute.jsx
 │           │   └── index.js
 │           ├── index.js
-│           ├── pages
+│           ├── pages # Contains all the pages of GUI
 │           │   ├── AccountdetailPage
 │           │   │   ├── AccountdetailPage.jsx
 │           │   │   ├── AccountdetailPageReducer.js
@@ -406,10 +406,9 @@ eosio-toppings
 │               │   ├── StandardTemplate.scss
 │               │   └── index.js
 │               └── index.js
-├── pause_dockers.sh
-├── quick_start.sh
-├── remove_dockers.sh
-├── tree.txt
+├── pause_dockers.sh # pause running dockers
+├── quick_start.sh # start/resume dockers, services & gui
+├── remove_dockers.sh # remove dockers and its contents
 └── yarn.lock
 
 * means the directory will be mounted to the docker container. Whenever the file changes on the local machine, it will be automatically reflected in the docker environment.

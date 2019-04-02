@@ -47,7 +47,7 @@ fi
 # start compiler service in background
 echo " "
 echo "=============================="
-echo "STARTING CONTRACT COMPILER SERVICE"
+echo "STARTING COMPILER SERVICE"
 echo "=============================="
 (cd $COMPILER && yarn start > compiler.log &)
 

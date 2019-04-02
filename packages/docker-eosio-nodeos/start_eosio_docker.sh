@@ -24,7 +24,7 @@ if [ ! "$(docker ps -q -f name=eosio_gui_nodeos_container)" ]; then
     fi
 
     # --link is to get access to other container
-    echo "=== run docker container from the eosio-gui-nodeos:eos1.6.3 image ==="
+    echo "run docker container from the eosio-gui-nodeos:eos1.6.3 image"
     docker run --rm --name eosio_gui_nodeos_container -d \
     -p 8888:8888 -p 9876:9876 \
     --link eosio-mongodb \

@@ -26,7 +26,7 @@ echo "=============================="
 # make sure everything is clean and well setup
 echo " "
 echo "=============================="
-echo "BUILDING COMPILER DOCKER"
+echo "BUILDING EOSIO_CDT DOCKER USED BY COMPILER SERVICE"
 echo "=============================="
 (cd $COMPILER && ./build_eosio_cdt_docker.sh && printf "${GREEN}done${NC}")
 
