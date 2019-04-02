@@ -8,7 +8,7 @@ import { CardStyled,CardHeaderStyled, TableStyled, ButtonPrimary, CheckBoxDivSty
 
 import { pollingStart, pollingStop, filterToggle } from './BlocklistReducer';
 
-const CardModified = styled(CardStyled)`
+const FirstCardStyled = styled(CardStyled)`
   border-top: solid 2px #1173a4;
 `
 
@@ -42,7 +42,7 @@ const Blocklist = (props) => {
 
   return (
     <div className="Blocklist">
-      <CardModified>
+      <FirstCardStyled>
         <CardHeaderStyled>Block List</CardHeaderStyled>
         <CardBody>        
           <Row>
@@ -74,8 +74,7 @@ const Blocklist = (props) => {
                         }
                       }
                       onChange={evt=>{setInputValue(evt.target.value)}}/>
-                <ButtonPrimary
-                      color="secondary"                           
+                <ButtonPrimary                          
                       onClick={evt=> {
                         setInputValue("")
                         {inputValue ? props.push('/block/'+inputValue) : console.log("No search text");}                          
@@ -110,7 +109,7 @@ const Blocklist = (props) => {
                   </TableStyled>}
           </div>        
         </CardBody>
-      </CardModified>
+      </FirstCardStyled>
     </div>
   );
 }

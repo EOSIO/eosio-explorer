@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { Card, CardBody, CardHeader, Col } from 'reactstrap';
+import { Card, CardBody, CardHeader, Col, Row } from 'reactstrap';
 
 import { StandardTemplate } from 'templates';
 import Transactionlist from './components/Transactionlist';
-
+import { PageTitleDivStyled } from 'styled';
 
 class TransactionlistPage extends Component {
 
@@ -12,14 +12,16 @@ class TransactionlistPage extends Component {
     return (
       <StandardTemplate>
         <div className="TransactionlistPage animated fadeIn">
-          <Card>
-            <CardHeader>
-              Transactions List Page
-            </CardHeader>
-            <CardBody>
-              <Transactionlist/>
-            </CardBody>
-          </Card>
+          <Row>
+            <Col sm="12">
+              <PageTitleDivStyled>Transaction List Page</PageTitleDivStyled>
+            </Col>
+          </Row>
+          <Row>
+            <Col sm="12">
+            <Transactionlist/>
+            </Col>
+          </Row>
         </div>
       </StandardTemplate>
     );
