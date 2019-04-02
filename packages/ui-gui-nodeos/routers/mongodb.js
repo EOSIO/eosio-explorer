@@ -10,9 +10,9 @@ router.get("*", (req, res) => {
 
   if ( endpoint === "set_endpoint"){
     let { path } = query;
-
     connectMongo(path)
-      .then((mongoose)=>{
+     .then(()=>{
+       
         res.setHeader('Cache-Control', 'no-cache');
         res.json({response: `Mongodb connection changed to ${path}.`});
       })

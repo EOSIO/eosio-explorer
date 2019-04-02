@@ -41,7 +41,7 @@ class App extends Component {
   componentDidMount(){
     setTimeout(()=>{Loadable.preloadAll()}, 1000);
 
-    let { endpoint: {nodeos, mongodb} } = this.props;
+    let { endpoint: { path : { nodeos, mongodb }}} = this.props;
     this.props.connectStart(nodeos, mongodb);
     this.props.headblock_pollingStart();
     this.props.lastblockinfo_pollingStart();

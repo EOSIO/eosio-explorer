@@ -26,7 +26,7 @@ const StyledDiv = styled.div`
 
 const StyledInner = styled.div`
   margin-left: 7px;
-  min-width: 50px;
+  min-width: 63px;
 `
 
 const StyledName = styled.div`
