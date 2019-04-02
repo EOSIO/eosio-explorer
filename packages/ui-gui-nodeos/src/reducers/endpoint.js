@@ -36,9 +36,9 @@ const connectEpic = ( action$, state$ ) => action$.pipe(
   ofType(CONNECT_START),
   mergeMap(action =>{
 
-      let {value: { endpoint: { path : { mongodb }}}} = state$;
+      let {value: { endpoint: { path : { mongodbTemp }}}} = state$;
 
-      return apiMongodb(`set_endpoint${paramsToQuery({path: mongodb})}`).pipe(
+      return apiMongodb(`set_endpoint${paramsToQuery({path: mongodbTemp})}`).pipe(
         map(res => connectFulfilled(res.response)),
         catchError((error={}) => of(connectRejected(error.response)))
         )
@@ -68,13 +68,20 @@ const pathReducer = (state=pathInitState, action) => {
   switch (action.type) {
     case CONNECT_START:
       return {
-        ...state,
         nodeos: action.nodeos,
-        mongodb: action.mongodb,
+        mongodb: state.mongodb,
+        mongodbTemp: action.mongodb,
       };
     case CONNECT_FULFILLED:
+      return {
+        nodeos: state.nodeos,
+        mongodb: state.mongodbTemp,
+      };
     case CONNECT_REJECTED:
-      return state;
+      return {
+        nodeos: state.nodeos,
+        mongodb: state.mongodb,
+      };;
     case CONNECT_RESET:
       return {...pathInitState};
     default:
