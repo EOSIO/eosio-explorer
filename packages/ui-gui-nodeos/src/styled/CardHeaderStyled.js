@@ -9,4 +9,7 @@ export default styled(CardHeader)`
   font-size: 14px;
   font-weight: bold;
   border-radius: 0;
+  :first-child{
+    border-radius: 0;
+  }
 `

@@ -4,38 +4,28 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { push } from 'connected-react-router'
 import styled from 'styled-components';
+import { CardStyled, TableStyled, ButtonPrimary, CheckBoxStyled, InputStyled} from 'styled';
 
 import { pollingStart, pollingStop, filterToggle } from './BlocklistReducer';
 
-import SearchButton from 'styled/SearchButton';
 
-const CheckBoxStyled = styled.input`
-  -webkit-appearance: checkbox; 
-`
 
 const LabelFilterStyled = styled.label`
   padding-left: 10px;
-  font-weight: bold;
+  margin-top: 10px;
 `
 
-const SearchInputStyled = styled(Input)`
-  width: 60%;
-  margin-top: -6px;
+const SearchInputStyled = styled(InputStyled)`
+  width: 70%;
 `
 
 const DivFlexStyled = styled.div`
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  padding-bottom: 20px;
 `
 
-const TableStyled = styled(Table)`
-  text-align: center;
-  font-family: monospace, monospace; 
-`
-const SearchLabel = styled.label`
-  font-weight: bold;
-  padding-right: 10px;
-`
+
 const Blocklist = (props) => {
 
   useEffect(()=>{
@@ -50,23 +40,20 @@ const Blocklist = (props) => {
 
   return (
     <div className="Blocklist">
-      <Card>
+      <CardStyled>
         <CardBody>        
           <Row>
-            <Col sm="6">
-              <CardTitle>   
-                {filter 
-                  ? <CheckBoxStyled onChange={props.filterToggle} type="checkbox" checked/>
-                  : <CheckBoxStyled onChange={props.filterToggle} type="checkbox"/>}           
-                  <LabelFilterStyled>No empty blocks</LabelFilterStyled>               
-              </CardTitle>
+            <Col sm="8">               
+              {filter 
+                ? <CheckBoxStyled onChange={props.filterToggle} type="checkbox" checked/>
+                : <CheckBoxStyled onChange={props.filterToggle} type="checkbox"/>}           
+                <LabelFilterStyled>No empty blocks</LabelFilterStyled>               
             </Col>
-            <Col sm="6">
-              <CardTitle>
+            <Col sm="4">
+              
                 <DivFlexStyled>
-                  <SearchLabel>Search&nbsp;Blocks:</SearchLabel>
                   <SearchInputStyled 
-                        placeholder="Block number, Block ID"
+                        placeholder="Search by Block number / Block ID"
                         value={inputValue}
                         onKeyDown={
                           evt => {
@@ -77,15 +64,15 @@ const Blocklist = (props) => {
                           }
                         }
                         onChange={evt=>{setInputValue(evt.target.value)}}/>
-                  <SearchButton
+                  <ButtonPrimary
                         color="secondary"                           
                         onClick={evt=> {
                           setInputValue("")
                           {inputValue ? props.push('/block/'+inputValue) : console.log("No search text");}                          
                         }}>
-                  Search</SearchButton>
+                  SEARCH</ButtonPrimary>
                 </DivFlexStyled>
-              </CardTitle>
+              
             </Col>
           </Row>
           <div>
@@ -93,7 +80,7 @@ const Blocklist = (props) => {
               ? <button onClick={props.pollingStart}>{JSON.stringify(error)} Click to Reload.</button>
               : isFetching
                 ? `loading...`
-                : <TableStyled dark>
+                : <TableStyled borderless>
                     <thead>
                       <tr>
                         <th>Block Number</th>
@@ -104,17 +91,17 @@ const Blocklist = (props) => {
                     </thead>
                     <tbody>
                       {payload.map(eachBlock=>
-                        <tr key={eachBlock.block_id}>
-                          <th>{eachBlock.block_num}</th>
-                          <th><Link to={`/block/${eachBlock.block_id}`}>{eachBlock.block_id}</Link></th>
-                          <th>{eachBlock.block.transactions.length}</th>
-                          <th>{eachBlock.createdAt}</th>
+                        <tr onClick={evt=>props.push(`/block/${eachBlock.block_id}`)} key={eachBlock.block_id}>
+                          <td>{eachBlock.block_num}</td>
+                          <td>{eachBlock.block_id}</td>
+                          <td>{eachBlock.block.transactions.length}</td>
+                          <td>{eachBlock.createdAt}</td>
                         </tr>)}
                     </tbody>
                   </TableStyled>}
           </div>        
         </CardBody>
-      </Card>
+      </CardStyled>
     </div>
   );
 }

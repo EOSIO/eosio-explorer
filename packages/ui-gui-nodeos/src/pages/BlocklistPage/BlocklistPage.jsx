@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Card, CardBody, CardHeader, Col } from 'reactstrap';
+import { Card, CardBody, CardHeader, Col, Row } from 'reactstrap';
 
 import { StandardTemplate } from 'templates';
 import Blocklist from './components/Blocklist';
+import { PageTitleDivStyled } from 'styled';
 
 
 class BlocklistPage extends Component {
@@ -12,14 +13,16 @@ class BlocklistPage extends Component {
     return (
       <StandardTemplate>
         <div className="BlocklistPage animated fadeIn">
-          <Card>
-            <CardHeader>
-              Block List Page
-            </CardHeader>
-            <CardBody>
-              <Blocklist/>
-            </CardBody>
-          </Card>
+          <Row>
+            <Col sm="12">
+              <PageTitleDivStyled>Block List Page</PageTitleDivStyled>
+            </Col>
+          </Row>
+          <Row>
+            <Col sm="12">
+              <Blocklist/>                
+            </Col>
+          </Row>
         </div>
       </StandardTemplate>
     );
