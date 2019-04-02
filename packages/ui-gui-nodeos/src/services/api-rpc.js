@@ -7,7 +7,7 @@ export default async ( apiPath, query ) => {
   if ( navigator.userAgent !== "ReactSnap" ){
     try{
       const state = store.getState();
-      let { endpoint: { nodeos } } = state;
+      let { endpoint: { path : { nodeos }}} = state;
       let result = await apiRpc[apiPath]({
         ...query,
         endpoint: nodeos,

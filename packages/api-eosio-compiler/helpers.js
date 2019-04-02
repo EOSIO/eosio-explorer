@@ -29,29 +29,35 @@ const fetchDeployableFilesFromDirectory = (directory) => {
         programErrors: [],
     }
 
-    const directoryContents = fs.readdirSync(directory);
-
-    const wasmFileName = directoryContents.find(filePath => filePath.match(/.*\.(wasm)$/gi));
-    const abiFileName = directoryContents.find(filePath => filePath.match(/.*\.(abi)$/gi));
-
-    response["wasmPath"] = (!wasmFileName) ? "" : path.join(directory, wasmFileName);
-    response["abiPath"] = (!abiFileName) ? "" : path.join(directory, abiFileName);
-
-    if (!wasmFileName) 
-        response["programErrors"].push(`Cannot find '.wasm' file in ${directory}`);
-
-    if (!abiFileName)
-        response["programErrors"].push(`Cannot find '.abi' file in ${directory}`);
-    else {
-        if (abiIsEmpty(fs.readFileSync(path.join(directory, abiFileName)), 'utf-8')) {
-            response["programErrors"].push(`Warning: Unfortunately, the contract structure is too complex for --abigen to generate correct ABI file`);
-            response["programErrors"].push(`Warning: That's normal for complex projects. ABI should be created manually. Please refer to https://developers.eos.io/eosio-home/docs/the-abi`);
-        } else {
-            response["abiContents"] = fs.readFileSync(path.join(directory, abiFileName), "utf-8");
+    try {
+        
+        const directoryContents = fs.readdirSync(directory);
+        const wasmFileName = directoryContents.find(filePath => filePath.match(/.*\.(wasm)$/gi));
+        const abiFileName = directoryContents.find(filePath => filePath.match(/.*\.(abi)$/gi));
+    
+        response["wasmPath"] = (!wasmFileName) ? "" : path.join(directory, wasmFileName);
+        response["abiPath"] = (!abiFileName) ? "" : path.join(directory, abiFileName);
+    
+        if (!wasmFileName) 
+            response["programErrors"].push(`Cannot find '.wasm' file in ${directory}`);
+    
+        if (!abiFileName)
+            response["programErrors"].push(`Cannot find '.abi' file in ${directory}`);
+        else {
+            if (abiIsEmpty(fs.readFileSync(path.join(directory, abiFileName)), 'utf-8')) {
+                response["programErrors"].push(`Warning: Unfortunately, the contract structure is too complex for --abigen to generate correct ABI file`);
+                response["programErrors"].push(`Warning: That's normal for complex projects. ABI should be created manually. Please refer to https://developers.eos.io/eosio-home/docs/the-abi`);
+            } else {
+                response["abiContents"] = fs.readFileSync(path.join(directory, abiFileName), "utf-8");
+            }
         }
+    
+        return response;
+
+    } catch (ex) {
+        throw new Error(ex.message);
     }
 
-    return response;
 }
 
 const filterHeaderFiles = (fileName) => (fileName.includes('.hpp'));

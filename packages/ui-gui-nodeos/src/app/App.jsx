@@ -5,6 +5,7 @@ import { Switch, Redirect } from 'react-router-dom';
 import Loadable from 'react-loadable';
 import { connect } from 'react-redux';
 import { withRouter } from "react-router";
+import TagManager from 'react-gtm-module';
 
 import InfoPage from 'pages/InfoPage';
 import BlocklistPage from 'pages/BlocklistPage';
@@ -27,12 +28,20 @@ import { connectStart } from 'reducers/endpoint';
 import { pollingStart as headblock_pollingStart} from 'reducers/headblock';
 import { pollingStart as lastblockinfo_pollingStart } from 'reducers/lastblockinfo';
 
+const tagManagerArgs = {
+  gtmId: process.env.REACT_APP_GTM_ID
+}
+
 class App extends Component {
+
+  componentWillMount() {
+    TagManager.initialize(tagManagerArgs);
+  }
 
   componentDidMount(){
     setTimeout(()=>{Loadable.preloadAll()}, 1000);
 
-    let { endpoint: {nodeos, mongodb} } = this.props;
+    let { endpoint: { path : { nodeos, mongodb }}} = this.props;
     this.props.connectStart(nodeos, mongodb);
     this.props.headblock_pollingStart();
     this.props.lastblockinfo_pollingStart();

@@ -5,7 +5,6 @@ import { Container } from 'reactstrap';
 import { Footer, Header, HelpFAB } from 'components';
 
 import {
-  AppFooter,
   AppHeader
 } from '@coreui/react';
 

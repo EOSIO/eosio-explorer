@@ -88,7 +88,6 @@ const deployEpic = ( action$ ) => action$.pipe(
           stderrLog: stderr,
           compiled: compiled,
           deployed: deployed,
-          imported: false,
           output: (actualOutput) ? actualOutput : null,
           errors: errors
         })
