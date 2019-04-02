@@ -3,7 +3,7 @@ import {
     Card, CardBody, CardHeader,
     Row, Col, Button, ButtonGroup, Spinner, 
     Nav, NavLink, NavItem, TabContent, TabPane,
-    Form, FormGroup, Label, Input,
+    Form, FormGroup, Label, Input, Badge, UncontrolledAlert,
     Dropdown, DropdownToggle, DropdownMenu, DropdownItem
 } from 'reactstrap';
 import { StandardTemplate } from 'templates';
@@ -24,12 +24,17 @@ const overlayOn = {
     top: 0,
     left: 0,
     backgroundColor: "rgba(0,0,0,0.5)",
-    zIndex: 2,
+    zIndex: 999,
     cursor: "pointer"
 }
 
 const overlayOff = {
     display: "none"
+}
+
+const tabPane = {
+    maxHeight: "350px",
+    overflowY: "scroll"
 }
 
 const DeploymentPage = (props) => {
@@ -38,8 +43,8 @@ const DeploymentPage = (props) => {
         defaultSet, folderSet, abiImport, contractCompile, contractDeploy, logClear
     } = props;
     let { path, stdoutLog, stderrLog, 
-        wasmPath, abiPath, abiContents, 
-        errors, output, imported
+        abiPath, abiContents, 
+        errors, output, imported, deployed
     } = deployContainer;
     let { list, defaultId } = data;
 
@@ -112,6 +117,17 @@ const DeploymentPage = (props) => {
     return (
         <StandardTemplate>
             <div style={isProcessing ? overlayOn : overlayOff}></div>
+            {
+                isProcessing &&
+                    <div style={{position:"fixed",top:"50%",left:"50%", zIndex:"1000"}}>
+                        <Spinner color="primary" 
+                            style={{ 
+                                width: "5rem",
+                                height: "5rem"
+                            }}
+                        />
+                    </div>
+            }
             <div className="DeploymentPage">
                 <Card>
                     <CardHeader>
@@ -124,7 +140,8 @@ const DeploymentPage = (props) => {
                             </Col>
                             <Col xs="8">
                                 <DragDropCodeViewer
-                                    setCurrentFile={setCurrentFile} />
+                                    setCurrentFile={setCurrentFile} 
+                                    />
                             </Col>
                         </Row>
                     </CardBody>
@@ -134,19 +151,6 @@ const DeploymentPage = (props) => {
                         Step 2 - Generate / Import ABI Files 
                     </CardHeader>
                     <CardBody className="clearfix">
-                        {
-                            isProcessing &&
-                            <Spinner color="primary" 
-                                style={{ 
-                                    position: "absolute", 
-                                    top: "50%", 
-                                    left: "50%",
-                                    width: "5rem",
-                                    height: "5rem",
-                                    zIndex: 3 
-                                }}
-                            />
-                        }
                         <Form>
                             <FormGroup row>
                                 <Label for="rootFolder" sm={1}>
@@ -204,6 +208,7 @@ const DeploymentPage = (props) => {
                                         language="json"
                                         readOnly={true}
                                         value={abiContents}
+                                        height="350"
                                         />  
                                 </Col>
                                 <Col sm={6}>
@@ -238,12 +243,12 @@ const DeploymentPage = (props) => {
                                                     className={activeTab === "4" ? 'active' : ''}
                                                     onClick={()=>setActiveTab("4")}
                                                     >
-                                                    Contract Output { output ? "💡" : null }
+                                                    Deployment Result { output ? "💡" : null }
                                                 </NavLink>
                                             </NavItem>
                                         </Nav>
-                                        <TabContent activeTab={activeTab} style={{maxHeight: 'inherit'}}>
-                                            <TabPane tabId="1">
+                                        <TabContent activeTab={activeTab}>
+                                            <TabPane tabId="1" style={tabPane}>
                                                 <Row>
                                                     <Col sm={12}>
                                                         {
@@ -257,7 +262,7 @@ const DeploymentPage = (props) => {
                                                     </Col>
                                                 </Row>
                                             </TabPane>
-                                            <TabPane tabId="2">
+                                            <TabPane tabId="2" style={tabPane}>
                                                 <Row>
                                                     <Col sm={12}>
                                                         {
@@ -271,7 +276,7 @@ const DeploymentPage = (props) => {
                                                     </Col>
                                                 </Row>
                                             </TabPane>
-                                            <TabPane tabId="3">
+                                            <TabPane tabId="3" style={tabPane}>
                                                 <Row>
                                                     <Col sm={12}>
                                                         {
@@ -285,7 +290,7 @@ const DeploymentPage = (props) => {
                                                     </Col>
                                                 </Row>
                                             </TabPane>
-                                            <TabPane tabId="4">
+                                            <TabPane tabId="4" style={tabPane}>
                                                 <Row>
                                                     <Col sm={12}>
                                                         {
@@ -300,24 +305,19 @@ const DeploymentPage = (props) => {
                                     </div>
                                 </Col>
                             </Row>
-                            <Row>
-                                <Col sm={12}>
-                                    Current ABI Path: <code>{abiPath}</code> (Is imported? {imported.toString()})
-                                </Col>
-                            </Row>                            
-                            <Row>
-                                <Col sm={12}>
-                                    Current WASM Path: <code>{wasmPath}</code>
-                                </Col>
-                            </Row>
                         </div>
                     </CardBody>
                 </Card>
                 <Card>
                     <CardHeader>
-                        Step 3 - Deploy
+                        Step 3 - Deploy {imported && <Badge color="primary" pill>Imported ABI</Badge>}
                     </CardHeader>
                     <CardBody className="clearfix">
+                        {
+                            deployed && <UncontrolledAlert color="success">
+                                Smart contract has been deployed successfully!
+                            </UncontrolledAlert>
+                        }
                         <Form>
                             <FormGroup row>
                                 <Col sm={2}>
