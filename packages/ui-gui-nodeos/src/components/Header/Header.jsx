@@ -61,6 +61,15 @@ const AppName = styled.div`
   line-height: 20px;
 `
 
+const WrappedLink = styled(Link)`
+  display: flex;
+  color: inherit;
+  :hover{
+    text-decoration: none;
+    color: inherit;
+  }
+`
+
 const Header = (props) => {
 
   let { router: { location: {pathname} } } = props;
@@ -68,17 +77,19 @@ const Header = (props) => {
   return (
     <div className="Header">
         <NavWrapper>
-          <Nav className="nav-items d-md-down-none" navbar>
-            <LogoWrapper>
-              <StyledEosioLogoSmallSVG/>
-              <AppName>
-                GUI Nodeos
-              </AppName>
-            </LogoWrapper>
-            <NavItem className="px-3">
-              <ConnectionIndicator/>
-            </NavItem>
-          </Nav>
+          <WrappedLink to={`/`}>
+            <Nav className="nav-items d-md-down-none" navbar>
+              <LogoWrapper>
+                <StyledEosioLogoSmallSVG/>
+                <AppName>
+                  GUI Nodeos
+                </AppName>
+              </LogoWrapper>
+              <NavItem className="px-3">
+                <ConnectionIndicator/>
+              </NavItem>
+            </Nav>
+          </WrappedLink>
         </NavWrapper>
         <VerticalLine>&nbsp;</VerticalLine>
         <NavWrapper>
