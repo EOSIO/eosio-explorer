@@ -103,7 +103,7 @@ const Header = (props) => {
         </NavWrapper>
         <VerticalLine>&nbsp;</VerticalLine>
         <NavWrapper>
-          <NavHead>EXPLORER</NavHead>
+          <NavHead>INSPECT</NavHead>
           <Nav className="nav-items d-md-down-none" navbar>
             <NavItem className="px-3">
               <Link to={`/`} className={`nav-link ${pathname === `/` ? `active` : ``}`}>INFO</Link>
