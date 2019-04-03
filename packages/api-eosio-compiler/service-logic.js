@@ -20,6 +20,16 @@ const DEST = path.resolve("./docker-eosio-cdt/contracts");
 const CWD = path.resolve('./docker-eosio-cdt')
 const SHUTDOWN_CMD = './remove_eosio_cdt_docker.sh';
 
+const OPTIONS = {
+  overwrite: true,
+  junk: false,
+  dot: false,
+  filter: [
+    '**/*',
+    '!*git*'
+  ]
+};
+
 /**
  * How to test:
  * localhost:8081/api/eosio/deploy
@@ -45,7 +55,7 @@ Router.post("/deploy", async (req, res) => {
         let COMPILE_SCRIPT = "";
 
         const directories = Helper.parseDirectoriesToInclude(path.dirname(body["source"]));
-        results = await copy(path.dirname(body["source"]), DEST);
+        results = await copy(path.dirname(body["source"]), DEST, OPTIONS);
         COMPILE_SCRIPT = "./setup_eosio_cdt_docker.sh "+compileTarget+" "+directories.join(' ');
 
         console.log("Deleted files:\n", deletedFiles.join('\n'));
@@ -152,7 +162,7 @@ Router.post("/compile", async (req, res) => {
       let compileTarget = path.basename(body["source"]);
       let COMPILE_SCRIPT = "";
       const directories = Helper.parseDirectoriesToInclude(path.dirname(body["source"]));
-      results = await copy(path.dirname(body["source"]), DEST);
+      results = await copy(path.dirname(body["source"]), DEST, OPTIONS);
       COMPILE_SCRIPT = "./setup_eosio_cdt_docker.sh "+compileTarget+" "+directories.join(' ');
 
       console.log("Deleted files:\n", deletedFiles.join('\n'));

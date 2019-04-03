@@ -19,11 +19,16 @@ class DragDropCodeViewer extends Component {
       value: this.props.value
     });
   }
-
+  
   editorDidMount(editor, monaco) {
     editor.focus();
     this.editor = editor;
     this.monaco = monaco;
+
+    editor.layout({
+      height: this.props.height || 500,
+      width: this.props.width || 1190
+    })
 
     setTimeout(
       function() {
@@ -53,7 +58,7 @@ class DragDropCodeViewer extends Component {
 
       self.props.onDrop && self.props.onDrop(contents);
     };
-    
+
     reader.readAsText(file);
   }
 

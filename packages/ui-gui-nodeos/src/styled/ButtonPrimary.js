@@ -10,6 +10,7 @@ export default styled(Button)`
   color: #ffffff;
   font-size: 14px;
   font-weight: 500;
+  border: 0;
 
   :disabled{
     background-color: #4d9cc3;

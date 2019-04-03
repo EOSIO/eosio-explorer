@@ -40,52 +40,38 @@ var mongoose = require('mongoose');
 exports.default = (function (DB_URL) { return __awaiter(_this, void 0, void 0, function () {
     var connect;
     return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                connect = function (DB_URL) {
-                    mongoose.Promise = global.Promise;
-                    mongoose.connect(DB_URL, {
-                        keepAlive: true,
-                        reconnectTries: 2,
-                        reconnectInterval: 100,
-                        useNewUrlParser: true
-                    }, function (err) {
-                        var dbStatus = '';
-                        if (err) {
-                            dbStatus = "*    Error connecting to DB: " + err + "\n****************************\n";
-                        }
-                        dbStatus = "*    DB Connection: OK\n****************************\n";
-                        if (process.env.NODE_ENV !== 'test') {
-                            // Prints initialization
-                            console.log('****************************');
-                            console.log('*    Starting Server');
-                            // console.log(`*    Port: ${process.env.PORT || 3000}`)
-                            // console.log(`*    NODE_ENV: ${process.env.NODE_ENV}`)
-                            console.log("*    Database: MongoDB");
-                            console.log(dbStatus);
-                        }
-                    });
-                    mongoose.set('useCreateIndex', true);
-                    mongoose.set('useFindAndModify', false);
-                };
-                connect(DB_URL);
-                mongoose.connection.once('error', function (err) {
-                    console.log("-->error");
-                    console.log(err);
-                    console.log("-->error");
+        connect = function (DB_URL) {
+            return new Promise(function (resolve, reject) {
+                mongoose.Promise = global.Promise;
+                var dbStatus = '';
+                mongoose.connect(DB_URL, {
+                    keepAlive: true,
+                    reconnectTries: 2,
+                    reconnectInterval: 100,
+                    useNewUrlParser: true
+                })
+                    .then(function (db) {
+                    dbStatus = "*    DB Connection: OK\n****************************\n";
+                    if (process.env.NODE_ENV !== 'test') {
+                        // Prints initialization
+                        console.log('****************************');
+                        console.log('*    Starting Server');
+                        // console.log(`*    Port: ${process.env.PORT || 3000}`)
+                        // console.log(`*    NODE_ENV: ${process.env.NODE_ENV}`)
+                        console.log("*    Database: MongoDB " + DB_URL);
+                        console.log(dbStatus);
+                    }
+                    resolve(db);
+                })
+                    .catch(function (err) {
+                    dbStatus = "*    Error connecting to DB: " + err + "\n****************************\n";
+                    console.log(dbStatus);
+                    reject(err.message);
                 });
-                mongoose.connection.once('reconnected', function () {
-                    console.log("-->reconnected");
-                    console.log(DB_URL);
-                    console.log("-->reconnected");
-                });
-                mongoose.connection.once('disconnected', function () {
-                    console.log("-->disconnected");
-                    console.log(DB_URL);
-                    console.log("-->disconnected");
-                });
-                return [4 /*yield*/, mongoose];
-            case 1: return [2 /*return*/, _a.sent()];
-        }
+                mongoose.set('useCreateIndex', true);
+                mongoose.set('useFindAndModify', false);
+            });
+        };
+        return [2 /*return*/, connect(DB_URL)];
     });
 }); });

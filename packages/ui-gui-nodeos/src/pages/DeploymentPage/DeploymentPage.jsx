@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import {
     Card, CardBody, CardHeader,
-    Row, Col, Button, ButtonGroup, Spinner, 
+    Row, Col, Button, ButtonGroup, Spinner,
     Nav, NavLink, NavItem, TabContent, TabPane,
-    Form, FormGroup, Label, Input,
+    Form, FormGroup, Label, Input, Badge, UncontrolledAlert,
     Dropdown, DropdownToggle, DropdownMenu, DropdownItem
 } from 'reactstrap';
 import { StandardTemplate } from 'templates';
@@ -23,7 +23,7 @@ const overlayOn = {
     top: 0,
     left: 0,
     backgroundColor: "rgba(0,0,0,0.5)",
-    zIndex: 2,
+    zIndex: 999,
     cursor: "pointer"
 }
 
@@ -31,14 +31,19 @@ const overlayOff = {
     display: "none"
 }
 
+const tabPane = {
+    maxHeight: "350px",
+    overflowY: "scroll"
+}
+
 const DeploymentPage = (props) => {
 
     let { permission: { data }, deployContainer, isProcessing, nodeos,
         defaultSet, folderSet, abiImport, contractCompile, contractDeploy, logClear
     } = props;
-    let { path, stdoutLog, stderrLog, 
-        wasmPath, abiPath, abiContents, 
-        errors, output, imported
+    let { path, stdoutLog, stderrLog,
+        abiPath, abiContents,
+        errors, output, imported, deployed
     } = deployContainer;
     let { list, defaultId } = data;
 
@@ -103,7 +108,7 @@ const DeploymentPage = (props) => {
             };
             abiImport(fileContents);
         }
-        
+
         reader.readAsText(file);
         ev.target.value = null;
     }
@@ -111,6 +116,17 @@ const DeploymentPage = (props) => {
     return (
         <StandardTemplate>
             <div style={isProcessing ? overlayOn : overlayOff}></div>
+            {
+                isProcessing &&
+                    <div style={{position:"fixed",top:"50%",left:"50%", zIndex:"1000"}}>
+                        <Spinner color="primary"
+                            style={{
+                                width: "5rem",
+                                height: "5rem"
+                            }}
+                        />
+                    </div>
+            }
             <div className="DeploymentPage">
                 <Card>
                     <CardHeader>
@@ -123,37 +139,25 @@ const DeploymentPage = (props) => {
                             </Col>
                             <Col xs="8">
                                 <DragDropCodeViewer
-                                    setCurrentFile={setCurrentFile} />
+                                    setCurrentFile={setCurrentFile}
+                                    />
                             </Col>
                         </Row>
                     </CardBody>
                 </Card>
                 <Card>
                     <CardHeader>
-                        Step 2 - Generate / Import ABI Files 
+                        Step 2 - Generate / Import ABI Files
                     </CardHeader>
                     <CardBody className="clearfix">
-                        {
-                            isProcessing &&
-                            <Spinner color="primary" 
-                                style={{ 
-                                    position: "absolute", 
-                                    top: "50%", 
-                                    left: "50%",
-                                    width: "5rem",
-                                    height: "5rem",
-                                    zIndex: 3 
-                                }}
-                            />
-                        }
                         <Form>
                             <FormGroup row>
                                 <Label for="rootFolder" sm={1}>
                                     Root Folder Path
                                 </Label>
                                 <Col sm={6}>
-                                    <Input type="text" 
-                                        name="rootFolder" 
+                                    <Input type="text"
+                                        name="rootFolder"
                                         id="rootFolder"
                                         value={path}
                                         onChange={(ev)=>handleChange(ev)}/>
@@ -174,22 +178,22 @@ const DeploymentPage = (props) => {
                                             Generate ABI
                                         </Button>
                                         <Button
-                                            onClick={()=>{clickButton()}} 
+                                            onClick={()=>{clickButton()}}
                                             disabled={isProcessing}
                                             >
                                             Import ABI
                                         </Button>
-                                        <Button 
+                                        <Button
                                             onClick={()=>logClear()}
                                             >
                                             Clear Logs
                                         </Button>
                                     </ButtonGroup>
-                                    <input type="file" 
+                                    <input type="file"
                                         id="abiImporter"
-                                        accept=".abi" 
-                                        ref={importRef} 
-                                        style={{display:"none"}} 
+                                        accept=".abi"
+                                        ref={importRef}
+                                        style={{display:"none"}}
                                         onChange={(ev)=>handleFileSelect(ev)}
                                         />
                                 </Col>
@@ -203,7 +207,8 @@ const DeploymentPage = (props) => {
                                         language="json"
                                         readOnly={true}
                                         value={abiContents}
-                                        />  
+                                        height="350"
+                                        />
                                 </Col>
                                 <Col sm={6}>
                                     <div>
@@ -220,7 +225,7 @@ const DeploymentPage = (props) => {
                                                 <NavLink
                                                     className={activeTab === "2" ? 'active' : ''}
                                                     onClick={()=>setActiveTab("2")}
-                                                    > 
+                                                    >
                                                     Unexpected Errors { stderrLog && stderrLog.length > 0 ? "⚠️" : null }
                                                 </NavLink>
                                             </NavItem>
@@ -237,18 +242,18 @@ const DeploymentPage = (props) => {
                                                     className={activeTab === "4" ? 'active' : ''}
                                                     onClick={()=>setActiveTab("4")}
                                                     >
-                                                    Contract Output { output ? "💡" : null }
+                                                    Deployment Result { output ? "💡" : null }
                                                 </NavLink>
                                             </NavItem>
                                         </Nav>
-                                        <TabContent activeTab={activeTab} style={{maxHeight: 'inherit'}}>
-                                            <TabPane tabId="1">
+                                        <TabContent activeTab={activeTab}>
+                                            <TabPane tabId="1" style={tabPane}>
                                                 <Row>
                                                     <Col sm={12}>
                                                         {
-                                                            stdoutLog && stdoutLog.length === 0 
+                                                            stdoutLog && stdoutLog.length === 0
                                                             ? <pre>No logs</pre>
-                                                            : stdoutLog.map((line, i) => 
+                                                            : stdoutLog.map((line, i) =>
                                                                 <pre key={"stdout_"+i}>
                                                                     {line}
                                                                 </pre>)
@@ -256,13 +261,13 @@ const DeploymentPage = (props) => {
                                                     </Col>
                                                 </Row>
                                             </TabPane>
-                                            <TabPane tabId="2">
+                                            <TabPane tabId="2" style={tabPane}>
                                                 <Row>
                                                     <Col sm={12}>
                                                         {
-                                                            stderrLog && stderrLog.length === 0 
+                                                            stderrLog && stderrLog.length === 0
                                                             ? <pre>No logs</pre>
-                                                            : stderrLog.map((line, i) => 
+                                                            : stderrLog.map((line, i) =>
                                                                 <pre key={"stderr_"+i}>
                                                                     {line}
                                                                 </pre>)
@@ -270,13 +275,13 @@ const DeploymentPage = (props) => {
                                                     </Col>
                                                 </Row>
                                             </TabPane>
-                                            <TabPane tabId="3">
+                                            <TabPane tabId="3" style={tabPane}>
                                                 <Row>
                                                     <Col sm={12}>
                                                         {
-                                                            errors && errors.length === 0 
+                                                            errors && errors.length === 0
                                                             ? <pre>No logs</pre>
-                                                            : errors.map((line, i) => 
+                                                            : errors.map((line, i) =>
                                                                 <div key={"errors_"+i}>
                                                                     <code>{line}</code>
                                                                 </div>)
@@ -284,7 +289,7 @@ const DeploymentPage = (props) => {
                                                     </Col>
                                                 </Row>
                                             </TabPane>
-                                            <TabPane tabId="4">
+                                            <TabPane tabId="4" style={tabPane}>
                                                 <Row>
                                                     <Col sm={12}>
                                                         {
@@ -299,29 +304,24 @@ const DeploymentPage = (props) => {
                                     </div>
                                 </Col>
                             </Row>
-                            <Row>
-                                <Col sm={12}>
-                                    Current ABI Path: <code>{abiPath}</code> (Is imported? {imported.toString()})
-                                </Col>
-                            </Row>                            
-                            <Row>
-                                <Col sm={12}>
-                                    Current WASM Path: <code>{wasmPath}</code>
-                                </Col>
-                            </Row>
                         </div>
                     </CardBody>
                 </Card>
                 <Card>
                     <CardHeader>
-                        Step 3 - Deploy
+                        Step 3 - Deploy {imported && <Badge color="primary" pill>Imported ABI</Badge>}
                     </CardHeader>
                     <CardBody className="clearfix">
+                        {
+                            deployed && <UncontrolledAlert color="success">
+                                Smart contract has been deployed successfully!
+                            </UncontrolledAlert>
+                        }
                         <Form>
                             <FormGroup row>
                                 <Col sm={2}>
-                                    <Button color="primary" 
-                                        className="btn float-left" 
+                                    <Button color="primary"
+                                        className="btn float-left"
                                         disabled={path.length === 0 || currentFile.length === 0 || isProcessing}
                                         onClick={(ev)=>deployContract(ev)}
                                         block>
@@ -334,20 +334,20 @@ const DeploymentPage = (props) => {
                                 <Col sm={2}>
                                     <Dropdown className="float-right" isOpen={isOpenDropDown} toggle={()=>{toggleDropDown(!isOpenDropDown)}}>
                                         <DropdownToggle caret>
-                                            { 
-                                                list.map((permission) => (defaultId === permission._id) && `${permission.account}@${permission.permission}`) 
+                                            {
+                                                list.map((permission) => (defaultId === permission._id) && `${permission.account}@${permission.permission}`)
                                             }
                                         </DropdownToggle>
                                         <DropdownMenu right>
-                                            { 
+                                            {
                                                 list.map((permission)=> permission.private_key &&
                                                     <DropdownItem key={permission._id} onClick={()=>{ defaultSet(permission._id)}}>
                                                         {`${permission.account}@${permission.permission}`}
-                                                    </DropdownItem>) 
+                                                    </DropdownItem>)
                                             }
                                         </DropdownMenu>
                                     </Dropdown>
-                                </Col> 
+                                </Col>
                             </FormGroup>
                         </Form>
                     </CardBody>
@@ -358,7 +358,7 @@ const DeploymentPage = (props) => {
 }
 
 export default connect(
-    ({ permission, deploymentPage: { deployContainer, isProcessing }, endpoint: { nodeos } }) => ({
+    ({ permission, deploymentPage: { deployContainer, isProcessing }, endpoint: { path : { nodeos }}}) => ({
       permission, deployContainer, isProcessing, nodeos
     }),
     {

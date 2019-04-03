@@ -5,6 +5,8 @@ import PageTitleDivStyled from './PageTitleDivStyled';
 import InputStyled from './InputStyled';
 import ButtonPrimary from './ButtonPrimary';
 import ButtonSecondary from './ButtonSecondary';
+import TableStyled from './TableStyled';
+import CheckBoxDivStyled from './CheckBoxDivStyled';
 
 export { 
   CardStyled, 
@@ -13,5 +15,7 @@ export {
   PageTitleDivStyled,
   InputStyled,
   ButtonPrimary,
-  ButtonSecondary
+  ButtonSecondary,
+  TableStyled,
+  CheckBoxDivStyled
 }

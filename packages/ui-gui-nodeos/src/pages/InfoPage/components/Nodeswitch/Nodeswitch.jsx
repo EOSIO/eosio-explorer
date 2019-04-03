@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { Button, ButtonGroup, Col, Form, FormGroup, Input, Label, FormFeedback } from 'reactstrap';
 import styled from 'styled-components';
 
-import { connectStart, connectReset, endpointInitState } from 'reducers/endpoint';
+import { connectStart, connectReset, pathInitState, errorReset } from 'reducers/endpoint';
 import useForm from 'helpers/useForm';
 import validate from './NodeswitchValidatorEngine';
 import { InputStyled, ButtonPrimary, ButtonSecondary } from 'styled';
@@ -28,65 +28,64 @@ const CenteredLabel = styled(Label)`
 const Nodeswitch = (props) => {
 
   const { values, handleChange, handleSubmit, setValues, errors } = useForm(()=>{
-    props.connectStart(values.nodeosEndPoint, values.mongodbEndPoint);
+    props.errorReset();
+    props.connectStart(values.nodeos, values.mongodb);
   }, validate);
 
   const [key, setKey] = useState(Date.now());
 
-  let { endpoint: { nodeos, mongodb } } = props;
-
+  let { endpoint: { path : { nodeos, mongodb }, error: mongodb_endpoint_error}} = props;
 
   useEffect(()=>{
     setValues({
-      nodeosEndPoint: nodeos,
-      mongodbEndPoint: mongodb,
+      nodeos, mongodb,
     })
     return () => { }
   }, [])
 
-  const isDirtyForm = nodeos !== values.nodeosEndPoint || mongodb !== values.mongodbEndPoint;
+  const isDirtyForm = nodeos !== values.nodeos || mongodb !== values.mongodb;
 
   return (
     <div className="Nodeswitch">
       <Form key={key} onSubmit={ handleSubmit }>
         <FormGroup row className="mb-0">
           <Col xs="3">
-            <CenteredLabel htmlFor="nodeosEndPoint">Connected Nodeos</CenteredLabel>
+            <CenteredLabel htmlFor="nodeos">Connected Nodeos:</CenteredLabel>
           </Col>
           <Col xs="9">
             <InputStyled
               type="text"
-              id="nodeosEndPoint"
-              name="nodeosEndPoint"
+              id="nodeos"
+              name="nodeos"
               placeholder="Please enter your end point"
-              defaultValue={values.nodeosEndPoint}
+              defaultValue={values.nodeos}
               onChange={handleChange}
-              invalid={!!errors.nodeosEndPoint}
+              invalid={!!errors.nodeos}
               />
               {
-                errors.nodeosEndPoint &&
+                errors.nodeos &&
                 <FormFeedback invalid="true">
-                  {errors.nodeosEndPoint}
+                  {errors.nodeos}
                 </FormFeedback>
               }
           </Col>
           <Col xs="3" style={{marginTop: "10px"}}>
-            <CenteredLabel htmlFor="mongodbEndPoint">Connected MongoDB</CenteredLabel>
+            <CenteredLabel htmlFor="mongodb">Connected MongoDB</CenteredLabel>
           </Col>
           <Col xs="9" style={{marginTop: "10px"}}>
             <InputStyled
               type="text"
-              id="mongodbEndPoint"
-              name="mongodbEndPoint"
+              id="mongodb"
+              name="mongodb"
               placeholder="Enter mongodb endpoint..."
-              defaultValue={values.mongodbEndPoint}
+              defaultValue={values.mongodb}
               onChange={handleChange}
-              invalid={!!errors.mongodbEndPoint}
+              invalid={!!errors.mongodb || !!mongodb_endpoint_error}
             />
             {
-              errors.mongodbEndPoint &&
+              (errors.mongodb || mongodb_endpoint_error) &&
               <FormFeedback invalid="true">
-                {errors.mongodbEndPoint}
+                { errors.mongodb || mongodb_endpoint_error}
               </FormFeedback>
             }
           </Col>
@@ -95,8 +94,9 @@ const Nodeswitch = (props) => {
               <ButtonPrimary type="submit" disabled={ !isDirtyForm }>CONNECT</ButtonPrimary>
               <ButtonSecondary
                 onClick={()=>{
+                  props.errorReset();
                   props.connectReset();
-                  setValues({nodeosEndPoint: endpointInitState.nodeos, mongodbEndPoint: endpointInitState.mongodb});
+                  setValues(pathInitState);
                   setKey(Date.now());
                 }}
               >RESET</ButtonSecondary>
@@ -114,7 +114,8 @@ export default connect(
   }),
   {
     connectStart,
-    connectReset
+    connectReset,
+    errorReset
   }
 
 )(Nodeswitch);

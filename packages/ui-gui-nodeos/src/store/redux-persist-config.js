@@ -9,6 +9,10 @@ const reduxPersistFilters = [
     ['blocklist.filter']
   ),
   createFilter(
+    'endpoint',
+    ['path']
+  ),
+  createFilter(
     'deploymentPage',
     ['deployContainer']
   ),

@@ -1,5 +1,8 @@
 .StandardTemplate {
-    .app-header + .app-body {
-        margin-top: 75px;
+    .app-header {
+        height: 80px;
+        + .app-body {
+            margin-top: 89px;
+        }
     }
 }

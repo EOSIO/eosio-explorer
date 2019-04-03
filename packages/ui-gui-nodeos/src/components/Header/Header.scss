@@ -2,10 +2,14 @@
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  height: 50px;
   font-weight: 600;
   letter-spacing: 0.02rem;
   font-size: 11px;
+  min-width: 992px;
+  padding: 0 30px;
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
 
   /* Remove header responsiveness from Core UI */
   .navbar-brand {

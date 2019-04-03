@@ -88,7 +88,6 @@ const deployEpic = ( action$ ) => action$.pipe(
           stderrLog: stderr,
           compiled: compiled,
           deployed: deployed,
-          imported: false,
           output: (actualOutput) ? actualOutput : null,
           errors: errors
         })
@@ -139,6 +138,15 @@ const dataInitState = {
 
 const deploymentReducer = (state=dataInitState, action) => {
   switch (action.type) {
+    case CONTRACT_COMPILE:
+    case CONTRACT_DEPLOY:
+    case ABI_IMPORT:
+      return {
+        ...state,
+        deployed: false,
+        compiled: false,
+        imported: false
+      }
     case PROCESS_DONE: 
       consoleLogFormatting(action.payload);
       return {

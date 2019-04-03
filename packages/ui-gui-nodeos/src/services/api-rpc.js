@@ -14,11 +14,11 @@ export default async ( apiPath, query ) => {
         query.private_key = selectedPermission.private_key;
       }
 
-      let { endpoint: { nodeos } } = state;
+      let { endpoint: { path : { nodeos }}} = state;
       let result = await apiRpc[apiPath]({
         ...query,
         endpoint: nodeos,
-        timeout: 1000,
+        timeout: 2500,
         // responseType: "json"
       })
       return result;

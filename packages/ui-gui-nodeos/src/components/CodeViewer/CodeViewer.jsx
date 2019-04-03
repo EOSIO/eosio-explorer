@@ -42,9 +42,8 @@ const defaults = {
   language: "json"
 }
 
-const CodeViewer = (props) =>
-
-  <>
+const CodeViewer = (props) => {
+  return (<>
     <div className="CodeViewer">
         <MonacoEditor
           height={ props.height || defaults.height }
@@ -58,7 +57,8 @@ const CodeViewer = (props) =>
           editorWillMount={ props.editorWillMount }
         />
     </div>
-  </>
+  </>)
+}
   
 
 export default CodeViewer;
