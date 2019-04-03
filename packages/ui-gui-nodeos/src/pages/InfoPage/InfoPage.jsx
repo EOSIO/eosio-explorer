@@ -12,7 +12,7 @@ import LastIrreversibleBlockInfo from './components/LastIrreversibleBlockInfo';
 import { CardStyled, CardHeaderStyled, PageTitleDivStyled } from 'styled';
 import styled from 'styled-components';
 
-const CardModified = styled(CardStyled)`
+const FirstCardStyled = styled(CardStyled)`
   border-top: solid 2px #1173a4;
 `
 
@@ -31,14 +31,14 @@ class InfoPage extends Component {
 
           <Row>
             <Col xs="12">
-              <CardModified>
+              <FirstCardStyled>
                 <CardHeaderStyled>
                   Connections
                 </CardHeaderStyled>
                 <CardBody>
                   <Nodeswitch/>
                 </CardBody>
-              </CardModified>
+              </FirstCardStyled>
             </Col>
           </Row>
 

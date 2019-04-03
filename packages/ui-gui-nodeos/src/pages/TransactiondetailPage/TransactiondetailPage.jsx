@@ -1,29 +1,29 @@
 import React, { Component } from 'react';
-import { Card, CardBody, CardHeader, Col } from 'reactstrap';
+import { Row, Col } from 'reactstrap';
 
 import { StandardTemplate } from 'templates';
 import Transactiondetail from './components/Transactiondetail';
-
+import { PageTitleDivStyled } from 'styled';
 
 class TransactiondetailPage extends Component {
 
   render() {
-
     return (
       <StandardTemplate>
         <div className="TransactiondetailPage animated fadeIn">
-          <Card>
-            <CardHeader>
-              Transaction Detail Page
-            </CardHeader>
-            <CardBody>
+          <Row>
+            <Col sm="12">
+              <PageTitleDivStyled>Transaction Detail Page</PageTitleDivStyled>
+            </Col>
+          </Row>
+          <Row>
+            <Col sm="12">              
               <Transactiondetail/>
-            </CardBody>
-          </Card>
+            </Col>
+          </Row>
         </div>
       </StandardTemplate>
     );
   }
 }
-
 export default TransactiondetailPage;

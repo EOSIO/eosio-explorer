@@ -1,45 +1,44 @@
-# toppings
-A monorepo with tools working on top of nodeos
+# EOSIO Toppings
 
-# Development
+This is a monorepo composed of the various packages which work together to create a web-based development tool to help users create applications on the EOSIO blockchain. Users will be able to perform various actions related to smart contract and application development using this tool. 
 
-## First time setup
-For first time setup, run
-```sh
-./first_time_setup.sh
-```
-The above command will execute the following in sequence
+## Package Index
 
-1. Install all required dependencies
-2. Build the docker images
-3. Check and remove any existing docker with names `eosio-mongodb` and `eosio_gui_nodeos_container`
-4. Start the dockers
-5. Setup compiler api
-6. Start the GUI
+* [Nodeos GUI Web UI](./packages/ui-gui-nodeos): React-based Web Application making use of all the services in this repo
+* API Services:
+    * [EOSIO Compiler / Deployment Service](./packages/api-eosio-compiler): Node.JS/Express API server for compiling and deploying smart contracts to a `nodeos` instance. Spins up a Docker container under the hood for contract compilation.
+    * [MongoDB Plugin API](./packages/api-mongodb-plugin): TypeScript API service for interacting with the blockchain MongoDB (`nodeos` run with the MongoDB plugin)
+    * [RPC API](./packages/api-rpc): TypeScript API service wrapper around the EOSIO RPC API
+* Docker-based Services:
+    * [EOSIO nodeos Docker Container](./packages/docker-eosio-nodeos): Dockerfile and build scripts for the Docker container running a local `nodeos` instance
+    * [MongoDB Docker Container](./packages/docker-mongodb): Dockerfile and build scripts for the Docker container running a local MongoDB service
 
-## Other important scripts
-`quick_start.sh` - Start/Restart dockers, compiler service, & gui \
-`remove_dockers.sh` - Remove `eosio-mongodb` and `eosio_gui_nodeos_container` dockers \
-`pause_dockers.sh` - Pause `eosio-mongodb` and `eosio_gui_nodeos_container` dockers
+## Directory Layout
 
-## Development
-Make sure you have `docker` installed and assigned 8Gb Ram for it.
+At present there are two main directories:
 
-To Start
-`./quick_start.sh`
+* **apps** - Utilities that may be useful for developers outside of the main functions and services
+* **packages** - Contains the main services that comprise this monorepo
 
-Start development on browser at http://localhost:3000
+## Getting Started
 
+A more detailed explanation on how to get started with the EOSIO Toppings tool can be found in the [help document](help.md).
 
-## Add a dependency in a package
-Using `yarn add` won't update the dependencies in each packages.json for each package.
+To get quickly set up and running with this tool, please perform the following steps:
+1. Directly clone this monorepo (using `git clone`)
+2. Navigate to the root level of the cloned repository and run `./first_time_setup.sh` to install and build all the necessary dependencies
+3. Run `./quick_start.sh`, which will automatically start the tool in your browser at `http://localhost:3000` after creating the necessary containers and services
 
-Instead, we should use below command to add a dependency in a package.
+### Caveats (ports)
 
-For example, adding `express` in `packages/ui-gui-nodeos`
-```
-yarn workspace @eosio-toppings/ui-gui-nodeos add express
-```
+By default, the following ports need to be opened:
+
+* `3000` (main tool in server mode)
+* `5000` (main tool in production mode)
+* `8081` (EOSIO compiler/deployment service)
+
+However, you are free to change these at your leisure.
+
 ## License
 
 [MIT](./LICENSE)

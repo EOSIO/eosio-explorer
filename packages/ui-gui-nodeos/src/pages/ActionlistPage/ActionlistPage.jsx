@@ -1,9 +1,15 @@
 import React, { Component } from 'react';
-import { Card, CardBody, CardHeader, Col, Row } from 'reactstrap';
+import { CardBody, Col, Row } from 'reactstrap';
 
 import { StandardTemplate } from 'templates';
 import Actionlist from './components/Actionlist';
+import { PageTitleDivStyled } from 'styled';
+import { CardStyled, CardHeaderStyled } from 'styled';
+import styled from 'styled-components';
 
+const FirstCardStyled = styled(CardStyled)`
+  border-top: solid 2px #1173a4;
+`
 
 class ActionlistPage extends Component {
 
@@ -14,19 +20,19 @@ class ActionlistPage extends Component {
         <div className="ActionlistPage animated fadeIn">
           <Row>
             <Col xs="12">
-              <h2 className="pageTitle text-center mb-4">Action List Page</h2>
+              <PageTitleDivStyled>Action List Page</PageTitleDivStyled>
             </Col>
           </Row>
           <Row>
             <Col xs="12">
-              <Card>
-                <CardHeader>
+              <FirstCardStyled>
+                <CardHeaderStyled>
                   Action List
-                </CardHeader>
+                </CardHeaderStyled>
                 <CardBody>
                   <Actionlist/>
                 </CardBody>
-              </Card>
+              </FirstCardStyled>
             </Col>
           </Row>
         </div>

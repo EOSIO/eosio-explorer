@@ -6,7 +6,7 @@
 
 import { combineReducers } from 'redux';
 import { interval, of, from } from 'rxjs';
-import { mergeMap, mapTo, map, takeUntil, catchError } from 'rxjs/operators';
+import { mergeMap, mapTo, map, takeUntil, catchError, delay } from 'rxjs/operators';
 
 import { combineEpics, ofType } from 'redux-observable';
 
@@ -55,9 +55,16 @@ const fetchEpic = action$ => action$.pipe(
   ),
 );
 
+const repollEpic = action$ => action$.pipe(
+  ofType(FETCH_REJECTED),
+  delay(10000),
+  mapTo(pollingStart()),
+);
+
 export const combinedEpic = combineEpics(
   startEpic,
-  fetchEpic
+  fetchEpic,
+  repollEpic
 );
 
 

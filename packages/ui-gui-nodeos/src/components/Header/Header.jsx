@@ -33,8 +33,18 @@ const NavWrapper = styled.div`
   flex-direction: column;
   justify-content: space-between;
   min-height: 40px;
-  padding: 0 9px;
-
+  padding: 0 10px;
+  :nth-child(1){
+    flex: 1 1 220px;
+    margin-left: -10px;
+  }
+  :nth-child(3){
+    flex: 3.5 3.5 580px;
+  }
+  :nth-child(5){
+    flex: 2 2 360px;
+    margin-right: -25px;
+  }
 `
 
 const NavHead = styled.div`
@@ -93,8 +103,11 @@ const Header = (props) => {
         </NavWrapper>
         <VerticalLine>&nbsp;</VerticalLine>
         <NavWrapper>
-          <NavHead>EXPLORER</NavHead>
+          <NavHead>INSPECT</NavHead>
           <Nav className="nav-items d-md-down-none" navbar>
+            <NavItem className="px-3">
+              <Link to={`/`} className={`nav-link ${pathname === `/` ? `active` : ``}`}>INFO</Link>
+            </NavItem>
             <NavItem className="px-3">
               <Link to={`/block-list`} className={`nav-link ${pathname === `/block-list` ? `active` : ``}`}>BLOCK</Link>
             </NavItem>

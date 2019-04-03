@@ -15,44 +15,44 @@ const Actiondetail = (props) => {
         payload.map((action, index) =>
         <Form key={index} className="form-horizontal">
           <FormGroup row className="mb-0">
-            <Col xs="3">
-              <Label><strong>Smart Contract Name</strong></Label>
+            <Col xs="2">
+              <Label>Smart Contract Name:</Label>
             </Col>
-            <Col xs="9">
+            <Col xs="10">
               <p className="form-control-static">{action && action.act.account}</p>
             </Col>
           </FormGroup>
           <FormGroup row className="mb-0">
-            <Col xs="3">
-              <Label><strong>Action Type</strong></Label>
+            <Col xs="2">
+              <Label>Action Type:</Label>
             </Col>
-            <Col xs="9">
+            <Col xs="10">
               <p className="form-control-static">{action && action.act.name}</p>
             </Col>
           </FormGroup>
           <FormGroup row className="mb-0">
-            <Col xs="3">
-              <Label><strong>Timestamp</strong></Label>
+            <Col xs="2">
+              <Label>Timestamp:</Label>
             </Col>
-            <Col xs="9">
+            <Col xs="10">
               <p className="form-control-static">{action && action.createdAt}</p>
             </Col>
           </FormGroup>
           <FormGroup row className="mb-0">
-            <Col xs="3">
-              <Label><strong>Transaction ID</strong></Label>
+            <Col xs="2">
+              <Label>Transaction ID:</Label>
             </Col>
-            <Col xs="9">
+            <Col xs="10">
               <p className="form-control-static">
                 {action && <Link to={`/transaction/${action.trx_id}`}>{action.trx_id}</Link> }
               </p>
             </Col>
           </FormGroup>
           <FormGroup row className="mb-0">
-            <Col xs="3">
-              <Label><strong>Actor</strong></Label>
+            <Col xs="2">
+              <Label>Actor:</Label>
             </Col>
-            <Col xs="9">
+            <Col xs="10">
               <p className="form-control-static">
                 { action && (action.act && (action.act.authorization && 
                   action.act.authorization.map((auth, i) => (

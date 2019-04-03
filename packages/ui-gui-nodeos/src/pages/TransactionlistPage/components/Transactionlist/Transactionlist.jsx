@@ -1,27 +1,19 @@
 import React, { useEffect, useState } from 'react';
 
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { push } from 'connected-react-router'
 import { pollingStart, pollingStop } from './TransactionlistReducer';
-import { Card, CardTitle, CardBody, Col, Row, Table,Input} from 'reactstrap';
+import { CardTitle, CardBody } from 'reactstrap';
 import styled from 'styled-components';
 import { CardStyled,CardHeaderStyled, TableStyled, ButtonPrimary, CheckBoxDivStyled, InputStyled} from 'styled';
 
-import SearchButton from 'styled/SearchButton';
 
 const FirstCardStyled = styled(CardStyled)`
   border-top: solid 2px #1173a4;
 `
-
-
 const SearchLabel = styled.label`
   padding-right: 10px;
   margin-top: 10px;
-`
-const CardTitleStyled = styled(CardTitle)`
-  font-weight: bold;
-  text-decoration: underline;
 `
 const DivFlexStyled = styled.div`
   display: flex;
@@ -29,7 +21,9 @@ const DivFlexStyled = styled.div`
 `
 const SearchInputStyled = styled(InputStyled)`
   width: 30%;
+  margin-right: 10px;
 `
+
 const Transactionlist = (props) => {
 
   useEffect(()=>{
@@ -62,7 +56,6 @@ const Transactionlist = (props) => {
                       }
                     }
                     onChange={evt=>{setInputValue(evt.target.value)}}/>
-              &nbsp;&nbsp;&nbsp;      
               <ButtonPrimary             
                     onClick={evt=> {
                       setInputValue("")
@@ -79,17 +72,17 @@ const Transactionlist = (props) => {
                 : <TableStyled borderless>
                     <thead>
                       <tr>
-                        <th>Transaction ID</th>
-                        <th>Block Number</th>
-                        <th>Timestamp</th>
+                        <th width="50%">Transaction ID</th>
+                        <th width="20%">Block Number</th>
+                        <th width="30%">Timestamp</th>
                       </tr>
                     </thead>
                     <tbody>
                       {payload.map(eachTransaction=>
                         <tr onClick={evt=>props.push(`/transaction/${eachTransaction.trx_id}`)} key={eachTransaction.trx_id}>
-                          <td width="50%">{eachTransaction.trx_id}</td>
-                          <td width="20%">{eachTransaction.block_num}</td>
-                          <td width="30%">{eachTransaction.createdAt}</td>
+                          <td>{eachTransaction.trx_id}</td>
+                          <td>{eachTransaction.block_num}</td>
+                          <td>{eachTransaction.createdAt}</td>
                         </tr>)}
                     </tbody>
                   </TableStyled>
