@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Card, CardBody, CardHeader } from 'reactstrap';
+import { Col, Row } from 'reactstrap';
 
 import { StandardTemplate } from 'templates';
 import Accountdetail from './components/AccountDetail';
+import { PageTitleDivStyled } from 'styled';
 
 class AccountdetailPage extends Component {
 
@@ -11,14 +12,16 @@ class AccountdetailPage extends Component {
     return (
       <StandardTemplate>
         <div className="AccountdetailPage">
-          <Card>
-            <CardHeader>
-              Account Detail Page
-            </CardHeader>
-            <CardBody>
+          <Row>
+            <Col sm="12">
+              <PageTitleDivStyled>Account Detail Page</PageTitleDivStyled>
+            </Col>
+          </Row>
+          <Row>
+            <Col sm="12">
               <Accountdetail/>
-            </CardBody>
-          </Card>
+            </Col>
+          </Row>          
         </div>
       </StandardTemplate>
     );

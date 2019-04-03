@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Card, CardTitle, CardBody, Col, Row, Table,Input} from 'reactstrap';
+import { CardBody, Col, Row } from 'reactstrap';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { push } from 'connected-react-router'
 import styled from 'styled-components';
 import { CardStyled,CardHeaderStyled, TableStyled, ButtonPrimary, CheckBoxDivStyled, InputStyled} from 'styled';
@@ -11,18 +10,14 @@ import { pollingStart, pollingStop, filterToggle } from './BlocklistReducer';
 const FirstCardStyled = styled(CardStyled)`
   border-top: solid 2px #1173a4;
 `
-
 const SearchLabel = styled.label`
   padding-right: 10px;
   margin-top: 10px;
 `
-
-
 const SearchInputStyled = styled(InputStyled)`
   width: 65%;
   margin-right: 10px;
 `
-
 const DivFlexStyled = styled.div`
   display: flex;
   justify-content: flex-end;

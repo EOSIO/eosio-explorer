@@ -1,11 +1,10 @@
 import React, { useEffect } from 'react';
 
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { push } from 'connected-react-router'
 import { fetchStart, paramsSet } from './TransactiondetailReducer';
 import pathNameConsumer from 'helpers/pathname-consumer';
-import { Card, CardTitle, CardBody, Col, Row, Form, FormGroup} from 'reactstrap';
+import { CardBody, Col, Row, Form, FormGroup} from 'reactstrap';
 import styled from 'styled-components';
 import { CodeViewer } from 'components';
 import { CardStyled, CardHeaderStyled, TableStyled } from 'styled';
@@ -108,14 +107,17 @@ const Transactiondetail = (props) => {
 
                       <Row>
                         <Col sm={12}>
-                          <CardBody>
-                            <CodeViewer
-                              language="json"
-                              value={JSON.stringify(payload, null, 2)}
-                              readOnly={true}
-                              height={600}
-                            />                            
-                          </CardBody>
+                          <CardStyled>
+                            <CardHeaderStyled>Transaction Raw JSON</CardHeaderStyled>
+                            <CardBody>
+                              <CodeViewer
+                                language="json"
+                                value={JSON.stringify(payload, null, 2)}
+                                readOnly={true}
+                                height={600}
+                              />                            
+                            </CardBody>
+                          </CardStyled>                          
                         </Col>
                       </Row>
                     </div>

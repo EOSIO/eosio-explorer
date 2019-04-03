@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, CardBody, CardHeader, Col, Row } from 'reactstrap';
+import { CardBody, Col, Row } from 'reactstrap';
 
 import { StandardTemplate } from 'templates';
 import Actionlist from './components/Actionlist';

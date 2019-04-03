@@ -106,13 +106,17 @@ const Blockdetail = (props) => {
                       }  
                       <Row>
                         <Col sm="12">
-                          <CodeViewer
-                              language="json"
-                              value={JSON.stringify(payload, null, 2)}
-                              readOnly={true}
-                              height={600}
+                          <CardStyled>
+                            <CardHeaderStyled>Block Raw JSON</CardHeaderStyled>
+                            <CardBody>
+                              <CodeViewer
+                                language="json"
+                                value={JSON.stringify(payload, null, 2)}
+                                readOnly={true}
+                                height={600}
                               />  
-                          <br/><br/>    
+                            </CardBody>
+                          </CardStyled>
                         </Col>
                       </Row>
                     </div>}    

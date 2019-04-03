@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Card, CardBody, CardHeader, Button, Row, Col } from 'reactstrap';
+import { CardBody, Button, Row, Col } from 'reactstrap';
 import { connect } from 'react-redux';
 
 import { LoadingSpinner } from 'components';

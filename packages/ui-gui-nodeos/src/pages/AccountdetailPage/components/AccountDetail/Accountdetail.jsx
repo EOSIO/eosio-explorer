@@ -6,37 +6,34 @@ import { fetchStart, paramsSet } from './AccountdetailReducer';
 import pathNameConsumer from 'helpers/pathname-consumer';
 import { push } from 'connected-react-router'
 
-import { Card, CardTitle, CardBody, Col, Row, Form, FormGroup, Input, Button} from 'reactstrap';
+import { CardBody, Col, Row, Form, FormGroup } from 'reactstrap';
 import styled from 'styled-components';
 import { CodeViewer } from 'components';
-import SearchButton from 'styled/SearchButton';
+import { CardStyled, CardHeaderStyled, ButtonPrimary, InputStyled} from 'styled';
 
-const CardTitleStyled = styled(CardTitle)`
-  text-decoration: underline;
-  font-weight: bold;
+
+const FirstCardStyled = styled(CardStyled)`
+  border-top: solid 2px #1173a4;
 `
-
-const ColBoldStyled = styled(Col)`
-  font-weight: bold;
-`
-
 const SearchLabel = styled.label`
-  font-weight: bold;
   padding-right: 10px;
+  margin-top: 10px;
 `
-const SearchInputStyled = styled(Input)`
-  width: 50%;
-  margin-top: -6px;
+const SearchInputStyled = styled(InputStyled)`
+  width: 30%;
+  margin-right: 10px;
 `
-
 const DivFlexStyled = styled.div`
   display: flex;
   justify-content: flex-end;
 `
-
-const SearchCardTitle = styled(CardTitle)`
-  padding-top: 1.5rem;
+const CustomButton = styled(ButtonPrimary)`
+  width: 170px;
 `
+const ErrorDiv = styled.div`
+  font-weight: bold;
+`
+
 const Accountdetail = (props) => {
 
   const [inputValue, setInputValue] = useState("");
@@ -60,40 +57,38 @@ const Accountdetail = (props) => {
     <div className="Accountdetail">
     <Row>
       <Col sm="12">
-        <Card> 
-          <CardBody>                       
-            <SearchCardTitle>
-              <DivFlexStyled>
-                <SearchLabel>Search Account Name:</SearchLabel>
-                <SearchInputStyled 
-                      placeholder="Account Name"
-                      value={inputValue}
-                      onKeyDown={
-                        evt => {
-                          if (evt.key === 'Enter') {
-                            setInputValue("")
-                            { inputValue ? props.push('/account/'+inputValue) : console.log("No search text")} 
-                          }
+        <FirstCardStyled> 
+          <CardHeaderStyled>Search Account</CardHeaderStyled>
+          <CardBody>         
+            <DivFlexStyled>
+              <SearchLabel>Search Account Name:</SearchLabel>
+              <SearchInputStyled 
+                    placeholder="Account Name"
+                    value={inputValue}
+                    onKeyDown={
+                      evt => {
+                        if (evt.key === 'Enter') {
+                          setInputValue("")
+                          { inputValue ? props.push('/account/'+inputValue) : console.log("No search text")} 
                         }
                       }
-                      onChange={evt=>{setInputValue(evt.target.value)}}/>
-                <SearchButton
-                      color="secondary"                           
-                      onClick={evt=> {
-                        setInputValue("")
-                        {inputValue ? props.push('/account/'+inputValue) : console.log("No search text") }                          
-                      }}>
-                Search</SearchButton>
-              </DivFlexStyled>
-            </SearchCardTitle>
+                    }
+                    onChange={evt=>{setInputValue(evt.target.value)}}/>
+              <ButtonPrimary                        
+                    onClick={evt=> {
+                      setInputValue("")
+                      {inputValue ? props.push('/account/'+inputValue) : console.log("No search text") }                          
+                    }}>
+              Search</ButtonPrimary>
+            </DivFlexStyled>            
           </CardBody>
-        </Card>
+        </FirstCardStyled>
       </Col>
     </Row>
       <div>
         { showDetailsSection                     
           ? error
-            ? `No account found with Account name: ${params.account_name}`
+            ? <ErrorDiv>No account found with Account name: {params.account_name}</ErrorDiv>
             : isFetching
               ? `loading...`
               : (Object.keys(payload).length === 0 && payload.constructor === Object) 
@@ -101,24 +96,24 @@ const Accountdetail = (props) => {
                 : <div>
                     <Row>
                       <Col sm="12">
-                        <Card> 
+                        <CardStyled> 
+                          <CardHeaderStyled>Account Detail</CardHeaderStyled>
                           <CardBody>  
-                            <CardTitleStyled>Account Detail</CardTitleStyled>
                             <Form> 
                               <FormGroup row>
-                                <ColBoldStyled sm={2}>Account Name:</ColBoldStyled>
+                                <Col sm={2}>Account Name:</Col>
                                 <Col sm={10}>
                                   {payload.account_name}
                                 </Col>
                               </FormGroup>
                               <FormGroup row>
-                                <ColBoldStyled sm={2}>Account Creation Date:</ColBoldStyled>
+                                <Col sm={2}>Account Creation Date:</Col>
                                 <Col sm={10}>
                                   {payload.created}
                                 </Col>
                               </FormGroup>
                               <FormGroup row>
-                                <ColBoldStyled sm={2}>Owner Public Key:</ColBoldStyled>
+                                <Col sm={2}>Owner Public Key:</Col>
                                 <Col sm={10}>                                            
                                   {payload.permissions[0].perm_name == "owner" 
                                     ? payload.permissions[0].required_auth.keys[0].key 
@@ -126,7 +121,7 @@ const Accountdetail = (props) => {
                                 </Col>
                               </FormGroup>
                               <FormGroup row>
-                                <ColBoldStyled sm={2}>Active Public Key:</ColBoldStyled>
+                                <Col sm={2}>Active Public Key:</Col>
                                 <Col sm={10}>
                                   {payload.permissions[0].perm_name == "active" 
                                     ? payload.permissions[0].required_auth.keys[0].key 
@@ -134,21 +129,26 @@ const Accountdetail = (props) => {
                                 </Col>
                               </FormGroup>
                               <FormGroup>
-                              <Link to={`/contract/${payload.account_name}`}><Button color="secondary">View Smart Contract</Button></Link>
+                              <Link to={`/contract/${payload.account_name}`}><CustomButton>View Smart Contract</CustomButton></Link>
                               </FormGroup>
                             </Form>
                           </CardBody>
-                        </Card>
+                        </CardStyled>
                       </Col>
                     </Row>
                     <Row>
                       <Col sm="12">
-                        <CodeViewer
-                          language="json"
-                          value={JSON.stringify(payload, null, 2)}
-                          readOnly={true}
-                          height={600}
-                        />
+                        <CardStyled>
+                          <CardHeaderStyled>Account Raw JSON</CardHeaderStyled>
+                          <CardBody>
+                            <CodeViewer
+                              language="json"
+                              value={JSON.stringify(payload, null, 2)}
+                              readOnly={true}
+                              height={600}
+                            />
+                          </CardBody>
+                        </CardStyled>                       
                       </Col>  
                     </Row>        
                   </div> 

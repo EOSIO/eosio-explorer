@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 
 import { connect } from 'react-redux';
-import { Table, Button, Row, Col, CardTitle, Input, Form } from 'reactstrap';
+import { Button, Row, Col, CardTitle, Form } from 'reactstrap';
 import styled from 'styled-components';
 import { push } from 'connected-react-router'
 import { pollingStart, pollingStop, smartContractNameSearch } from './ActionlistReducer';
