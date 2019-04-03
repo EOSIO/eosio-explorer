@@ -9,7 +9,6 @@ export default async (query:any) => {
     let query_gen = TransactionTracesModel
       .find({});
 
-    console.log("trx id is ", id);
     if(id === undefined || id.trim() === ""){
       throw("invalid transaction id");
     } 
