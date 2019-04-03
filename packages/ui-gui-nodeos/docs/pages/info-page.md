@@ -1,4 +1,4 @@
-[Home](../docs) > Info Page
+[Home](..) > Info Page
 
 # Info Page
 
