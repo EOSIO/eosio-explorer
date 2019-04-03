@@ -1,4 +1,4 @@
-[Home](../packages/ui-gui-nodeos/docs) > Info Page
+[Home](../docs) > Info Page
 
 # Info Page
 
