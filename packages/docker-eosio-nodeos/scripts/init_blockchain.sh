@@ -40,6 +40,9 @@ echo "create wallet: eosio"
 cleos wallet create -n eosio --to-console | tail -1 | sed -e 's/^"//' -e 's/"$//' > eosio_wallet_password.txt
 cleos wallet import -n eosio --private-key 5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3
 
+echo "deploying bios contract"
+deploy_contract.sh eosio.bios eosio eosio $(cat eosio_wallet_password.txt) true
+
 echo "create wallet: hellowal"
 ## key for eosio account and export the generated password to a file for unlocking wallet later
 cleos wallet create -n hellowal --to-console | tail -1 | sed -e 's/^"//' -e 's/"$//' > hello_wallet_password.txt
@@ -62,9 +65,6 @@ cleos wallet import -n notewal --private-key 5HprNJsGzQajAMGiEzyHmy8rW8M4TMM3to1
 cleos wallet import -n notewal --private-key 5HpYaJpP16dJLDgDEeY5n5GFaDjL1TwTVo6KrdWQWSjQpK1a4AT
 
 # # * Replace "notewal" by your own wallet name when you start your own project
-
-echo "deploying bios contract"
-deploy_contract.sh eosio.bios eosio eosio $(cat eosio_wallet_password.txt) true
 
 # # create account for noteacc with above wallet's public keys
  cleos create account eosio noteacc EOS57cp4Joru7pnUzLg8RtHLWYWwjgBza9jPncE3ovbMSGN2MyZGa EOS6pwXEFGVYnX6zmozNAo9MRgkJrfP24x46Pek8dHjpAFGWS7had
