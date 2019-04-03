@@ -143,8 +143,6 @@ const actionToPushInitState = {
   payload: undefined
 }
 
-const genericError = "There was an error pushing this action";
-
 const dataInitState = {
   actionsList: [],
   actionToPush: actionToPushInitState,
@@ -182,29 +180,14 @@ const mapUpdatedAction = (updatedAction) => {
   }
 }
 
-const mapErrorsToJson = (error) => {
-  if(!error)
-    return genericError;
-  
-  let errors = [];
-
-  if(error.json.error) {
-    errors.push(error.json.error.code + ": " + error.json.error.what);
-    for(let detail in error.json.error.details) {
-      errors.push(detail.message);
-    }
-  }
-
-  return errors;
-}
-
 const dataReducer = (state=dataInitState, action) => {
   switch (action.type) {
     case FETCH_START:
       return dataInitState;
 
     case FETCH_FULFILLED:
-      console.log(JSON.stringify("FETCH_FULFILLED"));  
+      console.log(JSON.stringify("FETCH_FULFILLED"));
+
       return {
         ...state,
         actionsList: action.actionsList,
