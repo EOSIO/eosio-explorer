@@ -64,16 +64,16 @@ const Blocklist = (props) => {
                       onKeyDown={
                         evt => {
                           if (evt.key === 'Enter') {
-                            setInputValue("")
-                              {inputValue ? props.push('/block/'+inputValue) : console.log("No search text");} 
+                            setInputValue("");
+                            {inputValue ? props.push('/block/'+inputValue) : console.log("No search text")} 
                           }
                         }
                       }
                       onChange={evt=>{setInputValue(evt.target.value)}}/>
                 <ButtonPrimary                          
                       onClick={evt=> {
-                        setInputValue("")
-                        {inputValue ? props.push('/block/'+inputValue) : console.log("No search text");}                          
+                        setInputValue("");
+                        {inputValue ? props.push('/block/'+inputValue) : console.log("No search text")}                          
                       }}>
                 SEARCH</ButtonPrimary>
               </DivFlexStyled>              
@@ -97,7 +97,7 @@ const Blocklist = (props) => {
                       {payload.map(eachBlock=>
                         <tr onClick={evt=>props.push(`/block/${eachBlock.block_id}`)} key={eachBlock.block_id}>
                           <td>{eachBlock.block_num}</td>
-                          <td>{eachBlock.block_id}</td>
+                          <td className="hashText">{eachBlock.block_id}</td>
                           <td className="text-center">{eachBlock.block.transactions.length}</td>
                           <td>{eachBlock.createdAt}</td>
                         </tr>)}

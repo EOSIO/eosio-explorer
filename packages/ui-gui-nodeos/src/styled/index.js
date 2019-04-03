@@ -7,6 +7,7 @@ import ButtonPrimary from './ButtonPrimary';
 import ButtonSecondary from './ButtonSecondary';
 import TableStyled from './TableStyled';
 import CheckBoxDivStyled from './CheckBoxDivStyled';
+import DropdownStyled from './DropdownStyled';
 
 export { 
   CardStyled, 
@@ -17,5 +18,6 @@ export {
   ButtonPrimary,
   ButtonSecondary,
   TableStyled,
-  CheckBoxDivStyled
+  CheckBoxDivStyled,
+  DropdownStyled
 }

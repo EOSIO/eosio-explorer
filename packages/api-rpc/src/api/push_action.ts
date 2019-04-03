@@ -1,5 +1,5 @@
-import { Api, JsonRpc } from 'eosjs';
-import JsSignatureProvider from 'eosjs/dist/eosjs-jssig'
+import { Api, JsonRpc, Serialize } from 'eosjs';
+import JsSignatureProvider from 'eosjs/dist/eosjs-jssig';
 import { TextDecoder, TextEncoder } from 'text-encoding';
 
 export default async (query:any) => {
@@ -9,6 +9,29 @@ export default async (query:any) => {
     const rpc = new JsonRpc(endpoint);
     const signatureProvider = new JsSignatureProvider([private_key]);
     const api = new Api({ rpc, signatureProvider, textDecoder: new TextDecoder(), textEncoder: new TextEncoder() });
+
+
+    if (account_name === "eosio" && action_name==="set_abi"){
+      console.log(payload);
+      console.log(payload.account_name);
+      console.log(payload.abi);
+      const buffer = new Serialize.SerialBuffer({
+        textEncoder: api.textEncoder,
+        textDecoder: api.textDecoder,
+      });
+
+      let abi = JSON.parse(payload.abi);
+      const abiDefinition = api.abiTypes.get('abi_def');
+      // need to make sure abi has every field in abiDefinition.fields
+      // otherwise serialize throws error
+      abi = abiDefinition!.fields.reduce(
+          (acc, { name: fieldName }) => Object.assign(acc, { [fieldName]: acc[fieldName] || [] }),
+          abi,
+      );
+      abiDefinition!.serialize(buffer, abi);
+      abi = Buffer.from(buffer.asUint8Array()).toString('hex');
+      payload.abi = abi;
+    }
 
     const result = await api.transact({
       actions: [{
