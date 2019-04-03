@@ -11,7 +11,7 @@ import { CodeViewer } from 'components';
 import { CardStyled, CardHeaderStyled, TableStyled } from 'styled';
 
 
-const CardModified = styled(CardStyled)`
+const FirstCardStyled = styled(CardStyled)`
   border-top: solid 2px #1173a4;
 `
 
@@ -43,7 +43,7 @@ const Blockdetail = (props) => {
                   : <div>
                       <Row>
                         <Col sm="12">
-                          <CardModified>
+                          <FirstCardStyled>
                             <CardHeaderStyled>Block Detail</CardHeaderStyled>
                             <CardBody>
                               <Form> 
@@ -73,7 +73,7 @@ const Blockdetail = (props) => {
                                 </FormGroup>
                               </Form>
                             </CardBody>
-                          </CardModified>
+                          </FirstCardStyled>
                         </Col>
                       </Row>
 

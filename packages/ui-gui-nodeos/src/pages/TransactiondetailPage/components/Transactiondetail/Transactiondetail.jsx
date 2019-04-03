@@ -2,24 +2,22 @@ import React, { useEffect } from 'react';
 
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { push } from 'connected-react-router'
 import { fetchStart, paramsSet } from './TransactiondetailReducer';
 import pathNameConsumer from 'helpers/pathname-consumer';
 import { Card, CardTitle, CardBody, Col, Row, Form, FormGroup} from 'reactstrap';
 import styled from 'styled-components';
 import { CodeViewer } from 'components';
+import { CardStyled, CardHeaderStyled, TableStyled } from 'styled';
 
-const CardTitleStyled = styled(CardTitle)`
-  text-decoration: underline;
-  font-weight: bold;
+const FirstCardStyled = styled(CardStyled)`
+  border-top: solid 2px #1173a4;
 `
 
-const ColBoldStyled = styled(Col)`
-  font-weight: bold;
-`
-
-const ColBoldUnderlineStyled = styled(Col)`
-  font-weight: bold;
-  text-decoration: underline;
+const CustomTable = styled(TableStyled)`
+ thead tr{
+  background-color: #ffffff;
+}
 `
 
 const Transactiondetail = (props) => {
@@ -44,62 +42,65 @@ const Transactiondetail = (props) => {
                   : <div>
                       <Row>
                         <Col sm="12">
-                          <Card>
-                            <CardBody>
-                              <CardTitleStyled>Transaction Detail</CardTitleStyled>
+                          <FirstCardStyled>
+                            <CardHeaderStyled>Transaction Detail</CardHeaderStyled>
+                            <CardBody>                              
                               <Form>
                                 <FormGroup row>
-                                  <ColBoldStyled sm={2}>Transaction ID:</ColBoldStyled>
+                                  <Col sm={2}>Transaction ID:</Col>
                                   <Col sm={10}>
                                     {payload[0].id}
                                   </Col>
                                 </FormGroup>
                                 <FormGroup row>
-                                  <ColBoldStyled sm={2}>Block Number:</ColBoldStyled>
+                                  <Col sm={2}>Block Number:</Col>
                                   <Col sm={10}>
                                     {payload[0].block_num}
                                   </Col>
                                 </FormGroup>
                                 <FormGroup row>
-                                  <ColBoldStyled sm={2}>Timestamp:</ColBoldStyled>
+                                  <Col sm={2}>Timestamp:</Col>
                                   <Col sm={10}>
                                     {payload[0].createdAt}
                                   </Col>
                                 </FormGroup>
                                 <FormGroup row>
-                                  <ColBoldStyled sm={2}>Number of Actions:</ColBoldStyled>
+                                  <Col sm={2}>Number of Actions:</Col>
                                   <Col sm={10}>
                                     {payload[0].action_traces.length}
                                   </Col>
                                 </FormGroup>
                               </Form>
                             </CardBody>
-                          </Card>
+                          </FirstCardStyled>
                         </Col>
                       </Row>
 
                       {(payload[0].action_traces.length) > 0
                         ? <Row>
                             <Col sm={12}>
-                              <Card>
-                                <CardBody>
-                                  <CardTitleStyled>Action List</CardTitleStyled>
-                                  <Form>
-                                    <FormGroup row>
-                                      <ColBoldUnderlineStyled sm={2}>Index</ColBoldUnderlineStyled>
-                                      <ColBoldUnderlineStyled sm={3}>Action Name</ColBoldUnderlineStyled>
-                                      <ColBoldUnderlineStyled sm={7}>Smart Contract Name</ColBoldUnderlineStyled>
-                                    </FormGroup>
-                                    {(payload[0].action_traces).map((eachAction, index)=> 
-                                      <FormGroup key={index} row>
-                                        <Col sm={2}>{index+1}</Col>    
-                                        <Col sm={3}><Link to={`/action/${eachAction.receipt.global_sequence}`}>{eachAction.act.name}</Link></Col>
-                                        <Col sm={7}>{eachAction.act.account}</Col>
-                                      </FormGroup>                                    
-                                    )}
-                                  </Form>
+                              <CardStyled>
+                                <CardHeaderStyled>Action List</CardHeaderStyled>
+                                <CardBody>                                 
+                                  <CustomTable borderless>
+                                  <thead>
+                                    <tr>
+                                      <th width="16%">Index</th>
+                                      <th width="34%">Action Name</th>   
+                                      <th width="40%">Smart Contract Name</th>                                   
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    {(payload[0].action_traces).map((eachAction,index)=>
+                                      <tr onClick={evt=> props.push(`/action/${eachAction.receipt.global_sequence}`)} key={eachAction.index}>
+                                        <td>{index+1}</td>
+                                        <td>{eachAction.act.name}</td>  
+                                        <td>{eachAction.act.account}</td>                                    
+                                      </tr>)}
+                                  </tbody>
+                                  </CustomTable> 
                                 </CardBody>
-                              </Card>
+                              </CardStyled>
                             </Col>
                           </Row>
                         : console.log("No actions")
@@ -132,6 +133,7 @@ export default connect(
   {
     fetchStart,
     paramsSet,
+    push
   }
 
 )(Transactiondetail);
