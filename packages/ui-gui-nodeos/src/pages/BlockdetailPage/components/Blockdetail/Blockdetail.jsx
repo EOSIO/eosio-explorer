@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { push } from 'connected-react-router'
 import { fetchStart, paramsSet } from './BlockdetailReducer';
 import pathNameConsumer from 'helpers/pathname-consumer';
@@ -14,13 +13,11 @@ import { CardStyled, CardHeaderStyled, TableStyled } from 'styled';
 const FirstCardStyled = styled(CardStyled)`
   border-top: solid 2px #1173a4;
 `
-
 const CustomTable = styled(TableStyled)`
- thead tr{
-  background-color: #ffffff;
-}
+  thead tr{
+    background-color: #ffffff;
+  }
 `
-
 const Blockdetail = (props) => {
 
   useEffect(()=>{

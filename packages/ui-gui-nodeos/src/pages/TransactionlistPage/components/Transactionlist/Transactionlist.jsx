@@ -5,7 +5,7 @@ import { push } from 'connected-react-router'
 import { pollingStart, pollingStop } from './TransactionlistReducer';
 import { CardTitle, CardBody } from 'reactstrap';
 import styled from 'styled-components';
-import { CardStyled,CardHeaderStyled, TableStyled, ButtonPrimary, CheckBoxDivStyled, InputStyled} from 'styled';
+import { CardStyled,CardHeaderStyled, TableStyled, ButtonPrimary, InputStyled} from 'styled';
 
 
 const FirstCardStyled = styled(CardStyled)`
@@ -33,7 +33,7 @@ const Transactionlist = (props) => {
 
   const [inputValue, setInputValue] = useState("");
 
-  let { transactionlist: { isFetching, data, filter } } = props;
+  let { transactionlist: { isFetching, data } } = props;
   let { payload = [], error } = data;
 
   return (
@@ -50,16 +50,16 @@ const Transactionlist = (props) => {
                     onKeyDown={
                       evt => {
                         if (evt.key === 'Enter') {
-                          setInputValue("")
-                            {inputValue ? props.push('/transaction/'+inputValue) : console.log("No search text");} 
+                          setInputValue("");
+                          {inputValue ? props.push('/transaction/'+inputValue) : console.log("No search text")} 
                         }
                       }
                     }
                     onChange={evt=>{setInputValue(evt.target.value)}}/>
               <ButtonPrimary             
                     onClick={evt=> {
-                      setInputValue("")
-                      {inputValue ? props.push('/transaction/'+inputValue) : console.log("No search text");}                          
+                      setInputValue("");
+                      {inputValue ? props.push('/transaction/'+inputValue) : console.log("No search text")}                          
                     }}>
               Search</ButtonPrimary>
             </DivFlexStyled>
