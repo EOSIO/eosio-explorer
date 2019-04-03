@@ -1,40 +1,12 @@
-# Introduction
-Create a docker image with a EOSIO nodeos inside.
-Cloned from https://github.com/EOSIO/eosio-project-boilerplate-simple
+# docker-eosio-nodeos
+`docker-eosio-nodeos` is responsible for creating a Docker container that runs a local instance of `nodeos`, which will continuously create blocks and gives users an endpoint to deploy contracts and push actions to. 
 
-## Depended by Packages
-* api-rpc
+## Manual Usage
+Navigating to this package root will give user access to the Dockerfile and build scripts, which are needed to get the Docker container set up and running. Executing `./build_eosio_docker.sh` will check if the Docker image has been built, and will build the image if necessary. Users should run that script during the initial setup phase.
 
-## Used by Applications
-* GUI of Nodeos
+Once the Docker image has been built, you can start the Docker container by running `./start_eosio_docker.sh` but be sure that you have a running MongoDB service available (at `mongodb://localhost:27017` for example) before starting it. 
 
-# Development
-cd into package root `/packages/docker-eosio-nodeos`
-
-## Initial setup
-
-```sh
-./build_eosio_docker.sh
+You can stop the container directly by executing `docker stop eosio_gui_nodeos_container`. If you wish to reinitialize the container, you will need to delete and remake the `data` folder, which contains the block log and other related information before removing the container and restarting it again. You can run all of this in one command with the following:
 ```
-
-## Start
-Start nodeos by creating and running a docker container.
-
-```
-./start_eosio_docker.sh
-```
-* Make sure a mongodb service is running ( mongodb://localhost:27017 ) before you start the nodeos.
-
-## Stop
-Stop nodeos ( stop docker container )
-
-```sh
-docker stop eosio_gui_nodeos_container
-```
-
-## Restart
-Reset and restart
-
-```sh
-rm -rf data && mkdir data && docker rm eosio_gui_nodeos_container && ./start_eosio_docker.sh
+rm -rf data && mkdir data && docker rm -fv eosio_gui_nodeos_container && ./start_eosio_docker.sh
 ```

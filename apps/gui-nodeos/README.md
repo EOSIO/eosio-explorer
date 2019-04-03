@@ -1,18 +1,18 @@
-# Introduction
-The application: GUI of Nodeos
+# apps/gui-nodeos
 
-# Shell Scripts
+Sample shell script utilities for directly controlling the blockchain container.
 
-Before anything, kindly run `./one_time_setup.sh` in order to verify that you have built all the necessary Docker images for the application to work. It will set up the dependencies for you.
+## Contents
 
-### Starting the Blockchain
+* `build_dockers.sh` - Script to build the Docker images and containers under `packages/docker-eosio-nodeos` and `packages/api-eosio-compiler/docker-eosio-cdt`
+* `start_blockchain.sh` - Script to start the blockchain
+* `pause_blockchain.sh` - Script to pause the blockchain
+* `resume_blockchain.sh` - Script to resume the blockchain
+* `clear_all_blockchain_data.sh` - Script to re-initialize all data in the blockchain and MongoDB in case a hard reset is needed
 
-`./start_blockchain.sh` will start the blockchain for you. 
+## Sample Usage
 
-### Pausing and Resuming the Blockchain
+1. `./build_dockers.sh` to ensure the necessary containers are available
+2. `./start_blockchain.sh` to start a blockchain instance for development
 
-`./pause_blockchain.sh` will stop the blockchain for you. The MongoDB will still be running, so you can resume the blockchain by running `./resume_blockchain.sh`.
-
-### Clear all Blockchain Data
-
-If you wish to restart from an empty slate, call `./clear_all_blockchain_data.sh` in order to clear all block log data and also the MongoDB data. Call `./start_blockchain.sh` once again to start from scratch.
+Eventually, you can use `pause_blockchain.sh` and `resume_blockchain.sh` to pause and/or resume the blockchain on demand. Furthermore, you could even modify or use these scripts in higher level processes or build tasks.

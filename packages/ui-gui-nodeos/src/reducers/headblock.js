@@ -53,7 +53,7 @@ const fetchEpic = action$ => action$.pipe(
   ),
 );
 
-const restartEpic = action$ => action$.pipe(
+const repollEpic = action$ => action$.pipe(
   ofType(FETCH_REJECTED),
   delay(10000),
   mapTo(pollingStart()),
@@ -62,7 +62,7 @@ const restartEpic = action$ => action$.pipe(
 export const combinedEpic = combineEpics(
   startEpic,
   fetchEpic,
-  restartEpic
+  repollEpic
 );
 
 

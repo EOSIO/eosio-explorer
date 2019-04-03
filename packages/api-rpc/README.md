@@ -1,22 +1,14 @@
-# Introduction
-RESTful api for retrieving data from PRC API of a nodeos service through eosjs.
+# api-rpc
+RESTful API service making use of the nodeos RPC API wrapper `eosjs` to obtain data from the blockchain that can not be fetched using `api-mongodb-plugin`.
 
-# Depended by Packages
-* ui-gui-nodeos
-
-# Used by Applications
-* GUI of Nodeos
-
-# Development
-
-## First time setup
-Install typescript and tsc globally
+## Manual Usage
+Install TypeScript and `tsc` (TypeScript Compiler) globally with
 ```
 yarn global add typescript
 ```
 
-## Watch and Compile
-Watch and compile ts to js into `/dist`
+## Compile and Watch
+Compile the source into `js` and watch for changes into `./dist` with the following command:
 ```
 rm -rf dist && tsc -w
 ```

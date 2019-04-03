@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 set -o errexit
 
-EXECPATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-ROOTPATH="../..";
+ROOTPATH="../.."
 
 echo "=== Checking if nodeos container is running... ==="
 if [ "$(docker ps -q -f name=eosio_gui_nodeos_container)" ]; then
@@ -13,7 +12,7 @@ if [ "$(docker ps -q -f name=eosio_gui_nodeos_container)" ]; then
 fi
 
 echo "=== reinitializing nodeos with cleared blockchain ==="
-(cd ${ROOTPATH}/packages/ && exec docker-eosio-nodeos/build_eosio_docker.sh)
+(cd ${ROOTPATH}/packages/ && exec docker-eosio-nodeos/start_eosio_docker.sh)
 
 echo "=== reinitializing mongodb ==="
-(cd ${ROOTPATH}/packages/ && exec docker-mongodb/remove_mongodb_docker.sh)
+(cd ${ROOTPATH}/packages/ && exec docker-mongodb/remove_mongodb_docker.sh && exec docker-mongodb/start_mongodb_docker.sh)

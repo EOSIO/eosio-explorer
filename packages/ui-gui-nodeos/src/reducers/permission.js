@@ -125,15 +125,15 @@ const dataInitState = {
       _id: '1',
       account: 'eosio',
       permission: 'owner',
-      public_key: '123456',
-      private_key: '789'
+      public_key: 'EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV',
+      private_key: '5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3'
     },
     {
       _id: '2',
       account: 'eosio',
       permission: 'active',
-      public_key: 'abcdef',
-      private_key: 'zyx'
+      public_key: 'EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV',
+      private_key: '5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3'
     },
   ],
   importSuccess: false,
