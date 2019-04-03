@@ -1,22 +1,25 @@
 import React, { Component } from 'react';
-import { Card, CardBody, CardHeader } from 'reactstrap';
+import { Col, Row } from 'reactstrap';
 
 import { StandardTemplate } from 'templates';
 import Contractdetail from './components/Contractdetail';
+import { PageTitleDivStyled } from 'styled';
 
 class ContractdetailPage extends Component {
   render() {
     return (
       <StandardTemplate>
         <div className="ContractdetailPage">
-          <Card>
-            <CardHeader>
-              Smart Contract Detail Page
-            </CardHeader>
-            <CardBody>
+          <Row>
+            <Col sm="12">
+              <PageTitleDivStyled>Smart Contract Detail Page</PageTitleDivStyled>
+            </Col>
+          </Row>
+          <Row>
+            <Col sm="12">
               <Contractdetail />
-            </CardBody>
-          </Card>
+            </Col>
+          </Row>          
         </div>
       </StandardTemplate>
     );

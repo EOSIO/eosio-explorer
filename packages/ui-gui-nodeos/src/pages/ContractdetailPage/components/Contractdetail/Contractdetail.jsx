@@ -7,29 +7,30 @@ import MultiIndex from '../MultiIndex';
 import pathNameConsumer from 'helpers/pathname-consumer';
 import { push } from 'connected-react-router'
 
-import { Input } from 'reactstrap';
+import { Row, Col, CardBody, Input } from 'reactstrap';
 import styled from 'styled-components';
 import { CodeViewer } from 'components';
-import SearchButton from 'styled/SearchButton';
+import { CardStyled, CardHeaderStyled, ButtonPrimary, InputStyled} from 'styled';
 
-
+const FirstCardStyled = styled(CardStyled)`
+  border-top: solid 2px #1173a4;
+`
 const SearchLabel = styled.label`
-  font-weight: bold;
   padding-right: 10px;
+  margin-top: 10px;
 `
-const SearchInputStyled = styled(Input)`
+const SearchInputStyled = styled(InputStyled)`
   width: 30%;
-  margin-top: -6px;
+  margin-right: 10px;
 `
-
 const DivFlexStyled = styled.div`
   display: flex;
   justify-content: flex-end;
-  padding: 15px;
 `
+
 const DivMessageStyled = styled.div`
   font-weight: bold;
-  padding: 15px;
+  padding-bottom: 20px;
 `
 
 const Contractdetail = (props) => {
@@ -53,30 +54,38 @@ const Contractdetail = (props) => {
 
   return (
     <div className="Contractdetail">
-      <div>    
-        <DivFlexStyled>
-          <SearchLabel>Multi-Index Table Search by Smart Contract Name:</SearchLabel>
-          <SearchInputStyled 
-                placeholder="Smart Contract Name"
-                value={inputValue}
-                onKeyDown={
-                  evt => {
-                    if (evt.key === 'Enter') {
-                      setInputValue("")
-                      { inputValue ? props.push('/contract/'+inputValue) : console.log("No search text")} 
-                    }
-                  }
-                }
-                onChange={evt=>{setInputValue(evt.target.value)}}/>
-          <SearchButton
-                color="secondary"                           
-                onClick={evt=> {
-                  setInputValue("")
-                  {inputValue ? props.push('/contract/'+inputValue) : console.log("No search text") }                          
-                }}>
-          Search</SearchButton>
-        </DivFlexStyled>                  
-      </div>
+      <Row> 
+        <Col sm="12">
+          <FirstCardStyled>
+            <CardHeaderStyled>Search Smart Contract</CardHeaderStyled>
+            <CardBody>
+              <DivFlexStyled>
+                <SearchLabel>Multi-Index Table Search by Smart Contract Name:</SearchLabel>
+                <SearchInputStyled 
+                      placeholder="Smart Contract Name"
+                      value={inputValue}
+                      onKeyDown={
+                        evt => {
+                          if (evt.key === 'Enter') {
+                            setInputValue("")
+                            { inputValue ? props.push('/contract/'+inputValue) : console.log("No search text")} 
+                          }
+                        }
+                      }
+                      onChange={evt=>{setInputValue(evt.target.value)}}/>
+                <ButtonPrimary
+                      color="secondary"                           
+                      onClick={evt=> {
+                        setInputValue("")
+                        {inputValue ? props.push('/contract/'+inputValue) : console.log("No search text") }                          
+                      }}>
+                Search</ButtonPrimary>
+              </DivFlexStyled>
+            </CardBody>
+          </FirstCardStyled>
+               
+        </Col>                
+      </Row>
 
       {showDetailsSection 
         ? error
@@ -86,12 +95,22 @@ const Contractdetail = (props) => {
             : !(payload.length !== 0 && payload[0].hasOwnProperty("abi") === true)
               ? `No Smart Contract found with the name: ${params.account_name}`
               : <div>
-                  <CodeViewer 
-                    language="json"
-                    value={JSON.stringify(payload[0].abi, null, 2)}
-                    readOnly={true}
-                    height={400}
-                  />
+                  <Row> 
+                    <Col sm="12">
+                      <CardStyled>
+                        <CardHeaderStyled>Smart Contract Detail</CardHeaderStyled>
+                        <CardBody>
+                          <CodeViewer 
+                            language="json"
+                            value={JSON.stringify(payload[0].abi, null, 2)}
+                            readOnly={true}
+                            height={300}
+                          />
+                        </CardBody>
+                      </CardStyled>
+                    </Col>
+                  </Row>  
+                  
                   { payload[0].abi.tables.length === 0 
                     ? <DivMessageStyled>No Multi-Index table present for this contract</DivMessageStyled>
                     : <MultiIndex abiData={payload[0]} />}

@@ -9,15 +9,16 @@ import { push } from 'connected-react-router'
 import { Card, CardBody, Dropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap';
 import styled from 'styled-components';
 import { CodeViewer } from 'components';
+import { DropdownStyled, CardStyled, CardHeaderStyled } from 'styled';
 
 const SelectLabel = styled.label`
-  font-weight: bold;
-  padding: 8px 10px 0 0;
+  padding-right: 10px;
+  margin-top: 10px;
 `
 const DivFlexStyled = styled.div`
   display: flex;
   justify-content: flex-end;
-  padding: 25px 15px 15px 15px;
+  padding: 0 15px 25px 15px;
 `
 
 const MultiIndex = (props) => {
@@ -34,7 +35,7 @@ const MultiIndex = (props) => {
     <div className="MultiIndex">
       <DivFlexStyled>
         <SelectLabel>Select Table to Display multi-Index Table:</SelectLabel>
-        <Dropdown isOpen={isOpenDropDown} toggle={()=>{toggleDropDown(!isOpenDropDown)}}>
+        <DropdownStyled isOpen={isOpenDropDown} toggle={()=>{toggleDropDown(!isOpenDropDown)}}>
           <DropdownToggle caret>{dropDownSelctedValue}</DropdownToggle>
           <DropdownMenu right>
             {(abiData.abi.tables).map((eachTable)=>
@@ -48,7 +49,7 @@ const MultiIndex = (props) => {
                   }}>
                 {eachTable.name}</DropdownItem>)}
           </DropdownMenu>     
-        </Dropdown>               
+        </DropdownStyled>               
       </DivFlexStyled>                
       {error
         ? <button onClick={props.fetchStart}>{JSON.stringify(error)} Click to reload.</button>
@@ -58,7 +59,8 @@ const MultiIndex = (props) => {
             ? payload.length === 0
               ? `No data in Multi-Index table ${params.table_name}`
               : <div>
-                  <Card>
+                  <CardStyled>
+                    <CardHeaderStyled>Multi-Index table Raw data</CardHeaderStyled>
                     <CardBody>
                       <CodeViewer
                         language="json"
@@ -67,7 +69,7 @@ const MultiIndex = (props) => {
                         height={600}
                       />
                     </CardBody>        
-                  </Card>   
+                  </CardStyled>   
                 </div>
               :<div></div>}         
     </div>
