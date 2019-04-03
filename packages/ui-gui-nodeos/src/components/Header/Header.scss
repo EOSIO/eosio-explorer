@@ -1,14 +1,13 @@
 .Header {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: center;
   font-weight: 600;
   letter-spacing: 0.02rem;
   font-size: 11px;
   min-width: 992px;
-  padding: 0 30px;
   width: 100%;
-  max-width: 1440px;
+  max-width: 1366px;
   margin: 0 auto;
 
   /* Remove header responsiveness from Core UI */
@@ -22,5 +21,6 @@
     display: inherit !important;
   }
   .nav-items{
+    justify-content: space-evenly;
   }
 }
