@@ -5,10 +5,17 @@ set -o errexit
 if [ "$(docker ps -q -f name=eosio_gui_nodeos_container)" ]; then
     if [ "$(docker ps -aq -f status=running -f name=eosio_gui_nodeos_container)" ]; then
         echo "=== Blockchain container is running, stopping the operation... ==="
-        docker stop eosio_gui_nodeos_container
+        docker pause eosio_gui_nodeos_container
+    else
+        echo "=== Blockchain container not running... ==="
     fi
 fi
 
-if [ ! "$(docker ps -q -f name=eosio_gui_nodeos_container)" ]; then
-    echo "=== Blockchain container is either paused or not running. Please start it up. ==="
+if [ "$(docker ps -aq -f name=eosio-mongodb)" ]; then
+    if [ "$(docker ps -aq -f status=running -f name=eosio-mongodb)" ]; then
+        echo "=== MongoDB container is running, stopping the operation ==="
+        docker pause eosio-mongodb
+    else 
+        echo "=== MongoDB container not running... ==="
+    fi
 fi
