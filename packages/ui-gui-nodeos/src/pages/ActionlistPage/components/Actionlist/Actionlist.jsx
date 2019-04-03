@@ -3,20 +3,22 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Table, Button, Row, Col, CardTitle, Input, Form } from 'reactstrap';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { push } from 'connected-react-router'
 import { pollingStart, pollingStop, smartContractNameSearch } from './ActionlistReducer';
 import { LoadingSpinner } from 'components';
-import SearchButton from 'styled/SearchButton';
+import { TableStyled, ButtonPrimary, InputStyled} from 'styled';
 
-const InputStyled = styled(Input)`
-  min-width: 250px;
-  margin-top: -6px;
+const FormStyled = styled(Form)`
+  display: flex;
+  justify-content: flex-end;
 `
-const TrClickable = styled.tr`
-  :hover {
-    background: rgba(32, 168, 216, 0.07) !important;
-    color: #1ea7d8;
-  }
+const FilterLabel = styled.label`
+  padding-right: 10px;
+  margin-top: 10px;
+`
+const FilterInputStyled = styled(InputStyled)`
+  width: 30%;
+  margin-right: 10px;
 `
 
 const Actionlist = (props) => {
@@ -33,8 +35,8 @@ const Actionlist = (props) => {
     <div className="Actionlist">
       <Row>
         <Col xs="12" className="text-right">
-          <CardTitle>
-            <Form onSubmit={(e) => {
+          <CardTitle>            
+            <FormStyled onSubmit={(e) => {
                 e.preventDefault();
                 let val = e.target.smartContractNameSearch.value;
                 if(smartContractName) {
@@ -43,11 +45,11 @@ const Actionlist = (props) => {
                 } else {
                   props.smartContractNameSearch(val);
                 }
-              }} style={{display:"inline-flex"}}>
-              <label>Filter&nbsp;by&nbsp;Smart&nbsp;Contract&nbsp;Name:&nbsp;&nbsp;</label>
-              <InputStyled disabled={!!smartContractName} name="smartContractNameSearch" placeholder="Smart Contract Name..." defaultValue={smartContractName} />
-              <SearchButton color="primary">{smartContractName ? "Clear" : "Filter"}</SearchButton>
-            </Form>
+              }}>
+              <FilterLabel>Filter by Smart Contract Name:</FilterLabel>
+              <FilterInputStyled disabled={!!smartContractName} name="smartContractNameSearch" placeholder="Smart Contract Name..." defaultValue={smartContractName} />
+              <ButtonPrimary color="primary">{smartContractName ? "Clear" : "Filter"}</ButtonPrimary>
+            </FormStyled>
           </CardTitle>
         </Col>
       </Row>
@@ -61,32 +63,28 @@ const Actionlist = (props) => {
         : isFetching ? (
           <LoadingSpinner />
         ) : (
-          <Table responsive striped>
+          <TableStyled borderless>
             <thead>
-              <tr className="font-weight-bold">
-                <th>Smart Contract Name</th>
-                <th>Action Type</th>
-                <th>Timestamp</th>
+              <tr>
+                <th width="33%">Smart Contract Name</th>
+                <th width="33%">Action Type</th>
+                <th width="34%">Timestamp</th>
               </tr>
             </thead>
             <tbody>
-              {payload.length < 1 ?
-                <tr><td colSpan="3" className="text-center">No actions could be found for the given Smart Contract name</td></tr>
-              : payload.map((action, index)=>
-                <TrClickable key={index}>
-                
+              {payload.length < 1 
+                ? <tr><td colSpan="3" className="text-center">No actions could be found for the given Smart Contract name</td></tr>
+                : payload.map((action, index)=>
+                  <tr onClick={evt=>props.push(`/action/${action.receipt.global_sequence}`)} key={index}>
                     <td>{action.act.account}</td>
-                    <td><Link to={`/action/${action.receipt.global_sequence}`}>{action.act.name}</Link></td>
+                    <td>{action.act.name}</td>
                     <td>{action.createdAt}</td>
-                 
-                </TrClickable>
-              )}
+                  </tr>)}
             </tbody>
-          </Table>
+          </TableStyled>          
         )}
         </Col>
       </Row>
-
     </div>
   );
 }
@@ -99,6 +97,7 @@ export default connect(
     pollingStart,
     pollingStop,
     smartContractNameSearch,
+    push
   }
 
 )(Actionlist);

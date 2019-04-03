@@ -8,6 +8,12 @@ import pathNameConsumer from 'helpers/pathname-consumer';
 import { fetchStart, paramsSet } from './ActiondetailPageReducer';
 import Actiondetail from './components/Actiondetail';
 import Actionjson from './components/Actionjson';
+import styled from 'styled-components';
+import { PageTitleDivStyled, CardStyled, CardHeaderStyled } from 'styled';
+
+const FirstCardStyled = styled(CardStyled)`
+  border-top: solid 2px #1173a4;
+`
 
 const ActiondetailPage = (props) => {
 
@@ -25,15 +31,15 @@ const ActiondetailPage = (props) => {
       <div className="ActiondetailPage animated fadeIn">
         <Row>
           <Col xs="12">
-            <h2 className="pageTitle text-center mb-4">Action Detail Page</h2>
+            <PageTitleDivStyled>Action Detail Page</PageTitleDivStyled>
           </Col>
         </Row>
         <Row>
           <Col xs="12">
-            <Card>
-              <CardHeader>
+            <FirstCardStyled>
+              <CardHeaderStyled>
                 Action Detail
-              </CardHeader>
+              </CardHeaderStyled>
               <CardBody>
                 { error ?
                   <div className="text-center">
@@ -46,7 +52,7 @@ const ActiondetailPage = (props) => {
                   <Actiondetail/>
                 )}
               </CardBody>
-            </Card>
+            </FirstCardStyled>
           </Col>
         </Row>
         
@@ -54,14 +60,14 @@ const ActiondetailPage = (props) => {
           !error &&
             <Row>
               <Col xs="12">
-                <Card>
-                  <CardHeader>
+                <CardStyled>
+                  <CardHeaderStyled>
                     Action Raw JSON
-                  </CardHeader>
+                  </CardHeaderStyled>
                   <CardBody>
                     <Actionjson />
                   </CardBody>
-                </Card>
+                </CardStyled>
               </Col>
             </Row>
         )}
@@ -80,4 +86,3 @@ export default connect(
     paramsSet,
   }
 )(ActiondetailPage);
-

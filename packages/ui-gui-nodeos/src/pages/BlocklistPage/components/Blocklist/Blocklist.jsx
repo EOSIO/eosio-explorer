@@ -20,11 +20,12 @@ const SearchLabel = styled.label`
 
 const SearchInputStyled = styled(InputStyled)`
   width: 65%;
+  margin-right: 10px;
 `
 
 const DivFlexStyled = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   padding-bottom: 20px;
 `
 
