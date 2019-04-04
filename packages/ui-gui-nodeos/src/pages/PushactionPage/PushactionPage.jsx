@@ -11,6 +11,23 @@ import validate from './components/PushActionValidatorEngine/PushActionValidator
 import { StandardTemplate } from 'templates';
 import { defaultSet } from 'reducers/permission';
 import Actionhistory from './components/Actionhistory';
+import styled from 'styled-components';
+import { PageTitleDivStyled, CardStyled,CardHeaderStyled, TableStyled, ButtonPrimary, CheckBoxDivStyled, InputStyled} from 'styled';
+
+const FirstCardStyled = styled(CardStyled)`
+  border-top: solid 2px #1173a4;
+`
+const DropdownInputStyled = styled(Input)`
+  background-color: #f8f9fa;
+  height: 40px;
+
+  :focus{
+    outline: none;
+    box-shadow: none;
+    border-color: #1173a4;
+  }
+
+`
 
 let prevAction = undefined;
 
@@ -29,14 +46,14 @@ const updateAction = (name, action, value, callback) => {
 
 const PushactionPage = (props) => {
 
-  useEffect(()=>{
+  useEffect(()=>{    
     props.pollingStart();
     return () => { props.pollingStop() }
   }, [])
   
   const [ validationErrors, setValidationErrors ] = useState([]);
   const { handleChange, handleSubmit, updateValues, errors } = useForm(function() { window.scrollTo(0, 0); props.actionPush(action); }, validate);
-  
+
   let { permission: { isFetching, data }, defaultSet, pushactionPage: { action } } = props;
   let { list, defaultId } = data;
   
@@ -60,23 +77,23 @@ const PushactionPage = (props) => {
     <StandardTemplate>
       <div className="PushactionPage animated fadeIn">
         <Row>
-          <Col xs="12">
-            <h2 className="pageTitle text-center mb-4">Push Action Page</h2>
+          <Col sm="12">
+            <PageTitleDivStyled>Push Actions Page</PageTitleDivStyled>
           </Col>
         </Row>
         <Row>
           <Col xs="12">
-            <Card>
-              <CardHeader>
+            <FirstCardStyled>
+              <CardHeaderStyled>
                 Push Action
-              </CardHeader>
+              </CardHeaderStyled>
               <CardBody>
 
               { isFetching ? (
                 <LoadingSpinner />
               ) : (
               <Form className="form-horizontal" id="pushActionForm" onSubmit={ handleSubmit }>
-                {
+              {
                   action.pushSuccess &&
                   <UncontrolledAlert color="success">
                     Action pushed successfully
@@ -85,7 +102,7 @@ const PushactionPage = (props) => {
                 { action.error &&
                 <Card className="text-white bg-danger text-center">
                   <CardBody>
-                    <p className="mb-1"><strong>Error(s)</strong></p>
+                    <p className="mb-1">Error(s)</p>
                     <p className="mb-1">{action.error.error}</p>
                   </CardBody>
                 </Card>
@@ -93,7 +110,7 @@ const PushactionPage = (props) => {
                 { validationErrors && ( validationErrors.length > 0 && 
                   <Card className="text-white bg-danger text-center">
                     <CardBody>
-                      <p className="mb-1"><strong>Error(s)</strong></p>
+                      <p className="mb-1">Error(s)</p>
                       <ul className="list-unstyled mb-0">
                         {validationErrors.map((error, index) => 
                           <li key={index}>{error}</li>
@@ -104,10 +121,10 @@ const PushactionPage = (props) => {
                 )}
                 <FormGroup row>
                     <Col xs="3">
-                      <Label><strong>Smart Contract Name</strong></Label>
+                      <Label>Smart Contract Name:</Label>
                     </Col>
                     <Col xs="9">
-                      <Input type="text" id="smartContractName" name="smartContractName" placeholder="Smart Contract Name..."
+                      <InputStyled type="text" id="smartContractName" name="smartContractName" placeholder="Smart Contract Name..."
                         value={action.act.account} onChange={(e) => { updateAction(e.target.name, action, e.target.value, props.updateActionToPush); handleChange(e); } } 
                         invalid={!!errors.smartContractName}
                         />
@@ -121,10 +138,10 @@ const PushactionPage = (props) => {
                   </FormGroup>
                   <FormGroup row>
                     <Col xs="3">
-                      <Label><strong>Action Type</strong></Label>
+                      <Label>Action Type:</Label>
                     </Col>
                     <Col xs="9">
-                      <Input type="text" id="actionType" name="actionType" placeholder="Action Type..." value={action && (action.act && action.act.name)}
+                      <InputStyled type="text" id="actionType" name="actionType" placeholder="Action Type..." value={action && (action.act && action.act.name)}
                       onChange={(e) => { updateAction(e.target.name, action, e.target.value, props.updateActionToPush); handleChange(e); } }
                       invalid={!!errors.actionType}
                       />
@@ -138,10 +155,10 @@ const PushactionPage = (props) => {
                   </FormGroup>
                   <FormGroup row>
                     <Col xs="3">
-                      <Label><strong>Permission</strong></Label>
+                      <Label>Permission:</Label>
                     </Col>
                     <Col xs="9">
-                      <Input type="select" name="permission" id="permission" value={selectedPermission._id}
+                      <DropdownInputStyled type="select" name="permission" id="permission" value={selectedPermission._id}
                         onChange={(e) => { 
                           let newPermission = list.find(p => e.target.value === p._id); 
                           updateAction(e.target.name, action, { actor: newPermission.account, permission: newPermission.permission }, props.updateActionToPush);
@@ -150,15 +167,15 @@ const PushactionPage = (props) => {
                         { list.map((permission) =>  permission.private_key &&
                           <option key={permission._id} value={permission._id}>{permission.account}@{permission.permission}</option>
                         )}
-                      </Input>
+                      </DropdownInputStyled>
                     </Col>
                   </FormGroup>
                   <FormGroup row>
                     <Col xs="12">
-                      <Label><strong>Payload</strong></Label>
+                      <Label>Payload:</Label>
                     </Col>
                     <Col xs="12">
-                      <CodeViewer readOnly={false} height="300" value={action.payload} className={errors.payload && "invalid"}
+                      <CodeViewer readOnly={false} height="250" value={action.payload} className={errors.payload && "invalid"}
                         onChange={(newVal) => { updateAction("payload", action, newVal, props.updateActionToPush); }} />
                       <Input type="hidden" id="payload" name="payload" value={action.payload || ""} onChange={(e) => { handleChange(e); } } invalid={!!errors.payload} />
                       {
@@ -171,25 +188,25 @@ const PushactionPage = (props) => {
                   </FormGroup>
                   <FormGroup row className="mb-0">
                     <Col xs="12" className="text-right">
-                      <Button type="submit" color="primary">Push</Button>
+                      <ButtonPrimary type="submit">Push</ButtonPrimary>
                     </Col>
                   </FormGroup>
                 </Form>
               )}
               </CardBody>
-            </Card>
+            </FirstCardStyled>
           </Col>
         </Row>
         <Row>
           <Col xs="12">
-            <Card>
-              <CardHeader>
+            <CardStyled>
+              <CardHeaderStyled>
                 Action History Viewer
-              </CardHeader>
+              </CardHeaderStyled>
               <CardBody>
                 <Actionhistory prefillCallback={(act_id) => { props.actionIdSet(act_id); setValidationErrors([]); window.scrollTo(0, 0); }} />
               </CardBody>
-            </Card>
+            </CardStyled>
           </Col>
         </Row>
       </div>
@@ -205,7 +222,7 @@ export default connect(
   {
     defaultSet,
     pollingStart,
-    pollingStop,
+    pollingStop,    
     actionIdSet,
     updateActionToPush,
     actionPush

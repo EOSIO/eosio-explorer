@@ -1,9 +1,17 @@
 import React, { useEffect } from 'react';
 
 import { connect } from 'react-redux';
-import { Table, Button, Row, Col, Input } from 'reactstrap';
+import { Row, Col } from 'reactstrap';
 
 import { LoadingSpinner } from 'components';
+import styled from 'styled-components';
+import { TableStyled, ButtonPrimary} from 'styled';
+
+const CustomButton = styled(ButtonPrimary)`
+  margin: 0 auto;
+  padding-top: 4px;
+  height: 32px;
+`
 
 const Actionhistory = (props) => {
 
@@ -16,13 +24,13 @@ const Actionhistory = (props) => {
         { isFetching ? (
           <LoadingSpinner />
         ) : (
-          <Table responsive striped>
+          <TableStyled borderless>
             <thead>
               <tr className="font-weight-bold">
-                <th>Smart Contract Name</th>
-                <th>Action Type</th>
-                <th>Timestamp</th>
-                <th className="text-center">Action</th>
+                <th width="25%">Smart Contract Name</th>
+                <th width="25%">Action Type</th>
+                <th width="25%">Timestamp</th>
+                <th width="25%" className="text-center">Action</th>
               </tr>
             </thead>
             <tbody>
@@ -33,11 +41,13 @@ const Actionhistory = (props) => {
                   <td>{action.act.account}</td>
                   <td>{action.act.name}</td>
                   <td>{action.createdAt}</td>
-                  <td><Button block color="primary" size="sm" onClick={(e) => { e.preventDefault(); props.prefillCallback(action.receipt.global_sequence); }}>Prefill</Button></td>
+                  <td className="text-center">
+                    <CustomButton block size="sm" onClick={(e) => { e.preventDefault(); props.prefillCallback(action.receipt.global_sequence); }}>Prefill</CustomButton>
+                  </td>
                 </tr>
               )}
             </tbody>
-          </Table>
+          </TableStyled>
         )}
         </Col>
       </Row>

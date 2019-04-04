@@ -109,16 +109,16 @@ const Header = (props) => {
               <Link to={`/`} className={`nav-link ${pathname === `/` ? `active` : ``}`}>INFO</Link>
             </NavItem>
             <NavItem className="px-3">
-              <Link to={`/block-list`} className={`nav-link ${pathname === `/block-list` ? `active` : ``}`}>BLOCK</Link>
+              <Link to={`/block-list`} className={`nav-link ${pathname === `/block-list` ? `active` : ``}`}>BLOCKS</Link>
             </NavItem>
             <NavItem className="px-3">
-              <Link to={`/transaction-list`} className={`nav-link ${pathname === `/transaction-list` ? `active` : ``}`}>TRANSACTION</Link>
+              <Link to={`/transaction-list`} className={`nav-link ${pathname === `/transaction-list` ? `active` : ``}`}>TRANSACTIONS</Link>
             </NavItem>
             <NavItem className="px-3">
-              <Link to={`/action-list`} className={`nav-link ${pathname === `/action-list` ? `active` : ``}`}>ACTION</Link>
+              <Link to={`/action-list`} className={`nav-link ${pathname === `/action-list` ? `active` : ``}`}>ACTIONS</Link>
             </NavItem>
             <NavItem className="px-3">
-              <Link to={`/account`} className={`nav-link ${pathname === `/account` ? `active` : ``}`}>ACCOUNT</Link>
+              <Link to={`/account`} className={`nav-link ${pathname === `/account` ? `active` : ``}`}>ACCOUNTS</Link>
             </NavItem>
             <NavItem className="px-3">
               <Link to={`/contract`} className={`nav-link ${pathname === `/contract` ? `active` : ``}`}>SMART CONTRACT</Link>
@@ -136,7 +136,7 @@ const Header = (props) => {
               <Link to={`/deploy`} className={`nav-link ${pathname === `/deploy` ? `active` : ``}`}>DEPLOYMENT</Link>
             </NavItem>
             <NavItem className="px-3">
-              <Link to={`/push-action`} className={`nav-link ${pathname === `/push-action` ? `active` : ``}`}>PUSH ACTION</Link>
+              <Link to={`/push-action`} className={`nav-link ${pathname === `/push-action` ? `active` : ``}`}>PUSH ACTIONS</Link>
             </NavItem>
           </Nav>
         </NavWrapper>

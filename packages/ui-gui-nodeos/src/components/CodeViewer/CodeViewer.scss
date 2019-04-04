@@ -1,7 +1,10 @@
 .CodeViewer {
     .monaco-editor {
-        outline: 1px solid #eee;
+        outline: 1px solid #e8ebf0;
 
+        :focus{
+            outline: 1px solid #1173a4;
+        }
         /* Bootstrap padding fix */
         max-width: 100%;
         .overflow-guard {
