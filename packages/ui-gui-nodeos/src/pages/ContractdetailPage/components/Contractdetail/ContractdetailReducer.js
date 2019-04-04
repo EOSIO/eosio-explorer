@@ -12,6 +12,7 @@ import { combineEpics, ofType } from 'redux-observable';
 
 import apiMongodb from 'services/api-mongodb';
 import paramsToQuery from 'helpers/params-to-query';
+import { errorLog } from 'helpers/error-logger';
 
 // IMPORTANT
 // Must modify action prefix since action types must be unique in the whole app
@@ -39,7 +40,10 @@ const fetchEpic = ( action$, state$ ) => action$.pipe(
 
     return apiMongodb(`get_abi${paramsToQuery(params)}`).pipe(
       map(res => fetchFulfilled(res.response)),
-      catchError(error => of(fetchRejected(error.response, { status: error.status })))
+      catchError(error => {
+        errorLog(error);
+        return of(fetchRejected(error.response, { status: error.status }))
+      })
     )
   })
 );

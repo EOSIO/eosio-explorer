@@ -5,6 +5,8 @@ import { mergeMap, map, catchError } from 'rxjs/operators';
 
 import { combineEpics, ofType } from 'redux-observable';
 
+import { errorLog } from 'helpers/error-logger';
+
 const ENDPOINT = 'http://localhost:8081/api/eosio/';
 
 const actionPrefix = `deployment/`;
@@ -33,7 +35,7 @@ const importEpic = ( action$ ) => action$.pipe(
   mergeMap(action => {
     return ajax.post(ENDPOINT+"import", action.fileContent).pipe(
       map(res => {
-        let { imported, abiPath, errors } = res.response; 
+        let { imported, abiPath, errors } = res.response;
         return processDone({
           abiContents: action["fileContent"].content,
           imported: imported,
@@ -41,7 +43,10 @@ const importEpic = ( action$ ) => action$.pipe(
           errors: (errors.length > 0) ? errors.join("\n") : []
         })
       }),
-      catchError(err => of(processFail(err, err.errors)))
+      catchError(err => {
+        errorLog(err);
+        return of(processFail(err, err.errors))
+      })
     )
   })
 );
@@ -52,13 +57,13 @@ const compileEpic = ( action$ ) => action$.pipe(
     return ajax.post(ENDPOINT+"compile", action.fullPath).pipe(
       map(res => {
         let { compiled, wasmLocation, abi, abiContents, stdout, stderr, errors } = res.response;
-        let nodeErr = [], 
+        let nodeErr = [],
             nodeStd = [];
 
             if (stderr && !(stderr instanceof Array)) {
               nodeErr.push(JSON.stringify(stderr));
-            } 
-    
+            }
+
             if (stdout && !(stdout instanceof Array)) {
               nodeStd.push(JSON.stringify(stdout));
             }
@@ -76,7 +81,10 @@ const compileEpic = ( action$ ) => action$.pipe(
           imported: false
         })
       }),
-      catchError(err => of(processFail(err, err.errors)))
+      catchError(err => {
+        errorLog(err);
+        return of(processFail(err, err.errors))
+      })
     )
   })
 );
@@ -97,16 +105,6 @@ const deployEpic = ( action$ ) => action$.pipe(
           actualOutput = intermediaryOutput;
         }
 
-        if (stderr && !(stderr instanceof Array)) {
-          nodeErr.push(JSON.stringify(stderr));
-        } 
-
-        if (stdout && !(stdout instanceof Array)) {
-          nodeStd.push(JSON.stringify(stdout));
-        }
-
-        console.log(res.response);
-
         return processDone({
           abiContents: abiContents,
           abiPath: abi,
@@ -119,23 +117,27 @@ const deployEpic = ( action$ ) => action$.pipe(
           errors: errors
         })
       }),
-      catchError(err => of(processFail(err, err.errors)))
+
+      catchError(err => {
+        errorLog(err);
+        return of(processFail(err, err.errors))
+      })
     )
   })
 );
 
 const consoleLogFormatting = ({ stdoutLog, stderrLog, errors }) => {
-  
+
   if (stdoutLog && stdoutLog.length > 0) {
     console.log("=== Compiler Standard Out ===");
     stdoutLog.forEach(line => console.log(line));
   }
-  
+
   if (stderrLog && stderrLog.length > 0) {
     console.log("=== Compiler Standard Error ===");
     stderrLog.forEach(line => console.log(line));
   }
-  
+
   if (errors && errors.length > 0) {
     console.log("=== GUI/Tool Errors ===");
     errors.forEach(line => console.log(line));
@@ -174,7 +176,7 @@ const deploymentReducer = (state=dataInitState, action) => {
         compiled: false,
         imported: false
       }
-    case PROCESS_DONE: 
+    case PROCESS_DONE:
       consoleLogFormatting(action.payload);
       return {
         ...state,
@@ -218,11 +220,11 @@ const isProcessingReducer = (state = false, action) => {
     case CONTRACT_DEPLOY:
     case ABI_IMPORT:
       return true;
-    
+
     case PROCESS_DONE:
     case PROCESS_FAIL:
       return false;
-    
+
     default:
       return state;
   }

@@ -13,6 +13,7 @@ import { combineEpics, ofType } from 'redux-observable';
 import apiMongodb from 'services/api-mongodb';
 import apiRpc from 'services/api-rpc';
 import paramsToQuery from 'helpers/params-to-query';
+import { errorLog } from 'helpers/error-logger';
 
 import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from 'constants';
 
@@ -67,7 +68,10 @@ const fetchEpic = ( action$, state$ ) => action$.pipe(
         originalList: list,
         originalDefault: defaultId
       })),
-      catchError(error => of(fetchRejected(error.response, { status: error.status })))
+      catchError(error => {
+        errorLog(error);
+        return of(fetchRejected(error.response, { status: error.status }))
+      })
     )
   })
 );

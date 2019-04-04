@@ -11,6 +11,7 @@ import { mergeMap, mapTo, map, takeUntil, catchError, delay } from 'rxjs/operato
 import { combineEpics, ofType } from 'redux-observable';
 
 import apiRpc from 'services/api-rpc';
+import { errorLog } from 'helpers/error-logger';
 
 // IMPORTANT
 // Must modify action prefix since action types must be unique in the whole app
@@ -45,7 +46,10 @@ const fetchEpic = action$ => action$.pipe(
       mergeMap(action =>
         from(apiRpc("get_info", query)).pipe(
           map(res => fetchFulfilled(res)),
-          catchError(error => of(fetchRejected(error.response, { status: error.status })))
+          catchError(error => {
+            errorLog(error);
+            return of(fetchRejected(error.response, { status: error.status }))
+          })
         )
       ),
       takeUntil(action$.pipe(

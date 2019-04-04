@@ -47,7 +47,7 @@ const fetchEpic = action$ => action$.pipe(
           catchError(error => {
             errorLog(error);
             return of(fetchRejected(error.response, { status: error.status }))
-        })
+          })
         )
       ),
       takeUntil(action$.pipe(

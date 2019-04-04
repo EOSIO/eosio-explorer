@@ -10,6 +10,7 @@ import { mergeMap, mapTo, map, catchError } from 'rxjs/operators';
 import { combineEpics, ofType } from 'redux-observable';
 
 import apiMongodb from 'services/api-mongodb';
+import { errorLog } from 'helpers/error-logger';
 
 // IMPORTANT
 // Must modify action prefix since action types must be unique in the whole app
@@ -41,13 +42,16 @@ const fetchEpic = ( action$, state$ ) => action$.pipe(
   ofType(FETCH_START),
   mergeMap(action => {
     let { value: {actionlistPage: { actionlist: { smartContractName } }} } = state$;
-    let searchString =  smartContractName ? 
-                        "?account_name=" + smartContractName.toLowerCase() : 
+    let searchString =  smartContractName ?
+                        "?account_name=" + smartContractName.toLowerCase() :
                         "";
 
     return apiMongodb(`get_actions${searchString}`).pipe(
       map(res => fetchFulfilled(res.response)),
-      catchError(error => of(fetchRejected(error.response, { status: error.status })))
+      catchError(error => {
+        errorLog(error);
+        return of(fetchRejected(error.response, { status: error.status }))
+      })
     )
   }),
 );

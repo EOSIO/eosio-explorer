@@ -12,6 +12,7 @@ import { combineEpics, ofType } from 'redux-observable';
 import apiMongodb from 'services/api-mongodb';
 import apiRpc from 'services/api-rpc';
 import { CONNECT_START } from 'reducers/endpoint';
+import { errorLog } from 'helpers/error-logger';
 
 // IMPORTANT
 // Must modify action prefix since action types must be unique in the whole app
@@ -52,7 +53,8 @@ const startEpic = action$ => action$.pipe(
 const fetchEpic = ( action$, state$ ) => action$.pipe(
   ofType(FETCH_START),
   mergeMap(action => {
-    
+    console.log(JSON.stringify("Starting Fetch!"));
+
     let { value: { pushactionPage: { actionId } } } = state$;
     let getActionQuery =  actionId !== undefined && actionId !== null && actionId !== "" ? "?global_sequence=" + actionId : "";
 
@@ -65,15 +67,24 @@ const fetchEpic = ( action$, state$ ) => action$.pipe(
               fetchFulfilled(actionsListResponse.response, actionResponse.response),
               prefillActionToPush(actionResponse.response)
             ]),
-            catchError(error => of(fetchRejected(error.response, { status: error.status })))
+            catchError(error => {
+              errorLog(error);
+              return of(fetchRejected(error.response, { status: error.status }))
+            })
           );
         }),
-        catchError(error => of(fetchRejected(error.response, { status: error.status })))
+        catchError(error => {
+          errorLog(error);
+          return of(fetchRejected(error.response, { status: error.status }))
+        })
       )
     } else {
       return apiMongodb(`get_actions`).pipe(
         map(actionsListResponse => fetchFulfilled(actionsListResponse.response, null)),
-        catchError(error => of(fetchRejected(error.response, { status: error.status })))
+        catchError(error => {
+          errorLog(error);
+          return of(fetchRejected(error.response, { status: error.status }))
+        })
       )
     }
   }),
@@ -150,7 +161,7 @@ const dataInitState = {
 const mapPrefilledAction = (prefilledAction) => {
   if(!prefilledAction)
     return actionToPushInitState;
-  
+
   let action = prefilledAction.find(x => x !== undefined);
   return {
     _id: action._id,
@@ -191,12 +202,12 @@ const dataReducer = (state=dataInitState, action) => {
         error: undefined
       };
 
-    case FETCH_REJECTED:      
+    case FETCH_REJECTED:
       return {
         ...state,
         error: action.error
       };
-      
+
     default:
       return state;
   }
@@ -230,14 +241,14 @@ const actionReducer = (state = actionToPushInitState, action) => {
   switch(action.type) {
     case ACTION_UPDATE:
       return mapUpdatedAction(action.updatedAction);
-      
+
     case ACTION_PREFILL:
       return mapPrefilledAction(action.updatedAction);
 
     case ACTION_PUSH:
       return state;
 
-    case ACTION_PUSH_FULFILLED:      
+    case ACTION_PUSH_FULFILLED:
       return {
         ...actionToPushInitState,
         error: undefined,

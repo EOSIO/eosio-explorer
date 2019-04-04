@@ -11,6 +11,7 @@ import { mergeMap, map, catchError } from 'rxjs/operators';
 import { combineEpics, ofType } from 'redux-observable';
 
 import apiRpc from 'services/api-rpc';
+import { errorLog } from 'helpers/error-logger';
 
 // IMPORTANT
 // Must modify action prefix since action types must be unique in the whole app
@@ -37,7 +38,10 @@ const fetchEpic = ( action$, state$ ) => action$.pipe(
 
     return from(apiRpc("get_account_details", params)).pipe(
       map(res =>  fetchFulfilled(res)),
-      catchError(error => of(fetchRejected(error.response, { status: error.status })))
+      catchError(error => {
+        errorLog(error);
+        return of(fetchRejected(error.response, { status: error.status }))
+      })
     )
   })
 );
