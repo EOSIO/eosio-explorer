@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import {
-  Card, CardBody, CardHeader,Row, Col, Form, FormGroup, FormFeedback, Label, Button,
-  Dropdown, DropdownToggle, DropdownMenu, DropdownItem, Input
+  Card, CardBody, CardHeader,Row, Col, Form, FormGroup, FormFeedback, Label, Button, Input
 } from 'reactstrap';
 
 import { pollingStart, pollingStop, smartContractNameSearch, actionIdSet, updateActionToPush, actionPush } from './PushactionPageReducer';
@@ -12,6 +11,8 @@ import validate from './components/PushActionValidatorEngine/PushActionValidator
 import { StandardTemplate } from 'templates';
 import { defaultSet } from 'reducers/permission';
 import Actionhistory from './components/Actionhistory';
+
+let prevAction = undefined;
 
 const updateAction = (name, action, value, callback) => {
   if (name === "smartContractName") { 
@@ -26,54 +27,36 @@ const updateAction = (name, action, value, callback) => {
   callback(action);
 };
 
-function tryParseJSON (jsonString) {
-  try {
-      var o = JSON.parse(jsonString);
-      if (o && typeof o === "object") {
-          return o;
-      }
-  }
-  catch (e) { }
-
-  return false;
-};
-
-const validateAction = (action) => {
-  let validation = {
-    valid: true,
-    errors: []
-  };
-  if(!action.act.account)
-    validation.errors.push("Please add a smart contract name");
-  if(!action.act.name)
-    validation.errors.push("Please add an action type");
-  
-  if(!tryParseJSON(action.payload)) {
-    console.log("Could not parse Payload JSON.");
-    validation.errors.push("Please enter a valid JSON string");
-  }
-
-  validation.valid = validation.errors.length < 1;
-  return validation;
-};
-
 const PushactionPage = (props) => {
 
   useEffect(()=>{
+    console.log("Updated push action page");
     props.pollingStart();
     return () => { props.pollingStop() }
   }, [])
-
-  const [ validationErrors, setValidationErrors ] = useState([]);
-  const { values, handleChange, handleSubmit, errors } = useForm(actionToPush, validate);
-  console.log("Errors: " + JSON.stringify(errors));
   
+  const [ validationErrors, setValidationErrors ] = useState([]);
+  const { handleChange, handleSubmit, updateValues, errors } = useForm(function() { props.actionPush(action); window.scrollTo(0, 0);}, validate);
+
   let { permission: { isFetching, data }, defaultSet, pushactionPage: { data: { actionToPush, error }, action } } = props;
   let { list, defaultId } = data;
+
   
   let selectedPermission = list.find(permission => defaultId === permission._id);
   if(action.act.authorization)
     selectedPermission = list.find(p => p.account === action.act.authorization.actor && p.permission === action.act.authorization.permission) || selectedPermission;
+
+  if(action !== prevAction) {
+    prevAction = action;
+
+    let vals = [
+      { name: "smartContractName", value: action.act.account },
+      { name: "actionType", value: action.act.name },
+      { name: "payload", value: action.payload }
+    ];
+    
+    updateValues(vals);
+  }
 
   return (
     <StandardTemplate>
@@ -94,20 +77,7 @@ const PushactionPage = (props) => {
               { isFetching ? (
                 <LoadingSpinner />
               ) : (
-              <Form className="form-horizontal" 
-                onSubmit={(e) => { e.preventDefault();
-                  let validation = validateAction(action);
-                  if(validation.valid) {
-                    props.actionPush(action);
-                  }
-                  else {
-                    console.log("Validation Failed");
-                    setValidationErrors(validation.errors);
-                  }
-                  window.scrollTo(0, 0);
-                }}
-                // onSubmit={ handleSubmit }
-              >
+              <Form className="form-horizontal" id="pushActionForm" onSubmit={ handleSubmit }>
                 { action.error &&
                 <Card className="text-white bg-danger text-center">
                   <CardBody>
@@ -134,7 +104,7 @@ const PushactionPage = (props) => {
                     </Col>
                     <Col xs="9">
                       <Input type="text" id="smartContractName" name="smartContractName" placeholder="Smart Contract Name..."
-                        value={action.act.account} onChange={(e) => { console.log("Change"); updateAction(e.target.name, action, e.target.value, props.updateActionToPush); handleChange(e); } } 
+                        value={action.act.account} onChange={(e) => { updateAction(e.target.name, action, e.target.value, props.updateActionToPush); handleChange(e); } } 
                         invalid={!!errors.smartContractName}
                         />
                       {
@@ -184,19 +154,9 @@ const PushactionPage = (props) => {
                       <Label><strong>Payload</strong></Label>
                     </Col>
                     <Col xs="12">
-                    {/* <Input type="text" id="actionType" name="actionType" placeholder="Action Type..." value={action && (action.act && action.act.name)}
-                      onChange={(e) => { updateAction(e.target.name, action, e.target.value, props.updateActionToPush); handleChange(e); } }
-                      invalid={!!errors.actionType}
-                      />
-                      {
-                        errors.actionType && 
-                        <FormFeedback invalid="true">
-                          {errors.actionType}
-                        </FormFeedback>
-                      } */}
                       <CodeViewer readOnly={false} height="300" value={action.payload} className={errors.payload && "invalid"}
                         onChange={(newVal) => { updateAction("payload", action, newVal, props.updateActionToPush); }} />
-                      <Input type="text" id="payload" name="payload" value={action.payload || ""} onChange={(e) => { handleChange(e); } } invalid={!!errors.payload} />
+                      <Input type="hidden" id="payload" name="payload" value={action.payload || ""} onChange={(e) => { handleChange(e); } } invalid={!!errors.payload} />
                       {
                         errors.payload && 
                         <FormFeedback invalid="true">
@@ -223,21 +183,7 @@ const PushactionPage = (props) => {
                 Action History Viewer
               </CardHeader>
               <CardBody>
-                <Actionhistory prefillCallback={(act_id) => { 
-                  props.actionIdSet(act_id);
-                  
-                  // let e = new Event('input', { bubbles: true });
-                  // let input = document.querySelector('#smartContractName');
-
-                  // setTimeout(function(){ 
-                  //   let val = input.value;
-                  //   setNativeValue(input, val);
-                  //   input.dispatchEvent(e);
-                  // }, 1000);
-
-                  setValidationErrors([]); 
-                  window.scrollTo(0, 0); 
-                } } />
+                <Actionhistory prefillCallback={(act_id) => { props.actionIdSet(act_id); setValidationErrors([]); window.scrollTo(0, 0); }} />
               </CardBody>
             </Card>
           </Col>
@@ -245,18 +191,6 @@ const PushactionPage = (props) => {
       </div>
     </StandardTemplate>
   );
-}
-
-function setNativeValue(element, value) {
-  const valueSetter = Object.getOwnPropertyDescriptor(element, 'value').set;
-  const prototype = Object.getPrototypeOf(element);
-  const prototypeValueSetter = Object.getOwnPropertyDescriptor(prototype, 'value').set;
-  
-  if (valueSetter && valueSetter !== prototypeValueSetter) {
-  	prototypeValueSetter.call(element, value);
-  } else {
-    valueSetter.call(element, value);
-  }
 }
 
 export default connect(
