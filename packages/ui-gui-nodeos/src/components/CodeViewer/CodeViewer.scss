@@ -11,4 +11,10 @@
             //right: 11px !important;
         }
     }
+
+    &.invalid {
+        .monaco-editor {
+            outline: 1px solid red;
+        }
+    }
 }

@@ -11,16 +11,13 @@ export default async (query:any) => {
     const api = new Api({ rpc, signatureProvider, textDecoder: new TextDecoder(), textEncoder: new TextEncoder() });
 
 
-    if (account_name === "eosio" && action_name==="set_abi"){
-      console.log(payload);
-      console.log(payload.account_name);
-      console.log(payload.abi);
+    if (account_name === "eosio" && action_name==="setabi"){
       const buffer = new Serialize.SerialBuffer({
         textEncoder: api.textEncoder,
         textDecoder: api.textDecoder,
       });
 
-      let abi = JSON.parse(payload.abi);
+      let abi = payload.abi;
       const abiDefinition = api.abiTypes.get('abi_def');
       // need to make sure abi has every field in abiDefinition.fields
       // otherwise serialize throws error

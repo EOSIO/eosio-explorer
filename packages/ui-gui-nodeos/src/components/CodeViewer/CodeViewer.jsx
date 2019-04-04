@@ -44,7 +44,7 @@ const defaults = {
 
 const CodeViewer = (props) => {
   return (<>
-    <div className="CodeViewer">
+    <div className={"CodeViewer " + props.className}>
         <MonacoEditor
           height={ props.height || defaults.height }
           width={ props.width || defaults.width }

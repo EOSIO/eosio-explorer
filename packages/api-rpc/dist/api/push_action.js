@@ -43,7 +43,7 @@ var eosjs_1 = require("eosjs");
 var eosjs_jssig_1 = __importDefault(require("eosjs/dist/eosjs-jssig"));
 var text_encoding_1 = require("text-encoding");
 exports.default = (function (query) { return __awaiter(_this, void 0, void 0, function () {
-    var endpoint, account_name, private_key, actor, permission, action_name, payload, rpc, signatureProvider, api, result, e_1;
+    var endpoint, account_name, private_key, actor, permission, action_name, payload, rpc, signatureProvider, api, buffer, abi, abiDefinition, result, e_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -52,6 +52,24 @@ exports.default = (function (query) { return __awaiter(_this, void 0, void 0, fu
                 rpc = new eosjs_1.JsonRpc(endpoint);
                 signatureProvider = new eosjs_jssig_1.default([private_key]);
                 api = new eosjs_1.Api({ rpc: rpc, signatureProvider: signatureProvider, textDecoder: new text_encoding_1.TextDecoder(), textEncoder: new text_encoding_1.TextEncoder() });
+                if (account_name === "eosio" && action_name === "setabi") {
+                    buffer = new eosjs_1.Serialize.SerialBuffer({
+                        textEncoder: api.textEncoder,
+                        textDecoder: api.textDecoder,
+                    });
+                    abi = payload.abi;
+                    abiDefinition = api.abiTypes.get('abi_def');
+                    // need to make sure abi has every field in abiDefinition.fields
+                    // otherwise serialize throws error
+                    abi = abiDefinition.fields.reduce(function (acc, _a) {
+                        var _b;
+                        var fieldName = _a.name;
+                        return Object.assign(acc, (_b = {}, _b[fieldName] = acc[fieldName] || [], _b));
+                    }, abi);
+                    abiDefinition.serialize(buffer, abi);
+                    abi = Buffer.from(buffer.asUint8Array()).toString('hex');
+                    payload.abi = abi;
+                }
                 return [4 /*yield*/, api.transact({
                         actions: [{
                                 account: account_name,
