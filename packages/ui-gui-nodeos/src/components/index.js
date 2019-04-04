@@ -4,6 +4,7 @@ import CodeViewer from './CodeViewer';
 import DragDropCodeViewer from './DragDropCodeViewer';
 import LoadingSpinner from './LoadingSpinner';
 import HelpFAB from './HelpFAB';
+import ConsoleLogger from './ConsoleLogger';
 
 export {
   Header,
@@ -11,5 +12,6 @@ export {
   CodeViewer,
   DragDropCodeViewer,
   LoadingSpinner,
-  HelpFAB
+  HelpFAB,
+  ConsoleLogger
 }

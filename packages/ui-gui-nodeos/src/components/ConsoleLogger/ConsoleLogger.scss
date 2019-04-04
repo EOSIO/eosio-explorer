@@ -1,0 +1,50 @@
+.ConsoleLogger {
+  position: fixed;
+  left: 20px;
+  bottom: -600px;
+  &.active{
+    bottom: 0;
+  }
+  transition: all 0.4s ease-in-out;
+  border: 1px solid #d3d3d3;
+  .terminal-wrapper{
+    width: 600px;
+    height: 600px;
+  }
+  >div{
+    justify-content: center;
+    align-items: center;
+  }
+  .console-title{
+    cursor: pointer;
+    >div{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .badge{
+        display: inline-block;
+        min-width: 18px;
+        font-size: 12px;
+        height: 18px;
+        border-radius: 9px;
+        background: red;
+        color: white;
+      }
+    }
+  }
+  .terminal-base{
+    >div{
+      >div{
+        >div{
+          >div{
+            >div{
+              >div:last-child{
+                display: none;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
