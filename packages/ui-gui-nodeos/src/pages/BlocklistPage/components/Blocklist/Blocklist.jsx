@@ -40,43 +40,43 @@ const Blocklist = (props) => {
     <div className="Blocklist">
       <FirstCardStyled>
         <CardHeaderStyled>Block List</CardHeaderStyled>
-        <CardBody>        
+        <CardBody>
           <Row>
-            <Col sm="6">  
+            <Col sm="6">
               <CheckBoxDivStyled>
                 <label className="checkboxContainer">No empty blocks
 
-                  {filter 
+                  {filter
                   ? <input onChange={props.filterToggle} type="checkbox" checked/>
                   : <input onChange={props.filterToggle} type="checkbox"/>}
-                 
+
                   <span className="checkmark"></span>
-                </label>   
-              </CheckBoxDivStyled>          
-                            
+                </label>
+              </CheckBoxDivStyled>
+
             </Col>
-            <Col sm="6">              
+            <Col sm="6">
               <DivFlexStyled>
               <SearchLabel>Search Blocks:</SearchLabel>
-                <SearchInputStyled 
+                <SearchInputStyled
                       placeholder="Block number / Block ID"
                       value={inputValue}
                       onKeyDown={
                         evt => {
                           if (evt.key === 'Enter') {
                             setInputValue("");
-                            {inputValue ? props.push('/block/'+inputValue) : console.log("No search text")} 
+                            {inputValue ? props.push('/block/'+inputValue) : console.log("No search text")}
                           }
                         }
                       }
                       onChange={evt=>{setInputValue(evt.target.value)}}/>
-                <ButtonPrimary                          
+                <ButtonPrimary
                       onClick={evt=> {
                         setInputValue("");
-                        {inputValue ? props.push('/block/'+inputValue) : console.log("No search text")}                          
+                        {inputValue ? props.push('/block/'+inputValue) : console.log("No search text")}
                       }}>
                 SEARCH</ButtonPrimary>
-              </DivFlexStyled>              
+                </DivFlexStyled>
             </Col>
           </Row>
           <div>
@@ -103,7 +103,7 @@ const Blocklist = (props) => {
                         </tr>)}
                     </tbody>
                   </TableStyled>}
-          </div>        
+          </div>
         </CardBody>
       </FirstCardStyled>
     </div>
