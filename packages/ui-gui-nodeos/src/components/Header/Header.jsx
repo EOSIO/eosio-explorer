@@ -130,10 +130,10 @@ const Header = (props) => {
           <NavHead>INTERACT</NavHead>
           <Nav className="nav-items d-md-down-none" navbar>
             <NavItem className="px-3">
-              <Link to={`/permission`} className={`nav-link ${pathname === `/permission` ? `active` : ``}`}>PERMISSION</Link>
+              <Link to={`/permission`} className={`nav-link ${pathname === `/permission` ? `active` : ``}`}>MANAGE ACCOUNTS</Link>
             </NavItem>
             <NavItem className="px-3">
-              <Link to={`/deploy`} className={`nav-link ${pathname === `/deploy` ? `active` : ``}`}>DEPLOYMENT</Link>
+              <Link to={`/deploy`} className={`nav-link ${pathname === `/deploy` ? `active` : ``}`}>SMART CONTRACT DEPLOYMENT</Link>
             </NavItem>
             <NavItem className="px-3">
               <Link to={`/push-action`} className={`nav-link ${pathname === `/push-action` ? `active` : ``}`}>PUSH ACTIONS</Link>
