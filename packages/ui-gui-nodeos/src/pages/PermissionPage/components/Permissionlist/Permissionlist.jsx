@@ -67,7 +67,7 @@ const Permissionlist = (props) => {
                                         list.map((permission) => 
                                           (
                                             permission.private_key &&                                         
-                                            <FormGroup key={permission._id+'_editable'} row>
+                                            <FormGroup key={permission._id+'_'+permission.permission+'_editable'} row>
                                               
                                               <Label check htmlFor={permission._id} sm={7}>
                                                 <span>{permission.account}@{permission.permission}</span>
@@ -113,7 +113,7 @@ const Permissionlist = (props) => {
                                           list.map(permission => 
                                             (
                                               !permission.private_key &&                                         
-                                              <FormGroup key={permission._id+'_importable'} row>
+                                              <FormGroup key={permission._id+'_'+permission.permission+'_importable'} row>
                                                 <Label check htmlFor={permission._id} sm={7}>
                                                   <span>{permission.account}@{permission.permission}</span>
                                                 </Label>

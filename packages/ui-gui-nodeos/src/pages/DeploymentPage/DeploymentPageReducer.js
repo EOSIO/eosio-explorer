@@ -52,12 +52,25 @@ const compileEpic = ( action$ ) => action$.pipe(
     return ajax.post(ENDPOINT+"compile", action.fullPath).pipe(
       map(res => {
         let { compiled, wasmLocation, abi, abiContents, stdout, stderr, errors } = res.response;
+        let nodeErr = [], 
+            nodeStd = [];
+
+            if (stderr && !(stderr instanceof Array)) {
+              nodeErr.push(JSON.stringify(stderr));
+            } 
+    
+            if (stdout && !(stdout instanceof Array)) {
+              nodeStd.push(JSON.stringify(stdout));
+            }
+
+        console.log(res.response);
+
         return processDone({
           abiContents: abiContents,
           abiPath: abi,
           wasmPath: wasmLocation,
-          stdoutLog: stdout,
-          stderrLog: stderr,
+          stdoutLog: (stdout instanceof Array) ? stdout : nodeStd,
+          stderrLog: (stderr instanceof Array) ? stderr : nodeErr,
           compiled: compiled,
           errors: errors,
           imported: false
@@ -75,19 +88,31 @@ const deployEpic = ( action$ ) => action$.pipe(
       map(res => {
         let { compiled, wasmLocation, abi, abiContents, stdout, stderr, errors, deployed, output } = res.response;
         let actualOutput;
+        let nodeErr = [];
+        let nodeStd = [];
 
         if (output) {
           let { processed } = output
           let { action_traces, ...intermediaryOutput } = processed;
           actualOutput = intermediaryOutput;
         }
-        
+
+        if (stderr && !(stderr instanceof Array)) {
+          nodeErr.push(JSON.stringify(stderr));
+        } 
+
+        if (stdout && !(stdout instanceof Array)) {
+          nodeStd.push(JSON.stringify(stdout));
+        }
+
+        console.log(res.response);
+
         return processDone({
           abiContents: abiContents,
           abiPath: abi,
           wasmPath: wasmLocation,
-          stdoutLog: stdout,
-          stderrLog: stderr,
+          stdoutLog: (stdout instanceof Array) ? stdout : nodeStd,
+          stderrLog: (stderr instanceof Array) ? stderr : nodeErr,
           compiled: compiled,
           deployed: deployed,
           output: (actualOutput) ? actualOutput : null,
@@ -166,14 +191,10 @@ const deploymentReducer = (state=dataInitState, action) => {
     case OUTPUT_CLEAR:
       return {
         ...state,
-        errors: [],
-        stderrLog: [],
-        stdoutLog: [],
         output: null,
         deployed: false
       }
     case PROCESS_FAIL:
-      console.log(action);
       let { message } = action.payload
       return {
         ...state,

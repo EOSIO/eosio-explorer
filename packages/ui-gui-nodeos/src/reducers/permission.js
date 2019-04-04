@@ -99,7 +99,8 @@ const createEpic = action$ => action$.pipe(
         new_account_active_key: activePublicKey
       };
       return from(createAccountPromise(query, ownerPrivateKey, activePrivateKey, accountName))
-        .pipe(mergeMap(response => {
+        .pipe(
+          mergeMap(response => {
           return apiMongodb(`get_account_details${paramsToQuery({account_name: accountName})}`)
             .pipe(
               map(res => createFulfilled({
@@ -108,7 +109,14 @@ const createEpic = action$ => action$.pipe(
               })),
               catchError(err => of(createRejected(err.response, { status: err.status })))
             );
-        }));
+          }),
+          catchError(
+            err => {
+              console.log(err);
+              return of(createRejected(err.response, { status: err.status }))
+            }
+          )
+        );
     }
   )
 );
@@ -239,6 +247,7 @@ const dataReducer = (state=dataInitState, action) => {
         creationSuccess: true
       };
     case CREATE_REJECTED:
+      console.log(action);
       return {
         ...state,
         submitError: action.error,
