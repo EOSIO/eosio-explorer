@@ -27,11 +27,20 @@ const useForm = (cb, validate) => {
         );
     }
 
+    const updateValues = (vals) => {
+        vals.forEach(function(val) {            
+            setValues(
+                values => ({ ...values, [val.name] : val.value })
+            );
+        });
+    }
+
     return {
         handleChange,
         handleSubmit,
         values,
         setValues,
+        updateValues,
         errors,
     }
 
