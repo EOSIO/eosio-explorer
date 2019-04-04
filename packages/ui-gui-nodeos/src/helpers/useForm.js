@@ -41,7 +41,7 @@ const useForm = (cb, validate) => {
         values,
         setValues,
         updateValues,
-        errors,
+        errors
     }
 
 };

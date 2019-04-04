@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import {
-  Card, CardBody, CardHeader,Row, Col, Form, FormGroup, FormFeedback, Label, Button, Input
+  Card, CardBody, CardHeader,Row, Col, Form, FormGroup, FormFeedback, Label, Button, Input, UncontrolledAlert
 } from 'reactstrap';
 
-import { pollingStart, pollingStop, smartContractNameSearch, actionIdSet, updateActionToPush, actionPush } from './PushactionPageReducer';
+import { pollingStart, pollingStop, actionIdSet, updateActionToPush, actionPush } from './PushactionPageReducer';
 import { CodeViewer, LoadingSpinner } from 'components';
 import useForm from 'helpers/useForm';
 import validate from './components/PushActionValidatorEngine/PushActionValidatorEngine';
@@ -30,17 +30,15 @@ const updateAction = (name, action, value, callback) => {
 const PushactionPage = (props) => {
 
   useEffect(()=>{
-    console.log("Updated push action page");
     props.pollingStart();
     return () => { props.pollingStop() }
   }, [])
   
   const [ validationErrors, setValidationErrors ] = useState([]);
-  const { handleChange, handleSubmit, updateValues, errors } = useForm(function() { props.actionPush(action); window.scrollTo(0, 0);}, validate);
-
-  let { permission: { isFetching, data }, defaultSet, pushactionPage: { data: { actionToPush, error }, action } } = props;
+  const { handleChange, handleSubmit, updateValues, errors } = useForm(function() { window.scrollTo(0, 0); props.actionPush(action); }, validate);
+  
+  let { permission: { isFetching, data }, defaultSet, pushactionPage: { action } } = props;
   let { list, defaultId } = data;
-
   
   let selectedPermission = list.find(permission => defaultId === permission._id);
   if(action.act.authorization)
@@ -78,6 +76,12 @@ const PushactionPage = (props) => {
                 <LoadingSpinner />
               ) : (
               <Form className="form-horizontal" id="pushActionForm" onSubmit={ handleSubmit }>
+                {
+                  action.pushSuccess &&
+                  <UncontrolledAlert color="success">
+                    Action pushed successfully
+                  </UncontrolledAlert>
+                }
                 { action.error &&
                 <Card className="text-white bg-danger text-center">
                   <CardBody>
@@ -202,7 +206,6 @@ export default connect(
     defaultSet,
     pollingStart,
     pollingStop,
-    smartContractNameSearch,
     actionIdSet,
     updateActionToPush,
     actionPush

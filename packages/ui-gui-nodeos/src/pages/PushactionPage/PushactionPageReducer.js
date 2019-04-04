@@ -4,7 +4,7 @@
   http://blog.jakoblind.no/reduce-redux-boilerplate/
 */
 
-import { combineReducers, bindActionCreators } from 'redux';
+import { combineReducers } from 'redux';
 import { of, from } from 'rxjs';
 import { mergeMap, mapTo, map, catchError } from 'rxjs/operators';
 import { combineEpics, ofType } from 'redux-observable';
@@ -23,7 +23,6 @@ const FETCH_FULFILLED = actionPrefix + `FETCH_FULFILLED`;
 const FETCH_REJECTED = actionPrefix + `FETCH_REJECTED`;
 const POLLING_START = actionPrefix + `POLLING_START`;
 const POLLING_STOP = actionPrefix + `POLLING_STOP`;
-const SMART_CONTRACT_NAME_UPDATE = actionPrefix + `SMART_CONTRACT_NAME_UPDATE`;
 const ACTION_ID_SET = actionPrefix + `ACTION_ID_SET`;
 const ACTION_UPDATE = actionPrefix + `ACTION_UPDATE`;
 const ACTION_PREFILL = actionPrefix + `ACTION_PREFILL`;
@@ -37,7 +36,6 @@ export const fetchFulfilled = (actionsList, actionToPush) => ({ type: FETCH_FULF
 export const fetchRejected = ( payload, error ) => ({ type: FETCH_REJECTED, payload, error });
 export const pollingStart = () => ({ type: POLLING_START });
 export const pollingStop = () => ({ type: POLLING_STOP });
-export const smartContractNameSearch = (name) => ({ type: SMART_CONTRACT_NAME_UPDATE , smartContractName: name});
 export const actionIdSet = (act_id) => ({ type: ACTION_ID_SET, actionId: act_id });
 export const updateActionToPush = (updatedAction) => ({ type: ACTION_UPDATE, updatedAction });
 export const prefillActionToPush = (updatedAction) => ({ type: ACTION_PREFILL, updatedAction });
@@ -54,12 +52,11 @@ const startEpic = action$ => action$.pipe(
 const fetchEpic = ( action$, state$ ) => action$.pipe(
   ofType(FETCH_START),
   mergeMap(action => {
-    let { value: { pushactionPage: { actionId } } } = state$;
+    console.log(JSON.stringify("Starting Fetch!"));
     
-    let getActionQuery =  actionId !== undefined && actionId !== null && actionId !== "" ? 
-                          "?global_sequence=" + actionId :
-                          "";
-                          
+    let { value: { pushactionPage: { actionId } } } = state$;
+    let getActionQuery =  actionId !== undefined && actionId !== null && actionId !== "" ? "?global_sequence=" + actionId : "";
+
     if(getActionQuery) {
       return apiMongodb(`get_actions`).pipe(
         mergeMap(actionsListResponse => {
@@ -83,11 +80,6 @@ const fetchEpic = ( action$, state$ ) => action$.pipe(
   }),
 );
 
-const smartContractNameToggleEpic = action$ => action$.pipe(
-  ofType(SMART_CONTRACT_NAME_UPDATE),
-  mapTo(pollingStart()),
-);
-
 const actionIdSetEpic = action$ => action$.pipe(
   ofType(ACTION_ID_SET),
   mapTo(pollingStart()),
@@ -98,7 +90,17 @@ const endpointConnectEpic = action$ => action$.pipe(
   mapTo(fetchStart())
 );
 
-const actionPushEpic = (action$, state$) => action$.pipe(
+// action pushed epic ACTION_PUSH_FULFILLED
+// const actionPushFulfilledEpic = action$ => action$.pipe(
+//   ofType(ACTION_PUSH_FULFILLED),
+//   // mapTo(fetchStart())
+//   mergeMap(action => {
+//     fetchStart();
+//     actionPushFulfilled(action$.response);;
+//   })
+// );
+
+const actionPushEpic = action$ => action$.pipe(
   ofType(ACTION_PUSH),
   mergeMap(action => {
     let actionPayload = JSON.parse(action.actionToPush.payload);
@@ -122,10 +124,10 @@ const actionPushEpic = (action$, state$) => action$.pipe(
 export const combinedEpic = combineEpics(
   startEpic,
   fetchEpic,
-  smartContractNameToggleEpic,
   actionIdSetEpic,
   actionPushEpic,
-  endpointConnectEpic
+  endpointConnectEpic,
+  // actionPushFulfilledEpic
 );
 
 
@@ -140,7 +142,8 @@ const actionToPushInitState = {
       permission: ""
     }]
   },
-  payload: undefined
+  payload: undefined,
+  pushSuccess: false
 }
 
 const dataInitState = {
@@ -186,8 +189,6 @@ const dataReducer = (state=dataInitState, action) => {
       return dataInitState;
 
     case FETCH_FULFILLED:
-      console.log(JSON.stringify("FETCH_FULFILLED"));
-
       return {
         ...state,
         actionsList: action.actionsList,
@@ -195,15 +196,12 @@ const dataReducer = (state=dataInitState, action) => {
         error: undefined
       };
 
-    case FETCH_REJECTED:
-      console.log(JSON.stringify("FETCH_REJECTED"));
-      console.log(JSON.stringify(action));
-      
+    case FETCH_REJECTED:      
       return {
         ...state,
         error: action.error
       };
-
+      
     default:
       return state;
   }
@@ -217,16 +215,6 @@ const isFetchingReducer = (state = false, action) => {
     case FETCH_FULFILLED:
     case FETCH_REJECTED:
       return false;
-
-    default:
-      return state;
-  }
-};
-
-const smartContractNameReducer = (state = "", action) => {
-  switch (action.type) {
-    case SMART_CONTRACT_NAME_UPDATE:
-      return action.smartContractName;
 
     default:
       return state;
@@ -255,16 +243,17 @@ const actionReducer = (state = actionToPushInitState, action) => {
       return state;
 
     case ACTION_PUSH_FULFILLED:
-      alert("Action Pushed!");
-      fetchStart();
-      return actionToPushInitState;
+      return {
+        ...actionToPushInitState,
+        error: undefined,
+        pushSuccess: true
+      };
 
     case ACTION_PUSH_REJECTED:
-    console.log("ACTION_PUSH_REJECTED");
-    console.log(action.error);
       return {
         ...state,
-        error: action.error
+        error: action.error,
+        pushSuccess: false
       };
 
     default:
@@ -275,7 +264,6 @@ const actionReducer = (state = actionToPushInitState, action) => {
 export const combinedReducer = combineReducers({
   data: dataReducer,
   isFetching: isFetchingReducer,
-  smartContractName: smartContractNameReducer,
   actionId: actionIdReducer,
   action: actionReducer
 })
