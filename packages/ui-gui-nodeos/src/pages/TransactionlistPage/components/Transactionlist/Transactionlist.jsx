@@ -80,7 +80,7 @@ const Transactionlist = (props) => {
                     <tbody>
                       {payload.map(eachTransaction=>
                         <tr onClick={evt=>props.push(`/transaction/${eachTransaction.trx_id}`)} key={eachTransaction.trx_id}>
-                          <td>{eachTransaction.trx_id}</td>
+                          <td className="hashText">{eachTransaction.trx_id}</td>
                           <td>{eachTransaction.block_num}</td>
                           <td>{eachTransaction.createdAt}</td>
                         </tr>)}

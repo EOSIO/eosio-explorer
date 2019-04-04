@@ -32,7 +32,7 @@ const Headblock = (props) => {
             <Col xs="2">
               <Label>Block Number:</Label>
             </Col>
-            <Col xs="10">
+            <Col xs="10" >
               <p className="form-control-static">{block_num}</p>
             </Col>
           </FormGroup>
@@ -40,7 +40,7 @@ const Headblock = (props) => {
             <Col xs="2">
               <Label>Block ID:</Label>
             </Col>
-            <Col xs="10">
+            <Col xs="10" className="hashText">
               <p className="form-control-static">{block_id}</p>
             </Col>
           </FormGroup>

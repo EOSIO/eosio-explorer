@@ -47,7 +47,7 @@ const Transactiondetail = (props) => {
                               <Form>
                                 <FormGroup row>
                                   <Col sm={2}>Transaction ID:</Col>
-                                  <Col sm={10}>
+                                  <Col sm={10} className="hashText">
                                     {payload[0].id}
                                   </Col>
                                 </FormGroup>

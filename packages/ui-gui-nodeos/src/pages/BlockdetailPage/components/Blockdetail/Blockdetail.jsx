@@ -52,7 +52,7 @@ const Blockdetail = (props) => {
                                 </FormGroup>
                                 <FormGroup row>
                                   <Col sm={2}>Block ID:</Col>
-                                  <Col sm={10}>
+                                  <Col sm={10} className="hashText">
                                     {payload[0].block_id}
                                   </Col>
                                 </FormGroup>
@@ -91,7 +91,7 @@ const Blockdetail = (props) => {
                                   {(payload[0].block.transactions).map((eachTransaction,index)=>
                                     <tr onClick={evt=> props.push(`/transaction/${eachTransaction.trx.id}`)} key={eachTransaction.trx.id}>
                                       <td>{index+1}</td>
-                                      <td>{eachTransaction.trx.id}</td>                                      
+                                      <td className="hashText">{eachTransaction.trx.id}</td>                                      
                                     </tr>)}
                                 </tbody>
                                 </CustomTable>                               
