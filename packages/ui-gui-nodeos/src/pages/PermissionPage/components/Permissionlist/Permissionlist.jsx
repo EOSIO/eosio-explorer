@@ -40,10 +40,11 @@ const Permissionlist = (props) => {
   function setAsDefault (id, accName, permission) {
     let msg = `Successfully set ${accName}@${permission} as the default account`;
     defaultSet(id);
-    cogoToast.success(msg, {
-      heading: 'Account Changed',
-      position: 'bottom-center'
-    });
+    if (defaultId !== id)
+      cogoToast.success(msg, {
+        heading: 'Account Changed',
+        position: 'bottom-center'
+      });
   }
 
   return (

@@ -237,18 +237,18 @@ const DeploymentPage = (props) => {
 
                                 <Form>
                                     <FormGroup row>
-                                        <Label for="permissionSelect" xs={4} style={{display:'block',textAlign:'left'}}>
+                                        <Label for="permissionSelect" xs={4}>
                                             With the following permission:
                                         </Label>
                                         <Col xs={5}>
                                             <DropdownStyled className="float-left" isOpen={isOpenDropDown} toggle={()=>{toggleDropDown(!isOpenDropDown)}}>
-                                                <DropdownToggle style={{minWidth: "225px", textAlign: "left"}} caret>
+                                                <DropdownToggle caret>
                                                     {
                                                         list.map((permission) => (defaultId === permission._id) && 
                                                             `${permission.account}@${permission.permission} (default)`)
                                                     }
                                                 </DropdownToggle>
-                                                <DropdownMenu style={{minWidth: "225px"}} right>
+                                                <DropdownMenu right>
                                                     {
                                                         list.map((permission)=> permission.private_key &&
                                                             <DropdownItem key={permission._id} onClick={()=>{ defaultSet(permission._id)}}>
