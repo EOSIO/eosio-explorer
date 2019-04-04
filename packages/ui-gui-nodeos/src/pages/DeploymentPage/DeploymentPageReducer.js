@@ -16,12 +16,14 @@ const FOLDER_SET = actionPrefix + `FOLDER_SET`;
 const PROCESS_DONE = actionPrefix + `PROCESS_DONE`;
 const PROCESS_FAIL = actionPrefix + `PROCESS_FAIL`;
 const LOG_CLEAR = actionPrefix + `LOG_CLEAR`;
+const OUTPUT_CLEAR = actionPrefix + `OUTPUT_CLEAR`;
 
 export const abiImport = fileContent => ({ type: ABI_IMPORT, fileContent });
 export const contractCompile = fullPath => ({ type: CONTRACT_COMPILE, fullPath });
 export const contractDeploy = ( fullPath, deployer ) => ({ type: CONTRACT_DEPLOY, fullPath, deployer });
 export const folderSet = path => ({ type: FOLDER_SET, path });
 export const logClear = () => ({ type: LOG_CLEAR });
+export const outputClear = () => ({ type: OUTPUT_CLEAR });
 
 export const processDone = payload => ({ type: PROCESS_DONE, payload });
 export const processFail = ( payload, error ) => ({ type: PROCESS_FAIL, payload, error });
@@ -160,6 +162,12 @@ const deploymentReducer = (state=dataInitState, action) => {
         stderrLog: [],
         stdoutLog: [],
         output: null
+      }
+    case OUTPUT_CLEAR:
+      return {
+        ...state,
+        output: null,
+        deployed: false
       }
     case PROCESS_FAIL:
       console.log(action);

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import {
     CardBody, Row, Col, ButtonGroup, Spinner,
@@ -18,7 +18,7 @@ import {
 } from 'styled';
 
 import { defaultSet } from 'reducers/permission';
-import { folderSet, abiImport, contractCompile, contractDeploy, logClear } from './DeploymentPageReducer';
+import { folderSet, abiImport, contractCompile, contractDeploy, logClear, outputClear } from './DeploymentPageReducer';
 
 const overlayOn = {
     position: "fixed",
@@ -58,7 +58,8 @@ const LogCardHeaderStyled = styled(CardHeaderStyled)`
 const DeploymentPage = (props) => {
 
     let { permission: { data }, deployContainer, isProcessing, nodeos,
-        defaultSet, folderSet, abiImport, contractCompile, contractDeploy, logClear
+        defaultSet, folderSet, abiImport, contractCompile, contractDeploy, logClear,
+        outputClear
     } = props;
     let { path, stdoutLog, stderrLog,
         abiPath, abiContents,
@@ -71,6 +72,10 @@ const DeploymentPage = (props) => {
     const [ activeTab, setActiveTab ] = useState("1");
 
     const importRef = React.createRef();
+
+    useEffect(() => {
+        outputClear();
+    }, [])
 
     function handleChange(ev) {
         ev.preventDefault();
@@ -389,7 +394,8 @@ export default connect(
       abiImport,
       contractCompile,
       contractDeploy,
-      logClear
+      logClear,
+      outputClear
     }
 
   )(DeploymentPage);
