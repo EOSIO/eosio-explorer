@@ -92,7 +92,7 @@ const Header = (props) => {
               <LogoWrapper>
                 <StyledEosioLogoSmallSVG/>
                 <AppName>
-                  GUI Nodeos
+                  EOSIO DEV&nbsp;GUI
                 </AppName>
               </LogoWrapper>
               <NavItem className="px-3">
@@ -133,7 +133,7 @@ const Header = (props) => {
               <Link to={`/permission`} className={`nav-link ${pathname === `/permission` ? `active` : ``}`}>MANAGE ACCOUNTS</Link>
             </NavItem>
             <NavItem className="px-3">
-              <Link to={`/deploy`} className={`nav-link ${pathname === `/deploy` ? `active` : ``}`}>SMART CONTRACT DEPLOYMENT</Link>
+              <Link to={`/deploy`} className={`nav-link ${pathname === `/deploy` ? `active` : ``}`}>DEPLOY CONTRACTS</Link>
             </NavItem>
             <NavItem className="px-3">
               <Link to={`/push-action`} className={`nav-link ${pathname === `/push-action` ? `active` : ``}`}>PUSH ACTIONS</Link>
