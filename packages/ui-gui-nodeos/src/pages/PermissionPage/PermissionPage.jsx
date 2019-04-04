@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { 
-  Card, CardBody, CardHeader, 
-  ButtonGroup, Button, Row, Col 
+  CardBody, ButtonGroup, Row, Col
 } from 'reactstrap';
 
 import { StandardTemplate } from 'templates';
@@ -25,6 +24,11 @@ const CustomButton = styled(ButtonSecondary)`
 `
 
 class PermissionPage extends Component {
+
+  componentWillMount() {
+    this.props.panelSelect("permission-list");
+  }
+
   render() {
 
     const { panelSelect, panel, accountClear, fetchStart } = this.props;
@@ -37,7 +41,7 @@ class PermissionPage extends Component {
     
     return (
       <StandardTemplate>
-        <div className="PermissionPage">          
+        <div className="PermissionPage animate fadeIn">          
           <Row>
             <Col sm="2"></Col>
             <Col sm="8">

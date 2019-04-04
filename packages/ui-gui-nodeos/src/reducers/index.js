@@ -7,6 +7,7 @@ import { combinedEpic as endpointEpic, combinedReducer as endpointReducer } from
 import { combinedEpic as headblockEpic, combinedReducer as headblockReducer} from './headblock';
 import { combinedEpic as lastblockinfoEpic, combinedReducer as lastblockinfoReducer} from './lastblockinfo';
 import { combinedEpic as connectionIndicatorEpic, combinedReducer as connectionIndicatorReducer} from 'components/Header/components/ConnectionIndicator/ConnectionIndicatorReducer';
+import { combinedReducer as toastReducer } from 'components/Toast/ToastReducer';
 
 import { combinedEpic as infoPageEpic, combinedReducer as infoPageReducer } from 'pages/InfoPage/InfoPageReducer';
 import { combinedEpic as blocklistPageEpic, combinedReducer as blocklistPageReducer } from 'pages/BlocklistPage/BlocklistPageReducer';
@@ -61,4 +62,5 @@ export const rootReducer = (history) => combineReducers({
   permissionPage: permissionPageReducer,
   deploymentPage: deploymentPageReducer,
   pushactionPage: pushactionPageReducer,
+  toasts: toastReducer
 })

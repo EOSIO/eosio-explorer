@@ -8,7 +8,7 @@ class [[eosio::contract("hiworld")]] hiworld : public contract {
 
       [[eosio::action]]
       void sendmsg(const std::string &msg) {
-         print( "hi, ", msg );
+         print( "hiosss!, ", msg );
       }
 };
 
