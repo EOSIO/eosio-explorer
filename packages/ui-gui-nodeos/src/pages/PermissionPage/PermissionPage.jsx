@@ -20,7 +20,7 @@ const FirstCardStyled = styled(CardStyled)`
   border-top: solid 2px #1173a4;
 `
 const CustomButton = styled(ButtonSecondary)`
-  padding-top: 5px;
+  padding-top: 4px;
   line-height: 15px;
 `
 
