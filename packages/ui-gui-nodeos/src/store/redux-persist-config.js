@@ -14,12 +14,10 @@ const reduxPersistFilters = [
   ),
   createFilter(
     'deploymentPage',
-    ['deployContainer']
-  ),
-  createBlacklistFilter(
-    'deploymentPage',
     [
-      'deployContainer.compiled', 'deployContainer.deployed'
+      'deployContainer.path', 'deployContainer.stdoutLog', 'deployContainer.stderrLog',
+      'deployContainer.wasmPath', 'deployContainer.abiPath', 'deployContainer.abiContents',
+      'deployContainer.errors'
     ]
   )
 ]

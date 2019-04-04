@@ -8,7 +8,7 @@ Adding `src` to `NODE_PATH` in the `.env` file would allow you to require/import
 
 ## CSS and Styling
 
-This application makes use of Bootstrap by means of `reactstrap` to render Bootstrap components and to make use of various SASS modules from the Bootstrap SASS library. A reset stylesheet has already been included and can be viewed [here](src/app/reset.scss). 
+This application makes use of Bootstrap by means of `reactstrap` to render Bootstrap components and to make use of various SASS modules from the Bootstrap SASS library. A reset stylesheet has already been included and can be viewed [here](../src/app/reset.scss). 
 
 ### Custom Mixins and Variables
 
@@ -38,4 +38,4 @@ If you want to add some extra behavior before switching to a new page with the r
 
 The complex nature of the tool means that the implementation of certain behaviors may also be quite complex. To tackle the requirements of the tool, data flow is managed with a combination of Redux, RxJS and `redux-observable`. Looking at an existing component is the best way to learn how to work with these things. 
 
-A good starting point is viewing the [source for the Blocklist visualizer](src/pages/BlocklistPage/components/Blocklist).
+A good starting point is viewing the [source for the Blocklist visualizer](../src/pages/BlocklistPage/components/Blocklist).

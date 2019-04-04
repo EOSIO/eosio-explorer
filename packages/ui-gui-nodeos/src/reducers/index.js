@@ -60,5 +60,5 @@ export const rootReducer = (history) => combineReducers({
   contractdetailPage: contractdetailPageReducer,
   permissionPage: permissionPageReducer,
   deploymentPage: deploymentPageReducer,
-  pushactionPage: pushactionPageReducer,
+  pushactionPage: pushactionPageReducer
 })

@@ -1,19 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
 import {
-    Card, CardBody, CardHeader,
-    Row, Col, Button, ButtonGroup, Spinner,
+    CardBody, Row, Col, ButtonGroup, Spinner,
     Nav, NavLink, NavItem, TabContent, TabPane,
-    Form, FormGroup, Label, Input, Badge, UncontrolledAlert,
-    Dropdown, DropdownToggle, DropdownMenu, DropdownItem
+    Form, FormGroup, Label, Badge,
+    DropdownToggle, DropdownMenu, DropdownItem
 } from 'reactstrap';
 import { StandardTemplate } from 'templates';
 import { connect } from 'react-redux';
 
 import InputInstructions from './components/InputInstructions';
 import { DragDropCodeViewer, CodeViewer } from 'components';
+import { 
+    CardStyled, CardHeaderStyled, PageTitleDivStyled,
+    InputStyled, ButtonPrimary, ButtonSecondary,
+    DropdownStyled
+} from 'styled';
 
 import { defaultSet } from 'reducers/permission';
-import { folderSet, abiImport, contractCompile, contractDeploy, logClear } from './DeploymentPageReducer';
+import { folderSet, abiImport, contractCompile, contractDeploy, logClear, outputClear } from './DeploymentPageReducer';
 
 const overlayOn = {
     position: "fixed",
@@ -36,10 +41,25 @@ const tabPane = {
     overflowY: "scroll"
 }
 
+const FirstCardStyled = styled(CardStyled)`
+  border-top: solid 2px #1173a4;
+`
+
+const LogCardStyled = styled(CardStyled)`
+  border: none;
+`
+
+const LogCardHeaderStyled = styled(CardHeaderStyled)`
+  border: none;
+  background-color: #ffffff;
+  padding: 5px 20px;
+`
+
 const DeploymentPage = (props) => {
 
     let { permission: { data }, deployContainer, isProcessing, nodeos,
-        defaultSet, folderSet, abiImport, contractCompile, contractDeploy, logClear
+        defaultSet, folderSet, abiImport, contractCompile, contractDeploy, logClear,
+        outputClear
     } = props;
     let { path, stdoutLog, stderrLog,
         abiPath, abiContents,
@@ -53,15 +73,14 @@ const DeploymentPage = (props) => {
 
     const importRef = React.createRef();
 
+    useEffect(() => {
+        outputClear();
+    }, [])
+
     function handleChange(ev) {
         ev.preventDefault();
         folderSet(ev.target.value);
     };
-
-    function resetPath(ev) {
-        ev.preventDefault();
-        folderSet("");
-    }
 
     function generateAbi(ev) {
         ev.preventDefault();
@@ -127,231 +146,239 @@ const DeploymentPage = (props) => {
                         />
                     </div>
             }
-            <div className="DeploymentPage">
-                <Card>
-                    <CardHeader>
-                        Step 1 - Review File
-                    </CardHeader>
-                    <CardBody>
-                        <Row>
-                            <Col xs="4">
-                                <InputInstructions />
-                            </Col>
-                            <Col xs="8">
-                                <DragDropCodeViewer
-                                    setCurrentFile={setCurrentFile}
-                                    />
-                            </Col>
-                        </Row>
-                    </CardBody>
-                </Card>
-                <Card>
-                    <CardHeader>
-                        Step 2 - Generate / Import ABI Files
-                    </CardHeader>
-                    <CardBody className="clearfix">
-                        <Form>
-                            <FormGroup row>
-                                <Label for="rootFolder" sm={1}>
-                                    Root Folder Path
-                                </Label>
-                                <Col sm={6}>
-                                    <Input type="text"
-                                        name="rootFolder"
-                                        id="rootFolder"
-                                        value={path}
-                                        onChange={(ev)=>handleChange(ev)}/>
-                                </Col>
-                                <Col sm={1}>
-                                    <Button block
-                                        onClick={(ev)=>resetPath(ev)}
-                                        >
-                                        Reset Path
-                                    </Button>
-                                </Col>
-                                <Col sm={4}>
-                                    <ButtonGroup className="float-right">
-                                        <Button color="primary"
-                                            onClick={(ev)=>generateAbi(ev)}
-                                            disabled={path.length === 0 || currentFile.length === 0 || isProcessing}
-                                            >
-                                            Generate ABI
-                                        </Button>
-                                        <Button
-                                            onClick={()=>{clickButton()}}
-                                            disabled={isProcessing}
-                                            >
-                                            Import ABI
-                                        </Button>
-                                        <Button
-                                            onClick={()=>logClear()}
-                                            >
-                                            Clear Logs
-                                        </Button>
-                                    </ButtonGroup>
-                                    <input type="file"
-                                        id="abiImporter"
-                                        accept=".abi"
-                                        ref={importRef}
-                                        style={{display:"none"}}
-                                        onChange={(ev)=>handleFileSelect(ev)}
-                                        />
-                                </Col>
-                            </FormGroup>
-                        </Form>
-                        <div>
-                            <Row>
-                                <Col sm={6}>
-                                    <h4>ABI Viewer</h4>
-                                    <CodeViewer
+            <div className="DeploymentPage animated fadeIn">
+                <Row>
+                    <Col xs="12">
+                        <PageTitleDivStyled>Smart Contract Deployment</PageTitleDivStyled>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col xs="12">
+                        <FirstCardStyled>
+                            <CardHeaderStyled>
+                                Step 1 - Select File Entry Point
+                            </CardHeaderStyled>
+                            <CardBody>
+                                <Row>
+                                    <Col xs="4">
+                                        <InputInstructions />
+                                    </Col>
+                                    <Col xs="8">
+                                        <DragDropCodeViewer
+                                            setCurrentFile={setCurrentFile}
+                                            /> <br />
+                                        <Form>
+                                            <FormGroup row>
+                                                <Label for="rootFolder" sm={2}>
+                                                    Root Folder Path:
+                                                </Label>
+                                                <Col sm={10}>
+                                                    <InputStyled type="text"
+                                                        name="rootFolder"
+                                                        id="rootFolder"
+                                                        value={path}
+                                                        onChange={(ev)=>handleChange(ev)}/>
+                                                </Col>
+                                            </FormGroup>
+                                        </Form> 
+                                    </Col>
+                                </Row>
+                            </CardBody>
+                        </FirstCardStyled>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col xs="6">
+                        <CardStyled>
+                            <CardHeaderStyled>
+                                Step 2 - ABI File (Optional)
+                            </CardHeaderStyled>
+                            <CardBody className="clearfix">
+                                <Form>
+                                    <FormGroup row>
+                                        <Col sm={4}>
+                                            <ButtonGroup className="float-left">
+                                                <ButtonPrimary
+                                                    onClick={(ev)=>generateAbi(ev)}
+                                                    disabled={path.length === 0 || currentFile.length === 0 || isProcessing}
+                                                    >
+                                                    Generate ABI
+                                                </ButtonPrimary>
+                                                <ButtonSecondary
+                                                    onClick={()=>{clickButton()}}
+                                                    disabled={isProcessing}
+                                                    >
+                                                    Import ABI
+                                                </ButtonSecondary>
+                                            </ButtonGroup>
+                                            <input type="file"
+                                                id="abiImporter"
+                                                accept=".abi"
+                                                ref={importRef}
+                                                style={{display:"none"}}
+                                                onChange={(ev)=>handleFileSelect(ev)}
+                                                />
+                                        </Col>
+                                    </FormGroup>
+                                </Form>
+                                <CodeViewer
                                         language="json"
                                         readOnly={true}
                                         value={abiContents}
                                         height="350"
                                         />
-                                </Col>
-                                <Col sm={6}>
-                                    <div>
-                                        <Nav tabs>
-                                            <NavItem>
-                                                <NavLink
-                                                    className={activeTab === "1" ? 'active' : ''}
-                                                    onClick={()=>setActiveTab("1")}
-                                                    >
-                                                    Warnings { stdoutLog && stdoutLog.length > 0 ? "⚠️" : null }
-                                                </NavLink>
-                                            </NavItem>
-                                            <NavItem>
-                                                <NavLink
-                                                    className={activeTab === "2" ? 'active' : ''}
-                                                    onClick={()=>setActiveTab("2")}
-                                                    >
-                                                    Unexpected Errors { stderrLog && stderrLog.length > 0 ? "⚠️" : null }
-                                                </NavLink>
-                                            </NavItem>
-                                            <NavItem>
-                                                <NavLink
-                                                    className={activeTab === "3" ? 'active' : ''}
-                                                    onClick={()=>setActiveTab("3")}
-                                                    >
-                                                    Tool Errors { errors && errors.length > 0 ? "⚠️" : null }
-                                                </NavLink>
-                                            </NavItem>
-                                            <NavItem>
-                                                <NavLink
-                                                    className={activeTab === "4" ? 'active' : ''}
-                                                    onClick={()=>setActiveTab("4")}
-                                                    >
-                                                    Deployment Result { output ? "💡" : null }
-                                                </NavLink>
-                                            </NavItem>
-                                        </Nav>
-                                        <TabContent activeTab={activeTab}>
-                                            <TabPane tabId="1" style={tabPane}>
-                                                <Row>
-                                                    <Col sm={12}>
-                                                        {
-                                                            stdoutLog && stdoutLog.length === 0
-                                                            ? <pre>No logs</pre>
-                                                            : stdoutLog.map((line, i) =>
-                                                                <pre key={"stdout_"+i}>
-                                                                    {line}
-                                                                </pre>)
-                                                        }
-                                                    </Col>
-                                                </Row>
-                                            </TabPane>
-                                            <TabPane tabId="2" style={tabPane}>
-                                                <Row>
-                                                    <Col sm={12}>
-                                                        {
-                                                            stderrLog && stderrLog.length === 0
-                                                            ? <pre>No logs</pre>
-                                                            : stderrLog.map((line, i) =>
-                                                                <pre key={"stderr_"+i}>
-                                                                    {line}
-                                                                </pre>)
-                                                        }
-                                                    </Col>
-                                                </Row>
-                                            </TabPane>
-                                            <TabPane tabId="3" style={tabPane}>
-                                                <Row>
-                                                    <Col sm={12}>
-                                                        {
-                                                            errors && errors.length === 0
-                                                            ? <pre>No logs</pre>
-                                                            : errors.map((line, i) =>
-                                                                <div key={"errors_"+i}>
-                                                                    <code>{line}</code>
-                                                                </div>)
-                                                        }
-                                                    </Col>
-                                                </Row>
-                                            </TabPane>
-                                            <TabPane tabId="4" style={tabPane}>
-                                                <Row>
-                                                    <Col sm={12}>
-                                                        {
-                                                            output
-                                                            ? <pre>{JSON.stringify(output, null, 4)}</pre>
-                                                            : <pre>No successful contract deployment</pre>
-                                                        }
-                                                    </Col>
-                                                </Row>
-                                            </TabPane>
-                                        </TabContent>
-                                    </div>
-                                </Col>
-                            </Row>
-                        </div>
-                    </CardBody>
-                </Card>
-                <Card>
-                    <CardHeader>
-                        Step 3 - Deploy {imported && <Badge color="primary" pill>Imported ABI</Badge>}
-                    </CardHeader>
-                    <CardBody className="clearfix">
-                        {
-                            deployed && <UncontrolledAlert color="success">
-                                Smart contract has been deployed successfully!
-                            </UncontrolledAlert>
-                        }
-                        <Form>
-                            <FormGroup row>
-                                <Col sm={2}>
-                                    <Button color="primary"
-                                        className="btn float-left"
-                                        disabled={path.length === 0 || currentFile.length === 0 || isProcessing}
-                                        onClick={(ev)=>deployContract(ev)}
-                                        block>
-                                        Deploy
-                                    </Button>
-                                </Col>
-                                <Label for="permissionSelect" sm={8} style={{display:'block',textAlign:'right'}}>
-                                    With the following permission:
-                                </Label>
-                                <Col sm={2}>
-                                    <Dropdown className="float-right" isOpen={isOpenDropDown} toggle={()=>{toggleDropDown(!isOpenDropDown)}}>
-                                        <DropdownToggle caret>
-                                            {
-                                                list.map((permission) => (defaultId === permission._id) && `${permission.account}@${permission.permission}`)
-                                            }
-                                        </DropdownToggle>
-                                        <DropdownMenu right>
-                                            {
-                                                list.map((permission)=> permission.private_key &&
-                                                    <DropdownItem key={permission._id} onClick={()=>{ defaultSet(permission._id)}}>
-                                                        {`${permission.account}@${permission.permission}`}
-                                                    </DropdownItem>)
-                                            }
-                                        </DropdownMenu>
-                                    </Dropdown>
-                                </Col>
-                            </FormGroup>
-                        </Form>
-                    </CardBody>
-                </Card>
+                            </CardBody>
+                        </CardStyled>
+                        <CardStyled className="clearfix">
+                            <CardHeaderStyled>
+                                Step 3 - Deploy {imported && <Badge color="primary" pill>Imported ABI</Badge>}
+                            </CardHeaderStyled>
+                            <CardBody>
+
+                                <Form>
+                                    <FormGroup row>
+                                        <Label for="permissionSelect" xs={4} style={{display:'block',textAlign:'left'}}>
+                                            With the following permission:
+                                        </Label>
+                                        <Col xs={5}>
+                                            <DropdownStyled className="float-left" isOpen={isOpenDropDown} toggle={()=>{toggleDropDown(!isOpenDropDown)}}>
+                                                <DropdownToggle style={{minWidth: "225px", textAlign: "left"}} caret>
+                                                    {
+                                                        list.map((permission) => (defaultId === permission._id) && 
+                                                            `${permission.account}@${permission.permission} (default)`)
+                                                    }
+                                                </DropdownToggle>
+                                                <DropdownMenu style={{minWidth: "225px"}} right>
+                                                    {
+                                                        list.map((permission)=> permission.private_key &&
+                                                            <DropdownItem key={permission._id} onClick={()=>{ defaultSet(permission._id)}}>
+                                                                {`${permission.account}@${permission.permission}`}
+                                                            </DropdownItem>)
+                                                    }
+                                                </DropdownMenu>
+                                            </DropdownStyled>
+                                        </Col>
+                                        <Col xs={3}>
+                                            <ButtonPrimary
+                                                className="btn float-right"
+                                                disabled={path.length === 0 || currentFile.length === 0 || isProcessing}
+                                                onClick={(ev)=>deployContract(ev)}
+                                                >
+                                                Deploy
+                                            </ButtonPrimary>
+                                        </Col>
+                                    </FormGroup>
+                                </Form>
+                            </CardBody>
+                        </CardStyled>
+                    </Col>
+                    <Col xs="6">
+                        <LogCardStyled>
+                            <LogCardHeaderStyled className="clearfix">
+                                <span style={{fontSize: "16px"}}>
+                                    ABI / Deployment Log
+                                </span>
+                                <ButtonPrimary
+                                    className="float-right"
+                                    onClick={()=>logClear()}
+                                    >
+                                    Clear Logs
+                                </ButtonPrimary>
+                            </LogCardHeaderStyled>
+                            <CardBody>
+                                <div>
+                                    <Nav tabs>
+                                        <NavItem>
+                                            <NavLink
+                                                className={activeTab === "1" ? 'active' : ''}
+                                                onClick={()=>setActiveTab("1")}
+                                                >
+                                                Warnings { stdoutLog && stdoutLog.length > 0 ? "⚠️" : null }
+                                            </NavLink>
+                                        </NavItem>
+                                        <NavItem>
+                                            <NavLink
+                                                className={activeTab === "2" ? 'active' : ''}
+                                                onClick={()=>setActiveTab("2")}
+                                                >
+                                                Compiler Errors { stderrLog && stderrLog.length > 0 ? "⚠️" : null }
+                                            </NavLink>
+                                        </NavItem>
+                                        <NavItem>
+                                            <NavLink
+                                                className={activeTab === "3" ? 'active' : ''}
+                                                onClick={()=>setActiveTab("3")}
+                                                >
+                                                Service Errors { errors && errors.length > 0 ? "⚠️" : null }
+                                            </NavLink>
+                                        </NavItem>
+                                    </Nav>
+                                    <TabContent activeTab={activeTab}>
+                                        <TabPane tabId="1" style={tabPane}>
+                                            <Row>
+                                                <Col sm={12}>
+                                                    {
+                                                        stdoutLog && stdoutLog.length === 0
+                                                        ? <pre>No logs</pre>
+                                                        : stdoutLog.map((line, i) =>
+                                                            <pre key={"stdout_"+i}>
+                                                                {line}
+                                                            </pre>)
+                                                    }
+                                                </Col>
+                                            </Row>
+                                        </TabPane>
+                                        <TabPane tabId="2" style={tabPane}>
+                                            <Row>
+                                                <Col sm={12}>
+                                                    {
+                                                        stderrLog && stderrLog.length === 0
+                                                        ? <pre>No logs</pre>
+                                                        : stderrLog.map((line, i) =>
+                                                            <pre key={"stderr_"+i}>
+                                                                {line}
+                                                            </pre>)
+                                                    }
+                                                </Col>
+                                            </Row>
+                                        </TabPane>
+                                        <TabPane tabId="3" style={tabPane}>
+                                            <Row>
+                                                <Col sm={12}>
+                                                    {
+                                                        errors && errors.length === 0
+                                                        ? <pre>No logs</pre>
+                                                        : errors.map((line, i) =>
+                                                            <div key={"errors_"+i}>
+                                                                <code>{line}</code>
+                                                            </div>)
+                                                    }
+                                                </Col>
+                                            </Row>
+                                        </TabPane>
+                                    </TabContent>
+                                </div>
+                            </CardBody>
+                            <LogCardHeaderStyled>
+                                <span style={{fontSize: "16px"}}>Deployment Result</span>
+                            </LogCardHeaderStyled>
+                            <CardBody>
+                                {
+                                    !deployed
+                                    ? <span>No successful deployment</span>
+                                        : output
+                                        ? <div style={tabPane}>
+                                            <h5>Successfully deployed the {currentFile.split('.')[0]} smart contract:</h5>
+                                            <pre>{JSON.stringify(output, null, 4)}</pre>
+                                        </div>
+                                        :  <div style={tabPane}>
+                                            <h5>Something went wrong, please view the log for possible errors and causes</h5>
+                                        </div>
+                                }
+                            </CardBody>
+                        </LogCardStyled>
+                    </Col>
+                </Row>
             </div>
         </StandardTemplate>
     )
@@ -367,7 +394,8 @@ export default connect(
       abiImport,
       contractCompile,
       contractDeploy,
-      logClear
+      logClear,
+      outputClear
     }
 
   )(DeploymentPage);
