@@ -4,7 +4,7 @@ import {
     CardBody, Row, Col, ButtonGroup, Spinner,
     Nav, NavLink, NavItem, TabContent, TabPane,
     Form, FormGroup, Label, Badge,
-    Dropdown, DropdownToggle, DropdownMenu, DropdownItem
+    DropdownToggle, DropdownMenu, DropdownItem
 } from 'reactstrap';
 import { StandardTemplate } from 'templates';
 import { connect } from 'react-redux';

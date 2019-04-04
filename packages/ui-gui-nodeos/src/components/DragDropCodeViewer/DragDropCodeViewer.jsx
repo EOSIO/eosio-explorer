@@ -1,8 +1,10 @@
 import './DragDropCodeViewer.scss';
 
 import React, { Component } from 'react';
-import { Button, Jumbotron } from 'reactstrap';
+import { Jumbotron } from 'reactstrap';
 import Dropzone from 'react-dropzone';
+
+import { ButtonPrimary } from 'styled';
 
 import CodeViewer from '../../components/CodeViewer';
 
@@ -84,7 +86,7 @@ class DragDropCodeViewer extends Component {
                       <p className="lead text-center">Drag and Drop files <strong>here</strong> or click <strong>browse</strong> to choose a file.</p>
                       <hr className="my-4" />
                       <p className="lead text-center browseButton">
-                        <Button onClick={(e) => e.preventDefault()} color="primary">Browse</Button>
+                        <ButtonPrimary onClick={(e) => e.preventDefault()} >Browse</ButtonPrimary>
                       </p>
                     </Jumbotron>
                 </div>

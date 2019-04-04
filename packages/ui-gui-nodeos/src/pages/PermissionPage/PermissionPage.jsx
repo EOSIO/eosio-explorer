@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { 
-  CardBody, ButtonGroup, Row, Col
+  CardBody, ButtonGroup, Row, Col, UncontrolledTooltip
 } from 'reactstrap';
+import cogoToast from 'cogo-toast';
 
 import { StandardTemplate } from 'templates';
 import { connect } from 'react-redux';
@@ -25,8 +26,9 @@ const CustomButton = styled(ButtonSecondary)`
 
 class PermissionPage extends Component {
 
-  componentWillMount() {
-    this.props.panelSelect("permission-list");
+  constructor(props) {
+    super(props);
+    props.panelSelect("permission-list");
   }
 
   render() {
@@ -37,17 +39,21 @@ class PermissionPage extends Component {
     function reInitialize () {
       accountClear();
       fetchStart();
+      cogoToast.success("Successfully re-initialized the local storage state", {
+        heading: 'Account Storage Reinitialization',
+        position: 'bottom-center'
+      });
     }
     
     return (
       <StandardTemplate>
-        <div className="PermissionPage animate fadeIn">          
+        <div className="PermissionPage animated fadeIn">          
           <Row>
             <Col sm="2"></Col>
             <Col sm="8">
               <Row>
                 <Col sm="12">
-                  <PageTitleDivStyled>Managed Accounts</PageTitleDivStyled>
+                  <PageTitleDivStyled>Manage Accounts</PageTitleDivStyled>
                 </Col>
               </Row>
               <Row>
@@ -58,11 +64,19 @@ class PermissionPage extends Component {
                         <Col sm={12}>
                           { panel === "permission-list"
                             ? <ButtonGroup className="float-right">
-                                <ButtonPrimary onClick={()=>{panelSelect("create-account")}}>Create Account</ButtonPrimary>
-                                <CustomButton onClick={()=>reInitialize()}>Reset All Permissions</CustomButton>
+                                <ButtonPrimary id="CreateAccountBtn" onClick={()=>{panelSelect("create-account")}}>Create Account</ButtonPrimary>
+                                <CustomButton id="ResetPermissionBtn" onClick={()=>reInitialize()}>Reset All Permissions</CustomButton>
                               </ButtonGroup>
                             : <ButtonPrimary className="float-right" onClick={()=>{panelSelect("permission-list")}}>Back</ButtonPrimary>
                           }
+                          <UncontrolledTooltip placement="top" target="ResetPermissionBtn">
+                            All private keys are stored locally on your machine. Clicking this button will reinitialize 
+                            your local storage into the app's default state before fetching accounts from your 
+                            current MongoDB instance
+                          </UncontrolledTooltip>
+                          <UncontrolledTooltip placement="top" target="CreateAccountBtn">
+                            Go to a panel that will generate private and public keys for your account
+                          </UncontrolledTooltip>
                         </Col>
                       </Row>
                       <br/>

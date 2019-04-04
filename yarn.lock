@@ -2965,6 +2965,11 @@ code-point-at@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/code-point-at/-/code-point-at-1.1.0.tgz#0d070b4d043a5bea33a2f1a40e2edb3d9a4ccf77"
 
+cogo-toast@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/cogo-toast/-/cogo-toast-1.0.4.tgz#8988cd93fdd1639bcd76a9c286af4fd48ffb34f3"
+  integrity sha512-nr6QTCr+crM4QhIhL6xNByVe4Y+CHT6HmEDnBM/H5hnWNsXFf0dxeN0rJvnZFWWK2IB9XnRbXnUDrLLbTiin0Q==
+
 collection-visit@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/collection-visit/-/collection-visit-1.0.0.tgz#4bc0373c164bc3291b4d368c829cf1a80a59dca0"

@@ -166,6 +166,9 @@ const deploymentReducer = (state=dataInitState, action) => {
     case OUTPUT_CLEAR:
       return {
         ...state,
+        errors: [],
+        stderrLog: [],
+        stdoutLog: [],
         output: null,
         deployed: false
       }

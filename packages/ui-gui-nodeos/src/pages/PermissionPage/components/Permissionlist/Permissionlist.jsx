@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import {
   Form, FormGroup, Label, Col, CardBody
 } from 'reactstrap';
+import cogoToast from 'cogo-toast';
 
 import { connect } from 'react-redux';
 import { fetchStart, accountImport, defaultSet } from 'reducers/permission';
@@ -34,6 +35,15 @@ const Permissionlist = (props) => {
     const keysData = list.filter(acct => acct["account"] === accName);
     props.accountImport(keysData);
     panelSelect("import-account");
+  }
+
+  function setAsDefault (id, accName, permission) {
+    let msg = `Successfully set ${accName}@${permission} as the default account`;
+    defaultSet(id);
+    cogoToast.success(msg, {
+      heading: 'Account Changed',
+      position: 'bottom-center'
+    });
   }
 
   return (
@@ -76,7 +86,7 @@ const Permissionlist = (props) => {
                                                     <input name={permission._id}
                                                       type="radio"
                                                       checked={permission._id === defaultId ? true : false}
-                                                      onClick={() => defaultSet(permission._id)}
+                                                      onClick={() => setAsDefault(permission._id, permission.account, permission.permission)}
                                                       readOnly />
                                                     <span className="checkmark"></span>
                                                   </label>
