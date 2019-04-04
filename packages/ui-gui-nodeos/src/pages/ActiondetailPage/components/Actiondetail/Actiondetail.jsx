@@ -43,7 +43,7 @@ const Actiondetail = (props) => {
               <Label>Transaction ID:</Label>
             </Col>
             <Col xs="10">
-              <p className="form-control-static">
+              <p className="form-control-static" className="hashText">
                 {action && <Link to={`/transaction/${action.trx_id}`}>{action.trx_id}</Link> }
               </p>
             </Col>
