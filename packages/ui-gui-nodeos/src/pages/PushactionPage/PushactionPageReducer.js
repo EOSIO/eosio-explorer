@@ -52,7 +52,6 @@ const startEpic = action$ => action$.pipe(
 const fetchEpic = ( action$, state$ ) => action$.pipe(
   ofType(FETCH_START),
   mergeMap(action => {
-    console.log(JSON.stringify("Starting Fetch!"));
     
     let { value: { pushactionPage: { actionId } } } = state$;
     let getActionQuery =  actionId !== undefined && actionId !== null && actionId !== "" ? "?global_sequence=" + actionId : "";
@@ -91,14 +90,10 @@ const endpointConnectEpic = action$ => action$.pipe(
 );
 
 // action pushed epic ACTION_PUSH_FULFILLED
-// const actionPushFulfilledEpic = action$ => action$.pipe(
-//   ofType(ACTION_PUSH_FULFILLED),
-//   // mapTo(fetchStart())
-//   mergeMap(action => {
-//     fetchStart();
-//     actionPushFulfilled(action$.response);;
-//   })
-// );
+const actionPushFulfilledEpic = action$ => action$.pipe(
+  ofType(ACTION_PUSH_FULFILLED),
+  mapTo(actionIdSet(""), fetchStart())
+);
 
 const actionPushEpic = action$ => action$.pipe(
   ofType(ACTION_PUSH),
@@ -127,7 +122,7 @@ export const combinedEpic = combineEpics(
   actionIdSetEpic,
   actionPushEpic,
   endpointConnectEpic,
-  // actionPushFulfilledEpic
+  actionPushFulfilledEpic
 );
 
 
@@ -242,7 +237,7 @@ const actionReducer = (state = actionToPushInitState, action) => {
     case ACTION_PUSH:
       return state;
 
-    case ACTION_PUSH_FULFILLED:
+    case ACTION_PUSH_FULFILLED:      
       return {
         ...actionToPushInitState,
         error: undefined,

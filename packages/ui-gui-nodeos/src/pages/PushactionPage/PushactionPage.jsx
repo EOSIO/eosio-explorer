@@ -55,7 +55,7 @@ const PushactionPage = (props) => {
   const { handleChange, handleSubmit, updateValues, errors } = useForm(function() { window.scrollTo(0, 0); props.actionPush(action); }, validate);
 
   let { permission: { isFetching, data }, defaultSet, pushactionPage: { action } } = props;
-  let { list, defaultId } = data;
+  let { list, defaultId } = data;  
   
   let selectedPermission = list.find(permission => defaultId === permission._id);
   if(action.act.authorization)
