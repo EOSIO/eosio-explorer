@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
     Button, Form, FormGroup, Label, Input, FormFeedback,
     Col, Alert, UncontrolledAlert, CardBody
@@ -14,7 +14,7 @@ import { RadioButtonDivStyled, CardStyled, CardHeaderStyled, ButtonPrimary, Inpu
 
 const ImportAccount = (props) => {
 
-    const { values, handleChange, handleSubmit, errors } = useForm(importAccount, validate);
+    const { values, handleChange, handleSubmit, updateValues, errors } = useForm(importAccount, validate);
 
     let {
         permission: {
@@ -33,6 +33,14 @@ const ImportAccount = (props) => {
             activePrivate: values.activePrivate
         });
     }
+
+    useEffect(()=>{
+        const vals = [
+            {name: "ownerPrivate", value: keysData[0].permission === "owner" ? keysData[0].private_key : keysData[1].private_key},
+            {name: "activePrivate", value: keysData[1].permission === "active" ? keysData[1].private_key : keysData[0].private_key}
+        ]
+        updateValues(vals);
+    }, []);
 
     return (
         <div className="ImportAccount">
