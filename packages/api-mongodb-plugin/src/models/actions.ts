@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 let ActionsSchema = new mongoose.Schema(
   {
     _id: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
       required: true
     }
   }
