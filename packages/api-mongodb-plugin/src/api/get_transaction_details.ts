@@ -11,13 +11,13 @@ export default async (query:any) => {
 
     if(id === undefined || id.trim() === ""){
       throw("invalid transaction id");
-    } 
+    }
     else {
       query_gen.where({id: id});
     }
 
-    query_gen.limit(100);
-    query_gen.sort({createdAt: -1});
+    // query_gen.limit(100);
+    // query_gen.sort({block_num: -1});
     result = await query_gen.exec();
 
     return result;

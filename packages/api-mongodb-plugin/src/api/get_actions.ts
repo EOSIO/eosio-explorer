@@ -6,7 +6,7 @@ export default async (query:any) => {
     let result: object;
 
     let query_gen = ActionsModel
-    .find({}, 
+    .find({},
     {
       "receipt.global_sequence": 1,
       "act.name": 1,
@@ -15,14 +15,14 @@ export default async (query:any) => {
       "createdAt": 1
     });
 
-    (account_name !== undefined) ? 
+    (account_name !== undefined) ?
       query_gen.where("act.account").equals(account_name) : "";
 
     query_gen.where("act.name").ne("onblock");
 
     query_gen.limit(100);
-    query_gen.sort({createdAt: -1});
-    result = await query_gen.exec();    
+    query_gen.sort({block_num: -1});
+    result = await query_gen.exec();
     return result;
   }catch(err){
     console.log(err);

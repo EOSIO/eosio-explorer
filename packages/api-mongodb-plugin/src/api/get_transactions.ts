@@ -14,11 +14,11 @@ export default async (query:any) => {
           "createdAt": 1
         });
 
-    (id !== undefined) ?  
+    (id !== undefined) ?
       query_gen.where({trx_id: id}) : query_gen.exists("block_num");
 
     query_gen.limit(100);
-    query_gen.sort({createdAt: -1});
+    query_gen.sort({_id: -1});
     result = await query_gen.exec();
 
     return result;
