@@ -1,5 +1,4 @@
 import BlockModel from '../models/block';
-import { Int32 } from 'bson';
 
 export default async (query:any) => {
   try{
