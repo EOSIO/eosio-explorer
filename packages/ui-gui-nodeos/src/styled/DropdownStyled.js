@@ -9,6 +9,11 @@ export default styled(Dropdown)`
     height: 40px;
     min-width: 160px;
     color: #747c84;
+    text-align: left;
+
+    &.invalid {
+      border: 1px solid red;
+    }
   }  
   .btn-secondary:focus{
     box-shadow: none;    
@@ -32,11 +37,18 @@ export default styled(Dropdown)`
   .dropdown-menu{
     box-shadow: 0 0 0 1px #e0e7ee;
     border: 0;
+    width: 100%;
+    transform: translate3d(0, 40px, 0px);
   }
   .dropdown-item:active{
       background-color: #e3edf2;
   }
   .dropdown-item:focus{     
     outline: none;
+  }
+  .dropdown-toggle::after {
+    float: right;
+    top: 0.5em;
+    position: relative;
   }
 `

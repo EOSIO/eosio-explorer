@@ -42,7 +42,7 @@ const Actionhistory = (props) => {
                   <td>{action.act.name}</td>
                   <td>{action.createdAt}</td>
                   <td className="text-center">
-                    <CustomButton block size="sm" onClick={(e) => { e.preventDefault(); props.prefillCallback(action.receipt.global_sequence); }}>Prefill</CustomButton>
+                    <CustomButton block size="sm" onClick={(e) => { e.preventDefault(); props.prefillCallback(action); }}>Prefill</CustomButton>
                   </td>
                 </tr>
               )}

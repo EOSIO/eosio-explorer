@@ -1,5 +1,6 @@
 export default function validate (values) {
     let errors = {};    
+    console.log(JSON.stringify(values));
     
     if (!values.smartContractName || values.smartContractName.length === 0) {
         errors.smartContractName = 'Smart Contract name is required';
@@ -43,6 +44,7 @@ export default function validate (values) {
             errors.payload = errorString + reasons.join(', ');
     }
 
+    console.log(JSON.stringify(errors));
     return errors;
 }
 

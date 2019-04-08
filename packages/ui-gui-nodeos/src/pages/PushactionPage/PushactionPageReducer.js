@@ -31,6 +31,7 @@ const ACTION_PUSH = actionPrefix + `ACTION_PUSH`;
 const ACTION_PUSH_FULFILLED = actionPrefix + `ACTION_PUSH_FULFILLED`;
 const ACTION_PUSH_REJECTED = actionPrefix + `ACTION_PUSH_REJECTED`;
 const FETCH_SMART_CONTRACTS = actionPrefix + `FETCH_SMART_CONTRACTS`;
+const FETCH_SMART_CONTRACTS_FULFILLED = actionPrefix + `FETCH_SMART_CONTRACTS_FULFILLED`;
 
 //Action Creator
 export const fetchStart = () => ({ type: FETCH_START });
@@ -44,6 +45,8 @@ export const prefillActionToPush = (updatedAction) => ({ type: ACTION_PREFILL, u
 export const actionPush = (action) => ({ type: ACTION_PUSH, actionToPush: action });
 export const actionPushFulfilled = (response) => ({ type: ACTION_PUSH_FULFILLED, response });
 export const actionPushRejected = ( payload, error ) => ({ type: ACTION_PUSH_REJECTED, payload, error });
+export const fetchSmartContracts = () => ({ type: FETCH_SMART_CONTRACTS });
+export const fetchFulfilledSmartContract = (payload, error) => ({ type: FETCH_SMART_CONTRACTS_FULFILLED, payload, error });
 
 //Epic
 const startEpic = action$ => action$.pipe(
@@ -66,6 +69,7 @@ const fetchEpic = ( action$, state$ ) => action$.pipe(
           .pipe(
             mergeMap(actionResponse => [
               fetchFulfilled(actionsListResponse.response, actionResponse.response),
+              
               prefillActionToPush(actionResponse.response)
             ]),
             catchError(error => {
@@ -91,10 +95,18 @@ const fetchEpic = ( action$, state$ ) => action$.pipe(
   }),
 );
 
-// const fetchSmartContractsEpic = action$ => action$.pipe(
-//   ofType(FETCH_SMART_CONTRACTS),
-//   mapTo()
-// );
+const fetchSmartContractsEpic = action$ => action$.pipe(
+  ofType(FETCH_SMART_CONTRACTS),
+  mergeMap(action => {      
+    return apiMongodb(`get_smart_contracts`).pipe(
+      map(smartContractsResponse => fetchFulfilledSmartContract(smartContractsResponse.response, null)),
+      catchError(error => {
+        errorLog(error);
+        return of(fetchRejected(error.response, { status: error.status }))
+      })
+    )
+  })
+);
 
 const actionIdSetEpic = action$ => action$.pipe(
   ofType(ACTION_ID_SET),
@@ -139,7 +151,8 @@ export const combinedEpic = combineEpics(
   actionIdSetEpic,
   actionPushEpic,
   endpointConnectEpic,
-  actionPushFulfilledEpic
+  actionPushFulfilledEpic,
+  fetchSmartContractsEpic
 );
 
 
@@ -254,7 +267,7 @@ const actionReducer = (state = actionToPushInitState, action) => {
     case ACTION_PUSH:
       return state;
 
-    case ACTION_PUSH_FULFILLED:
+    case ACTION_PUSH_FULFILLED:      
       return {
         ...actionToPushInitState,
         error: undefined,
@@ -273,14 +286,24 @@ const actionReducer = (state = actionToPushInitState, action) => {
   }
 };
 
-// const smartContractsReducer = (action)  => {
+const smartContractsReducer = (state = [], action)  => {
+  switch(action.type) {
+    case FETCH_SMART_CONTRACTS_FULFILLED:
+      return {
+        ...state,
+        smartContractsList: action.payload,
+        error: undefined
+      };
 
-// };
+    default:
+      return state;
+  }
+};
 
 export const combinedReducer = combineReducers({
   data: dataReducer,
   isFetching: isFetchingReducer,
   actionId: actionIdReducer,
   action: actionReducer,
-  // smartContracts: smartContractsReducer
+  smartContracts: smartContractsReducer
 })
