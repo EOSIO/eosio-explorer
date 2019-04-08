@@ -60,14 +60,6 @@ const compileEpic = ( action$ ) => action$.pipe(
         let nodeErr = [],
             nodeStd = [];
 
-            if (stderr && !(stderr instanceof Array)) {
-              nodeErr.push(JSON.stringify(stderr));
-            }
-
-            if (stdout && !(stdout instanceof Array)) {
-              nodeStd.push(JSON.stringify(stdout));
-            }
-
         return processDone({
           abiContents: abiContents,
           abiPath: abi,
@@ -101,14 +93,6 @@ const deployEpic = ( action$ ) => action$.pipe(
           let { processed } = output
           let { action_traces, ...intermediaryOutput } = processed;
           actualOutput = intermediaryOutput;
-        }
-
-        if (stderr && !(stderr instanceof Array)) {
-          nodeErr.push(JSON.stringify(stderr));
-        } 
-
-        if (stdout && !(stdout instanceof Array)) {
-          nodeStd.push(JSON.stringify(stdout));
         }
 
         return processDone({
@@ -191,6 +175,9 @@ const deploymentReducer = (state=dataInitState, action) => {
     case LOG_CLEAR:
       return {
         ...state,
+        deployed: false,
+        compiled: false,
+        imported: false,
         errors: [],
         stderrLog: [],
         stdoutLog: [],

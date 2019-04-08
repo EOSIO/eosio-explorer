@@ -65,6 +65,12 @@ Router.post("/deploy", async (req, res) => {
         if(fs.lstatSync(body["source"]).isDirectory()) 
             throw new Error(`${body.source} is a directory, not a valid entry file!`);
 
+        if(body["account_name"] === 'eosio')
+          throw new Error(
+            `Chosen account name is ${account_name}, which owns the system contract used
+             for authorizing new accounts. Aborting contract deployment...`
+          );
+
         exec(COMPILE_SCRIPT, {
             cwd: CWD
         }, (err, stdout, stderr) => {
@@ -136,14 +142,19 @@ Router.post("/deploy", async (req, res) => {
             }
         });
     } catch (ex) {
-        console.log(ex);
-        res.send({
-            compiled: false,
-            stderr: ex,
-            errors: [
-                ex.message
-            ]
-        })
+      let err = ex;
+
+      if (typeof ex === 'object') {
+        err = ex.message;
+      }
+
+      res.send({
+        compiled: false,
+        stderr: err,
+        errors: [
+            ex.message
+        ]
+      })
     }
 });
 
@@ -214,9 +225,15 @@ Router.post("/compile", async (req, res) => {
         }
       })
     } catch (ex) {
+      let err = ex;
+
+      if (typeof ex === 'object') {
+        err = ex.message;
+      }
+
       res.send({
         compiled: false,
-        stderr: ex,
+        stderr: err,
         errors: [
             ex.message
         ]
@@ -263,10 +280,17 @@ Router.post("/import", async (req, res) => {
         }
       })
     } catch (ex) {
+      let err = ex;
+
+      if (typeof ex === 'object') {
+        err = ex.message;
+      }
+
       res.send({
-        imported: false,
+        compiled: false,
+        stderr: err,
         errors: [
-          ex.message
+            ex.message
         ]
       })
     }

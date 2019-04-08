@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { 
-  CardBody, ButtonGroup, Row, Col, UncontrolledTooltip
+  CardBody, ButtonGroup, Row, Col, Tooltip
 } from 'reactstrap';
 import cogoToast from 'cogo-toast';
 
@@ -14,7 +14,7 @@ import ImportAccount from './components/ImportAccount';
 import { panelSelect } from './PermissionPageReducer';
 import { fetchStart, accountClear } from 'reducers/permission';
 import styled from 'styled-components';
-import { PageTitleDivStyled, CardStyled, ButtonPrimary, ButtonSecondary, InputStyled} from 'styled';
+import { PageTitleDivStyled, CardStyled, ButtonPrimary, ButtonSecondary } from 'styled';
 
 const FirstCardStyled = styled(CardStyled)`
   border-top: solid 2px #1173a4;
@@ -28,8 +28,21 @@ class PermissionPage extends Component {
 
   constructor(props) {
     super(props);
+
+    this.state = {
+      resetTooltip: false,
+      createTooltip: false
+    }
+
     props.panelSelect("permission-list");
+
   }
+
+  toggleResetTooltip () {
+    this.setState({
+      resetTooltip: !this.state.resetTooltip
+    })
+  };
 
   render() {
 
@@ -62,21 +75,26 @@ class PermissionPage extends Component {
                   <CardBody>
                       <Row className="clearfix">
                         <Col sm={12}>
-                          { panel === "permission-list"
-                            ? <ButtonGroup className="float-right">
+                          <ButtonGroup className="float-right"
+                            style={{display: (panel === "permission-list") ? 'block' : 'none'}}>
                                 <ButtonPrimary id="CreateAccountBtn" onClick={()=>{panelSelect("create-account")}}>Create Account</ButtonPrimary>
                                 <CustomButton id="ResetPermissionBtn" onClick={()=>reInitialize()}>Reset All Permissions</CustomButton>
-                              </ButtonGroup>
-                            : <ButtonPrimary className="float-right" onClick={()=>{panelSelect("permission-list")}}>Back</ButtonPrimary>
-                          }
-                          <UncontrolledTooltip placement="top" target="ResetPermissionBtn">
+                          </ButtonGroup>
+                          <ButtonPrimary className="float-right" onClick={()=>{panelSelect("permission-list")}}
+                            style={{display: (panel === "permission-list") ? 'none' : 'block'}}
+                            >
+                            Back
+                          </ButtonPrimary>
+                          <Tooltip placement="top" target="ResetPermissionBtn"
+                            isOpen={this.state.resetTooltip && panel === "permission-list"}
+                            toggle={()=>this.toggleResetTooltip()}
+                            delay={{show: 0, hide: 0}}
+                            trigger="hover"
+                            autohide={true}>
                             All private keys are stored locally on your machine. Clicking this button will reinitialize 
                             your local storage into the app's default state before fetching accounts from your 
                             current MongoDB instance
-                          </UncontrolledTooltip>
-                          <UncontrolledTooltip placement="top" target="CreateAccountBtn">
-                            Go to a panel that will generate private and public keys for your account
-                          </UncontrolledTooltip>
+                          </Tooltip>
                         </Col>
                       </Row>
                       <br/>

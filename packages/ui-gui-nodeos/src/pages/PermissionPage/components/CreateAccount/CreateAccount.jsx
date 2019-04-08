@@ -3,6 +3,7 @@ import {
   Button, Form, FormGroup, Label, Input, FormFeedback, FormText,
   Spinner, Col, UncontrolledAlert, CardBody
 } from 'reactstrap';
+import cogoToast from 'cogo-toast';
 
 import { connect } from 'react-redux';
 
@@ -12,6 +13,21 @@ import useForm from 'helpers/useForm';
 import validate from './CreateAccountValidatorEngine/CreateAccountValidatorEngine';
 import { CardStyled, CardHeaderStyled, ButtonPrimary, InputStyled} from 'styled';
 
+const overlayOn = {
+  position: "fixed",
+  display: "block",
+  width: "100%",
+  height: "100%",
+  top: 0,
+  left: 0,
+  backgroundColor: "rgba(0,0,0,0.5)",
+  zIndex: 999,
+  cursor: "pointer"
+}
+
+const overlayOff = {
+  display: "none"
+}
 
 const CreateAccount = (props) => {
 
@@ -27,17 +43,26 @@ const CreateAccount = (props) => {
   } = props;
   let { payload, error } = data;
   let { 
-    data: { list, submitError, isSubmitting, creationSuccess }
+    data: { submitError, isSubmitting, creationSuccess }
   } = permission;
 
   function createAccount () {
-    props.createStart({
-      accountName: values.accountName,
-      ownerPrivateKey: payload.ownerPrivateKey,
-      ownerPublicKey: payload.ownerPublicKey,
-      activePrivateKey: payload.activePrivateKey,
-      activePublicKey: payload.activePublicKey
-    });
+    let msg = `Cannot make an account also named 'eosio', since 'eosio' owns the system contract 
+      for creating new accounts.`
+    if (values.accountName !== 'eosio')
+      props.createStart({
+        accountName: values.accountName,
+        ownerPrivateKey: payload.ownerPrivateKey,
+        ownerPublicKey: payload.ownerPublicKey,
+        activePrivateKey: payload.activePrivateKey,
+        activePublicKey: payload.activePublicKey
+      });
+    else 
+      cogoToast.error(msg, {
+        heading: 'Account Creation Denied',
+        position: 'bottom-center',
+        hideAfter: 2
+      });
   }
 
   return (
@@ -45,11 +70,22 @@ const CreateAccount = (props) => {
       <div>
         { 
           error         ? <Button onClick={props.fetchStart}>Retry Generation</Button>
-          : isFetching  ? <Spinner style={{ width: '3rem', height: '3rem' }} />
           : <>
               <CardStyled>
+                <div style={isSubmitting || isFetching ? overlayOn : overlayOff}></div>
+                {
+                    (isSubmitting || isFetching) &&
+                        <div style={{position:"fixed",top:"50%",left:"50%", zIndex:"1000"}}>
+                            <Spinner color="primary"
+                                style={{
+                                    width: "5rem",
+                                    height: "5rem"
+                                }}
+                            />
+                        </div>
+                }
                 <CardHeaderStyled>
-                  Generate Account
+                  Create Account
                 </CardHeaderStyled>
                 <CardBody>
                   {
@@ -61,7 +97,7 @@ const CreateAccount = (props) => {
                   {
                     ((!creationSuccess) && submitError) ?
                         <UncontrolledAlert color="danger">
-                          submitError
+                          Error creating the account: {submitError}
                         </UncontrolledAlert>
                       : null
                   }

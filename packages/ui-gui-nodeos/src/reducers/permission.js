@@ -15,8 +15,6 @@ import apiRpc from 'services/api-rpc';
 import paramsToQuery from 'helpers/params-to-query';
 import { errorLog } from 'helpers/error-logger';
 
-import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from 'constants';
-
 
 // IMPORTANT
 // Must modify action prefix since action types must be unique in the whole app
@@ -96,8 +94,8 @@ const createEpic = action$ => action$.pipe(
     action => {
       let { account: { accountName, ownerPublicKey, activePublicKey, ownerPrivateKey, activePrivateKey }} = action;
       let query = {
-        creator_private_key: '5K7mtrinTFrVTduSxizUc5hjXJEtTjVTsqSHeBHes1Viep86FP5',
-        creator_account_name: 'useraaaaaaaa',
+        creator_private_key: '5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3',
+        creator_account_name: 'eosio',
         new_account_name: accountName,
         new_account_owner_key: ownerPublicKey,
         new_account_active_key: activePublicKey
@@ -111,13 +109,12 @@ const createEpic = action$ => action$.pipe(
                 baseData: response,
                 queryData: res.response
               })),
-              catchError(err => of(createRejected(err.response, { status: err.status })))
+              catchError(err => of(createRejected(err.message, { status: err })))
             );
           }),
           catchError(
             err => {
-              console.log(err);
-              return of(createRejected(err.response, { status: err.status }))
+              return of(createRejected(err.message, { status: err }))
             }
           )
         );
@@ -188,15 +185,32 @@ const addKeysToAccount = (accountData, list) => {
 
 const storeNewAccount = (createResponse, list) => {
   let {
-    baseData: { ownerPrivateKey, activePrivateKey },
+    baseData: { ownerPrivateKey, activePrivateKey, accountName },
     queryData
   } = createResponse;
-  queryData[0]["private_key"] = (queryData[0].permission === 'owner') ? ownerPrivateKey : activePrivateKey;
-  queryData[1]["private_key"] = (queryData[1].permission === 'owner') ? ownerPrivateKey : activePrivateKey;
+  let accountSuccess = true;
+  let msg = `Successfully created the account for ${accountName}`;
+
+  if (queryData && queryData.length > 0) {
+    queryData[0]["private_key"] = (queryData[0].permission === 'owner') ? ownerPrivateKey : activePrivateKey;
+    queryData[1]["private_key"] = (queryData[1].permission === 'owner') ? ownerPrivateKey : activePrivateKey;
+  } else {
+    msg = `Created the account for ${accountName} but failed to query the 
+       account after creation. Please import the keys you just used in the previous 
+       panel.`;
+    accountSuccess = false;
+  }
+
   let oldList = list.slice(0);
   let updatedList = oldList.concat(queryData);
   updatedList.sort(alphabeticalSort);
-  return updatedList;
+
+  return {
+    newList: updatedList,
+    message: msg,
+    success: accountSuccess
+  };
+
 }
 
 const dataReducer = (state=dataInitState, action) => {
@@ -243,18 +257,18 @@ const dataReducer = (state=dataInitState, action) => {
         isSubmitting: true
       };
     case CREATE_FULFILLED:
+      let { newList, message, success } = storeNewAccount(action.payload, state.list);
       return {
         ...state,
-        list: storeNewAccount(action.payload, state.list),
+        list: newList,
         isSubmitting: false,
-        submitError: null,
-        creationSuccess: true
+        submitError: (!success) ? message : null,
+        creationSuccess: success
       };
     case CREATE_REJECTED:
-      console.log(action);
       return {
         ...state,
-        submitError: action.error,
+        submitError: action.payload,
         creationSuccess: false,
         isSubmitting: false
       };

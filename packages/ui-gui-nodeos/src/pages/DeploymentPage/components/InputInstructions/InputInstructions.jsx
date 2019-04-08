@@ -27,7 +27,7 @@ class InputInstructions extends Component {
                         <ListGroupItem>
                             5. Go to Step 3, deploy. If you're sure your contract works, you can deploy to the Nodeos instance you are
                             currently connected to by clicking on Deploy after selecting the permission you want
-                            to deploy the contract as
+                            to deploy the contract as. <b>Note: You cannot deploy as 'eosio' since 'eosio' owns the system contract.</b>
                         </ListGroupItem>
                     </ListGroup>
                 </CardBody>

@@ -26,8 +26,8 @@ const Permissionlist = (props) => {
   }, [])
 
   let { 
-    permission: { isFetching, data, account }, 
-    panel, panelSelect, defaultSet 
+    permission: { isFetching, data }, 
+    panelSelect, defaultSet 
   } = props;
   let { list, defaultId } = data;
 
@@ -43,7 +43,8 @@ const Permissionlist = (props) => {
     if (defaultId !== id)
       cogoToast.success(msg, {
         heading: 'Account Changed',
-        position: 'bottom-center'
+        position: 'bottom-center',
+        hideAfter: 2
       });
   }
 
@@ -59,8 +60,10 @@ const Permissionlist = (props) => {
                                 <CardBody>
                                   <InfoDiv>
                                     These are your currently available accounts that possess both public and private keys. They can be
-                                    used for signing transactions and pushing actions. Click the "Edit" button to change an account's 
-                                    private key. Click the radio button to set the default account for authorizing actions.
+                                    used for signing transactions and pushing actions. 
+                                    The <b>eosio</b> account owns the system contract responsible for numerous important functions, so please
+                                    be aware that you can not deploy new contracts locally under that permission. 
+                                    Click the "Edit" button to change an account's private key. Click the radio button to set the default account for authorizing actions.
                                   </InfoDiv>
                                   <Form>
                                     <FormGroup>
@@ -106,7 +109,7 @@ const Permissionlist = (props) => {
                                   <CardBody>
                                     <InfoDiv>
                                       The accounts in this panel do not have private keys assigned to them yet. You can click 
-                                      the "Import" button to assign your private keys to these accounts. 
+                                      the "Import Keys" button to assign your private keys to these accounts. 
                                     </InfoDiv>
                                     <Form>
                                       <FormGroup>

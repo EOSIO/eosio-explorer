@@ -16,6 +16,7 @@ import {
     InputStyled, ButtonPrimary, ButtonSecondary,
     DropdownStyled
 } from 'styled';
+import cogoToast from 'cogo-toast';
 
 import { defaultSet } from 'reducers/permission';
 import { folderSet, abiImport, contractCompile, contractDeploy, logClear, outputClear } from './DeploymentPageReducer';
@@ -96,10 +97,10 @@ const DeploymentPage = (props) => {
         ev.preventDefault();
         let actualRootPath = (path.endsWith("/")) ? path : path+"/";
         let currentPermission = list.find(account => account._id === defaultId);
+        let msg = `Cannot deploy contract under owner of the system contract`;
         let fullPath = {
             source: actualRootPath+currentFile
         }
-        console.log(currentPermission);
         let deployer = {
             endpoint: nodeos,
             account_name: currentPermission["account"],
@@ -107,7 +108,15 @@ const DeploymentPage = (props) => {
             abiSource: (imported) ? abiPath : null
         }
         logClear();
-        contractDeploy(fullPath, deployer);
+
+        if (currentPermission["account"] !== 'eosio')
+            contractDeploy(fullPath, deployer);
+        else
+            cogoToast.error(msg, {
+                heading: 'Unable to Deploy',
+                position: 'bottom-center',
+                hideAfter: 4
+            });
     }
 
     function clickButton() {
@@ -261,7 +270,9 @@ const DeploymentPage = (props) => {
                                         <Col xs={3}>
                                             <ButtonPrimary
                                                 className="btn float-right"
-                                                disabled={path.length === 0 || currentFile.length === 0 || isProcessing}
+                                                disabled={path.length === 0 || 
+                                                    currentFile.length === 0 ||
+                                                    isProcessing}
                                                 onClick={(ev)=>deployContract(ev)}
                                                 >
                                                 Deploy
