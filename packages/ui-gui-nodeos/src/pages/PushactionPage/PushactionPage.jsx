@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import {
-  Card, CardBody, CardHeader,Row, Col, Form, FormGroup, FormFeedback, Label, Button, Input, UncontrolledAlert
+  Card, CardBody, CardHeader,Row, Col, Form, FormGroup, FormFeedback, Label, Button, Input, UncontrolledAlert,
+  DropdownToggle, DropdownMenu, DropdownItem
 } from 'reactstrap';
 
 import { pollingStart, pollingStop, actionIdSet, updateActionToPush, actionPush } from './PushactionPageReducer';
@@ -12,7 +13,7 @@ import { StandardTemplate } from 'templates';
 import { defaultSet } from 'reducers/permission';
 import Actionhistory from './components/Actionhistory';
 import styled from 'styled-components';
-import { PageTitleDivStyled, CardStyled,CardHeaderStyled, TableStyled, ButtonPrimary, CheckBoxDivStyled, InputStyled} from 'styled';
+import { PageTitleDivStyled, CardStyled,CardHeaderStyled, ButtonPrimary, InputStyled, DropdownStyled } from 'styled';
 
 const FirstCardStyled = styled(CardStyled)`
   border-top: solid 2px #1173a4;
@@ -27,6 +28,21 @@ const DropdownInputStyled = styled(Input)`
     border-color: #1173a4;
   }
 
+`
+const CustomDropdown = styled(DropdownStyled)`
+  .btn-secondary {
+    width: 100%;
+    text-align: left;
+  }
+  .dropdown-toggle::after {
+    float: right;
+    top: 0.5em;
+    position: relative;
+  }
+  .dropdown-menu {
+    width: 100%;
+    transform: translate3d(0, 40px, 0px);
+  }
 `
 
 let prevAction = undefined;
@@ -50,9 +66,6 @@ const PushactionPage = (props) => {
     props.pollingStart();
     return () => { props.pollingStop() }
   }, [])
-  
-  const [ validationErrors, setValidationErrors ] = useState([]);
-  const { handleChange, handleSubmit, updateValues, errors } = useForm(function() { window.scrollTo(0, 0); props.actionPush(action); }, validate);
 
   let { permission: { isFetching, data }, defaultSet, pushactionPage: { action } } = props;
   let { list, defaultId } = data;  
@@ -60,6 +73,15 @@ const PushactionPage = (props) => {
   let selectedPermission = list.find(permission => defaultId === permission._id);
   if(action.act.authorization)
     selectedPermission = list.find(p => p.account === action.act.authorization.actor && p.permission === action.act.authorization.permission) || selectedPermission;
+  
+  const [ validationErrors, setValidationErrors ] = useState([]);
+  const { handleChange, handleSubmit, updateValues, errors } = useForm(function() { window.scrollTo(0, 0); props.actionPush(action); }, validate);
+  const [ dropDownSelctedValueSmartContract, setSelectedValueSmartContract ] = useState("Select Smart Contract");
+  const [ isOpenDropDownSmartContract, toggleDropDownSmartContract ] = useState(false);  
+  const [ dropDownSelctedValueActionType, setSelectedValueActionType ] = useState("Select Action Type");
+  const [ isOpenDropDownActionType, toggleDropDownActionType ] = useState(false);  
+  const [ dropDownSelctedValuePermission, setSelectedValuePermission ] = useState(selectedPermission.account + "@" + selectedPermission.permission);
+  const [ isOpenDropDownPermission, toggleDropDownPermission ] = useState(false);  
 
   if(action !== prevAction) {
     prevAction = action;
@@ -124,7 +146,7 @@ const PushactionPage = (props) => {
                       <Label>Smart Contract Name:</Label>
                     </Col>
                     <Col xs="9">
-                      <InputStyled type="text" id="smartContractName" name="smartContractName" placeholder="Smart Contract Name..."
+                      {/* <InputStyled type="text" id="smartContractName" name="smartContractName" placeholder="Smart Contract Name..."
                         value={action.act.account} onChange={(e) => { updateAction(e.target.name, action, e.target.value, props.updateActionToPush); handleChange(e); } } 
                         invalid={!!errors.smartContractName}
                         />
@@ -133,7 +155,21 @@ const PushactionPage = (props) => {
                         <FormFeedback invalid="true">
                           {errors.smartContractName}
                         </FormFeedback>
-                      }
+                      } */}
+                      <CustomDropdown isOpen={isOpenDropDownSmartContract} toggle={()=>{toggleDropDownSmartContract(!isOpenDropDownSmartContract)}}>
+                        <DropdownToggle caret>{dropDownSelctedValueSmartContract}</DropdownToggle>
+                        <DropdownMenu right>
+                          {/* {(abiData.abi.tables).map((eachTable)=>
+                              <DropdownItem 
+                                key={eachTable.name} 
+                                onClick={}>
+                              {eachTable.name}</DropdownItem>)} */}
+                              <DropdownItem>Test 1</DropdownItem>
+                              <DropdownItem>Test 2</DropdownItem>
+                              <DropdownItem>Test 3</DropdownItem>
+                        </DropdownMenu>     
+                      </CustomDropdown>  
+
                     </Col>
                   </FormGroup>
                   <FormGroup row>
@@ -141,7 +177,7 @@ const PushactionPage = (props) => {
                       <Label>Action Type:</Label>
                     </Col>
                     <Col xs="9">
-                      <InputStyled type="text" id="actionType" name="actionType" placeholder="Action Type..." value={action && (action.act && action.act.name)}
+                      {/* <InputStyled type="text" id="actionType" name="actionType" placeholder="Action Type..." value={action && (action.act && action.act.name)}
                       onChange={(e) => { updateAction(e.target.name, action, e.target.value, props.updateActionToPush); handleChange(e); } }
                       invalid={!!errors.actionType}
                       />
@@ -150,7 +186,21 @@ const PushactionPage = (props) => {
                         <FormFeedback invalid="true">
                           {errors.actionType}
                         </FormFeedback>
-                      }
+                      } */}
+
+                      <CustomDropdown isOpen={isOpenDropDownActionType} toggle={()=>{toggleDropDownActionType(!isOpenDropDownActionType)}}>
+                        <DropdownToggle caret>{dropDownSelctedValueActionType}</DropdownToggle>
+                        <DropdownMenu right>
+                          {/* {(abiData.abi.tables).map((eachTable)=>
+                              <DropdownItem 
+                                key={eachTable.name} 
+                                onClick={}>
+                              {eachTable.name}</DropdownItem>)} */}
+                              <DropdownItem>Test 1</DropdownItem>
+                              <DropdownItem>Test 2</DropdownItem>
+                              <DropdownItem>Test 3</DropdownItem>
+                        </DropdownMenu>     
+                      </CustomDropdown>  
                     </Col>
                   </FormGroup>
                   <FormGroup row>
@@ -158,7 +208,7 @@ const PushactionPage = (props) => {
                       <Label>Permission:</Label>
                     </Col>
                     <Col xs="9">
-                      <DropdownInputStyled type="select" name="permission" id="permission" value={selectedPermission._id}
+                      {/* <DropdownInputStyled type="select" name="permission" id="permission" value={selectedPermission._id}
                         onChange={(e) => { 
                           let newPermission = list.find(p => e.target.value === p._id); 
                           updateAction(e.target.name, action, { actor: newPermission.account, permission: newPermission.permission }, props.updateActionToPush);
@@ -167,7 +217,21 @@ const PushactionPage = (props) => {
                         { list.map((permission) =>  permission.private_key &&
                           <option key={permission._id} value={permission._id}>{permission.account}@{permission.permission}</option>
                         )}
-                      </DropdownInputStyled>
+                      </DropdownInputStyled> */}
+                      <CustomDropdown isOpen={isOpenDropDownPermission} toggle={()=>{toggleDropDownPermission(!isOpenDropDownPermission)}}>
+                        <DropdownToggle caret>{dropDownSelctedValuePermission}</DropdownToggle>
+                        <DropdownMenu right>
+                          {(list).map((permission)=> permission.private_key &&
+                              <DropdownItem 
+                                key={permission._id} 
+                                onClick={(e) => { 
+                                  // let newPermission = list.find(p => e.target.value === p._id); 
+                                  updateAction("permission", action, { actor: permission.account, permission: permission.permission }, props.updateActionToPush);
+                                  setSelectedValuePermission(permission.account + "@" + permission.permission);
+                                }}>
+                              {permission.account}@{permission.permission}</DropdownItem>)}
+                        </DropdownMenu>     
+                      </CustomDropdown>  
                     </Col>
                   </FormGroup>
                   <FormGroup row>

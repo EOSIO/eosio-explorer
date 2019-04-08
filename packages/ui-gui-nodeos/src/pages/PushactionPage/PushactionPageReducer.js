@@ -30,6 +30,7 @@ const ACTION_PREFILL = actionPrefix + `ACTION_PREFILL`;
 const ACTION_PUSH = actionPrefix + `ACTION_PUSH`;
 const ACTION_PUSH_FULFILLED = actionPrefix + `ACTION_PUSH_FULFILLED`;
 const ACTION_PUSH_REJECTED = actionPrefix + `ACTION_PUSH_REJECTED`;
+const FETCH_SMART_CONTRACTS = actionPrefix + `FETCH_SMART_CONTRACTS`;
 
 //Action Creator
 export const fetchStart = () => ({ type: FETCH_START });
@@ -89,6 +90,11 @@ const fetchEpic = ( action$, state$ ) => action$.pipe(
     }
   }),
 );
+
+// const fetchSmartContractsEpic = action$ => action$.pipe(
+//   ofType(FETCH_SMART_CONTRACTS),
+//   mapTo()
+// );
 
 const actionIdSetEpic = action$ => action$.pipe(
   ofType(ACTION_ID_SET),
@@ -267,9 +273,14 @@ const actionReducer = (state = actionToPushInitState, action) => {
   }
 };
 
+// const smartContractsReducer = (action)  => {
+
+// };
+
 export const combinedReducer = combineReducers({
   data: dataReducer,
   isFetching: isFetchingReducer,
   actionId: actionIdReducer,
-  action: actionReducer
+  action: actionReducer,
+  // smartContracts: smartContractsReducer
 })

@@ -31,7 +31,7 @@ export default styled(Dropdown)`
   }
   .dropdown-menu{
     box-shadow: 0 0 0 1px #e0e7ee;
-    border: 0;    
+    border: 0;
   }
   .dropdown-item:active{
       background-color: #e3edf2;
