@@ -12,7 +12,8 @@ export default async (query:any) => {
       "act.name": 1,
       "act.account": 1,
       "trx_id": 1,
-      "createdAt": 1
+      "createdAt": 1,
+      "_id": 1
     });
 
     (account_name !== undefined) ?
