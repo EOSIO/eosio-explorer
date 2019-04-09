@@ -4,8 +4,8 @@ import { TextDecoder, TextEncoder } from 'text-encoding';
 
 export default async (query:any) => {
   try{
-    let { endpoint, account_name, private_key, actor, permission,  action_name, payload } = query;
-    
+    let { endpoint, account_name, private_key, actor, permission, action_name, payload } = query;
+
     const rpc = new JsonRpc(endpoint);
     const signatureProvider = new JsSignatureProvider([private_key]);
     const api = new Api({ rpc, signatureProvider, textDecoder: new TextDecoder(), textEncoder: new TextEncoder() });
@@ -44,7 +44,7 @@ export default async (query:any) => {
       blocksBehind: 3,
       expireSeconds: 30,
     });
-    
+
     return result;
 
   }catch(e){
