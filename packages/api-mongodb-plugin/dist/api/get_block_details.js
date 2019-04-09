@@ -52,10 +52,14 @@ exports.default = (function (query) { return __awaiter(_this, void 0, void 0, fu
                     .find({});
                 // check if id is passed
                 // check if its a number or not else it gives parsing error
-                (id_or_num !== undefined) ? isNaN(Number(id_or_num)) ?
-                    query_gen.where({ block_id: id_or_num }) : query_gen.where({ block_num: id_or_num }) : "";
-                query_gen.limit(100);
-                query_gen.sort({ createdAt: -1 });
+                if (id_or_num !== undefined) {
+                    isNaN(Number(id_or_num)) ?
+                        query_gen.where({ block_id: id_or_num }) :
+                        query_gen.where({ block_num: id_or_num });
+                }
+                else {
+                    throw ("invalid id or number");
+                }
                 return [4 /*yield*/, query_gen.exec()];
             case 1:
                 result = _b.sent();

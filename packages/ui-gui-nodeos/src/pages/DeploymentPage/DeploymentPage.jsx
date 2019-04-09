@@ -64,7 +64,7 @@ const DeploymentPage = (props) => {
         outputClear
     } = props;
     let { path, stdoutLog, stderrLog,
-        abiPath, abiContents,
+        abiPath, abiContents, compiled,
         errors, output, imported, deployed
     } = deployContainer;
     let { list, defaultId } = data;
@@ -78,6 +78,26 @@ const DeploymentPage = (props) => {
     useEffect(() => {
         outputClear();
     }, [])
+
+    useEffect(() => {
+        if (compiled) {
+            cogoToast.success(
+                "Smart contract successfully generated",
+                {heading: 'Compile Success', position: 'bottom-center', hideAfter: 3}
+            );
+        } else if (imported) {
+            cogoToast.success(
+                "Smart contract successfully imported",
+                {heading: 'Import Success', position: 'bottom-center', hideAfter: 3}
+            );
+        } else {
+            if (abiContents === "")
+                cogoToast.error(
+                    "Smart contract could not be generated, see ABI / Deployment Log",
+                    {heading: 'Compile Unsuccessful', position: 'bottom-center', hideAfter: 3}
+                );
+        }
+    }, [abiContents]);
 
     function handleChange(ev) {
         ev.preventDefault();
@@ -326,7 +346,11 @@ const DeploymentPage = (props) => {
                                 <ButtonPrimary
                                     className="float-right"
                                     id="ClearLogs"
-                                    onClick={()=>logClear()}
+                                    onClick={()=>{ 
+                                        if (errors.length > 0 || stderrLog.length > 0 || stdoutLog.length > 0)
+                                            cogoToast.info("Cleared all logs", {position: 'bottom-center', hideAfter: 2});
+                                        logClear(); 
+                                    }}
                                     >
                                     Clear All Logs
                                 </ButtonPrimary>

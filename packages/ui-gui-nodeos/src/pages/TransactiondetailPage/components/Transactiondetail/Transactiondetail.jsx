@@ -91,7 +91,7 @@ const Transactiondetail = (props) => {
                                   </thead>
                                   <tbody>
                                     {(payload[0].action_traces).map((eachAction,index)=>
-                                      <tr onClick={evt=> props.push(`/action/${eachAction.receipt.global_sequence}`)} key={eachAction.index}>
+                                      <tr onClick={evt=> props.push(`/action/${eachAction._id}`)} key={eachAction.index}>
                                         <td>{index+1}</td>
                                         <td>{eachAction.act.name}</td>  
                                         <td>{eachAction.act.account}</td>                                    

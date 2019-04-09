@@ -50,15 +50,12 @@ exports.default = (function (query) { return __awaiter(_this, void 0, void 0, fu
                 result = void 0;
                 query_gen = transaction_traces_1.default
                     .find({});
-                console.log("trx id is ", id);
                 if (id === undefined || id.trim() === "") {
                     throw ("invalid transaction id");
                 }
                 else {
                     query_gen.where({ id: id });
                 }
-                query_gen.limit(100);
-                query_gen.sort({ createdAt: -1 });
                 return [4 /*yield*/, query_gen.exec()];
             case 1:
                 result = _a.sent();

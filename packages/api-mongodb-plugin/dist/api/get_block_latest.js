@@ -50,7 +50,7 @@ exports.default = (function () { return __awaiter(_this, void 0, void 0, functio
                 query_gen = block_1.default
                     .find({});
                 query_gen.limit(1);
-                query_gen.sort({ createdAt: -1 });
+                query_gen.sort({ block_num: -1 });
                 return [4 /*yield*/, query_gen.exec()];
             case 1:
                 result = _a.sent();

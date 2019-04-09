@@ -13,6 +13,7 @@ var get_actions_1 = __importDefault(require("./get_actions"));
 var get_all_permissions_1 = __importDefault(require("./get_all_permissions"));
 var get_action_details_1 = __importDefault(require("./get_action_details"));
 var get_abi_1 = __importDefault(require("./get_abi"));
+var get_smart_contracts_1 = __importDefault(require("./get_smart_contracts"));
 exports.default = {
     get_account_details: get_account_details_1.default,
     get_block_latest: get_block_latest_1.default,
@@ -23,5 +24,6 @@ exports.default = {
     get_actions: get_actions_1.default,
     get_action_details: get_action_details_1.default,
     get_all_permissions: get_all_permissions_1.default,
-    get_abi: get_abi_1.default
+    get_abi: get_abi_1.default,
+    get_smart_contracts: get_smart_contracts_1.default
 };

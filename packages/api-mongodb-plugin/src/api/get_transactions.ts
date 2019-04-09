@@ -2,7 +2,7 @@ import TransactionsModel from '../models/transactions';
 
 export default async (query:any) => {
   try{
-    let { id } = query;
+    let { id, records_count } = query;
 
     let result: object;
 
@@ -14,11 +14,13 @@ export default async (query:any) => {
           "createdAt": 1
         });
 
-    (id !== undefined) ?  
+    (id !== undefined) ?
       query_gen.where({trx_id: id}) : query_gen.exists("block_num");
 
-    query_gen.limit(100);
-    query_gen.sort({createdAt: -1});
+    (records_count !== undefined) ?
+      query_gen.limit(parseInt(records_count)): query_gen.limit(100);  
+
+    query_gen.sort({_id: -1});
     result = await query_gen.exec();
 
     return result;

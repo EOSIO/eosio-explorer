@@ -9,6 +9,7 @@ import get_actions from './get_actions';
 import get_all_permissions from './get_all_permissions';
 import get_action_details from './get_action_details';
 import get_abi from './get_abi';
+import get_smart_contracts from './get_smart_contracts';
 
 export default {
   get_account_details,
@@ -20,5 +21,6 @@ export default {
   get_actions,
   get_action_details,
   get_all_permissions,
-  get_abi
+  get_abi,
+  get_smart_contracts
 };
