@@ -109,7 +109,10 @@ const Permissionlist = (props) => {
                                   <CardBody>
                                     <InfoDiv>
                                       The accounts in this panel do not have private keys assigned to them yet. You can click 
-                                      the "Import Keys" button to assign your private keys to these accounts. 
+                                      the "Import Keys" button to assign your private keys to these accounts. <b>Note:</b> Be 
+                                      sure that the private keys you import to the accounts here correspond to the public
+                                      key fetched from the MongoDB. Otherwise you won't be able to do anything with them, even
+                                      if you import keys.
                                     </InfoDiv>
                                     <Form>
                                       <FormGroup>

@@ -69,6 +69,7 @@ const DeploymentPage = (props) => {
     } = deployContainer;
     let { list, defaultId } = data;
 
+    const [ clickDeploy, setClickDeploy ] = useState(false);
     const [ isOpenDropDown, toggleDropDown ] = useState(false);
     const [ currentFile, setCurrentFile ] = useState("");
     const [ activeTab, setActiveTab ] = useState("1");
@@ -80,22 +81,35 @@ const DeploymentPage = (props) => {
     }, [])
 
     useEffect(() => {
-        if (compiled) {
-            cogoToast.success(
-                "Smart contract successfully generated",
-                {heading: 'Compile Success', position: 'bottom-center', hideAfter: 3}
-            );
-        } else if (imported) {
-            cogoToast.success(
-                "Smart contract successfully imported",
-                {heading: 'Import Success', position: 'bottom-center', hideAfter: 3}
-            );
-        } else {
-            if (abiContents === "")
-                cogoToast.error(
-                    "Smart contract could not be generated, see ABI / Deployment Log",
+        if (!deployed && !clickDeploy) {
+            if (compiled && currentFile.length > 0) {
+                cogoToast.success(
+                    "Smart contract successfully generated",
+                    {heading: 'Compile Success', position: 'bottom-center', hideAfter: 3}
+                );
+            } else if (imported && currentFile.length > 0) {
+                cogoToast.success(
+                    "Smart contract successfully imported",
+                    {heading: 'Import Success', position: 'bottom-center', hideAfter: 3}
+                );
+            } else if (!compiled && currentFile.length > 0) {
+                cogoToast.success(
+                    "Smart contract failed to compile, please check ABI / Deployment Log",
                     {heading: 'Compile Unsuccessful', position: 'bottom-center', hideAfter: 3}
                 );
+            }
+        } else if (!deployed && clickDeploy) {
+            cogoToast.success(
+                "Smart contract could not be deployed, please check ABI / Deployment Log",
+                {heading: 'Deployment Unsuccessful', position: 'bottom-center', hideAfter: 3}
+            );
+            setClickDeploy(false);
+        } else if (deployed && clickDeploy) {
+            cogoToast.success(
+                "Smart contract successfully deployed",
+                {heading: 'Deployment Success', position: 'bottom-center', hideAfter: 3}
+            );
+            setClickDeploy(false);
         }
     }, [abiContents]);
 
@@ -129,15 +143,18 @@ const DeploymentPage = (props) => {
             abiSource: (imported) ? abiPath : null
         }
         logClear();
+        setClickDeploy(true);
 
         if (currentPermission["account"] !== 'eosio')
             contractDeploy(fullPath, deployer);
-        else
+        else {
             cogoToast.error(msg, {
                 heading: 'Unable to Deploy',
                 position: 'bottom-center',
                 hideAfter: 4
             });
+            setClickDeploy(false);
+        }
     }
 
     function clickButton() {
