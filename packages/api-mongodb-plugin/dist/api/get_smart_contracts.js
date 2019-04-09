@@ -53,7 +53,7 @@ exports.default = (function (query) { return __awaiter(_this, void 0, void 0, fu
                 query_gen.exists("abi");
                 query_gen.sort({ _id: -1 });
                 (records_count !== undefined) ?
-                    query_gen.limit(records_count) : query_gen.limit(100);
+                    query_gen.limit(parseInt(records_count)) : query_gen.limit(100);
                 return [4 /*yield*/, query_gen.exec()];
             case 1:
                 result = _a.sent();

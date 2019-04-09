@@ -57,7 +57,7 @@ exports.default = (function (query) { return __awaiter(_this, void 0, void 0, fu
                 (id !== undefined) ?
                     query_gen.where({ trx_id: id }) : query_gen.exists("block_num");
                 (records_count !== undefined) ?
-                    query_gen.limit(records_count) : query_gen.limit(100);
+                    query_gen.limit(parseInt(records_count)) : query_gen.limit(100);
                 query_gen.sort({ _id: -1 });
                 return [4 /*yield*/, query_gen.exec()];
             case 1:

@@ -2,7 +2,7 @@ import AccountDetailsModel from '../models/account_details';
 
 export default async (query:any) => {
   try{
-    let { account_name, records_count } = query;
+    let { account_name } = query;
     let result: object;
   
     let query_gen = AccountDetailsModel
@@ -18,11 +18,7 @@ export default async (query:any) => {
       query_gen.where("account").equals(account_name);
     } 
     else{
-      
-      (records_count !== undefined) ?
-        query_gen.limit(records_count): query_gen.limit(100);  
-
-      query_gen.sort({_id: -1});  
+      throw("invalid account name")
     }
 
     result = await query_gen.exec();  
