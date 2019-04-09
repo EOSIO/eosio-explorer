@@ -11,8 +11,6 @@ COMPILER="$SCRIPTPATH/packages/api-eosio-compiler/docker-eosio-cdt"
 GUI="$SCRIPTPATH/packages/ui-gui-nodeos"
 ISDEV=false
 
-echo "arg is " + $1
-
 if [ "$1" == "-dev" -o "$1" == "--develop" ]; then
   ISDEV=true
 fi

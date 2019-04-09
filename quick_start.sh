@@ -11,8 +11,6 @@ COMPILER="$SCRIPTPATH/packages/api-eosio-compiler"
 GUI="$SCRIPTPATH/packages/ui-gui-nodeos"
 ISDEV=false
 
-echo "param is " + $@
-
 for arg in $@
 do
     case $arg in
@@ -99,9 +97,9 @@ echo "=============================="
 echo "STARTING GUI"
 echo "=============================="
 if $ISDEV; then
-  (cd $GUI && yarn start)
+  ./start_gui.sh -dev
 else
-  (cd $GUI && yarn serve)
+  ./start_gui.sh
 fi
 
 P1=$!
