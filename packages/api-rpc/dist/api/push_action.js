@@ -62,8 +62,8 @@ exports.default = (function (query) { return __awaiter(_this, void 0, void 0, fu
                     // need to make sure abi has every field in abiDefinition.fields
                     // otherwise serialize throws error
                     abi = abiDefinition.fields.reduce(function (acc, _a) {
-                        var _b;
                         var fieldName = _a.name;
+                        var _b;
                         return Object.assign(acc, (_b = {}, _b[fieldName] = acc[fieldName] || [], _b));
                     }, abi);
                     abiDefinition.serialize(buffer, abi);
