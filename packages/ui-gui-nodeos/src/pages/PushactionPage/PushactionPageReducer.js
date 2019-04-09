@@ -22,8 +22,6 @@ const actionPrefix = `PushactionPage/Pushaction/`;
 const FETCH_START = actionPrefix + `FETCH_START`;
 const FETCH_FULFILLED = actionPrefix + `FETCH_FULFILLED`;
 const FETCH_REJECTED = actionPrefix + `FETCH_REJECTED`;
-const POLLING_START = actionPrefix + `POLLING_START`;
-const POLLING_STOP = actionPrefix + `POLLING_STOP`;
 const ACTION_ID_SET = actionPrefix + `ACTION_ID_SET`;
 const ACTION_UPDATE = actionPrefix + `ACTION_UPDATE`;
 const ACTION_PREFILL = actionPrefix + `ACTION_PREFILL`;
@@ -32,13 +30,12 @@ const ACTION_PUSH_FULFILLED = actionPrefix + `ACTION_PUSH_FULFILLED`;
 const ACTION_PUSH_REJECTED = actionPrefix + `ACTION_PUSH_REJECTED`;
 const FETCH_SMART_CONTRACTS = actionPrefix + `FETCH_SMART_CONTRACTS`;
 const FETCH_SMART_CONTRACTS_FULFILLED = actionPrefix + `FETCH_SMART_CONTRACTS_FULFILLED`;
+const FETCH_SMART_CONTRACTS_REJECTED = actionPrefix + `FETCH_SMART_CONTRACTS_REJECTED`;
 
 //Action Creator
 export const fetchStart = () => ({ type: FETCH_START });
 export const fetchFulfilled = (actionsList, actionToPush) => ({ type: FETCH_FULFILLED, actionsList, actionToPush });
 export const fetchRejected = ( payload, error ) => ({ type: FETCH_REJECTED, payload, error });
-export const pollingStart = () => ({ type: POLLING_START });
-export const pollingStop = () => ({ type: POLLING_STOP });
 export const actionIdSet = (act_id) => ({ type: ACTION_ID_SET, actionId: act_id });
 export const updateActionToPush = (updatedAction) => ({ type: ACTION_UPDATE, updatedAction });
 export const prefillActionToPush = (updatedAction) => ({ type: ACTION_PREFILL, updatedAction });
@@ -47,18 +44,12 @@ export const actionPushFulfilled = (response) => ({ type: ACTION_PUSH_FULFILLED,
 export const actionPushRejected = ( payload, error ) => ({ type: ACTION_PUSH_REJECTED, payload, error });
 export const fetchSmartContracts = () => ({ type: FETCH_SMART_CONTRACTS });
 export const fetchFulfilledSmartContract = (payload, error) => ({ type: FETCH_SMART_CONTRACTS_FULFILLED, payload, error });
+export const fetchRejectedSmartContract = (payload, error) => ({type: FETCH_SMART_CONTRACTS_REJECTED, payload, error});
 
 //Epic
-const startEpic = action$ => action$.pipe(
-  ofType(POLLING_START),
-  mapTo(fetchStart()),
-);
-
 const fetchEpic = ( action$, state$ ) => action$.pipe(
   ofType(FETCH_START),
   mergeMap(action => {
-    console.log(JSON.stringify("Starting Fetch!"));
-
     let { value: { pushactionPage: { actionId } } } = state$;
     let getActionQuery =  actionId !== undefined && actionId !== null && actionId !== "" ? "?global_sequence=" + actionId : "";
 
@@ -69,7 +60,6 @@ const fetchEpic = ( action$, state$ ) => action$.pipe(
           .pipe(
             mergeMap(actionResponse => [
               fetchFulfilled(actionsListResponse.response, actionResponse.response),
-              
               prefillActionToPush(actionResponse.response)
             ]),
             catchError(error => {
@@ -102,7 +92,7 @@ const fetchSmartContractsEpic = action$ => action$.pipe(
       map(smartContractsResponse => fetchFulfilledSmartContract(smartContractsResponse.response, null)),
       catchError(error => {
         errorLog(error);
-        return of(fetchRejected(error.response, { status: error.status }))
+        return of(fetchRejectedSmartContract(error.response, { status: error.status }))
       })
     )
   })
@@ -110,7 +100,7 @@ const fetchSmartContractsEpic = action$ => action$.pipe(
 
 const actionIdSetEpic = action$ => action$.pipe(
   ofType(ACTION_ID_SET),
-  mapTo(pollingStart()),
+  mapTo(fetchStart()),
 );
 
 const endpointConnectEpic = action$ => action$.pipe(
@@ -146,7 +136,6 @@ const actionPushEpic = action$ => action$.pipe(
 
 
 export const combinedEpic = combineEpics(
-  startEpic,
   fetchEpic,
   actionIdSetEpic,
   actionPushEpic,
@@ -196,7 +185,6 @@ const mapPrefilledAction = (prefilledAction) => {
 const mapUpdatedAction = (updatedAction) => {
   if(!updatedAction)
     return actionToPushInitState;
-
   return {
     _id: updatedAction._id,
     act: {
@@ -246,6 +234,34 @@ const isFetchingReducer = (state = false, action) => {
   }
 };
 
+const isPushingActionReducer = (state = false, action) => {
+  switch (action.type) {
+    case ACTION_PUSH:
+      return true;
+
+    case ACTION_PUSH_FULFILLED:
+    case ACTION_PUSH_REJECTED:
+      return false;
+
+    default:
+      return state;
+  }
+};
+
+const isFetchingSmartContractReducer = (state = false, action) => {
+  switch (action.type) {
+    case FETCH_SMART_CONTRACTS:
+      return true;
+
+    case FETCH_SMART_CONTRACTS_FULFILLED:
+    case FETCH_SMART_CONTRACTS_REJECTED:
+      return false;
+
+    default:
+      return state;
+  }
+};
+
 const actionIdReducer = (state = "", action) => {
   switch (action.type) {
     case ACTION_ID_SET:
@@ -267,7 +283,7 @@ const actionReducer = (state = actionToPushInitState, action) => {
     case ACTION_PUSH:
       return state;
 
-    case ACTION_PUSH_FULFILLED:      
+    case ACTION_PUSH_FULFILLED:
       return {
         ...actionToPushInitState,
         error: undefined,
@@ -305,5 +321,7 @@ export const combinedReducer = combineReducers({
   isFetching: isFetchingReducer,
   actionId: actionIdReducer,
   action: actionReducer,
-  smartContracts: smartContractsReducer
+  isPushingAction: isPushingActionReducer,
+  smartContracts: smartContractsReducer,
+  isFetchingSmartContract: isFetchingSmartContractReducer
 })

@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 const useForm = (cb, validate) => {
 
     const [values, setValues] = useState({});
+    const [additionalValues, setAdditionalValue] = useState([]);
     const [errors, setErrors] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -17,7 +18,7 @@ const useForm = (cb, validate) => {
             ev.preventDefault();
         }
         setIsSubmitting(true);
-        setErrors(validate(values));
+        setErrors(validate(values, additionalValues));
     }
 
     const handleChange = (ev) => {
@@ -35,12 +36,26 @@ const useForm = (cb, validate) => {
         });
     }
 
+    const resetValidation = (ev) => {
+        if (ev) {
+            ev.preventDefault();
+        }
+        setIsSubmitting(false);
+        setErrors({});
+    }
+
+    const setAdditionalValues = (values) => {
+        setAdditionalValue(values);
+    }
+
     return {
         handleChange,
         handleSubmit,
         values,
         setValues,
         updateValues,
+        resetValidation,
+        setAdditionalValues,
         errors
     }
 
