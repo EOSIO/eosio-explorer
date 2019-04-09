@@ -13,7 +13,8 @@ export default async (query:any) => {
       "act.account": 1,
       "trx_id": 1,
       "createdAt": 1,
-      "_id": 1
+      "_id": 1,
+      "act.authorization": 1
     });
 
     (account_name !== undefined) ?

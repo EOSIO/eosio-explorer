@@ -55,7 +55,8 @@ exports.default = (function (query) { return __awaiter(_this, void 0, void 0, fu
                     "act.account": 1,
                     "trx_id": 1,
                     "createdAt": 1,
-                    "_id": 1
+                    "_id": 1,
+                    "act.authorization": 1
                 });
                 (account_name !== undefined) ?
                     query_gen.where("act.account").equals(account_name) : "";
