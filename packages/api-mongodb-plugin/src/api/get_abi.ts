@@ -19,9 +19,11 @@ export default async (query:any) => {
     }
     else {
       query_gen.exists("abi");
+
       (records_count !== undefined) ?
         query_gen.limit(records_count): query_gen.limit(100);  
-      query_gen.sort({createdAt: -1});
+
+      query_gen.sort({_id: -1});
     } 
     
     result = await query_gen.exec();

@@ -15,6 +15,7 @@ export default async (query:any) => {
   else {
 		query_gen.where({"_id": mongoose.Types.ObjectId(action_id)});
   }
+	
 	result = await query_gen.exec();
 	return result;
   }catch(err){

@@ -2,7 +2,7 @@ import BlockModel from '../models/block';
 
 export default async (query:any) => {
   try{
-    let { show_empty, id_or_num } = query;
+    let { show_empty, id_or_num, records_count } = query;
     let result: Object;
 
     let query_gen = BlockModel.find({},
@@ -21,8 +21,11 @@ export default async (query:any) => {
     (id_or_num !== undefined) ? isNaN(Number(id_or_num)) ?
         query_gen.where({block_id: id_or_num}): query_gen.where({block_num: id_or_num}) : "";
 
-    query_gen.limit(100);
+    (records_count !== undefined) ?
+      query_gen.limit(records_count): query_gen.limit(100);
+
     query_gen.sort({block_num: -1});
+
     result = await query_gen.exec();
     return result;
   }catch(err){

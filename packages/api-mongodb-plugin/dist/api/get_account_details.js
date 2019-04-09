@@ -41,12 +41,12 @@ var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
 var account_details_1 = __importDefault(require("../models/account_details"));
 exports.default = (function (query) { return __awaiter(_this, void 0, void 0, function () {
-    var account_name, result, query_gen, err_1;
+    var account_name, records_count, result, query_gen, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                account_name = query.account_name;
+                account_name = query.account_name, records_count = query.records_count;
                 result = void 0;
                 query_gen = account_details_1.default
                     .find({}, {
@@ -58,7 +58,11 @@ exports.default = (function (query) { return __awaiter(_this, void 0, void 0, fu
                 if (account_name !== undefined) {
                     query_gen.where("account").equals(account_name);
                 }
-                query_gen.sort({ createdAt: -1 }).limit(100);
+                else {
+                    (records_count !== undefined) ?
+                        query_gen.limit(records_count) : query_gen.limit(100);
+                    query_gen.sort({ _id: -1 });
+                }
                 return [4 /*yield*/, query_gen.exec()];
             case 1:
                 result = _a.sent();

@@ -15,6 +15,7 @@ export default async (query:any) => {
     else {
       query_gen.where({id: id});
     }
+    
     result = await query_gen.exec();
     return result;
   }catch(err){
