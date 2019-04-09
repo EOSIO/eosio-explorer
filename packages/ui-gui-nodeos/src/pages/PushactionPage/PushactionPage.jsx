@@ -39,8 +39,6 @@ const CustomDropdown = styled(DropdownStyled)`
   }  
 `
 
-let prevAction = undefined;
-
 const updateAction = (name, action, value, callback) => {
   if (name === "smartContractName") { 
     action.act.account = value;
@@ -56,6 +54,16 @@ const updateAction = (name, action, value, callback) => {
 
 const PushactionPage = (props) => {
 
+  useEffect(() => {
+    let vals = [
+      { name: "smartContractName", value: action.act.account },
+      { name: "actionType", value: action.act.name },
+      { name: "payload", value: action.payload },
+      { name: "permission", value: selectedPermission._id }
+    ];
+    updateValues(vals);
+  }, [props.pushactionPage.action])
+
   useEffect(()=>{    
     props.fetchStart();
     props.fetchSmartContracts();
@@ -63,7 +71,7 @@ const PushactionPage = (props) => {
     updateAction("", action, null, props.updateActionToPush); 
   }, [])
 
-  let { permission: { data }, defaultSet, pushactionPage: { action, isPushingAction, smartContracts: { smartContractsList = [] }, isFetchingSmartContract } } = props;
+  let { permission: { data }, pushactionPage: { action, isPushingAction, smartContracts: { smartContractsList = [] }, isFetchingSmartContract } } = props;
   let { list, defaultId } = data;  
   
   let selectedPermission = list.find(permission => defaultId === permission._id);
@@ -77,18 +85,6 @@ const PushactionPage = (props) => {
   const [ isOpenDropDownPermission, toggleDropDownPermission ] = useState(false);  
 
   const [ actionList, setActionList ] = useState([]);
-
-  if(action !== prevAction) {
-    prevAction = action;
-    console.log("action ", action);
-    let vals = [
-      { name: "smartContractName", value: action.act.account },
-      { name: "actionType", value: action.act.name },
-      { name: "payload", value: action.payload },
-      { name: "permission", value: selectedPermission._id }
-    ];
-    updateValues(vals);
-  }
 
   return (
     <StandardTemplate>
@@ -259,7 +255,6 @@ const PushactionPage = (props) => {
                                 onClick={(e) => { 
                                   selectedPermission = list.find(p => p.account === action.act.authorization.actor && p.permission === action.act.authorization.permission) || selectedPermission;
                                   updateAction("permission", action, { actor: permission.account, permission: permission.permission }, props.updateActionToPush);
-                                  defaultSet(permission._id);
                                   resetValidation(e);
                                 }}>
                               {permission.account}@{permission.permission}</DropdownItem>)}
