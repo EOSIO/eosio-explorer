@@ -1,26 +1,25 @@
 import ActionsModel from '../models/actions';
+import mongoose from 'mongoose';
 
 export default async (query:any) => {
   try{
-	let { global_sequence } = query;
+	let { action_id } = query;
 	let result: object;
 
 	let query_gen = ActionsModel
-	.find({});
+		.find({});
 
-  if(global_sequence === undefined || global_sequence.trim() === ""){
-    throw("invalid global sequence");
+  if(action_id === undefined || action_id.trim() === ""){
+    throw("invalid action id");
   }
   else {
-    query_gen.where({"receipt.global_sequence": parseInt(global_sequence)});
+		query_gen.where({"_id": mongoose.Types.ObjectId(action_id)});
   }
-
-	query_gen.limit(100);
-	query_gen.sort({_id: -1});
+	
 	result = await query_gen.exec();
 	return result;
   }catch(err){
-	console.log(err);
-	throw err;
+		console.log(err);
+		throw err;
   }
 }

@@ -58,7 +58,9 @@ exports.default = (function (query) { return __awaiter(_this, void 0, void 0, fu
                 if (account_name !== undefined) {
                     query_gen.where("account").equals(account_name);
                 }
-                query_gen.sort({ createdAt: -1 }).limit(100);
+                else {
+                    throw ("invalid account name");
+                }
                 return [4 /*yield*/, query_gen.exec()];
             case 1:
                 result = _a.sent();

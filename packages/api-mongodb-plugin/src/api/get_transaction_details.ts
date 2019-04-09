@@ -15,11 +15,8 @@ export default async (query:any) => {
     else {
       query_gen.where({id: id});
     }
-
-    // query_gen.limit(100);
-    // query_gen.sort({block_num: -1});
+    
     result = await query_gen.exec();
-
     return result;
   }catch(err){
     console.log(err);
