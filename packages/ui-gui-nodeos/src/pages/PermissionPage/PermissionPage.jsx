@@ -91,9 +91,9 @@ class PermissionPage extends Component {
                             delay={{show: 0, hide: 0}}
                             trigger="hover"
                             autohide={true}>
-                            All private keys are stored locally on your machine. Clicking this button will reinitialize 
-                            your local storage into the app's default state before fetching accounts from your 
-                            current MongoDB instance
+                            All private keys are stored locally on your machine. Clicking this button will
+                            revert the local storage to its default state. This means all your
+                            currently stored private keys will be cleared!
                           </Tooltip>
                         </Col>
                       </Row>

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import {
-  Card, CardBody, CardHeader,Row, Col, Form, FormGroup, FormFeedback, Label, Button, Input, UncontrolledAlert
+  Card, CardBody, CardHeader,Row, Col, Form, FormGroup, FormFeedback, Label, Button, Input, UncontrolledAlert,
+  UncontrolledTooltip
 } from 'reactstrap';
 
 import { pollingStart, pollingStop, actionIdSet, updateActionToPush, actionPush } from './PushactionPageReducer';
@@ -174,7 +175,7 @@ const PushactionPage = (props) => {
                     <Col xs="12">
                       <Label>Payload:</Label>
                     </Col>
-                    <Col xs="12">
+                    <Col xs="12" id="PayloadItem">
                       <CodeViewer readOnly={false} height="250" value={action.payload} className={errors.payload && "invalid"}
                         onChange={(newVal) => { updateAction("payload", action, newVal, props.updateActionToPush); }} />
                       <Input type="hidden" id="payload" name="payload" value={action.payload || ""} onChange={(e) => { handleChange(e); } } invalid={!!errors.payload} />
@@ -194,6 +195,34 @@ const PushactionPage = (props) => {
                 </Form>
               )}
               </CardBody>
+              <UncontrolledTooltip placement="bottom" target="PayloadItem"
+                delay={{show: 0, hide: 0}}
+                trigger="hover focus"
+                autohide={true}
+                >
+                Contains an editable object which passes the parameters of the action to the blockchain
+              </UncontrolledTooltip>
+              <UncontrolledTooltip placement="left" target="permission"
+                delay={{show: 0, hide: 0}}
+                trigger="hover"
+                autohide={true}
+                >
+                Select the permission which should authorize and sign the action
+              </UncontrolledTooltip>
+              <UncontrolledTooltip placement="left" target="smartContractName"
+                delay={{show: 0, hide: 0}}
+                trigger="hover focus"
+                autohide={true}
+                >
+                Type the name of the smart contract here
+              </UncontrolledTooltip>
+              <UncontrolledTooltip placement="left" target="actionType"
+                delay={{show: 0, hide: 0}}
+                trigger="hover focus"
+                autohide={true}
+                >
+                Type the name of the action you plan to push here
+              </UncontrolledTooltip>
             </FirstCardStyled>
           </Col>
         </Row>

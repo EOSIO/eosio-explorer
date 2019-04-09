@@ -4,7 +4,8 @@ import {
     CardBody, Row, Col, ButtonGroup, Spinner,
     Nav, NavLink, NavItem, TabContent, TabPane,
     Form, FormGroup, Label, Badge,
-    DropdownToggle, DropdownMenu, DropdownItem
+    DropdownToggle, DropdownMenu, DropdownItem,
+    UncontrolledTooltip
 } from 'reactstrap';
 import { StandardTemplate } from 'templates';
 import { connect } from 'react-redux';
@@ -190,6 +191,14 @@ const DeploymentPage = (props) => {
                                                 </Col>
                                             </FormGroup>
                                         </Form> 
+                                        <UncontrolledTooltip placement="top" target="rootFolder"
+                                            delay={{show: 0, hide: 0}}
+                                            trigger="hover focus"
+                                            autohide={true}
+                                            >
+                                            Input the absolute folder path containing your .cpp file in this field.
+                                            For example: /Users/syzygy/contracts/mycontract
+                                        </UncontrolledTooltip>
                                     </Col>
                                 </Row>
                             </CardBody>
@@ -208,12 +217,14 @@ const DeploymentPage = (props) => {
                                         <Col sm={4}>
                                             <ButtonGroup className="float-left">
                                                 <ButtonPrimary
+                                                    id="GenerateAbi"
                                                     onClick={(ev)=>generateAbi(ev)}
                                                     disabled={path.length === 0 || currentFile.length === 0 || isProcessing}
                                                     >
                                                     Generate ABI
                                                 </ButtonPrimary>
                                                 <ButtonSecondary
+                                                    id="ImportAbi"
                                                     onClick={()=>{clickButton()}}
                                                     disabled={isProcessing}
                                                     >
@@ -229,6 +240,21 @@ const DeploymentPage = (props) => {
                                                 />
                                         </Col>
                                     </FormGroup>
+                                    <UncontrolledTooltip placement="top" target="GenerateAbi"
+                                        delay={{show: 0, hide: 0}}
+                                        trigger="hover"
+                                        autohide={true}
+                                        >
+                                        Click this button to compile the smart contract and view the resulting ABI
+                                        file in the viewer below.
+                                    </UncontrolledTooltip>
+                                    <UncontrolledTooltip placement="top" target="ImportAbi"
+                                        delay={{show: 0, hide: 0}}
+                                        trigger="hover"
+                                        autohide={true}
+                                        >
+                                        Click this button to import a pre-made ABI file and review it in the viewer below
+                                    </UncontrolledTooltip>
                                 </Form>
                                 <CodeViewer
                                         language="json"
@@ -269,6 +295,7 @@ const DeploymentPage = (props) => {
                                         </Col>
                                         <Col xs={3}>
                                             <ButtonPrimary
+                                                id="DeployContract"
                                                 className="btn float-right"
                                                 disabled={path.length === 0 || 
                                                     currentFile.length === 0 ||
@@ -280,6 +307,13 @@ const DeploymentPage = (props) => {
                                         </Col>
                                     </FormGroup>
                                 </Form>
+                                <UncontrolledTooltip placement="top" target="DeployContract"
+                                    delay={{show: 0, hide: 0}}
+                                    trigger="hover"
+                                    autohide={true}
+                                    >
+                                    Compiles and deploys the smart contract at once. 
+                                </UncontrolledTooltip>
                             </CardBody>
                         </CardStyled>
                     </Col>
@@ -291,10 +325,18 @@ const DeploymentPage = (props) => {
                                 </span>
                                 <ButtonPrimary
                                     className="float-right"
+                                    id="ClearLogs"
                                     onClick={()=>logClear()}
                                     >
-                                    Clear Logs
+                                    Clear All Logs
                                 </ButtonPrimary>
+                                <UncontrolledTooltip placement="top" target="ClearLogs"
+                                    delay={{show: 0, hide: 0}}
+                                    trigger="hover"
+                                    autohide={true}
+                                    >
+                                    Click this button to remove all the currently displayed warnings and error logs
+                                </UncontrolledTooltip>
                             </LogCardHeaderStyled>
                             <CardBody>
                                 <div>

@@ -69,8 +69,9 @@ const ImportAccount = (props) => {
                             <InfoDiv>
                                 <h5 className="alert-heading">Before you update your private keys...</h5>
                                 <p>
-                                    Ensure that the private keys you use are <code>base58 WIF</code> compliant! The form will 
-                                    notify you if any of your keys are invalid upon submission.
+                                    Ensure that the private keys you use are <code>base58 WIF</code> compliant. <b>WIF</b> stands for 
+                                    "Wallet Import Format" and is a convenience specification for copying and pasting private keys.
+                                    The form will notify you if any of your keys are invalid upon submission.
                                 </p>
                                 <hr />
                                 <p className="mb-0">
