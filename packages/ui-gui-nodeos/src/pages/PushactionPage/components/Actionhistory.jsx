@@ -44,7 +44,7 @@ const Actionhistory = (props) => {
                   <td>{action.createdAt}</td>
                   <td>{action.act.authorization[0].actor + "@" + action.act.authorization[0].permission}</td>
                   <td className="text-center">
-                    <CustomButton block size="sm" onClick={(e) => { e.preventDefault(); props.prefillCallback(action); }}>Prefill</CustomButton>
+                    <CustomButton block size="sm" onClick={(e) => { e.preventDefault(); props.prefillCallback(action); }}>Prefill</CustomButton>>
                   </td>
                 </tr>
               )}

@@ -51,7 +51,7 @@ const fetchEpic = ( action$, state$ ) => action$.pipe(
   ofType(FETCH_START),
   mergeMap(action => {
     let { value: { pushactionPage: { actionId } } } = state$;
-    let getActionQuery =  actionId !== undefined && actionId !== null && actionId !== "" ? "?global_sequence=" + actionId : "";
+    let getActionQuery =  actionId !== undefined && actionId !== null && actionId !== "" ? "?action_id=" + actionId : "";
 
     if(getActionQuery) {
       return apiMongodb(`get_actions`).pipe(

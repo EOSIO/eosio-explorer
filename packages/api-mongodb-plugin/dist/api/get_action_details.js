@@ -40,24 +40,23 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
 var actions_1 = __importDefault(require("../models/actions"));
+var mongoose_1 = __importDefault(require("mongoose"));
 exports.default = (function (query) { return __awaiter(_this, void 0, void 0, function () {
-    var global_sequence, result, query_gen, err_1;
+    var action_id, result, query_gen, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                global_sequence = query.global_sequence;
+                action_id = query.action_id;
                 result = void 0;
                 query_gen = actions_1.default
                     .find({});
-                if (global_sequence === undefined || global_sequence.trim() === "") {
-                    throw ("invalid global sequence");
+                if (action_id === undefined || action_id.trim() === "") {
+                    throw ("invalid action id");
                 }
                 else {
-                    query_gen.where({ "receipt.global_sequence": parseInt(global_sequence) });
+                    query_gen.where({ "_id": mongoose_1.default.Types.ObjectId(action_id) });
                 }
-                query_gen.limit(100);
-                query_gen.sort({ createdAt: -1 });
                 return [4 /*yield*/, query_gen.exec()];
             case 1:
                 result = _a.sent();

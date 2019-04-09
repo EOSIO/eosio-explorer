@@ -7,9 +7,9 @@ export default async () => {
       .find({});
 
     query_gen.limit(1);
-    query_gen.sort({createdAt: -1});
+    query_gen.sort({block_num: -1});
+    
     result = await query_gen.exec();
-
     return result;
   }catch(err){
     console.log(err);

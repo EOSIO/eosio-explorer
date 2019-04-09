@@ -56,8 +56,6 @@ exports.default = (function (query) { return __awaiter(_this, void 0, void 0, fu
                 else {
                     query_gen.where({ id: id });
                 }
-                query_gen.limit(100);
-                query_gen.sort({ createdAt: -1 });
                 return [4 /*yield*/, query_gen.exec()];
             case 1:
                 result = _a.sent();
