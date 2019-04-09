@@ -9,40 +9,44 @@ EOSDOCKER="$SCRIPTPATH/packages/docker-eosio-nodeos"
 MONGODOCKER="$SCRIPTPATH/packages/docker-mongodb"
 COMPILER="$SCRIPTPATH/packages/api-eosio-compiler/docker-eosio-cdt"
 GUI="$SCRIPTPATH/packages/ui-gui-nodeos"
+ISDEV=false
 
-# make sure everything is clean and well setup
+echo "arg is " + $1
+
+if [ "$1" == "-dev" -o "$1" == "--develop" ]; then
+  ISDEV=true
+fi
+
 echo "=============================="
 echo "INSTALLING DEPENDENCIES"
 echo "=============================="
 yarn install
 
-# make sure everything is clean and well setup
 echo " "
 echo "=============================="
 echo "BUILDING EOSIO DOCKER"
 echo "=============================="
 (cd $EOSDOCKER && ./build_eosio_docker.sh && printf "${GREEN}done${NC}")
 
-# make sure everything is clean and well setup
 echo " "
 echo "=============================="
 echo "BUILDING EOSIO_CDT DOCKER USED BY COMPILER SERVICE"
 echo "=============================="
 (cd $COMPILER && ./build_eosio_cdt_docker.sh && printf "${GREEN}done${NC}")
 
-# make sure everything is clean and well setup
+if !($ISDEV); then
+# create a static build of application for production
 echo " "
 echo "=============================="
 echo "BUILDING APPLICATION"
 echo "=============================="
 (cd $GUI && yarn build && printf "${GREEN}done${NC}")
+fi
 
-# echo 'build done'
 # remove existing dockers 
 ./remove_dockers.sh
 
-# starting the dockers and gui
-./quick_start.sh
+./quick_start.sh $1
 
 P1=$!
 

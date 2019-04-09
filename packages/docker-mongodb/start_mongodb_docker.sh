@@ -10,6 +10,12 @@ if [ "$(docker ps -q -f status=exited -f name=eosio-mongodb)" ]; then
 fi
 
 if [ ! "$(docker ps -q -f name=eosio-mongodb)" ]; then
+  if find "$(pwd)/data" -mindepth 1 -print -quit 2>/dev/null | grep -q .; then
+    echo "mongodb docker is not running, but data folder exists"
+    echo "cleaning data now"
+    rm -r "$(pwd)"/data/*
+  fi
+
   docker run -d --rm -p 27017:27017 --name eosio-mongodb -v $(pwd)/data:/data/db mongo
 else
   echo "docker already running"
