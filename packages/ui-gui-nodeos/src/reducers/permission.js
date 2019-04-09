@@ -96,8 +96,6 @@ const createEpic = action$ => action$.pipe(
     action => {
       let { account: { accountName, ownerPublicKey, activePublicKey, ownerPrivateKey, activePrivateKey }} = action;
       let query = {
-        creator_private_key: '5K7mtrinTFrVTduSxizUc5hjXJEtTjVTsqSHeBHes1Viep86FP5',
-        creator_account_name: 'useraaaaaaaa',
         new_account_name: accountName,
         new_account_owner_key: ownerPublicKey,
         new_account_active_key: activePublicKey
