@@ -58,8 +58,6 @@ exports.default = (function (query) { return __awaiter(_this, void 0, void 0, fu
                 }
                 return [4 /*yield*/, query_gen.exec()];
             case 1:
-                // query_gen.limit(100);
-                // query_gen.sort({block_num: -1});
                 result = _a.sent();
                 return [2 /*return*/, result];
             case 2:

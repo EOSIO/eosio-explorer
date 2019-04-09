@@ -17,8 +17,9 @@ export default async (query:any) => {
     if(account_name !== undefined){
       query_gen.where("account").equals(account_name);
     } 
-
-    query_gen.sort({createdAt: -1}).limit(100);  
+    else{
+      throw("invalid account name")
+    }
 
     result = await query_gen.exec();  
     return result;

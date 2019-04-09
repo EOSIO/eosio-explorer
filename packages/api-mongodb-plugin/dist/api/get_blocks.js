@@ -41,12 +41,12 @@ var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
 var block_1 = __importDefault(require("../models/block"));
 exports.default = (function (query) { return __awaiter(_this, void 0, void 0, function () {
-    var show_empty, id_or_num, result, query_gen, err_1;
+    var show_empty, id_or_num, records_count, result, query_gen, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                show_empty = query.show_empty, id_or_num = query.id_or_num;
+                show_empty = query.show_empty, id_or_num = query.id_or_num, records_count = query.records_count;
                 result = void 0;
                 query_gen = block_1.default.find({}, {
                     "block_id": 1,
@@ -60,7 +60,8 @@ exports.default = (function (query) { return __awaiter(_this, void 0, void 0, fu
                 // check if its a number or not else it gives parsing error
                 (id_or_num !== undefined) ? isNaN(Number(id_or_num)) ?
                     query_gen.where({ block_id: id_or_num }) : query_gen.where({ block_num: id_or_num }) : "";
-                query_gen.limit(100);
+                (records_count !== undefined) ?
+                    query_gen.limit(parseInt(records_count)) : query_gen.limit(100);
                 query_gen.sort({ block_num: -1 });
                 return [4 /*yield*/, query_gen.exec()];
             case 1:

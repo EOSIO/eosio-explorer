@@ -7,7 +7,7 @@ export default async (query:any) => {
 	let result: object;
 
 	let query_gen = ActionsModel
-	.find({});
+		.find({});
 
   if(action_id === undefined || action_id.trim() === ""){
     throw("invalid action id");
@@ -15,10 +15,11 @@ export default async (query:any) => {
   else {
 		query_gen.where({"_id": mongoose.Types.ObjectId(action_id)});
   }
+	
 	result = await query_gen.exec();
 	return result;
   }catch(err){
-	console.log(err);
-	throw err;
+		console.log(err);
+		throw err;
   }
 }
