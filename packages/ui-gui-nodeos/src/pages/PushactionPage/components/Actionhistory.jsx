@@ -36,7 +36,7 @@ const Actionhistory = (props) => {
             </thead>
             <tbody>
               {actionsList.length < 1 ?
-                <tr><td colSpan="4" className="text-center">No actions could be found for the given Smart Contract name</td></tr>
+                <tr><td colSpan="5" className="text-center">No actions could be found for the given Smart Contract name</td></tr>
               : actionsList.map((action, index)=>
                 <tr key={index}>
                   <td>{action.act.account}</td>
@@ -44,7 +44,7 @@ const Actionhistory = (props) => {
                   <td>{action.createdAt}</td>
                   <td>{action.act.authorization[0].actor + "@" + action.act.authorization[0].permission}</td>
                   <td className="text-center">
-                    <CustomButton block size="sm" onClick={(e) => { e.preventDefault(); props.prefillCallback(action); }}>Prefill</CustomButton>>
+                    <CustomButton block size="sm" onClick={(e) => { e.preventDefault(); props.prefillCallback(action); }}>Prefill</CustomButton>
                   </td>
                 </tr>
               )}

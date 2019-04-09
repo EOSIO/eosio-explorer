@@ -310,7 +310,7 @@ const PushactionPage = (props) => {
               </CardHeaderStyled>
               <CardBody>
                 <Actionhistory prefillCallback={(action) => { 
-                  props.actionIdSet(action.receipt.global_sequence);                  
+                  props.actionIdSet(action._id);                  
                   setActionList(smartContractsList.find(smartContract => smartContract.name === action.act.account).abi.actions);   
                   resetValidation();
                   window.scrollTo(0, 0);
