@@ -60,14 +60,6 @@ const compileEpic = ( action$ ) => action$.pipe(
         let nodeErr = [],
             nodeStd = [];
 
-            if (stderr && !(stderr instanceof Array)) {
-              nodeErr.push(JSON.stringify(stderr));
-            }
-
-            if (stdout && !(stdout instanceof Array)) {
-              nodeStd.push(JSON.stringify(stdout));
-            }
-
         return processDone({
           abiContents: abiContents,
           abiPath: abi,
@@ -96,19 +88,16 @@ const deployEpic = ( action$ ) => action$.pipe(
         let actualOutput;
         let nodeErr = [];
         let nodeStd = [];
-
+        
+        /**
+         * If compile succeeds but deployment fails, there will be no output object.
+         * Therefore, if output doesn't exist, we can use the 'null' to determine
+         * deployment failure at a stricter level
+         */
         if (output) {
           let { processed } = output
           let { action_traces, ...intermediaryOutput } = processed;
           actualOutput = intermediaryOutput;
-        }
-
-        if (stderr && !(stderr instanceof Array)) {
-          nodeErr.push(JSON.stringify(stderr));
-        } 
-
-        if (stdout && !(stdout instanceof Array)) {
-          nodeStd.push(JSON.stringify(stdout));
         }
 
         return processDone({
@@ -191,6 +180,9 @@ const deploymentReducer = (state=dataInitState, action) => {
     case LOG_CLEAR:
       return {
         ...state,
+        deployed: false,
+        compiled: false,
+        imported: false,
         errors: [],
         stderrLog: [],
         stdoutLog: [],
@@ -199,6 +191,9 @@ const deploymentReducer = (state=dataInitState, action) => {
     case OUTPUT_CLEAR:
       return {
         ...state,
+        stdoutLog: [],
+        stderrLog: [],
+        errors: [],
         output: null,
         deployed: false
       }

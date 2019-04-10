@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import { connect } from 'react-redux';
 
-import { Button, ButtonGroup, Col, Form, FormGroup, Input, Label, FormFeedback } from 'reactstrap';
+import { Button, ButtonGroup, Col, Form, FormGroup, UncontrolledTooltip, Label, FormFeedback } from 'reactstrap';
 import styled from 'styled-components';
 
 import { connectStart, connectReset, pathInitState, errorReset } from 'reducers/endpoint';
@@ -93,6 +93,7 @@ const Nodeswitch = (props) => {
             <ButtonGroup className="float-right">
               <ButtonPrimary type="submit" disabled={ !isDirtyForm }>CONNECT</ButtonPrimary>
               <ButtonSecondary
+                id="ResetCxn"
                 onClick={()=>{
                   props.errorReset();
                   props.connectReset();
@@ -101,6 +102,14 @@ const Nodeswitch = (props) => {
                 }}
               >RESET</ButtonSecondary>
             </ButtonGroup>
+            <UncontrolledTooltip placement="top" target="ResetCxn"
+                delay={{show: 0, hide: 0}}
+                trigger="hover"
+                autohide={true}
+                >
+                Clicking this button will reset the input endpoints for both Nodeos and MongoDB
+                URLs to the default ones.
+            </UncontrolledTooltip>
           </Col>
         </FormGroup>
       </Form>
