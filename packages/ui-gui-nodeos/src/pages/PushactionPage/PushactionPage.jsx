@@ -13,15 +13,18 @@ import { StandardTemplate } from 'templates';
 import { defaultSet } from 'reducers/permission';
 import Actionhistory from './components/Actionhistory';
 import styled from 'styled-components';
-import { PageTitleDivStyled, CardStyled,CardHeaderStyled, ButtonPrimary, DropdownStyled, OverlayStyled } from 'styled';
+import { PageTitleDivStyled, CardStyled, CardHeaderStyled, ButtonPrimary, DropdownStyled, OverlayStyled } from 'styled';
 
 const FirstCardStyled = styled(CardStyled)`
   border-top: solid 2px #1173a4;
 `
 const CustomDropdown = styled(DropdownStyled)`
   .btn-secondary {
-    width: 100%;    
-  }  
+    width: 100%;
+  }
+  .dropdown-menu {
+    width: 100%;
+  }
 `
 const dropdownMaxHeight = {
   setMaxHeight: {

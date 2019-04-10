@@ -23,6 +23,7 @@ const FETCH_REJECTED = actionPrefix + `FETCH_REJECTED`;
 const POLLING_START = actionPrefix + `POLLING_START`;
 const POLLING_STOP = actionPrefix + `POLLING_STOP`;
 const SMART_CONTRACT_NAME_UPDATE = actionPrefix + `SMART_CONTRACT_NAME_UPDATE`;
+const RECORDS_UPDATE = actionPrefix + `RECORDS_UPDATE`;
 
 //Action Creator
 export const fetchStart = () => ({ type: FETCH_START });
@@ -31,6 +32,7 @@ export const fetchRejected = ( payload, error ) => ({ type: FETCH_REJECTED, payl
 export const pollingStart = () => ({ type: POLLING_START });
 export const pollingStop = () => ({ type: POLLING_STOP });
 export const smartContractNameSearch = (name) => ({ type: SMART_CONTRACT_NAME_UPDATE , smartContractName: name});
+export const recordsUpdate = (count) => ({ type: RECORDS_UPDATE, recordsCount: count });
 
 //Epic
 const startEpic = action$ => action$.pipe(
@@ -41,12 +43,13 @@ const startEpic = action$ => action$.pipe(
 const fetchEpic = ( action$, state$ ) => action$.pipe(
   ofType(FETCH_START),
   mergeMap(action => {
-    let { value: {actionlistPage: { actionlist: { smartContractName } }} } = state$;
-    let searchString =  smartContractName ?
-                        "?account_name=" + smartContractName.toLowerCase() :
-                        "";
+    let { value: { actionlistPage: { actionlist: { smartContractName, records } }} } = state$;
+    let getActionQuery =  smartContractName ?
+                          "?account_name=" + smartContractName.toLowerCase() :
+                          "";
+    getActionQuery += "?records_count=" + records;    
 
-    return apiMongodb(`get_actions${searchString}`).pipe(
+    return apiMongodb(`get_actions${getActionQuery}`).pipe(
       map(res => fetchFulfilled(res.response)),
       catchError(error => {
         errorLog(error);
@@ -61,11 +64,16 @@ const smartContractNameToggleEpic = action$ => action$.pipe(
   mapTo(pollingStart()),
 );
 
+const recordsUpdateEpic = action$ => action$.pipe(
+  ofType(RECORDS_UPDATE),
+  mapTo(pollingStart()),
+);
 
 export const combinedEpic = combineEpics(
   startEpic,
   fetchEpic,
-  smartContractNameToggleEpic
+  smartContractNameToggleEpic,
+  recordsUpdateEpic
 );
 
 
@@ -84,14 +92,21 @@ const dataReducer = (state=dataInitState, action) => {
       return {
         ...state,
         payload: action.payload,
-        error: undefined
+        error: undefined,
       };
+
     case FETCH_REJECTED:
       return {
         ...state,
         payload: action.payload,
         error: action.error
       };
+
+    case RECORDS_UPDATE:
+      return {
+        ...state
+      };
+
     default:
       return state;
   }
@@ -121,8 +136,19 @@ const smartContractNameReducer = (state = "", action) => {
   }
 };
 
+const recordsReducer = (state = 10, action) => {
+  switch (action.type) {
+    case RECORDS_UPDATE:
+      return action.recordsCount;
+
+    default:
+      return state;
+  }
+};
+
 export const combinedReducer = combineReducers({
   data: dataReducer,
   isFetching: isFetchingReducer,
   smartContractName: smartContractNameReducer,
+  records: recordsReducer
 })

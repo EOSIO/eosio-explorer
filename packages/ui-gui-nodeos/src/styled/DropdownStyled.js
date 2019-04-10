@@ -37,7 +37,6 @@ export default styled(Dropdown)`
   .dropdown-menu{
     box-shadow: 0 0 0 1px #e0e7ee;
     border: 0;
-    width: 100%;
     transform: translate3d(0, 40px, 0px);
   }
   .dropdown-item:active{
