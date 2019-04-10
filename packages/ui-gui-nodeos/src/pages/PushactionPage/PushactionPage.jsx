@@ -14,6 +14,7 @@ import { defaultSet } from 'reducers/permission';
 import Actionhistory from './components/Actionhistory';
 import styled from 'styled-components';
 import cogoToast from 'cogo-toast';
+
 import { PageTitleDivStyled, CardStyled,CardHeaderStyled, ButtonPrimary, DropdownStyled, OverlayStyled } from 'styled';
 
 const FirstCardStyled = styled(CardStyled)`
@@ -98,7 +99,6 @@ const PushactionPage = (props) => {
   // Set up useForm functionality. This contains the callback function which will be called on successful form submit
   const { handleChange, handleSubmit, updateValues, resetValidation, setAdditionalValues, errors } = useForm(function () { window.scrollTo(0, 0); props.actionPush(action); }, validate);
 
-
   const [ isOpenAccountTooltip, toggleAccountTooltip ] = useState(false);
   const [ isOpenActionTooltip, toggleActionTooltip ] = useState(false);
   const [ isOpenPermissionTooltip, togglePermissionTooltip ] = useState(false);
@@ -108,7 +108,6 @@ const PushactionPage = (props) => {
   const [isOpenDropDownActionType, toggleDropDownActionType] = useState(false);
   const [isOpenDropDownPermission, toggleDropDownPermission] = useState(false);
   const [actionList, setActionList] = useState([]);
-
 
   return (
     <StandardTemplate>
