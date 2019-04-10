@@ -92,7 +92,7 @@ const PushactionPage = (props) => {
   let { list, defaultId } = data;  
 
   // Get the default permission. Overwrite it with the action object's permission, if the action object has a permission.
-  let selectedPermission = list.find(permission => defaultId === permission._id);
+  let selectedPermission = list.find(permission => defaultId === permission._id) || {}; 
   if (action.act.authorization)
     selectedPermission = list.find(p => p.account === action.act.authorization.actor && p.permission === action.act.authorization.permission) || selectedPermission;
 
@@ -161,21 +161,7 @@ const PushactionPage = (props) => {
                     <Col xs="9">
                       <CustomDropdown id="AccountDropdown" isOpen={isOpenDropDownSmartContract} toggle={()=>{toggleDropDownSmartContract(!isOpenDropDownSmartContract)}}>
                         <DropdownToggle caret className={errors.smartContractName && "invalid"}>{action.act.account || "Select Smart Contract"}</DropdownToggle>
-                        <DropdownMenu modifiers={{
-                            setMaxHeight: {
-                              enabled: true,
-                              fn: (data) => {
-                                return {
-                                  ...data,
-                                  styles: {
-                                    ...data.styles,
-                                    overflow: 'auto',
-                                    maxHeight: 300,
-                                  },
-                                };
-                              },
-                            },
-                          }}>
+                        <DropdownMenu modifiers={dropdownMaxHeight}>
                           {smartContractsList &&
                             (smartContractsList).map((smartContract)=>
                               <DropdownItem 
@@ -210,21 +196,7 @@ const PushactionPage = (props) => {
                         <DropdownToggle disabled={action.act.account === "" ? true : false}  className={errors.actionType && "invalid"} caret>
                           {action.act.name || "Select Action Type"}
                         </DropdownToggle>
-                        <DropdownMenu modifiers={{
-                            setMaxHeight: {
-                              enabled: true,
-                              fn: (data) => {
-                                return {
-                                  ...data,
-                                  styles: {
-                                    ...data.styles,
-                                    overflow: 'auto',
-                                    maxHeight: 300,
-                                  },
-                                };
-                              },
-                            },
-                          }}>
+                        <DropdownMenu modifiers={dropdownMaxHeight}>
                           { actionList.length > 0 &&
                             (actionList).map((actionType)=>
                               <DropdownItem 
@@ -240,10 +212,10 @@ const PushactionPage = (props) => {
                       {/* Hidden inputs for validation and to make sure validation messages are shown by Bootstrap  */}
                       <Input type="hidden" id="actionType" name="actionType" value={action.act.name} onChange={(e) => { handleChange(e); } } invalid={!!errors.actionType} />
                       {
-                        action.pushSuccess &&
-                        <UncontrolledAlert color="success">
-                          Action pushed successfully
-                        </UncontrolledAlert>
+                        errors.actionType && 
+                        <FormFeedback invalid="true">
+                          {errors.actionType}
+                        </FormFeedback>
                       }
                     </Col>
                   </FormGroup>
@@ -256,21 +228,7 @@ const PushactionPage = (props) => {
                         <DropdownToggle className={errors.permission && "invalid"} caret>                        
                           {(selectedPermission.account + "@" + selectedPermission.permission)}
                         </DropdownToggle>
-                        <DropdownMenu modifiers={{
-                            setMaxHeight: {
-                              enabled: true,
-                              fn: (data) => {
-                                return {
-                                  ...data,
-                                  styles: {
-                                    ...data.styles,
-                                    overflow: 'auto',
-                                    maxHeight: 300,
-                                  },
-                                };
-                              },
-                            },
-                          }}>
+                        <DropdownMenu modifiers={dropdownMaxHeight}>
                           {(list).map((permission)=> permission.private_key &&
                               <DropdownItem 
                                 key={permission._id} 
