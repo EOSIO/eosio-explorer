@@ -7,6 +7,7 @@ import cogoToast from 'cogo-toast';
 import { StandardTemplate } from 'templates';
 import { connect } from 'react-redux';
 
+import BasicModal from 'components/BasicModal';
 import CreateAccount from './components/CreateAccount';
 import Permissionlist from './components/Permissionlist';
 import ImportAccount from './components/ImportAccount';
@@ -31,16 +32,24 @@ class PermissionPage extends Component {
 
     this.state = {
       resetTooltip: false,
-      createTooltip: false
+      createTooltip: false,
+      modalIsOpen: false
     }
 
     props.panelSelect("permission-list");
+    window.scrollTo(0,0);
 
   }
 
   toggleResetTooltip () {
     this.setState({
       resetTooltip: !this.state.resetTooltip
+    })
+  };
+
+  toggleModal () {
+    this.setState({
+      modalIsOpen: !this.state.modalIsOpen
     })
   };
 
@@ -56,6 +65,11 @@ class PermissionPage extends Component {
         heading: 'Account Storage Reinitialization',
         position: 'bottom-center'
       });
+    }
+
+    // Change panel 
+    function changePanel (panel) {
+      panelSelect(panel);
     }
     
     return (
@@ -77,10 +91,10 @@ class PermissionPage extends Component {
                         <Col sm={12}>
                           <ButtonGroup className="float-right"
                             style={{display: (panel === "permission-list") ? 'block' : 'none'}}>
-                                <ButtonPrimary id="CreateAccountBtn" onClick={()=>{panelSelect("create-account")}}>Create Account</ButtonPrimary>
-                                <CustomButton id="ResetPermissionBtn" onClick={()=>reInitialize()}>Reset All Permissions</CustomButton>
+                                <ButtonPrimary id="CreateAccountBtn" onClick={()=>{changePanel("create-account")}}>Create Account</ButtonPrimary>
+                                <CustomButton id="ResetPermissionBtn" onClick={()=>this.toggleModal()}>Reset All Permissions</CustomButton>
                           </ButtonGroup>
-                          <ButtonPrimary className="float-right" onClick={()=>{panelSelect("permission-list")}}
+                          <ButtonPrimary className="float-right" onClick={()=>{changePanel("permission-list")}}
                             style={{display: (panel === "permission-list") ? 'none' : 'block'}}
                             >
                             Back
@@ -117,6 +131,17 @@ class PermissionPage extends Component {
           
           
         </div>
+        {
+          this.state.modalIsOpen && (
+            <BasicModal header="Confirmation to Reset all Permissions"
+              toggle={()=>this.toggleModal()}
+              open={this.state.modalIsOpen}
+              handleConfirm={()=>{this.toggleModal(); reInitialize();}}
+              >
+              Are you sure you want to reset all permissions in the local storage?
+            </BasicModal>
+          )
+        }
       </StandardTemplate>
     );
   }

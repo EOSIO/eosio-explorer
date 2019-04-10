@@ -49,6 +49,7 @@ const ImportAccount = (props) => {
             {name: "activePrivate", value: keysData[1].permission === "active" ? keysData[1].private_key : keysData[0].private_key}
         ]
         updateValues(vals);
+        window.scrollTo(0, 0);
     }, []);
 
     return (
@@ -71,7 +72,10 @@ const ImportAccount = (props) => {
                                 <p>
                                     Ensure that the private keys you use are <code>base58 WIF</code> compliant. <b>WIF</b> stands for 
                                     "Wallet Import Format" and is a convenience specification for copying and pasting private keys.
-                                    The form will notify you if any of your keys are invalid upon submission.
+                                    The form will notify you if any of your keys are invalid upon submission. Please also ensure 
+                                    the private keys you import <b>properly match</b> the public keys listed here. Otherwise, 
+                                    you will not be able to authorize any actions with this account since the blockchain will not
+                                    have the correct signatures for the declared authorization.
                                 </p>
                                 <hr />
                                 <p className="mb-0">

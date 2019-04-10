@@ -15,28 +15,12 @@ import { DragDropCodeViewer, CodeViewer } from 'components';
 import { 
     CardStyled, CardHeaderStyled, PageTitleDivStyled,
     InputStyled, ButtonPrimary, ButtonSecondary,
-    DropdownStyled
+    DropdownStyled, OverlayStyled
 } from 'styled';
 import cogoToast from 'cogo-toast';
 
 import { defaultSet } from 'reducers/permission';
 import { folderSet, abiImport, contractCompile, contractDeploy, logClear, outputClear } from './DeploymentPageReducer';
-
-const overlayOn = {
-    position: "fixed",
-    display: "block",
-    width: "100%",
-    height: "100%",
-    top: 0,
-    left: 0,
-    backgroundColor: "rgba(0,0,0,0.5)",
-    zIndex: 999,
-    cursor: "pointer"
-}
-
-const overlayOff = {
-    display: "none"
-}
 
 const tabPane = {
     maxHeight: "350px",
@@ -60,7 +44,7 @@ const LogCardHeaderStyled = styled(CardHeaderStyled)`
 const DeploymentPage = (props) => {
 
     let { permission: { data }, deployContainer, isProcessing, nodeos,
-        defaultSet, folderSet, abiImport, contractCompile, contractDeploy, logClear,
+        folderSet, abiImport, contractCompile, contractDeploy, logClear,
         outputClear
     } = props;
     let { path, stdoutLog, stderrLog,
@@ -94,13 +78,13 @@ const DeploymentPage = (props) => {
                     {heading: 'Import Success', position: 'bottom-center', hideAfter: 3}
                 );
             } else if (!compiled && currentFile.length > 0) {
-                cogoToast.success(
+                cogoToast.error(
                     "Smart contract failed to compile, please check ABI / Deployment Log",
                     {heading: 'Compile Unsuccessful', position: 'bottom-center', hideAfter: 3}
                 );
             }
         } else if (!deployed && clickDeploy) {
-            cogoToast.success(
+            cogoToast.error(
                 "Smart contract could not be deployed, please check ABI / Deployment Log",
                 {heading: 'Deployment Unsuccessful', position: 'bottom-center', hideAfter: 3}
             );
@@ -149,7 +133,7 @@ const DeploymentPage = (props) => {
         if (currentPermission["account"] !== 'eosio')
             contractDeploy(fullPath, deployer);
         else {
-            cogoToast.error(msg, {
+            cogoToast.warn(msg, {
                 heading: 'Unable to Deploy',
                 position: 'bottom-center',
                 hideAfter: 4
@@ -182,7 +166,7 @@ const DeploymentPage = (props) => {
 
     return (
         <StandardTemplate>
-            <div style={isProcessing ? overlayOn : overlayOff}></div>
+            <OverlayStyled display={isProcessing ? 'block' : 'none'}></OverlayStyled>
             {
                 isProcessing &&
                     <div style={{position:"fixed",top:"50%",left:"50%", zIndex:"1000"}}>

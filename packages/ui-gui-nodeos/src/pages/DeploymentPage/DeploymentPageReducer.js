@@ -88,7 +88,12 @@ const deployEpic = ( action$ ) => action$.pipe(
         let actualOutput;
         let nodeErr = [];
         let nodeStd = [];
-
+        
+        /**
+         * If compile succeeds but deployment fails, there will be no output object.
+         * Therefore, if output doesn't exist, we can use the 'null' to determine
+         * deployment failure at a stricter level
+         */
         if (output) {
           let { processed } = output
           let { action_traces, ...intermediaryOutput } = processed;

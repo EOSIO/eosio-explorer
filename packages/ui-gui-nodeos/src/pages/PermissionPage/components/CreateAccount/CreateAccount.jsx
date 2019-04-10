@@ -11,7 +11,7 @@ import { fetchStart } from './CreateAccountReducer';
 import { createStart } from 'reducers/permission';
 import useForm from 'helpers/useForm';
 import validate from './CreateAccountValidatorEngine/CreateAccountValidatorEngine';
-import { CardStyled, CardHeaderStyled, ButtonPrimary, InputStyled} from 'styled';
+import { CardStyled, OverlayStyled, CardHeaderStyled, ButtonPrimary, InputStyled} from 'styled';
 
 const overlayOn = {
   position: "fixed",
@@ -72,7 +72,7 @@ const CreateAccount = (props) => {
           error         ? <Button onClick={props.fetchStart}>Retry Generation</Button>
           : <>
               <CardStyled>
-                <div style={isSubmitting || isFetching ? overlayOn : overlayOff}></div>
+                <OverlayStyled display={isFetching || isSubmitting ? 'block' : 'none'}></OverlayStyled>
                 {
                     (isSubmitting || isFetching) &&
                         <div style={{position:"fixed",top:"50%",left:"50%", zIndex:"1000"}}>
