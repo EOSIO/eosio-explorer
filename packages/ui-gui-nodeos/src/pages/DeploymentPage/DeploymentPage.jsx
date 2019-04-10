@@ -73,6 +73,7 @@ const DeploymentPage = (props) => {
     const [ isOpenDropDown, toggleDropDown ] = useState(false);
     const [ currentFile, setCurrentFile ] = useState("");
     const [ activeTab, setActiveTab ] = useState("1");
+    const [ currentId, setCurrentId ] = useState(defaultId);
 
     const importRef = React.createRef();
 
@@ -131,7 +132,7 @@ const DeploymentPage = (props) => {
     function deployContract(ev) {
         ev.preventDefault();
         let actualRootPath = (path.endsWith("/")) ? path : path+"/";
-        let currentPermission = list.find(account => account._id === defaultId);
+        let currentPermission = list.find(account => account._id === currentId);
         let msg = `Cannot deploy contract under owner of the system contract`;
         let fullPath = {
             source: actualRootPath+currentFile
@@ -316,14 +317,19 @@ const DeploymentPage = (props) => {
                                             <DropdownStyled className="float-left" isOpen={isOpenDropDown} toggle={()=>{toggleDropDown(!isOpenDropDown)}}>
                                                 <DropdownToggle caret>
                                                     {
-                                                        list.map((permission) => (defaultId === permission._id) && 
-                                                            `${permission.account}@${permission.permission} (default)`)
+                                                        list.map((permission) => {
+                                                            let msg = (currentId === defaultId) ? 
+                                                                `${permission.account}@${permission.permission} (default)` :
+                                                                `${permission.account}@${permission.permission}`;
+                                                            if (currentId === permission._id) 
+                                                                return msg;
+                                                        })
                                                     }
                                                 </DropdownToggle>
                                                 <DropdownMenu right>
                                                     {
                                                         list.map((permission)=> permission.private_key &&
-                                                            <DropdownItem key={permission._id} onClick={()=>{ defaultSet(permission._id)}}>
+                                                            <DropdownItem key={permission._id} onClick={()=>{setCurrentId(permission._id)}}>
                                                                 {`${permission.account}@${permission.permission}`}
                                                             </DropdownItem>)
                                                     }

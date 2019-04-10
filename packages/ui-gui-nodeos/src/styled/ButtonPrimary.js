@@ -32,4 +32,5 @@ export default styled(Button)`
     opacity: 1;
     color: #ffffff;
   }
+  
 `

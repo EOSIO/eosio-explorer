@@ -27,22 +27,24 @@ const Actionhistory = (props) => {
           <TableStyled borderless>
             <thead>
               <tr className="font-weight-bold">
-                <th width="25%">Smart Contract Name</th>
-                <th width="25%">Action Type</th>
+                <th width="20%">Smart Contract Name</th>
+                <th width="20%">Action Type</th>
                 <th width="25%">Timestamp</th>
-                <th width="25%" className="text-center">Action</th>
+                <th width="20%">Permission</th>
+                <th width="15%" className="text-center">Action</th>
               </tr>
             </thead>
             <tbody>
               {actionsList.length < 1 ?
-                <tr><td colSpan="4" className="text-center">No actions could be found for the given Smart Contract name</td></tr>
+                <tr><td colSpan="5" className="text-center">No actions could be found for the given Smart Contract name</td></tr>
               : actionsList.map((action, index)=>
                 <tr key={index}>
                   <td>{action.act.account}</td>
                   <td>{action.act.name}</td>
                   <td>{action.createdAt}</td>
+                  <td>{action.act.authorization[0].actor + "@" + action.act.authorization[0].permission}</td>
                   <td className="text-center">
-                    <CustomButton block size="sm" onClick={(e) => { e.preventDefault(); props.prefillCallback(action._id); }}>Prefill</CustomButton>
+                    <CustomButton block size="sm" onClick={(e) => { e.preventDefault(); props.prefillCallback(action); }}>Prefill</CustomButton>
                   </td>
                 </tr>
               )}

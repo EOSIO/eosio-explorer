@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import {
-  Card, CardBody, CardHeader,Row, Col, Form, FormGroup, FormFeedback, Label, Button, Input, UncontrolledAlert,
-  UncontrolledTooltip
+  Card, CardBody, Row, Col, Form, FormGroup, FormFeedback, Label, Input, UncontrolledAlert,
+  DropdownToggle, DropdownMenu, DropdownItem, Spinner, Tooltip
 } from 'reactstrap';
 
-import { pollingStart, pollingStop, actionIdSet, updateActionToPush, actionPush } from './PushactionPageReducer';
+import { actionIdSet, updateActionToPush, actionPush, fetchStart, fetchSmartContracts } from './PushactionPageReducer';
 import { CodeViewer, LoadingSpinner } from 'components';
 import useForm from 'helpers/useForm';
 import validate from './components/PushActionValidatorEngine/PushActionValidatorEngine';
@@ -13,24 +13,36 @@ import { StandardTemplate } from 'templates';
 import { defaultSet } from 'reducers/permission';
 import Actionhistory from './components/Actionhistory';
 import styled from 'styled-components';
-import { PageTitleDivStyled, CardStyled,CardHeaderStyled, TableStyled, ButtonPrimary, CheckBoxDivStyled, InputStyled} from 'styled';
+import { PageTitleDivStyled, CardStyled,CardHeaderStyled, ButtonPrimary, DropdownStyled } from 'styled';
+
+import cogoToast from 'cogo-toast';
+
+const overlayOn = {
+  position: "fixed",
+  display: "block",
+  width: "100%",
+  height: "100%",
+  top: 0,
+  left: 0,
+  backgroundColor: "rgba(0,0,0,0.5)",
+  zIndex: 999,
+  cursor: "pointer"
+}
+const overlayOff = {
+  display: "none"
+}
 
 const FirstCardStyled = styled(CardStyled)`
   border-top: solid 2px #1173a4;
 `
-const DropdownInputStyled = styled(Input)`
-  background-color: #f8f9fa;
-  height: 40px;
-
-  :focus{
-    outline: none;
-    box-shadow: none;
-    border-color: #1173a4;
+const CustomDropdown = styled(DropdownStyled)`
+  .btn-secondary {
+    width: 100%;    
+  }  
+  [disabled] {
+    pointer-events: none;
   }
-
 `
-
-let prevAction = undefined;
 
 const updateAction = (name, action, value, callback) => {
   if (name === "smartContractName") { 
@@ -47,35 +59,57 @@ const updateAction = (name, action, value, callback) => {
 
 const PushactionPage = (props) => {
 
-  useEffect(()=>{    
-    props.pollingStart();
-    return () => { props.pollingStop() }
-  }, [])
-  
-  const [ validationErrors, setValidationErrors ] = useState([]);
-  const { handleChange, handleSubmit, updateValues, errors } = useForm(function() { window.scrollTo(0, 0); props.actionPush(action); }, validate);
+  useEffect(() => {
+    let vals = [
+      { name: "smartContractName", value: action.act.account },
+      { name: "actionType", value: action.act.name },
+      { name: "payload", value: action.payload },
+      { name: "permission", value: selectedPermission._id }
+    ];
+    updateValues(vals);
+  }, [props.pushactionPage.action])
 
-  let { permission: { isFetching, data }, defaultSet, pushactionPage: { action } } = props;
+  useEffect(()=>{    
+    props.fetchStart();
+    props.fetchSmartContracts();
+    setAdditionalValues(list);
+    updateAction("", action, null, props.updateActionToPush); 
+  }, [])
+
+  let { permission: { data }, pushactionPage: { action, actionId, isPushingAction, smartContracts: { smartContractsList = [] }, isFetchingSmartContract } } = props;
   let { list, defaultId } = data;  
   
   let selectedPermission = list.find(permission => defaultId === permission._id);
   if(action.act.authorization)
     selectedPermission = list.find(p => p.account === action.act.authorization.actor && p.permission === action.act.authorization.permission) || selectedPermission;
+  
+  const { handleChange, handleSubmit, updateValues, resetValidation, setAdditionalValues, errors } = useForm(function() { window.scrollTo(0, 0); props.actionPush(action); }, validate);
 
-  if(action !== prevAction) {
-    prevAction = action;
+  const [ isOpenDropDownSmartContract, toggleDropDownSmartContract ] = useState(false);  
+  const [ isOpenDropDownActionType, toggleDropDownActionType ] = useState(false);  
+  const [ isOpenDropDownPermission, toggleDropDownPermission ] = useState(false);  
 
-    let vals = [
-      { name: "smartContractName", value: action.act.account },
-      { name: "actionType", value: action.act.name },
-      { name: "payload", value: action.payload }
-    ];
-    
-    updateValues(vals);
-  }
+  const [ isOpenAccountTooltip, toggleAccountTooltip ] = useState(false);
+  const [ isOpenActionTooltip, toggleActionTooltip ] = useState(false);
+  const [ isOpenPermissionTooltip, togglePermissionTooltip ] = useState(false);
+  const [ isOpenPayloadTooltip, togglePayloadTooltip ] = useState(false);
+
+  const [ actionList, setActionList ] = useState([]);
 
   return (
     <StandardTemplate>
+      <div style={isPushingAction ? overlayOn : overlayOff}></div>
+      {
+        isPushingAction && 
+        <div style={{position:"fixed",top:"50%",left:"50%", zIndex:"1000"}}>
+            <Spinner color="primary"
+                style={{
+                    width: "5rem",
+                    height: "5rem"
+                }}
+            />
+        </div>
+      }
       <div className="PushactionPage animated fadeIn">
         <Row>
           <Col sm="12">
@@ -90,11 +124,11 @@ const PushactionPage = (props) => {
               </CardHeaderStyled>
               <CardBody>
 
-              { isFetching ? (
+              { isFetchingSmartContract ? (
                 <LoadingSpinner />
               ) : (
               <Form className="form-horizontal" id="pushActionForm" onSubmit={ handleSubmit }>
-              {
+                {
                   action.pushSuccess &&
                   <UncontrolledAlert color="success">
                     Action pushed successfully
@@ -108,28 +142,46 @@ const PushactionPage = (props) => {
                   </CardBody>
                 </Card>
                 }
-                { validationErrors && ( validationErrors.length > 0 && 
-                  <Card className="text-white bg-danger text-center">
-                    <CardBody>
-                      <p className="mb-1">Error(s)</p>
-                      <ul className="list-unstyled mb-0">
-                        {validationErrors.map((error, index) => 
-                          <li key={index}>{error}</li>
-                        )}
-                      </ul>
-                    </CardBody>
-                  </Card>
-                )}
                 <FormGroup row>
                     <Col xs="3">
                       <Label>Smart Contract Name:</Label>
                     </Col>
                     <Col xs="9">
-                      <InputStyled type="text" id="smartContractName" name="smartContractName" placeholder="Smart Contract Name..."
-                        value={action.act.account} onChange={(e) => { updateAction(e.target.name, action, e.target.value, props.updateActionToPush); handleChange(e); } } 
-                        invalid={!!errors.smartContractName}
-                        />
-                      {
+                      <CustomDropdown id="AccountDropdown" isOpen={isOpenDropDownSmartContract} toggle={()=>{toggleDropDownSmartContract(!isOpenDropDownSmartContract)}}>
+                        <DropdownToggle caret className={errors.smartContractName && "invalid"}>{action.act.account || "Select Smart Contract"}</DropdownToggle>
+                        <DropdownMenu modifiers={{
+                            setMaxHeight: {
+                              enabled: true,
+                              fn: (data) => {
+                                return {
+                                  ...data,
+                                  styles: {
+                                    ...data.styles,
+                                    overflow: 'auto',
+                                    maxHeight: 300,
+                                  },
+                                };
+                              },
+                            },
+                          }}>
+                          {smartContractsList &&
+                            (smartContractsList).map((smartContract)=>
+                              <DropdownItem 
+                                key={smartContract._id} 
+                                onClick={(e) => {                                   
+                                  setActionList(smartContract.abi.actions); 
+                                  updateAction("smartContractName", action, smartContract.name, props.updateActionToPush); 
+                                  updateAction("actionType", action, "", props.updateActionToPush); 
+                                  handleChange(e);
+                                  resetValidation(e);
+                                }}>
+                              {smartContract.name}</DropdownItem>)}
+                        </DropdownMenu>     
+                      </CustomDropdown>
+                      
+                      {/* Hidden inputs for validation and to make sure validation messages are shown by Bootstrap  */}
+                      <Input type="hidden" id="smartContractName" name="smartContractName" value={action.act.account} onChange={(e) => { handleChange(e); } } invalid={!!errors.smartContractName} />
+                      {                        
                         errors.smartContractName && 
                         <FormFeedback invalid="true">
                           {errors.smartContractName}
@@ -142,10 +194,39 @@ const PushactionPage = (props) => {
                       <Label>Action Type:</Label>
                     </Col>
                     <Col xs="9">
-                      <InputStyled type="text" id="actionType" name="actionType" placeholder="Action Type..." value={action && (action.act && action.act.name)}
-                      onChange={(e) => { updateAction(e.target.name, action, e.target.value, props.updateActionToPush); handleChange(e); } }
-                      invalid={!!errors.actionType}
-                      />
+                      <CustomDropdown id="ActionDropdown" isOpen={isOpenDropDownActionType} toggle={()=>{toggleDropDownActionType(!isOpenDropDownActionType)}} >
+                        <DropdownToggle disabled={action.act.account === "" ? true : false}  className={errors.actionType && "invalid"} caret>
+                          {action.act.name || "Select Action Type"}
+                        </DropdownToggle>
+                        <DropdownMenu modifiers={{
+                            setMaxHeight: {
+                              enabled: true,
+                              fn: (data) => {
+                                return {
+                                  ...data,
+                                  styles: {
+                                    ...data.styles,
+                                    overflow: 'auto',
+                                    maxHeight: 300,
+                                  },
+                                };
+                              },
+                            },
+                          }}>
+                          { actionList.length > 0 &&
+                            (actionList).map((actionType)=>
+                              <DropdownItem 
+                                key={actionType.name} 
+                                onClick={(e) => {
+                                  updateAction("actionType", action, actionType.name, props.updateActionToPush); 
+                                  handleChange(e); 
+                                  resetValidation(e);
+                                }}>
+                              {actionType.name}</DropdownItem>)}
+                        </DropdownMenu>     
+                      </CustomDropdown>
+                      {/* Hidden inputs for validation and to make sure validation messages are shown by Bootstrap  */}
+                      <Input type="hidden" id="actionType" name="actionType" value={action.act.name} onChange={(e) => { handleChange(e); } } invalid={!!errors.actionType} />
                       {
                         errors.actionType && 
                         <FormFeedback invalid="true">
@@ -159,23 +240,51 @@ const PushactionPage = (props) => {
                       <Label>Permission:</Label>
                     </Col>
                     <Col xs="9">
-                      <DropdownInputStyled type="select" name="permission" id="permission" value={selectedPermission._id}
-                        onChange={(e) => { 
-                          let newPermission = list.find(p => e.target.value === p._id); 
-                          updateAction(e.target.name, action, { actor: newPermission.account, permission: newPermission.permission }, props.updateActionToPush);
-                          defaultSet(newPermission._id);
-                        }}>
-                        { list.map((permission) =>  permission.private_key &&
-                          <option key={permission._id} value={permission._id}>{permission.account}@{permission.permission}</option>
-                        )}
-                      </DropdownInputStyled>
+                      <CustomDropdown id="PermissionDropdown" isOpen={isOpenDropDownPermission} toggle={()=>{toggleDropDownPermission(!isOpenDropDownPermission)}}>
+                        <DropdownToggle className={errors.permission && "invalid"} caret>                        
+                          {(selectedPermission.account + "@" + selectedPermission.permission)}
+                        </DropdownToggle>
+                        <DropdownMenu modifiers={{
+                            setMaxHeight: {
+                              enabled: true,
+                              fn: (data) => {
+                                return {
+                                  ...data,
+                                  styles: {
+                                    ...data.styles,
+                                    overflow: 'auto',
+                                    maxHeight: 300,
+                                  },
+                                };
+                              },
+                            },
+                          }}>
+                          {(list).map((permission)=> permission.private_key &&
+                              <DropdownItem 
+                                key={permission._id} 
+                                onClick={(e) => { 
+                                  selectedPermission = list.find(p => p.account === action.act.authorization.actor && p.permission === action.act.authorization.permission) || selectedPermission;
+                                  updateAction("permission", action, { actor: permission.account, permission: permission.permission }, props.updateActionToPush);
+                                  resetValidation(e);
+                                }}>
+                              {permission.account}@{permission.permission}</DropdownItem>)}
+                        </DropdownMenu>     
+                      </CustomDropdown>  
+                      {/* Hidden inputs for validation and to make sure validation messages are shown by Bootstrap  */}
+                      <Input type="hidden" id="permission" name="permission" value={selectedPermission._id} onChange={(e) => { handleChange(e); } } invalid={!!errors.permission} />
+                      {
+                        errors.permission && 
+                        <FormFeedback invalid="true">
+                          {errors.permission}
+                        </FormFeedback>
+                      }
                     </Col>
                   </FormGroup>
-                  <FormGroup row>
+                  <FormGroup row id="PayloadItem">
                     <Col xs="12">
                       <Label>Payload:</Label>
                     </Col>
-                    <Col xs="12" id="PayloadItem">
+                    <Col xs="12">
                       <CodeViewer readOnly={false} height="250" value={action.payload} className={errors.payload && "invalid"}
                         onChange={(newVal) => { updateAction("payload", action, newVal, props.updateActionToPush); }} />
                       <Input type="hidden" id="payload" name="payload" value={action.payload || ""} onChange={(e) => { handleChange(e); } } invalid={!!errors.payload} />
@@ -192,37 +301,46 @@ const PushactionPage = (props) => {
                       <ButtonPrimary type="submit">Push</ButtonPrimary>
                     </Col>
                   </FormGroup>
+                  <Tooltip placement="bottom" target="PayloadItem"
+                    isOpen={isOpenPayloadTooltip}
+                    toggle={() => togglePayloadTooltip(!isOpenPayloadTooltip)}
+                    delay={{show: 0, hide: 0}}
+                    trigger="hover focus"
+                    autohide={true}
+                    >
+                    Finally, an object containing the parameters of the action you selected
+                    must be typed in this payload text area.
+                  </Tooltip>
+                  <Tooltip placement="left" target="PermissionDropdown"
+                    isOpen={isOpenPermissionTooltip}
+                    toggle={() => togglePermissionTooltip(!isOpenPermissionTooltip)}
+                    delay={{show: 0, hide: 0}}
+                    trigger="hover focus"
+                    autohide={true}
+                    >
+                    Also, select the permission which should authorize and sign the action
+                  </Tooltip>
+                  <Tooltip placement="left" target="AccountDropdown"
+                    isOpen={isOpenAccountTooltip}
+                    toggle={() => toggleAccountTooltip(!isOpenAccountTooltip)}
+                    delay={{show: 0, hide: 0}}
+                    trigger="hover focus"
+                    autohide={true}
+                    >
+                    Firstly, select the name of the smart contract here
+                  </Tooltip>
+                  <Tooltip placement="left" target="ActionDropdown"
+                    isOpen={isOpenActionTooltip}
+                    toggle={() => toggleActionTooltip(!isOpenActionTooltip)}
+                    delay={{show: 0, hide: 0}}
+                    trigger="hover focus"
+                    autohide={true}
+                    >
+                    After selecting the name of the smart contract, you can choose the name of the action you plan to push here
+                  </Tooltip>
                 </Form>
-              )}
+              )} 
               </CardBody>
-              <UncontrolledTooltip placement="bottom" target="PayloadItem"
-                delay={{show: 0, hide: 0}}
-                trigger="hover focus"
-                autohide={true}
-                >
-                Contains an editable object which passes the parameters of the action to the blockchain
-              </UncontrolledTooltip>
-              <UncontrolledTooltip placement="left" target="permission"
-                delay={{show: 0, hide: 0}}
-                trigger="hover"
-                autohide={true}
-                >
-                Select the permission which should authorize and sign the action
-              </UncontrolledTooltip>
-              <UncontrolledTooltip placement="left" target="smartContractName"
-                delay={{show: 0, hide: 0}}
-                trigger="hover focus"
-                autohide={true}
-                >
-                Type the name of the smart contract here
-              </UncontrolledTooltip>
-              <UncontrolledTooltip placement="left" target="actionType"
-                delay={{show: 0, hide: 0}}
-                trigger="hover focus"
-                autohide={true}
-                >
-                Type the name of the action you plan to push here
-              </UncontrolledTooltip>
             </FirstCardStyled>
           </Col>
         </Row>
@@ -233,7 +351,18 @@ const PushactionPage = (props) => {
                 Action History Viewer
               </CardHeaderStyled>
               <CardBody>
-                <Actionhistory prefillCallback={(act_id) => { props.actionIdSet(act_id); setValidationErrors([]); window.scrollTo(0, 0); }} />
+                <Actionhistory prefillCallback={(action) => { 
+                  props.actionIdSet(action._id);                  
+                  setActionList(smartContractsList.find(smartContract => smartContract.name === action.act.account).abi.actions);   
+                  resetValidation();
+                  if (actionId !== action._id)
+                    cogoToast.success(`Prefilled action: ${action.act.name} from ${action.act.account}`, {
+                      heading: "Action Prefilled",
+                      position: "bottom-center",
+                      hideAfter: 3.5
+                    });
+                  window.scrollTo(0, 0);
+                }} />
               </CardBody>
             </CardStyled>
           </Col>
@@ -250,11 +379,11 @@ export default connect(
   }),
   {
     defaultSet,
-    pollingStart,
-    pollingStop,    
+    fetchStart,
     actionIdSet,
     updateActionToPush,
-    actionPush
+    actionPush,
+    fetchSmartContracts
   }
 
-)(PushactionPage);
+)(PushactionPage );
