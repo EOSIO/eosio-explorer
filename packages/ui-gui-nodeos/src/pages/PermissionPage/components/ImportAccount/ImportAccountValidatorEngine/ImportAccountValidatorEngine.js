@@ -6,13 +6,13 @@ export default function validate (values) {
     if (!values.ownerPrivate || values.ownerPrivate.length === 0) {
         errors.ownerPrivate = 'Owner private key is required';
     } else if (!ecc.isValidPrivate(values.ownerPrivate)) {
-        errors.ownerPrivate = 'Owner private key is not valid WIF';
+        errors.ownerPrivate = 'Owner private key is not valid WIF (Wallet Import Format)';
     }
 
     if (!values.activePrivate || values.activePrivate.length === 0) {
         errors.activePrivate = 'Active private key is required';
     } else if (!ecc.isValidPrivate(values.activePrivate)) {
-        errors.activePrivate = 'Active private key is not valid WIF';
+        errors.activePrivate = 'Active private key is not valid WIF (Wallet Import Format)';
     }
 
     return errors;

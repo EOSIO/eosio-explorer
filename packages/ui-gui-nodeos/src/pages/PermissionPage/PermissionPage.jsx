@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { 
-  CardBody, ButtonGroup, Row, Col, UncontrolledTooltip
+  CardBody, ButtonGroup, Row, Col, Tooltip
 } from 'reactstrap';
 import cogoToast from 'cogo-toast';
 
 import { StandardTemplate } from 'templates';
 import { connect } from 'react-redux';
 
+import BasicModal from 'components/BasicModal';
 import CreateAccount from './components/CreateAccount';
 import Permissionlist from './components/Permissionlist';
 import ImportAccount from './components/ImportAccount';
@@ -14,7 +15,7 @@ import ImportAccount from './components/ImportAccount';
 import { panelSelect } from './PermissionPageReducer';
 import { fetchStart, accountClear } from 'reducers/permission';
 import styled from 'styled-components';
-import { PageTitleDivStyled, CardStyled, ButtonPrimary, ButtonSecondary, InputStyled} from 'styled';
+import { PageTitleDivStyled, CardStyled, ButtonPrimary, ButtonSecondary } from 'styled';
 
 const FirstCardStyled = styled(CardStyled)`
   border-top: solid 2px #1173a4;
@@ -28,8 +29,29 @@ class PermissionPage extends Component {
 
   constructor(props) {
     super(props);
+
+    this.state = {
+      resetTooltip: false,
+      createTooltip: false,
+      modalIsOpen: false
+    }
+
     props.panelSelect("permission-list");
+    window.scrollTo(0,0);
+
   }
+
+  toggleResetTooltip () {
+    this.setState({
+      resetTooltip: !this.state.resetTooltip
+    })
+  };
+
+  toggleModal () {
+    this.setState({
+      modalIsOpen: !this.state.modalIsOpen
+    })
+  };
 
   render() {
 
@@ -43,6 +65,11 @@ class PermissionPage extends Component {
         heading: 'Account Storage Reinitialization',
         position: 'bottom-center'
       });
+    }
+
+    // Change panel 
+    function changePanel (panel) {
+      panelSelect(panel);
     }
     
     return (
@@ -62,21 +89,26 @@ class PermissionPage extends Component {
                   <CardBody>
                       <Row className="clearfix">
                         <Col sm={12}>
-                          { panel === "permission-list"
-                            ? <ButtonGroup className="float-right">
-                                <ButtonPrimary id="CreateAccountBtn" onClick={()=>{panelSelect("create-account")}}>Create Account</ButtonPrimary>
-                                <CustomButton id="ResetPermissionBtn" onClick={()=>reInitialize()}>Reset All Permissions</CustomButton>
-                              </ButtonGroup>
-                            : <ButtonPrimary className="float-right" onClick={()=>{panelSelect("permission-list")}}>Back</ButtonPrimary>
-                          }
-                          <UncontrolledTooltip placement="top" target="ResetPermissionBtn">
-                            All private keys are stored locally on your machine. Clicking this button will reinitialize 
-                            your local storage into the app's default state before fetching accounts from your 
-                            current MongoDB instance
-                          </UncontrolledTooltip>
-                          <UncontrolledTooltip placement="top" target="CreateAccountBtn">
-                            Go to a panel that will generate private and public keys for your account
-                          </UncontrolledTooltip>
+                          <ButtonGroup className="float-right"
+                            style={{display: (panel === "permission-list") ? 'block' : 'none'}}>
+                                <ButtonPrimary id="CreateAccountBtn" onClick={()=>{changePanel("create-account")}}>Create Account</ButtonPrimary>
+                                <CustomButton id="ResetPermissionBtn" onClick={()=>this.toggleModal()}>Reset All Permissions</CustomButton>
+                          </ButtonGroup>
+                          <ButtonPrimary className="float-right" onClick={()=>{changePanel("permission-list")}}
+                            style={{display: (panel === "permission-list") ? 'none' : 'block'}}
+                            >
+                            Back
+                          </ButtonPrimary>
+                          <Tooltip placement="top" target="ResetPermissionBtn"
+                            isOpen={this.state.resetTooltip && panel === "permission-list"}
+                            toggle={()=>this.toggleResetTooltip()}
+                            delay={{show: 0, hide: 0}}
+                            trigger="hover"
+                            autohide={true}>
+                            All private keys are stored locally on your machine. Clicking this button will
+                            revert the local storage to its default state. This means all your
+                            currently stored private keys will be cleared!
+                          </Tooltip>
                         </Col>
                       </Row>
                       <br/>
@@ -99,6 +131,17 @@ class PermissionPage extends Component {
           
           
         </div>
+        {
+          this.state.modalIsOpen && (
+            <BasicModal header="Confirmation to Reset all Permissions"
+              toggle={()=>this.toggleModal()}
+              open={this.state.modalIsOpen}
+              handleConfirm={()=>{this.toggleModal(); reInitialize();}}
+              >
+              Are you sure you want to reset all permissions in the local storage?
+            </BasicModal>
+          )
+        }
       </StandardTemplate>
     );
   }

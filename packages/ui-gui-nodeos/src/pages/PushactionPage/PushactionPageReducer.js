@@ -51,8 +51,8 @@ const fetchEpic = (action$, state$) => action$.pipe(
   ofType(FETCH_START),
   mergeMap(action => {
     let { value: { pushactionPage: { actionId } } } = state$;
-    let getActionQuery = actionId ? "?action_id=" + actionId : "";
-
+    let getActionQuery = (actionId.block_num && actionId.global_sequence) ? "?block_num=" + actionId.block_num + "&global_sequence=" + actionId.global_sequence : "";
+    
     // If the actionId has been set by a user clicking "Prefill"
     if (getActionQuery) {
       // First, get the action history list
