@@ -19,7 +19,9 @@ const ActiondetailPage = (props) => {
 
   useEffect(()=>{
     let { router: { location: { pathname } } } = props;
-    props.paramsSet({id: pathNameConsumer(pathname)});
+    let urlValues = pathname.split("/");
+    props.paramsSet({block_num: urlValues[2]});
+    props.paramsSet({global_sequence: urlValues[3]});
     props.fetchStart();
   }, [])
 

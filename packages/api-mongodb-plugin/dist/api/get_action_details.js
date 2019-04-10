@@ -40,22 +40,34 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
 var actions_1 = __importDefault(require("../models/actions"));
-var mongoose_1 = __importDefault(require("mongoose"));
 exports.default = (function (query) { return __awaiter(_this, void 0, void 0, function () {
-    var action_id, result, query_gen, err_1;
+    var block_num, global_sequence, result, max_int32_value, query_gen, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                action_id = query.action_id;
+                block_num = query.block_num, global_sequence = query.global_sequence;
                 result = void 0;
+                max_int32_value = 2147483647;
                 query_gen = actions_1.default
                     .find({});
-                if (action_id === undefined || action_id.trim() === "") {
-                    throw ("invalid action id");
+                if (block_num === undefined || block_num.trim() === "") {
+                    throw ("invalid block number");
+                }
+                else if (global_sequence === undefined || global_sequence.trim() === "") {
+                    throw ("invalid sequence number");
                 }
                 else {
-                    query_gen.where({ "_id": mongoose_1.default.Types.ObjectId(action_id) });
+                    //Check if the number is greater than max int32 value. 
+                    //After this value mongodb converts int32 type to string
+                    block_num = (parseInt(block_num) > max_int32_value) ?
+                        block_num : parseInt(block_num);
+                    global_sequence = (parseInt(global_sequence) > max_int32_value) ?
+                        global_sequence : parseInt(global_sequence);
+                    query_gen.and([
+                        { "block_num": block_num },
+                        { "receipt.global_sequence": global_sequence }
+                    ]);
                 }
                 return [4 /*yield*/, query_gen.exec()];
             case 1:

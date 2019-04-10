@@ -75,7 +75,7 @@ const Actionlist = (props) => {
               {payload.length < 1 
                 ? <tr><td colSpan="3" className="text-center">No actions could be found for the given Smart Contract name</td></tr>
                 : payload.map((action, index)=>
-                  <tr onClick={evt=>props.push(`/action/${action._id}`)} key={index}>
+                  <tr onClick={evt=>props.push(`/action/${action.block_num}/${action.receipt.global_sequence}`)} key={index}>
                     <td>{action.act.account}</td>
                     <td>{action.act.name}</td>
                     <td>{action.createdAt}</td>
