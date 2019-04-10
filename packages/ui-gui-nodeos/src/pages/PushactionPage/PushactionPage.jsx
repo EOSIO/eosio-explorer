@@ -73,7 +73,7 @@ const PushactionPage = (props) => {
 
   return (
     <StandardTemplate>
-      <OverlayStyled display={isPushingAction ? 'block' : 'none'}></OverlayStyled>
+      <OverlayStyled isLoading={isPushingAction}></OverlayStyled>
       {
         isPushingAction && 
         <div style={{position:"fixed",top:"50%",left:"50%", zIndex:"1000"}}>
