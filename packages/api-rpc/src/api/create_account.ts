@@ -4,8 +4,8 @@ import { TextDecoder, TextEncoder } from 'text-encoding';
 
 export default async (query:any) => {
   try{
-    let { endpoint, creator_private_key, creator_account_name,  new_account_name, new_account_owner_key, new_account_active_key } = query;
-    
+    let { endpoint, private_key: creator_private_key, actor: creator_account_name, permission: creator_account_permission, new_account_name, new_account_owner_key, new_account_active_key } = query;
+
     const rpc = new JsonRpc(endpoint);
     const signatureProvider = new JsSignatureProvider([creator_private_key]);
     const api = new Api({ rpc, signatureProvider, textDecoder: new TextDecoder(), textEncoder: new TextEncoder() });
@@ -16,7 +16,7 @@ export default async (query:any) => {
         name: 'newaccount',
         authorization: [{
           actor: creator_account_name,
-          permission: 'active',
+          permission: creator_account_permission,
         }],
         data: {
           creator: creator_account_name,
@@ -45,7 +45,7 @@ export default async (query:any) => {
       blocksBehind: 3,
       expireSeconds: 30,
     });
-    
+
     return result;
 
   }catch(e){

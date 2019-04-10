@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { connect } from 'react-redux';
 import { Row, Col } from 'reactstrap';
@@ -44,6 +44,7 @@ const Actionhistory = (props) => {
                   <td>{action.createdAt}</td>
                   <td>{action.act.authorization[0].actor + "@" + action.act.authorization[0].permission}</td>
                   <td className="text-center">
+                    {/* When the prefill button is clicked, call the prefill callback supplied by the parent component */}
                     <CustomButton block size="sm" onClick={(e) => { e.preventDefault(); props.prefillCallback(action); }}>Prefill</CustomButton>
                   </td>
                 </tr>
