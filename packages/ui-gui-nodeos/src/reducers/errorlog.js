@@ -6,7 +6,7 @@
 
 import { combineReducers } from 'redux';
 import { interval, of } from 'rxjs';
-import { mergeMap, mapTo, map, takeUntil, catchError, delay } from 'rxjs/operators';
+import { mergeMap, mapTo, filter } from 'rxjs/operators';
 
 import { combineEpics, ofType } from 'redux-observable';
 
@@ -18,18 +18,16 @@ const actionPrefix = `errorlog/`;
 //Action Type
 const LOG_START = actionPrefix + `LOG_START`;
 const LOG_RESET = actionPrefix + `LOG_RESET`;
-const PANEL_OPEN = actionPrefix + `PANEL_OPEN`;
-const PANEL_CLOSE = actionPrefix + `PANEL_CLOSE`;
+const PANEL_SET = actionPrefix + `PANEL_SET`;
 
 //Action Creator
 export const logStart = () => ({ type: LOG_START });
 export const logReset = () => ({ type: LOG_RESET });
-export const panelOpen = () => ({ type: PANEL_OPEN });
-export const panelClose = () => ({ type: PANEL_CLOSE });
+export const panelSet = (status) => ({ type: PANEL_SET, status });
 
 //Epic
 const panelOpenEpic = action$ => action$.pipe(
-  ofType(PANEL_OPEN),
+  filter(action => action.type === PANEL_SET && action.status === "OPEN"),
   mapTo(logReset()),
 );
 
@@ -44,27 +42,27 @@ export const combinedEpic = combineEpics(
 //   unseen: 0
 // }
 
-const dataReducer = (state={ unseen: 0, isPanelOpen: false }, action) => {
+const dataReducer = (state={ unseen: 0, status: "CLOSE" }, action) => {
   switch (action.type) {
     case LOG_START:
       return {
         ...state,
-        unseen: !state.isPanelOpen ? state.unseen + 1 : 0
+        unseen: state.status !== "OPEN" ? state.unseen + 1 : 0,
+        status: state.status !== "OPEN" ? "MINIMISE" : "OPEN",
       };
     case LOG_RESET:
       return {
         ...state,
         unseen: 0
       };
-    case PANEL_OPEN:
+    case PANEL_SET:
       return {
         ...state,
-        isPanelOpen: true
-      };
-    case PANEL_CLOSE:
-      return {
-        ...state,
-        isPanelOpen: false
+        status: action.status !== "UNOPEN"
+                  ? action.status
+                  : state.status === "OPEN"
+                    ? "MINIMISE"
+                    : state.status
       };
     default:
       return state;
