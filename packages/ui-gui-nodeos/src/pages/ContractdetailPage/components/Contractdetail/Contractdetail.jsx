@@ -10,7 +10,7 @@ import { push } from 'connected-react-router'
 import { Row, Col, CardBody, Input } from 'reactstrap';
 import styled from 'styled-components';
 import { CodeViewer } from 'components';
-import { CardStyled, CardHeaderStyled, ButtonPrimary, InputStyled} from 'styled';
+import { CardStyled, CardHeaderStyled, ButtonPrimary, ButtonSecondary, ErrorDivStyled, InputStyled} from 'styled';
 
 const FirstCardStyled = styled(CardStyled)`
   border-top: solid 2px #1173a4;
@@ -32,6 +32,10 @@ const DivMessageStyled = styled.div`
   font-weight: bold;
   padding-bottom: 20px;
 `
+const CustomErrorButton = styled(ButtonSecondary)`
+  width: auto;
+`
+
 
 const Contractdetail = (props) => {
 
@@ -89,11 +93,11 @@ const Contractdetail = (props) => {
 
       {showDetailsSection 
         ? error
-          ? <button onClick={props.fetchStart}>{JSON.stringify(error)} Click to Reload.</button>
+          ? <CustomErrorButton onClick={props.fetchStart}>Connection error, click to reload</CustomErrorButton>
           : isFetching
             ? `loading...`
             : !(payload.length !== 0 && payload[0].hasOwnProperty("abi") === true)
-              ? `No Smart Contract found with the name: ${params.account_name}`
+              ? <ErrorDivStyled>No Smart Contract found with Smart Contract Name ${params.account_name}</ErrorDivStyled>
               : <div>
                   <Row> 
                     <Col sm="12">

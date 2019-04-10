@@ -3,7 +3,7 @@ import { CardBody, Col, Row } from 'reactstrap';
 import { connect } from 'react-redux';
 import { push } from 'connected-react-router'
 import styled from 'styled-components';
-import { CardStyled,CardHeaderStyled, TableStyled, ButtonPrimary, CheckBoxDivStyled, InputStyled} from 'styled';
+import { CardStyled,CardHeaderStyled, TableStyled, ButtonPrimary, ButtonSecondary, CheckBoxDivStyled, InputStyled} from 'styled';
 
 import { pollingStart, pollingStop, filterToggle } from './BlocklistReducer';
 
@@ -22,6 +22,9 @@ const DivFlexStyled = styled.div`
   display: flex;
   justify-content: flex-end;
   padding-bottom: 20px;
+`
+const CustomErrorButton = styled(ButtonSecondary)`
+  width: auto;
 `
 
 const Blocklist = (props) => {
@@ -81,7 +84,7 @@ const Blocklist = (props) => {
           </Row>
           <div>
             { error
-              ? <button onClick={props.pollingStart}>{JSON.stringify(error)} Click to Reload.</button>
+              ? <CustomErrorButton onClick={props.pollingStart}>Connection error, click to reload</CustomErrorButton>
               : isFetching
                 ? `loading...`
                 : <TableStyled borderless>

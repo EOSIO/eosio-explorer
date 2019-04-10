@@ -9,7 +9,7 @@ import { push } from 'connected-react-router'
 import { CardBody, Col, Row, Form, FormGroup } from 'reactstrap';
 import styled from 'styled-components';
 import { CodeViewer } from 'components';
-import { CardStyled, CardHeaderStyled, ButtonPrimary, InputStyled} from 'styled';
+import { CardStyled, CardHeaderStyled, ButtonPrimary, InputStyled, ErrorDivStyled } from 'styled';
 
 
 const FirstCardStyled = styled(CardStyled)`
@@ -29,9 +29,6 @@ const DivFlexStyled = styled.div`
 `
 const CustomButton = styled(ButtonPrimary)`
   width: 170px;
-`
-const ErrorDiv = styled.div`
-  font-weight: bold;
 `
 
 const Accountdetail = (props) => {
@@ -88,7 +85,7 @@ const Accountdetail = (props) => {
       <div>
         { showDetailsSection                     
           ? error
-            ? <ErrorDiv>No account found with Account name: {params.account_name}</ErrorDiv>
+            ? <ErrorDivStyled>No account found with Account Name {params.account_name}</ErrorDivStyled>
             : isFetching
               ? `loading...`
               : (Object.keys(payload).length === 0 && payload.constructor === Object) 
