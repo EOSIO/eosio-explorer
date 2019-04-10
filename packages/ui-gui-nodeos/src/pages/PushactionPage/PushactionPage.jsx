@@ -367,10 +367,10 @@ const PushactionPage = (props) => {
                 <Actionhistory prefillCallback={(action) => {
                   // When "Prefill" is clicked, set the actionId variable in the reducer to the _id of the selected
                   // action and rebuild the Action Type list with actions available to the smart contract of this action.
-                  props.actionIdSet(action._id);
+                  props.actionIdSet({ block_num: action.block_num, global_sequence: action.receipt.global_sequence });
                   setActionList(smartContractsList.find(smartContract => smartContract.name === action.act.account).abi.actions);
                   resetValidation();
-                  if (actionId !== action._id)
+                  if (actionId.block_num !== action.block_num)
                     cogoToast.success(`Prefilled action: ${action.act.name} from ${action.act.account}`, {
                       heading: "Action Prefilled",
                       position: "bottom-center",
