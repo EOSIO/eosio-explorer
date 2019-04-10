@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import Terminal from 'terminal-in-react';
 import { CardStyled,CardHeaderStyled, TableStyled, ButtonPrimary, CheckBoxDivStyled, InputStyled} from 'styled';
 
-import { panelOpen, panelClose } from 'reducers/errorlog';
+import { panelSet } from 'reducers/errorlog';
 
 class ConsoleLogger extends Component {
 
@@ -38,20 +38,35 @@ class ConsoleLogger extends Component {
   handleClickOutside(event) {
     if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
       // alert('You clicked outside of me!');
-      this.props.panelClose();
+      this.props.panelSet("UNOPEN");
     }
   }
 
   render(){
     let { errorlog } = this.props;
-    let { data: {unseen, isPanelOpen }} = errorlog;
+    let { data: { unseen, status }} = errorlog;
 
     return (
-      <div ref={this.setWrapperRef} className={`ConsoleLogger ${isPanelOpen?`active`:``}`}>
+      <div ref={this.setWrapperRef} className={`ConsoleLogger ${ status.toLowerCase() }`}>
 
-        <CardHeaderStyled className="console-title" onClick={this.props.panelOpen}>
+        <CardHeaderStyled
+          className="console-title"
+          onClick={()=>{
+            status !== "OPEN"
+              ? this.props.panelSet("OPEN")
+              : this.props.panelSet("MINIMISE")
+          }}
+        >
           <div>
-            <span>Errors</span>
+            <div className="left-section">
+              <i className="fa fa-times-circle" onClick={(e)=>{e.stopPropagation(); this.props.panelSet("CLOSE")}}></i>
+              {
+                status === "OPEN"
+                  ? <i className="fa fa-arrow-circle-down"></i>
+                  : <i className="fa fa-arrow-circle-up"></i>
+              }
+              <span>Errors</span>
+            </div>
             { !!unseen && <span className="badge">{unseen}</span> }
           </div>
         </CardHeaderStyled>
@@ -75,8 +90,7 @@ export default connect(
     errorlog
   }),
   {
-    panelOpen,
-    panelClose,
+    panelSet,
   }
 
 )(ConsoleLogger);
