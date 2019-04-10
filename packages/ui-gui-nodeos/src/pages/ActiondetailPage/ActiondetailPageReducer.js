@@ -24,23 +24,12 @@ export const fetchFulfilled = payload => ({ type: FETCH_FULFILLED, payload });
 export const fetchRejected = ( payload, error ) => ({ type: FETCH_REJECTED, payload, error });
 export const paramsSet = (params) => ({ type: PARAMS_SET, params });
 
-
-const mapParams = (params) => {
-  let newParams = {};
-  Object.keys(params).map(function(key, index) {
-    let newKey = key === "id" ? "action_id" : key;
-    newParams[newKey] = params[key];
-  });
-  return newParams;
-};
-
 //Epic
 const fetchEpic = ( action$, state$ ) => action$.pipe(
   ofType(FETCH_START),
   mergeMap(action =>{
     let { value: { actiondetailPage: { params } } } = state$;
-    let newParams = paramsToQuery(mapParams(params));
-
+    let newParams = paramsToQuery(params);
     return apiMongodb(`get_action_details${newParams}`).pipe(
       map(res => fetchFulfilled(res.response)),
       catchError(error => {
