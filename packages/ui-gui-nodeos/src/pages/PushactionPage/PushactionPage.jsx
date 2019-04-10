@@ -13,22 +13,7 @@ import { StandardTemplate } from 'templates';
 import { defaultSet } from 'reducers/permission';
 import Actionhistory from './components/Actionhistory';
 import styled from 'styled-components';
-import { PageTitleDivStyled, CardStyled, CardHeaderStyled, ButtonPrimary, DropdownStyled } from 'styled';
-
-const overlayOn = {
-  position: "fixed",
-  display: "block",
-  width: "100%",
-  height: "100%",
-  top: 0,
-  left: 0,
-  backgroundColor: "rgba(0,0,0,0.5)",
-  zIndex: 999,
-  cursor: "pointer"
-}
-const overlayOff = {
-  display: "none"
-}
+import { PageTitleDivStyled, CardStyled,CardHeaderStyled, ButtonPrimary, DropdownStyled, OverlayStyled } from 'styled';
 
 const FirstCardStyled = styled(CardStyled)`
   border-top: solid 2px #1173a4;
@@ -116,7 +101,7 @@ const PushactionPage = (props) => {
 
   return (
     <StandardTemplate>
-      <div style={isPushingAction ? overlayOn : overlayOff}></div>
+      <OverlayStyled display={isPushingAction ? 'block' : 'none'}></OverlayStyled>
       {
         isPushingAction &&
         <div style={{ position: "fixed", top: "50%", left: "50%", zIndex: "1000" }}>
