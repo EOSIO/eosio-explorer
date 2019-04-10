@@ -72,7 +72,7 @@ const CreateAccount = (props) => {
           error         ? <Button onClick={props.fetchStart}>Retry Generation</Button>
           : <>
               <CardStyled>
-                <OverlayStyled display={isFetching || isSubmitting ? 'block' : 'none'}></OverlayStyled>
+                <OverlayStyled isLoading={isFetching || isSubmitting}></OverlayStyled>
                 {
                     (isSubmitting || isFetching) &&
                         <div style={{position:"fixed",top:"50%",left:"50%", zIndex:"1000"}}>

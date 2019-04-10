@@ -166,7 +166,7 @@ const DeploymentPage = (props) => {
 
     return (
         <StandardTemplate>
-            <OverlayStyled display={isProcessing ? 'block' : 'none'}></OverlayStyled>
+            <OverlayStyled isLoading={isProcessing}></OverlayStyled>
             {
                 isProcessing &&
                     <div style={{position:"fixed",top:"50%",left:"50%", zIndex:"1000"}}>
