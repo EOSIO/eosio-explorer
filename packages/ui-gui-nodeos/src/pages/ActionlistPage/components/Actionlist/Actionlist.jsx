@@ -1,12 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { connect } from 'react-redux';
-import { Button, Row, Col, CardTitle, Form } from 'reactstrap';
+import { Row, Col, CardTitle, Form } from 'reactstrap';
 import styled from 'styled-components';
 import { push } from 'connected-react-router'
-import { pollingStart, pollingStop, smartContractNameSearch } from './ActionlistReducer';
-import { LoadingSpinner } from 'components';
-import { TableStyled, ButtonPrimary, InputStyled, ButtonSecondary} from 'styled';
+import { pollingStart, pollingStop, smartContractNameSearch, recordsUpdate } from './ActionlistReducer';
+import { LoadingSpinner, LimitSelectDropdown } from 'components';
+import { TableStyled, ButtonPrimary, ButtonSecondary, InputStyled } from 'styled';
 
 const FormStyled = styled(Form)`
   display: flex;
@@ -31,7 +31,7 @@ const Actionlist = (props) => {
     return () => { props.pollingStop() }
   }, [])
 
-  let { actionlist: { isFetching, data, smartContractName } } = props;
+  let { actionlist: { isFetching, data, smartContractName, records } } = props;
   let { payload = [], error } = data;
 
   return (
@@ -63,25 +63,34 @@ const Actionlist = (props) => {
         : isFetching ? (
           <LoadingSpinner />
         ) : (
-          <TableStyled borderless>
-            <thead>
-              <tr>
-                <th width="33%">Smart Contract Name</th>
-                <th width="33%">Action Type</th>
-                <th width="34%">Timestamp</th>
-              </tr>
-            </thead>
-            <tbody>
-              {payload.length < 1 
-                ? <tr><td colSpan="3" className="text-center">No actions found for the Smart Contract Name</td></tr>
-                : payload.map((action, index)=>
-                  <tr onClick={evt=>props.push(`/action/${action.block_num}/${action.receipt.global_sequence}`)} key={index}>
-                    <td>{action.act.account}</td>
-                    <td>{action.act.name}</td>
-                    <td>{action.createdAt}</td>
-                  </tr>)}
-            </tbody>
-          </TableStyled>          
+          <Row>
+            <Col xs="12">
+              <TableStyled borderless>
+                <thead>
+                  <tr>
+                    <th width="33%">Smart Contract Name</th>
+                    <th width="33%">Action Type</th>
+                    <th width="34%">Timestamp</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {payload.length < 1 
+                    ? <tr><td colSpan="3" className="text-center">No actions found for the Smart Contract Name</td></tr>
+                    : payload.map((action, index)=>
+                      <tr onClick={evt=>props.push(`/action/${action.block_num}/${action.receipt.global_sequence}`)} key={index}>
+                        <td>{action.act.account}</td>
+                        <td>{action.act.name}</td>
+                        <td>{action.createdAt}</td>
+                      </tr>)}
+                </tbody>
+              </TableStyled>
+            </Col>
+            {payload.length > 0 &&
+              <Col xs="12" className="text-right">
+                <LimitSelectDropdown limit={records} onChange={(limit) => { props.recordsUpdate(limit) }} />
+              </Col>
+            }
+          </Row>
         )}
         </Col>
       </Row>
@@ -97,6 +106,7 @@ export default connect(
     pollingStart,
     pollingStop,
     smartContractNameSearch,
+    recordsUpdate,
     push
   }
 

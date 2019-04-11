@@ -13,6 +13,7 @@ import apiMongodb from 'services/api-mongodb';
 import apiRpc from 'services/api-rpc';
 import { CONNECT_START } from 'reducers/endpoint';
 import { errorLog } from 'helpers/error-logger';
+import paramsToQuery from 'helpers/params-to-query';
 
 // IMPORTANT
 // Must modify action prefix since action types must be unique in the whole app
@@ -31,6 +32,7 @@ const ACTION_PUSH_REJECTED = actionPrefix + `ACTION_PUSH_REJECTED`;
 const FETCH_SMART_CONTRACTS = actionPrefix + `FETCH_SMART_CONTRACTS`;
 const FETCH_SMART_CONTRACTS_FULFILLED = actionPrefix + `FETCH_SMART_CONTRACTS_FULFILLED`;
 const FETCH_SMART_CONTRACTS_REJECTED = actionPrefix + `FETCH_SMART_CONTRACTS_REJECTED`;
+const RECORDS_UPDATE = actionPrefix + `RECORDS_UPDATE`;
 
 //Action Creator
 export const fetchStart = () => ({ type: FETCH_START });
@@ -45,18 +47,29 @@ export const actionPushRejected = (payload, error) => ({ type: ACTION_PUSH_REJEC
 export const fetchSmartContracts = () => ({ type: FETCH_SMART_CONTRACTS });
 export const fetchFulfilledSmartContract = (payload, error) => ({ type: FETCH_SMART_CONTRACTS_FULFILLED, payload, error });
 export const fetchRejectedSmartContract = (payload, error) => ({ type: FETCH_SMART_CONTRACTS_REJECTED, payload, error });
+export const recordsUpdate = (count) => ({ type: RECORDS_UPDATE, recordsCount: count });
 
 //Epic
 const fetchEpic = (action$, state$) => action$.pipe(
   ofType(FETCH_START),
   mergeMap(action => {
-    let { value: { pushactionPage: { actionId } } } = state$;
-    let getActionQuery = (actionId.block_num && actionId.global_sequence) ? "?block_num=" + actionId.block_num + "&global_sequence=" + actionId.global_sequence : "";
-    
+    let { value: { pushactionPage: { actionId, records } } } = state$;
+    let actionHistoryParams = { records_count: records };
+    let getActionParams = { };
+
+    // Check that we have block number and global sequence. Global sequence can be equal to 0 so we have to account for that here as well
+    if(actionId.block_num && (actionId.global_sequence === 0 || actionId.global_sequence)) {
+      getActionParams.block_num = actionId.block_num;
+      getActionParams.global_sequence = actionId.global_sequence;
+    }
+
+    let actionHistoryQuery = paramsToQuery(actionHistoryParams);
+    let getActionQuery = paramsToQuery(getActionParams);
+
     // If the actionId has been set by a user clicking "Prefill"
     if (getActionQuery) {
       // First, get the action history list
-      return apiMongodb(`get_actions`).pipe(
+      return apiMongodb(`get_actions${actionHistoryQuery}`).pipe(
         mergeMap(actionsListResponse => {
           // And then, use the actionId to get the details of the selected action
           return apiMongodb(`get_action_details${getActionQuery}`)
@@ -68,7 +81,10 @@ const fetchEpic = (action$, state$) => action$.pipe(
               ]),
               catchError(error => {
                 errorLog(error);
-                return of(fetchRejected(error.response, { status: error.status }))
+                return of(
+                  fetchFulfilled(actionsListResponse.response),
+                  fetchRejected(error.response, { status: error.status })
+                )
               })
             );
         }),
@@ -79,7 +95,7 @@ const fetchEpic = (action$, state$) => action$.pipe(
       )
     } else {
       // If no actionId is present, just get the action history list
-      return apiMongodb(`get_actions`).pipe(
+      return apiMongodb(`get_actions${actionHistoryQuery}`).pipe(
         // Send it to the data reducer
         map(actionsListResponse => fetchFulfilled(actionsListResponse.response)),
         catchError(error => {
@@ -120,6 +136,11 @@ const actionPushFulfilledEpic = action$ => action$.pipe(
   mapTo(actionIdSet(""), fetchStart())
 );
 
+const recordsUpdateEpic = action$ => action$.pipe(
+  ofType(RECORDS_UPDATE),
+  mapTo(fetchStart()),
+);
+
 const actionPushEpic = action$ => action$.pipe(
   ofType(ACTION_PUSH),
   mergeMap(action => {
@@ -148,7 +169,8 @@ export const combinedEpic = combineEpics(
   actionPushEpic,
   endpointConnectEpic,
   actionPushFulfilledEpic,
-  fetchSmartContractsEpic
+  fetchSmartContractsEpic,
+  recordsUpdateEpic
 );
 
 
@@ -223,6 +245,11 @@ const dataReducer = (state = dataInitState, action) => {
       return {
         ...state,
         error: action.error
+      };
+
+    case RECORDS_UPDATE:
+      return {
+        ...state
       };
 
     default:
@@ -337,6 +364,17 @@ const smartContractsReducer = (state = [], action) => {
   }
 };
 
+// Decides how many records to show in the action history viewer
+const recordsReducer = (state = 100, action) => {
+  switch (action.type) {
+    case RECORDS_UPDATE:
+      return action.recordsCount;
+
+    default:
+      return state;
+  }
+};
+
 export const combinedReducer = combineReducers({
   data: dataReducer,
   isFetching: isFetchingReducer,
@@ -344,5 +382,6 @@ export const combinedReducer = combineReducers({
   action: actionReducer,
   isPushingAction: isPushingActionReducer,
   smartContracts: smartContractsReducer,
-  isFetchingSmartContract: isFetchingSmartContractReducer
+  isFetchingSmartContract: isFetchingSmartContractReducer,
+  records: recordsReducer
 })

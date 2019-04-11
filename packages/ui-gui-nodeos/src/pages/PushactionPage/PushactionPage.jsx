@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import {
-  Card, CardBody, Row, Col, Form, FormGroup, FormFeedback, Label, Input, UncontrolledAlert,
-  DropdownToggle, DropdownMenu, DropdownItem, Spinner, Tooltip
+  Card, CardBody, Row, Col, Form, FormGroup, FormFeedback, Label, Input, 
+  UncontrolledAlert, DropdownToggle, DropdownMenu, DropdownItem, Spinner, Tooltip
 } from 'reactstrap';
 
 import { actionIdSet, updateActionToPush, actionPush, fetchStart, fetchSmartContracts } from './PushactionPageReducer';
@@ -15,14 +15,17 @@ import Actionhistory from './components/Actionhistory';
 import styled from 'styled-components';
 import cogoToast from 'cogo-toast';
 
-import { PageTitleDivStyled, CardStyled,CardHeaderStyled, ButtonPrimary, DropdownStyled, OverlayStyled } from 'styled';
+import { PageTitleDivStyled, CardStyled, CardHeaderStyled, ButtonPrimary, DropdownStyled, OverlayStyled } from 'styled';
 
 const FirstCardStyled = styled(CardStyled)`
   border-top: solid 2px #1173a4;
 `
 const CustomDropdown = styled(DropdownStyled)`
   .btn-secondary {
-    width: 100%;    
+    width: 100%;
+  }
+  .dropdown-menu {
+    width: 100%;
   }  
   [disabled] {
     pointer-events: none;
@@ -67,17 +70,35 @@ const updateAction = (name, action, value, callback) => {
 
 const PushactionPage = (props) => {
 
+  // didMountRef used to prevent action prefill popup being triggered on the first render
+  const didMountRef = useRef(false);
+
   // This useEffect tracks the action object and will fire every time the action object changes
   useEffect(() => {
-    /* useForm keeps track of the push action form's values through change events, but these events only fire when the user performs an action. 
-     * This page contains asynchronous events which update the action object so we need to manually update these values after the action object has changed. */
-    let vals = [
-      { name: "smartContractName", value: action.act.account },
-      { name: "actionType", value: action.act.name },
-      { name: "payload", value: action.payload },
-      { name: "permission", value: selectedPermission._id }
-    ];
-    updateValues(vals);
+    if(didMountRef.current) {
+      /* useForm keeps track of the push action form's values through change events, but these events only fire when the user performs an action. 
+      * This page contains asynchronous events which update the action object so we need to manually update these values after the action object has changed. */
+      let vals = [
+        { name: "smartContractName", value: action.act.account },
+        { name: "actionType", value: action.act.name },
+        { name: "payload", value: action.payload },
+        { name: "permission", value: selectedPermission._id }
+      ];
+      updateValues(vals);
+
+      // Confirm the successful prefill with a popup message (moved this down to the prefill action callback temporarily, will be moved back here later)
+      // if(!action.error && action.act.name && action.act.account) {
+      //   cogoToast.success(`Prefilled action: ${action.act.name} from ${action.act.account}`, {
+      //     heading: "Action Prefilled",
+      //     position: "bottom-center",
+      //     hideAfter: 3.5
+      //   });
+      // }
+    }
+    else {
+      didMountRef.current = true;
+    }
+
   }, [props.pushactionPage.action])
 
   // This useEffect fires on component load only and performs some setup tasks
@@ -328,13 +349,15 @@ const PushactionPage = (props) => {
                   props.actionIdSet({ block_num: action.block_num, global_sequence: action.receipt.global_sequence });
                   setActionList(smartContractsList.find(smartContract => smartContract.name === action.act.account).abi.actions);
                   resetValidation();
-                  if (actionId.block_num !== action.block_num)
+                  window.scrollTo(0, 0);
+                  // Confirm the successful prefill with a popup message
+                  if(!action.error && action.act.name && action.act.account) {
                     cogoToast.success(`Prefilled action: ${action.act.name} from ${action.act.account}`, {
                       heading: "Action Prefilled",
                       position: "bottom-center",
                       hideAfter: 3.5
                     });
-                  window.scrollTo(0, 0);
+                  }
                 }} />
               </CardBody>
             </CardStyled>
