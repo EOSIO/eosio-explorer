@@ -20,6 +20,9 @@ const FilterInputStyled = styled(InputStyled)`
   width: 30%;
   margin-right: 10px;
 `
+const CustomErrorButton = styled(ButtonSecondary)`
+  width: auto;
+`
 
 const Actionlist = (props) => {
 
@@ -56,10 +59,7 @@ const Actionlist = (props) => {
       <Row>
         <Col xs="12">
         { error ? 
-          <div className="text-center">
-            <p className="text-danger">{JSON.stringify(error)}</p>
-            <Button color="primary" onClick={props.pollingStart}>Click to Reload</Button>
-          </div>
+          <CustomErrorButton onClick={props.pollingStart}>Connection error, click to reload</CustomErrorButton>
         : isFetching ? (
           <LoadingSpinner />
         ) : (
@@ -75,7 +75,7 @@ const Actionlist = (props) => {
                 </thead>
                 <tbody>
                   {payload.length < 1 
-                    ? <tr><td colSpan="3" className="text-center">No actions could be found for the given Smart Contract name</td></tr>
+                    ? <tr><td colSpan="3" className="text-center">No actions found for the Smart Contract Name</td></tr>
                     : payload.map((action, index)=>
                       <tr onClick={evt=>props.push(`/action/${action.block_num}/${action.receipt.global_sequence}`)} key={index}>
                         <td>{action.act.account}</td>

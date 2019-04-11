@@ -6,8 +6,11 @@ import { Col, Form, FormGroup, Label, Button } from 'reactstrap';
 
 import { pollingStart } from 'reducers/headblock';
 import { LoadingSpinner } from 'components';
-
-
+import styled from 'styled-components';
+import { ButtonSecondary} from 'styled';
+const CustomErrorButton = styled(ButtonSecondary)`
+  width: auto;
+`
 const Headblock = (props) => {
 
   // useEffect(()=>{
@@ -20,10 +23,7 @@ const Headblock = (props) => {
   return (
     <>
       { error ?
-        <div className="text-center">
-          <p className="text-danger">{JSON.stringify(error)}</p>
-          <Button color="primary" onClick={props.pollingStart}>Click to Reload</Button>
-        </div>
+        <CustomErrorButton onClick={props.pollingStart}>Connection error, click to reload</CustomErrorButton>
       : isFetching ? (
         <LoadingSpinner />
       ) : (
