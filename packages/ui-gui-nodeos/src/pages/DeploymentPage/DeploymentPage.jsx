@@ -4,7 +4,8 @@ import {
     CardBody, Row, Col, ButtonGroup, Spinner,
     Nav, NavLink, NavItem, TabContent, TabPane,
     Form, FormGroup, Label, Badge,
-    DropdownToggle, DropdownMenu, DropdownItem
+    DropdownToggle, DropdownMenu, DropdownItem,
+    UncontrolledTooltip
 } from 'reactstrap';
 import { StandardTemplate } from 'templates';
 import { connect } from 'react-redux';
@@ -14,27 +15,12 @@ import { DragDropCodeViewer, CodeViewer } from 'components';
 import { 
     CardStyled, CardHeaderStyled, PageTitleDivStyled,
     InputStyled, ButtonPrimary, ButtonSecondary,
-    DropdownStyled
+    DropdownStyled, OverlayStyled
 } from 'styled';
+import cogoToast from 'cogo-toast';
 
 import { defaultSet } from 'reducers/permission';
 import { folderSet, abiImport, contractCompile, contractDeploy, logClear, outputClear } from './DeploymentPageReducer';
-
-const overlayOn = {
-    position: "fixed",
-    display: "block",
-    width: "100%",
-    height: "100%",
-    top: 0,
-    left: 0,
-    backgroundColor: "rgba(0,0,0,0.5)",
-    zIndex: 999,
-    cursor: "pointer"
-}
-
-const overlayOff = {
-    display: "none"
-}
 
 const tabPane = {
     maxHeight: "350px",
@@ -58,24 +44,59 @@ const LogCardHeaderStyled = styled(CardHeaderStyled)`
 const DeploymentPage = (props) => {
 
     let { permission: { data }, deployContainer, isProcessing, nodeos,
-        defaultSet, folderSet, abiImport, contractCompile, contractDeploy, logClear,
+        folderSet, abiImport, contractCompile, contractDeploy, logClear,
         outputClear
     } = props;
     let { path, stdoutLog, stderrLog,
-        abiPath, abiContents,
+        abiPath, abiContents, compiled,
         errors, output, imported, deployed
     } = deployContainer;
     let { list, defaultId } = data;
 
+    const [ clickDeploy, setClickDeploy ] = useState(false);
     const [ isOpenDropDown, toggleDropDown ] = useState(false);
     const [ currentFile, setCurrentFile ] = useState("");
     const [ activeTab, setActiveTab ] = useState("1");
+    const [ currentId, setCurrentId ] = useState(defaultId);
 
     const importRef = React.createRef();
 
     useEffect(() => {
         outputClear();
     }, [])
+
+    useEffect(() => {
+        if (!deployed && !clickDeploy) {
+            if (compiled && currentFile.length > 0) {
+                cogoToast.success(
+                    "Smart contract successfully generated",
+                    {heading: 'Compile Success', position: 'bottom-center', hideAfter: 3}
+                );
+            } else if (imported && currentFile.length > 0) {
+                cogoToast.success(
+                    "Smart contract successfully imported",
+                    {heading: 'Import Success', position: 'bottom-center', hideAfter: 3}
+                );
+            } else if (!compiled && currentFile.length > 0) {
+                cogoToast.error(
+                    "Smart contract failed to compile, please check ABI / Deployment Log",
+                    {heading: 'Compile Unsuccessful', position: 'bottom-center', hideAfter: 3}
+                );
+            }
+        } else if (!deployed && clickDeploy) {
+            cogoToast.error(
+                "Smart contract could not be deployed, please check ABI / Deployment Log",
+                {heading: 'Deployment Unsuccessful', position: 'bottom-center', hideAfter: 3}
+            );
+            setClickDeploy(false);
+        } else if (deployed && clickDeploy) {
+            cogoToast.success(
+                "Smart contract successfully deployed",
+                {heading: 'Deployment Success', position: 'bottom-center', hideAfter: 3}
+            );
+            setClickDeploy(false);
+        }
+    }, [abiContents]);
 
     function handleChange(ev) {
         ev.preventDefault();
@@ -95,11 +116,11 @@ const DeploymentPage = (props) => {
     function deployContract(ev) {
         ev.preventDefault();
         let actualRootPath = (path.endsWith("/")) ? path : path+"/";
-        let currentPermission = list.find(account => account._id === defaultId);
+        let currentPermission = list.find(account => account._id === currentId);
+        let msg = `Cannot deploy contract under owner of the system contract`;
         let fullPath = {
             source: actualRootPath+currentFile
         }
-        console.log(currentPermission);
         let deployer = {
             endpoint: nodeos,
             account_name: currentPermission["account"],
@@ -107,7 +128,18 @@ const DeploymentPage = (props) => {
             abiSource: (imported) ? abiPath : null
         }
         logClear();
-        contractDeploy(fullPath, deployer);
+        setClickDeploy(true);
+
+        if (currentPermission["account"] !== 'eosio')
+            contractDeploy(fullPath, deployer);
+        else {
+            cogoToast.warn(msg, {
+                heading: 'Unable to Deploy',
+                position: 'bottom-center',
+                hideAfter: 4
+            });
+            setClickDeploy(false);
+        }
     }
 
     function clickButton() {
@@ -134,7 +166,7 @@ const DeploymentPage = (props) => {
 
     return (
         <StandardTemplate>
-            <div style={isProcessing ? overlayOn : overlayOff}></div>
+            <OverlayStyled isLoading={isProcessing}></OverlayStyled>
             {
                 isProcessing &&
                     <div style={{position:"fixed",top:"50%",left:"50%", zIndex:"1000"}}>
@@ -181,6 +213,14 @@ const DeploymentPage = (props) => {
                                                 </Col>
                                             </FormGroup>
                                         </Form> 
+                                        <UncontrolledTooltip placement="top" target="rootFolder"
+                                            delay={{show: 0, hide: 0}}
+                                            trigger="hover focus"
+                                            autohide={true}
+                                            >
+                                            Input the absolute folder path containing your .cpp file in this field.
+                                            For example: /Users/syzygy/contracts/mycontract
+                                        </UncontrolledTooltip>
                                     </Col>
                                 </Row>
                             </CardBody>
@@ -199,12 +239,14 @@ const DeploymentPage = (props) => {
                                         <Col sm={4}>
                                             <ButtonGroup className="float-left">
                                                 <ButtonPrimary
+                                                    id="GenerateAbi"
                                                     onClick={(ev)=>generateAbi(ev)}
                                                     disabled={path.length === 0 || currentFile.length === 0 || isProcessing}
                                                     >
                                                     Generate ABI
                                                 </ButtonPrimary>
                                                 <ButtonSecondary
+                                                    id="ImportAbi"
                                                     onClick={()=>{clickButton()}}
                                                     disabled={isProcessing}
                                                     >
@@ -220,6 +262,21 @@ const DeploymentPage = (props) => {
                                                 />
                                         </Col>
                                     </FormGroup>
+                                    <UncontrolledTooltip placement="top" target="GenerateAbi"
+                                        delay={{show: 0, hide: 0}}
+                                        trigger="hover"
+                                        autohide={true}
+                                        >
+                                        Click this button to compile the smart contract and view the resulting ABI
+                                        file in the viewer below.
+                                    </UncontrolledTooltip>
+                                    <UncontrolledTooltip placement="top" target="ImportAbi"
+                                        delay={{show: 0, hide: 0}}
+                                        trigger="hover"
+                                        autohide={true}
+                                        >
+                                        Click this button to import a pre-made ABI file and review it in the viewer below
+                                    </UncontrolledTooltip>
                                 </Form>
                                 <CodeViewer
                                         language="json"
@@ -244,14 +301,19 @@ const DeploymentPage = (props) => {
                                             <DropdownStyled className="float-left" isOpen={isOpenDropDown} toggle={()=>{toggleDropDown(!isOpenDropDown)}}>
                                                 <DropdownToggle caret>
                                                     {
-                                                        list.map((permission) => (defaultId === permission._id) && 
-                                                            `${permission.account}@${permission.permission} (default)`)
+                                                        list.map((permission) => {
+                                                            let msg = (currentId === defaultId) ? 
+                                                                `${permission.account}@${permission.permission} (default)` :
+                                                                `${permission.account}@${permission.permission}`;
+                                                            if (currentId === permission._id) 
+                                                                return msg;
+                                                        })
                                                     }
                                                 </DropdownToggle>
                                                 <DropdownMenu right>
                                                     {
                                                         list.map((permission)=> permission.private_key &&
-                                                            <DropdownItem key={permission._id} onClick={()=>{ defaultSet(permission._id)}}>
+                                                            <DropdownItem key={permission._id} onClick={()=>{setCurrentId(permission._id)}}>
                                                                 {`${permission.account}@${permission.permission}`}
                                                             </DropdownItem>)
                                                     }
@@ -260,8 +322,11 @@ const DeploymentPage = (props) => {
                                         </Col>
                                         <Col xs={3}>
                                             <ButtonPrimary
+                                                id="DeployContract"
                                                 className="btn float-right"
-                                                disabled={path.length === 0 || currentFile.length === 0 || isProcessing}
+                                                disabled={path.length === 0 || 
+                                                    currentFile.length === 0 ||
+                                                    isProcessing}
                                                 onClick={(ev)=>deployContract(ev)}
                                                 >
                                                 Deploy
@@ -269,6 +334,13 @@ const DeploymentPage = (props) => {
                                         </Col>
                                     </FormGroup>
                                 </Form>
+                                <UncontrolledTooltip placement="top" target="DeployContract"
+                                    delay={{show: 0, hide: 0}}
+                                    trigger="hover"
+                                    autohide={true}
+                                    >
+                                    Compiles and deploys the smart contract at once. 
+                                </UncontrolledTooltip>
                             </CardBody>
                         </CardStyled>
                     </Col>
@@ -280,10 +352,22 @@ const DeploymentPage = (props) => {
                                 </span>
                                 <ButtonPrimary
                                     className="float-right"
-                                    onClick={()=>logClear()}
+                                    id="ClearLogs"
+                                    onClick={()=>{ 
+                                        if (errors.length > 0 || stderrLog.length > 0 || stdoutLog.length > 0)
+                                            cogoToast.info("Cleared all logs", {position: 'bottom-center', hideAfter: 2});
+                                        logClear(); 
+                                    }}
                                     >
-                                    Clear Logs
+                                    Clear All Logs
                                 </ButtonPrimary>
+                                <UncontrolledTooltip placement="top" target="ClearLogs"
+                                    delay={{show: 0, hide: 0}}
+                                    trigger="hover"
+                                    autohide={true}
+                                    >
+                                    Click this button to remove all the currently displayed warnings and error logs
+                                </UncontrolledTooltip>
                             </LogCardHeaderStyled>
                             <CardBody>
                                 <div>

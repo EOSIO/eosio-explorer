@@ -17,7 +17,8 @@ class InputInstructions extends Component {
                         <ListGroupItem>2. Double check your source code file and dependencies</ListGroupItem>
                         <ListGroupItem>
                             3. <b>Enter the absolute folder path containing this file</b> into the field indicated as 
-                            "Root Folder Path". This path will be saved locally for future use. 
+                            "Root Folder Path". This path will be saved locally for future use. All files in this root folder
+                            will be used as part of the compilation process.
                         </ListGroupItem>
                         <ListGroupItem>
                             4. <b>Optional Step 2</b>: Generate your ABI file first by clicking "Generate ABI". The result of
@@ -27,7 +28,7 @@ class InputInstructions extends Component {
                         <ListGroupItem>
                             5. Go to Step 3, deploy. If you're sure your contract works, you can deploy to the Nodeos instance you are
                             currently connected to by clicking on Deploy after selecting the permission you want
-                            to deploy the contract as
+                            to deploy the contract as. <b>Note: You cannot deploy as 'eosio' since 'eosio' owns the system contract.</b>
                         </ListGroupItem>
                     </ListGroup>
                 </CardBody>

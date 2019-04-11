@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import {
-    Button, Form, FormGroup, Label, Input, FormFeedback,
-    Col, Alert, UncontrolledAlert, CardBody
+    Form, FormGroup, Label, FormFeedback,
+    Col, UncontrolledAlert, CardBody
   } from 'reactstrap';
 
 import { connect } from 'react-redux';
@@ -10,7 +10,16 @@ import { accountAdd } from 'reducers/permission';
 import validate from './ImportAccountValidatorEngine/ImportAccountValidatorEngine';
 import useForm from 'helpers/useForm';
 import styled from 'styled-components';
-import { RadioButtonDivStyled, CardStyled, CardHeaderStyled, ButtonPrimary, InputStyled} from 'styled';
+import { CardStyled, CardHeaderStyled, ButtonPrimary, InputStyled} from 'styled';
+
+const InfoDiv = styled.div`
+  color: #181c1e;
+  background-color: #d5d7d8;
+  border-color: #c5c6c8;
+  padding: 20px;  
+  margin-bottom: 20px;
+  border-radius: 3px;
+`
 
 const ImportAccount = (props) => {
 
@@ -40,6 +49,7 @@ const ImportAccount = (props) => {
             {name: "activePrivate", value: keysData[1].permission === "active" ? keysData[1].private_key : keysData[0].private_key}
         ]
         updateValues(vals);
+        window.scrollTo(0, 0);
     }, []);
 
     return (
@@ -57,11 +67,15 @@ const ImportAccount = (props) => {
                                     Private keys for {keysData[0].account} successfully updated
                                 </UncontrolledAlert>
                             }
-                            <Alert color="dark">
+                            <InfoDiv>
                                 <h5 className="alert-heading">Before you update your private keys...</h5>
                                 <p>
-                                    Ensure that the private keys you use are <code>base58 WIF</code> compliant! The form will 
-                                    notify you if any of your keys are invalid upon submission.
+                                    Ensure that the private keys you use are <code>base58 WIF</code> compliant. <b>WIF</b> stands for 
+                                    "Wallet Import Format" and is a convenience specification for copying and pasting private keys.
+                                    The form will notify you if any of your keys are invalid upon submission. Please also ensure 
+                                    the private keys you import <b>properly match</b> the public keys listed here. Otherwise, 
+                                    you will not be able to authorize any actions with this account since the blockchain will not
+                                    have the correct signatures for the declared authorization.
                                 </p>
                                 <hr />
                                 <p className="mb-0">
@@ -70,7 +84,7 @@ const ImportAccount = (props) => {
                                     to them. Private keys are very sensitive information and should be kept to yourself as much
                                     as possible.
                                 </p>
-                            </Alert>
+                            </InfoDiv>
                             <Form onSubmit={
                                 handleSubmit
                             }>                    

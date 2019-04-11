@@ -3,6 +3,8 @@ const stripAnsi = require('strip-ansi');
 const fileManip = require('file');
 const fs = require('fs');
 
+
+
 const getStringDiff = (sourcePath, path) => path.split(sourcePath).join('').substring(1);
 
 const abiIsEmpty = (abi) => {
@@ -65,17 +67,24 @@ const filterHeaderFiles = (fileName) => (fileName.includes('.hpp'));
 const parseDirectoriesToInclude = (sourcePath) => {
     let directories = [];
     let i = 0;
-    fileManip.walkSync(sourcePath, (ds, dirPath, dirs, files) => {
-        const sourceFiles = (dirs) ? dirs.filter(filterHeaderFiles) : [];
-        if (sourceFiles.length > 0 && sourcePath !== ds) {
-            let fileDiff = getStringDiff(sourcePath, ds);
-            if (fileDiff[0] == '/') fileDiff = fileDiff.substring(1);
-            directories.push(
-                "/opt/eosio/bin/contracts/"+fileDiff
-            );
-        }
-    });
-    return directories;
+
+    try {
+        fileManip.walkSync(sourcePath, (ds, dirPath, dirs, files) => {
+            const sourceFiles = (dirs) ? dirs.filter(filterHeaderFiles) : [];
+            if (sourceFiles.length > 0 && sourcePath !== ds) {
+                let fileDiff = getStringDiff(sourcePath, ds);
+                if (fileDiff[0] == '/') fileDiff = fileDiff.substring(1);
+                directories.push(
+                    "/opt/eosio/bin/contracts/"+fileDiff
+                );
+            }
+        });
+
+        return directories;
+    } catch (ex) {
+        throw new Error(ex.message);
+    }
+
 }
 
 const parseLog = (logContent) => {

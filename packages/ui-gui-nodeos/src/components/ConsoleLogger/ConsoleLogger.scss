@@ -2,8 +2,11 @@
   position: fixed;
   left: 20px;
   bottom: -600px;
-  &.active{
+  &.open{
     bottom: 0;
+  }
+  &.close{
+    bottom: -645px;
   }
   transition: all 0.4s ease-in-out;
   border: 1px solid #d3d3d3;
@@ -21,6 +24,26 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      .left-section{
+        display: flex;
+        align-items: center;
+        i{
+          font-size: 22px;
+          margin-right: 5px;
+          &.fa-times-circle{
+            color: red;
+          }
+          &.fa-arrow-circle-up{
+            color: green;
+          }
+          &.fa-arrow-circle-down{
+            color: goldenrod;
+          }
+        }
+        span{
+          padding-left:5px;
+        }
+      }
       .badge{
         display: inline-block;
         min-width: 18px;
