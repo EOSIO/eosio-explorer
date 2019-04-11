@@ -36,7 +36,7 @@ const Blockdetail = (props) => {
               : isFetching 
                 ? `loading...`
                 : payload.length === 0 
-                  ? <ErrorDivStyled>No block found with block id or block number ${params.id_or_num}</ErrorDivStyled>
+                  ? <ErrorDivStyled>No block found with block id or block number {params.id_or_num}</ErrorDivStyled>
                   : <div>
                       <Row>
                         <Col sm="12">
