@@ -68,7 +68,10 @@ const fetchEpic = (action$, state$) => action$.pipe(
               ]),
               catchError(error => {
                 errorLog(error);
-                return of(fetchRejected(error.response, { status: error.status }))
+                return of(
+                  fetchFulfilled(actionsListResponse.response),
+                  fetchRejected(error.response, { status: error.status })
+                )
               })
             );
         }),

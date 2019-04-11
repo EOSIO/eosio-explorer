@@ -81,6 +81,16 @@ const PushactionPage = (props) => {
       { name: "permission", value: selectedPermission._id }
     ];
     updateValues(vals);
+
+    // Confirm the successful prefill with a popup message
+    if(action.act.name && action.act.account) {
+      cogoToast.success(`Prefilled action: ${action.act.name} from ${action.act.account}`, {
+        heading: "Action Prefilled",
+        position: "bottom-center",
+        hideAfter: 3.5
+      });
+    }
+
   }, [props.pushactionPage.action])
 
   // This useEffect fires on component load only and performs some setup tasks
@@ -331,12 +341,6 @@ const PushactionPage = (props) => {
                   props.actionIdSet({ block_num: action.block_num, global_sequence: action.receipt.global_sequence });
                   setActionList(smartContractsList.find(smartContract => smartContract.name === action.act.account).abi.actions);
                   resetValidation();
-                  if (actionId.block_num !== action.block_num)
-                    cogoToast.success(`Prefilled action: ${action.act.name} from ${action.act.account}`, {
-                      heading: "Action Prefilled",
-                      position: "bottom-center",
-                      hideAfter: 3.5
-                    });
                   window.scrollTo(0, 0);
                 }} />
               </CardBody>
