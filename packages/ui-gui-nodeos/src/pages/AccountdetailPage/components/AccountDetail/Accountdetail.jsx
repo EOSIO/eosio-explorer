@@ -44,7 +44,7 @@ const Accountdetail = (props) => {
     }
   }, [])
 
-  let { accountdetail: { isFetching, data, isFetchingContract, contractData, params } } = props;
+  let { accountdetail: { isFetching, data, contractData, params } } = props;
   let { payload={}, error } = data;
   let { contractPayload, contractError } = contractData;
 
@@ -131,7 +131,7 @@ const Accountdetail = (props) => {
                                 : <FormGroup row>
                                     <Col sm={2}>Smart Contract:</Col>
                                     <Col sm={10}>
-                                      <Link className="link" to={`/contract/${contractPayload[0].name}`}>
+                                      <Link to={`/contract/${contractPayload[0].name}`}>
                                         {contractPayload[0].name}
                                       </Link>                                      
                                     </Col>

@@ -6,7 +6,7 @@
 
 import { combineReducers } from 'redux';
 import { of, from } from 'rxjs';
-import { mergeMap, map, mapTo, catchError } from 'rxjs/operators';
+import { mergeMap, map, mapTo, filter, catchError } from 'rxjs/operators';
 
 import { combineEpics, ofType } from 'redux-observable';
 
@@ -53,8 +53,8 @@ const fetchEpic = ( action$, state$ ) => action$.pipe(
   })
 );
 
-const startContractFetchEpic = action$ => action$.pipe(
-  ofType(FETCH_FULFILLED),
+const startContractFetchEpic = ( action$ ) => action$.pipe(
+  filter(action => action.type === FETCH_FULFILLED && Object.keys(action.payload).length !== 0 ),
   mapTo(fetchContractStart()),
 );
 
@@ -149,21 +149,6 @@ const dataContractReducer = (state=dataContractInitState, action) => {
   }
 };
 
-const isFetchingContractReducer = (state = false, action) => {
-  switch (action.type) {
-    case FETCH_START:
-      return true;
-
-    case FETCH_FULFILLED:
-    case FETCH_REJECTED:
-      return false;
-
-    default:
-      return state;
-  }
-};
-
-
 const paramsReducer = (state = {}, action) => {
   switch (action.type) {
     case PARMAS_SET:
@@ -182,6 +167,5 @@ export const combinedReducer = combineReducers({
   data: dataReducer,
   isFetching: isFetchingReducer,
   contractData: dataContractReducer,
-  isFetchingContract: isFetchingContractReducer,
   params: paramsReducer
 })
