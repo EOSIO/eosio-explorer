@@ -12,5 +12,6 @@ export default styled(Table)`
   
   tbody tr:hover{
     background-color: #d5e0eb;
+    cursor: pointer;
   }
 `
