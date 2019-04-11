@@ -62,11 +62,13 @@ const Permissionlist = (props) => {
     panelSelect, defaultSet 
   } = props;
   let { list, defaultId } = data;
-  let newList = list.reduce((result, permission) => {
-    result[permission.account] = result[permission.account] || [];
-    result[permission.account].push(permission);
-    return result;
-  }, Object.create({}));
+  let newList = (list.length > 0) ? list.reduce((result, permission) => {
+    if (permission.account) {
+      result[permission.account] = result[permission.account] || [];
+      result[permission.account].push(permission);
+      return result;
+    }
+  }, Object.create({})) : null;
 
   useEffect(()=>{
     props.fetchStart();
@@ -109,7 +111,7 @@ const Permissionlist = (props) => {
                                   <PermissionTable borderless>
                                     {
                                       newList && Object.keys(newList).map((account) => (
-                                        newList[account][0].private_key &&
+                                        (newList[account][0] && newList[account][0].private_key) &&
                                         <tbody className="accountRow" key={account}>
                                           <tr>
                                             <td width="60%">
@@ -185,7 +187,7 @@ const Permissionlist = (props) => {
                                     <PermissionTable borderless>
                                     {
                                       newList && Object.keys(newList).map((account) => (
-                                        !newList[account][0].private_key &&
+                                        (newList[account][0] && !newList[account][0].private_key) &&
                                         <tbody className="accountRow" key={account}>
                                           <tr>
                                             <td width="60%">
