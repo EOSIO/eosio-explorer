@@ -7,7 +7,7 @@ const LimitSelectDropdown = (props) => {
   // didMountRef used to prevent onChange being triggered on the first render
   const didMountRef = useRef(false);
   const [isOpen, toggleIsOpen] = useState(false);
-  const [count, updateCount] = useState(props.limit || 10);
+  const [count, updateCount] = useState(props.limit || 100);
 
   useEffect(() => {
     if(didMountRef.current)

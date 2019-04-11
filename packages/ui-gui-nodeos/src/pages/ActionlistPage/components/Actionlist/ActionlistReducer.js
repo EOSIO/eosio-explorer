@@ -46,13 +46,13 @@ const fetchEpic = ( action$, state$ ) => action$.pipe(
   mergeMap(action => {
     let { value: { actionlistPage: { actionlist: { smartContractName, records } }} } = state$;
     let params = { records_count: records };
-    
+
     if(smartContractName)
       params.account_name = smartContractName.toLowerCase();
 
-    let getActionQuery = paramsToQuery(params);
+    let query = paramsToQuery(params);
     
-    return apiMongodb(`get_actions${getActionQuery}`).pipe(
+    return apiMongodb(`get_actions${query}`).pipe(
       map(res => fetchFulfilled(res.response)),
       catchError(error => {
         errorLog(error);
@@ -139,7 +139,7 @@ const smartContractNameReducer = (state = "", action) => {
   }
 };
 
-const recordsReducer = (state = 10, action) => {
+const recordsReducer = (state = 100, action) => {
   switch (action.type) {
     case RECORDS_UPDATE:
       return action.recordsCount;

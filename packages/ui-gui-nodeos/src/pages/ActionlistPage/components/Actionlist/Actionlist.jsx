@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 
 import { connect } from 'react-redux';
-import { Button, Row, Col, CardTitle, Form } from 'reactstrap';
+import { Row, Col, CardTitle, Form } from 'reactstrap';
 import styled from 'styled-components';
 import { push } from 'connected-react-router'
 import { pollingStart, pollingStop, smartContractNameSearch, recordsUpdate } from './ActionlistReducer';
 import { LoadingSpinner, LimitSelectDropdown } from 'components';
-import { TableStyled, ButtonPrimary, InputStyled } from 'styled';
+import { TableStyled, ButtonPrimary, ButtonSecondary, InputStyled } from 'styled';
 
 const FormStyled = styled(Form)`
   display: flex;

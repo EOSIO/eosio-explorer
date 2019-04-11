@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import {
-  Card, CardBody, Row, Col, Form, FormGroup, FormFeedback, Label, Input, UncontrolledAlert,
-  DropdownToggle, DropdownMenu, DropdownItem, Spinner, Tooltip
+  Card, CardBody, Row, Col, Form, FormGroup, FormFeedback, Label, Input, 
+  UncontrolledAlert, DropdownToggle, DropdownMenu, DropdownItem, Spinner, Tooltip
 } from 'reactstrap';
 
 import { actionIdSet, updateActionToPush, actionPush, fetchStart, fetchSmartContracts } from './PushactionPageReducer';
@@ -70,25 +70,33 @@ const updateAction = (name, action, value, callback) => {
 
 const PushactionPage = (props) => {
 
+  // didMountRef used to prevent action prefill popup being triggered on the first render
+  const didMountRef = useRef(false);
+
   // This useEffect tracks the action object and will fire every time the action object changes
   useEffect(() => {
-    /* useForm keeps track of the push action form's values through change events, but these events only fire when the user performs an action. 
-     * This page contains asynchronous events which update the action object so we need to manually update these values after the action object has changed. */
-    let vals = [
-      { name: "smartContractName", value: action.act.account },
-      { name: "actionType", value: action.act.name },
-      { name: "payload", value: action.payload },
-      { name: "permission", value: selectedPermission._id }
-    ];
-    updateValues(vals);
+    if(didMountRef.current) {
+      /* useForm keeps track of the push action form's values through change events, but these events only fire when the user performs an action. 
+      * This page contains asynchronous events which update the action object so we need to manually update these values after the action object has changed. */
+      let vals = [
+        { name: "smartContractName", value: action.act.account },
+        { name: "actionType", value: action.act.name },
+        { name: "payload", value: action.payload },
+        { name: "permission", value: selectedPermission._id }
+      ];
+      updateValues(vals);
 
-    // Confirm the successful prefill with a popup message
-    if(action.act.name && action.act.account) {
-      cogoToast.success(`Prefilled action: ${action.act.name} from ${action.act.account}`, {
-        heading: "Action Prefilled",
-        position: "bottom-center",
-        hideAfter: 3.5
-      });
+      // Confirm the successful prefill with a popup message
+      if(!action.error && action.act.name && action.act.account) {
+        cogoToast.success(`Prefilled action: ${action.act.name} from ${action.act.account}`, {
+          heading: "Action Prefilled",
+          position: "bottom-center",
+          hideAfter: 3.5
+        });
+      }
+    }
+    else {
+      didMountRef.current = true;
     }
 
   }, [props.pushactionPage.action])

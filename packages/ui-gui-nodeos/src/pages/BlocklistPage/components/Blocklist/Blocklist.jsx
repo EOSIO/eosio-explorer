@@ -3,9 +3,10 @@ import { CardBody, Col, Row } from 'reactstrap';
 import { connect } from 'react-redux';
 import { push } from 'connected-react-router'
 import styled from 'styled-components';
+import { LoadingSpinner, LimitSelectDropdown } from 'components';
 import { CardStyled,CardHeaderStyled, TableStyled, ButtonPrimary, ButtonSecondary, CheckBoxDivStyled, InputStyled} from 'styled';
 
-import { pollingStart, pollingStop, filterToggle } from './BlocklistReducer';
+import { pollingStart, pollingStop, filterToggle, recordsUpdate } from './BlocklistReducer';
 
 const FirstCardStyled = styled(CardStyled)`
   border-top: solid 2px #1173a4;
@@ -36,7 +37,7 @@ const Blocklist = (props) => {
 
   const [inputValue, setInputValue] = useState("");
 
-  let { blocklist: { isFetching, data, filter } } = props;
+  let { blocklist: { isFetching, data, filter, records } } = props;
   let { payload = [], error } = data;
 
   return (
@@ -86,26 +87,37 @@ const Blocklist = (props) => {
             { error
               ? <CustomErrorButton onClick={props.pollingStart}>Connection error, click to reload</CustomErrorButton>
               : isFetching
-                ? `loading...`
-                : <TableStyled borderless>
-                    <thead>
-                      <tr>
-                        <th width="20%">Block Number</th>
-                        <th width="35%">Block ID</th>
-                        <th width="25%" className="text-center">Number of Transactions</th>
-                        <th width="20%">Timestamp</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {payload.map(eachBlock=>
-                        <tr onClick={evt=>props.push(`/block/${eachBlock.block_id}`)} key={eachBlock.block_id}>
-                          <td>{eachBlock.block_num}</td>
-                          <td className="hashText">{eachBlock.block_id}</td>
-                          <td className="text-center">{eachBlock.block.transactions.length}</td>
-                          <td>{eachBlock.createdAt}</td>
-                        </tr>)}
-                    </tbody>
-                  </TableStyled>}
+                ? <LoadingSpinner />
+                : 
+                <Row>
+                  <Col xs="12">
+                    <TableStyled borderless>
+                        <thead>
+                          <tr>
+                            <th width="20%">Block Number</th>
+                            <th width="35%">Block ID</th>
+                            <th width="25%" className="text-center">Number of Transactions</th>
+                            <th width="20%">Timestamp</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {payload.map(eachBlock=>
+                            <tr onClick={evt=>props.push(`/block/${eachBlock.block_id}`)} key={eachBlock.block_id}>
+                              <td>{eachBlock.block_num}</td>
+                              <td className="hashText">{eachBlock.block_id}</td>
+                              <td className="text-center">{eachBlock.block.transactions.length}</td>
+                              <td>{eachBlock.createdAt}</td>
+                            </tr>)}
+                        </tbody>
+                      </TableStyled>
+                    </Col>
+                    {payload.length > 0 &&
+                      <Col xs="12" className="text-right">
+                        <LimitSelectDropdown limit={records} onChange={(limit) => { props.recordsUpdate(limit) }} />
+                      </Col>
+                    }
+                  </Row>
+                }
           </div>
         </CardBody>
       </FirstCardStyled>
@@ -121,6 +133,7 @@ export default connect(
     pollingStart,
     pollingStop,
     filterToggle,
+    recordsUpdate,
     push
   }
 
