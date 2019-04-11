@@ -96,10 +96,12 @@ echo " "
 echo "=============================="
 echo "STARTING GUI"
 echo "=============================="
+
+# $2 should be either argument "--first-time-setup" or null
 if $ISDEV; then
-  ./start_gui.sh -dev
+  ./start_gui.sh -dev $2
 else
-  ./start_gui.sh
+  ./start_gui.sh $2
 fi
 
 P1=$!

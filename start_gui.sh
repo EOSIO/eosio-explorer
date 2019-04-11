@@ -7,10 +7,19 @@ GREEN='\033[0;32m'
 SCRIPTPATH="$( pwd -P )"
 GUI="$SCRIPTPATH/packages/ui-gui-nodeos"
 ISDEV=false
+ISFIRSTTIMESETUP=false
 
-if [ "$1" == "-dev" -o "$1" == "--develop" ]; then
-  ISDEV=true
-fi
+for arg in $@
+do
+    case $arg in
+      -dev|--develop)
+        ISDEV=true
+        ;;
+      --first-time-setup)
+        ISFIRSTTIMESETUP=true
+        ;;
+  esac
+done
 
 echo 'in start ' + $ISDEV
 
@@ -19,7 +28,12 @@ echo "=============================="
 echo "STARTING GUI"
 echo "=============================="
 if $ISDEV; then
-  (cd $GUI && yarn start)
+  if $ISFIRSTTIMESETUP; then
+    # Set environment variable "LAST_FIRST_TIME_SETUP_TIMESTAMP" at dev build to create a new timestamp in CRA development
+    (cd $GUI && REACT_APP_LAST_FIRST_TIME_SETUP_TIMESTAMP=$(date +%s) yarn start)
+  else
+    (cd $GUI && yarn start)
+  fi
 else
   (cd $GUI && yarn serve)
 fi
