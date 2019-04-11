@@ -7,6 +7,24 @@ import { PersistGate } from 'redux-persist/integration/react'
 import store, { history, persistor } from 'store';
 import App from 'app';
 
+const currentLastTimestamp = process.env.REACT_APP_LAST_FIRST_TIME_SETUP_TIMESTAMP;
+
+// If currentLastTimestamp is not defined, current application run must not start from a first time setup script.
+// Hence, ignore below steps for not clearing persisted store and not setting local storage variable.
+if ( currentLastTimestamp ){
+
+  const storedLastTimestamp = localStorage.getItem('lastTimestamp');
+
+  // If the current last timestamp from process.env does not match the stored one, it means user has initiated a new first time setup.
+  // Hence, clear the whole persisted store.
+  if ( currentLastTimestamp !== storedLastTimestamp ){
+    persistor.purge();
+  }
+
+  localStorage.setItem('lastTimestamp', currentLastTimestamp);
+
+}
+
 const AppBundle = (
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
