@@ -27,9 +27,6 @@ const DivFlexStyled = styled.div`
   display: flex;
   justify-content: flex-end;
 `
-const CustomButton = styled(ButtonPrimary)`
-  width: 170px;
-`
 
 const Accountdetail = (props) => {
 
@@ -47,8 +44,9 @@ const Accountdetail = (props) => {
     }
   }, [])
 
-  let { accountdetail: { isFetching, data, params } } = props;
+  let { accountdetail: { isFetching, data, isFetchingContract, contractData, params } } = props;
   let { payload={}, error } = data;
+  let { contractPayload, contractError } = contractData;
 
   return (
     <div className="Accountdetail">
@@ -60,22 +58,22 @@ const Accountdetail = (props) => {
             <DivFlexStyled>
               <SearchLabel>Search Account Name:</SearchLabel>
               <SearchInputStyled 
-                    placeholder="Account Name"
-                    value={inputValue}
-                    onKeyDown={
-                      evt => {
-                        if (evt.key === 'Enter') {
-                          setInputValue("")
-                          { inputValue ? props.push('/account/'+inputValue) : console.log("No search text")} 
-                        }
-                      }
-                    }
-                    onChange={evt=>{setInputValue(evt.target.value)}}/>
-              <ButtonPrimary                        
-                    onClick={evt=> {
+                placeholder="Account Name"
+                value={inputValue}
+                onKeyDown={
+                  evt => {
+                    if (evt.key === 'Enter') {
                       setInputValue("")
-                      {inputValue ? props.push('/account/'+inputValue) : console.log("No search text") }                          
-                    }}>
+                      { inputValue ? props.push('/account/'+inputValue) : console.log("No search text")} 
+                    }
+                  }
+                }
+                onChange={evt=>{setInputValue(evt.target.value)}}/>
+              <ButtonPrimary                        
+                onClick={evt=> {
+                  setInputValue("")
+                  {inputValue ? props.push('/account/'+inputValue) : console.log("No search text") }                          
+                }}>
               Search</ButtonPrimary>
             </DivFlexStyled>            
           </CardBody>
@@ -125,9 +123,20 @@ const Accountdetail = (props) => {
                                     : payload.permissions[1].required_auth.keys[0].key}
                                 </Col>
                               </FormGroup>
-                              <FormGroup>
-                              <Link to={`/contract/${payload.account_name}`}><CustomButton>View Smart Contract</CustomButton></Link>
-                              </FormGroup>
+                              { contractError || !(contractPayload.length !== 0 && contractPayload[0].hasOwnProperty("abi") === true)
+                                ? <FormGroup row>
+                                    <Col sm={2}>Smart Contract:</Col>
+                                    <Col sm={10}> No Smart Contract </Col>
+                                  </FormGroup> 
+                                : <FormGroup row>
+                                    <Col sm={2}>Smart Contract:</Col>
+                                    <Col sm={10}>
+                                      <Link className="link" to={`/contract/${contractPayload[0].name}`}>
+                                        {contractPayload[0].name}
+                                      </Link>                                      
+                                    </Col>
+                                  </FormGroup>     
+                              }                                                          
                             </Form>
                           </CardBody>
                         </CardStyled>

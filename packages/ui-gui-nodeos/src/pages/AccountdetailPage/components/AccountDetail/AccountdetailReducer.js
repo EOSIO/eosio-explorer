@@ -6,13 +6,14 @@
 
 import { combineReducers } from 'redux';
 import { of, from } from 'rxjs';
-import { mergeMap, map, catchError } from 'rxjs/operators';
+import { mergeMap, map, mapTo, catchError } from 'rxjs/operators';
 
 import { combineEpics, ofType } from 'redux-observable';
 
 import apiRpc from 'services/api-rpc';
 import { errorLog } from 'helpers/error-logger';
-
+import apiMongodb from 'services/api-mongodb';
+import paramsToQuery from 'helpers/params-to-query';
 // IMPORTANT
 // Must modify action prefix since action types must be unique in the whole app
 const actionPrefix = `AccountdetailPage/Accountdetail/`;
@@ -22,12 +23,18 @@ const FETCH_START = actionPrefix + `FETCH_START`;
 const FETCH_FULFILLED = actionPrefix + `FETCH_FULFILLED`;
 const FETCH_REJECTED = actionPrefix + `FETCH_REJECTED`;
 const PARMAS_SET = actionPrefix + `PARMAS_SET`;
+const FETCH_CONTRACT_START = actionPrefix + `FETCH_CONTRACT_START`;
+const FETCH_CONTRACT_FULFILLED = actionPrefix + `FETCH_CONTRACT_FULFILLED`;
+const FETCH_CONTRACT_REJECTED = actionPrefix + `FETCH_CONTRACT_REJECTED`;
 
 //Action Creator
 export const fetchStart = () => ({ type: FETCH_START });
 export const fetchFulfilled = payload => ({ type: FETCH_FULFILLED, payload });
 export const fetchRejected = ( payload, error ) => ({ type: FETCH_REJECTED, payload, error });
 export const paramsSet = (params) => ({ type: PARMAS_SET, params });
+export const fetchContractStart = () => ({ type: FETCH_CONTRACT_START });
+export const fetchContractFulfilled = contractPayload => ({ type: FETCH_CONTRACT_FULFILLED, contractPayload });
+export const fetchContractRejected = ( contractPayload, contractError ) => ({ type: FETCH_CONTRACT_REJECTED, contractPayload, contractError });
 
 //Epic
 
@@ -46,9 +53,30 @@ const fetchEpic = ( action$, state$ ) => action$.pipe(
   })
 );
 
+const startContractFetchEpic = action$ => action$.pipe(
+  ofType(FETCH_FULFILLED),
+  mapTo(fetchContractStart()),
+);
+
+const fetchContractEpic = ( action$, state$ ) => action$.pipe(
+  ofType(FETCH_CONTRACT_START),
+  mergeMap(action =>{
+    let { value: { accountdetailPage: { accountdetail: { params } }}} = state$;
+
+    return apiMongodb(`get_abi${paramsToQuery(params)}`).pipe(
+      map(res => fetchContractFulfilled(res.response)),
+      catchError(error => {
+        errorLog(error);
+        return of(fetchContractRejected(error.response, { status: error.status }))
+      })
+    )    
+  })
+);
 
 export const combinedEpic = combineEpics(
   fetchEpic,
+  startContractFetchEpic,
+  fetchContractEpic
 );
 
 
@@ -94,6 +122,48 @@ const isFetchingReducer = (state = false, action) => {
   }
 };
 
+const dataContractInitState = {
+  contractPayload: [],
+  contractError: undefined
+}
+
+const dataContractReducer = (state=dataContractInitState, action) => {
+  switch (action.type) {
+    case FETCH_CONTRACT_START:
+        return dataContractInitState;
+
+    case FETCH_CONTRACT_FULFILLED:
+      return {
+        ...state,
+        contractPayload : action.contractPayload,
+        contractError: undefined
+      };
+    case FETCH_CONTRACT_REJECTED:
+      return {
+        ...state,
+        contractPayload: action.contractPayload,
+        contractError: action.contractError
+      };
+    default:
+      return state;
+  }
+};
+
+const isFetchingContractReducer = (state = false, action) => {
+  switch (action.type) {
+    case FETCH_START:
+      return true;
+
+    case FETCH_FULFILLED:
+    case FETCH_REJECTED:
+      return false;
+
+    default:
+      return state;
+  }
+};
+
+
 const paramsReducer = (state = {}, action) => {
   switch (action.type) {
     case PARMAS_SET:
@@ -111,5 +181,7 @@ const paramsReducer = (state = {}, action) => {
 export const combinedReducer = combineReducers({
   data: dataReducer,
   isFetching: isFetchingReducer,
+  contractData: dataContractReducer,
+  isFetchingContract: isFetchingContractReducer,
   params: paramsReducer
 })
