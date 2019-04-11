@@ -68,7 +68,7 @@ class App extends Component {
           <WillRoute exact path="/privacy-policy" component={ PrivacyPolicyPage }/>
           <WillRoute exact path="/terms-of-use" component={ TermsOfUsePage }/>
           <WillRoute exact path="/rpc" component={ TestRPCPage }/>
-
+          <div>12345</div>
           <Redirect to="/" />
         </Switch>
       </div>

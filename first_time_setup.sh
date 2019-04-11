@@ -38,13 +38,15 @@ echo " "
 echo "=============================="
 echo "BUILDING APPLICATION"
 echo "=============================="
-(cd $GUI && yarn build && printf "${GREEN}done${NC}")
+
+# Set environment variable "LAST_FIRST_TIME_SETUP_TIMESTAMP" at build time to create a new timestamp while serving the app.
+(cd $GUI && REACT_APP_LAST_FIRST_TIME_SETUP_TIMESTAMP=$(date +%s) yarn build && printf "${GREEN}done${NC}")
 fi
 
-# remove existing dockers 
+# remove existing dockers
 ./remove_dockers.sh
 
-./quick_start.sh $1
+./quick_start.sh $1 --first-time-setup
 
 P1=$!
 

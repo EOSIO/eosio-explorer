@@ -97,7 +97,7 @@ const Contractdetail = (props) => {
           : isFetching
             ? `loading...`
             : !(payload.length !== 0 && payload[0].hasOwnProperty("abi") === true)
-              ? <ErrorDivStyled>No Smart Contract found with Smart Contract Name ${params.account_name}</ErrorDivStyled>
+              ? <ErrorDivStyled>No Smart Contract found with Smart Contract Name {params.account_name}</ErrorDivStyled>
               : <div>
                   <Row> 
                     <Col sm="12">

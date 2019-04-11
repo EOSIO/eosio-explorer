@@ -1,6 +1,6 @@
 {
   "name": "eosio-toppings",
-  "version": "0.0.0",
+  "version": "independent",
   "repository": "git@github.com:EOSIO/eosio-toppings.git",
   "author": "Terry Leung <terry.leung@block.one>",
   "license": "MIT",

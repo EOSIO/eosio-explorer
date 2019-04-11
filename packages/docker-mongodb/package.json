@@ -1,6 +1,6 @@
 {
   "name": "@eosio-toppings/docker-mongodb",
-  "version": "0.0.0",
+  "version": "0.1.1",
   "license": "MIT",
   "private": true
 }

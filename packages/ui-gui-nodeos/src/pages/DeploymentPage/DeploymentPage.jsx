@@ -100,7 +100,7 @@ const DeploymentPage = (props) => {
 
     function handleChange(ev) {
         ev.preventDefault();
-        folderSet(ev.target.value);
+        folderSet(ev.target.value.trim());
     };
 
     function generateAbi(ev) {

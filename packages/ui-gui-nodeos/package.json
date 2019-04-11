@@ -1,13 +1,13 @@
 {
   "name": "@eosio-toppings/ui-gui-nodeos",
-  "version": "0.0.0",
+  "version": "0.1.2",
   "private": true,
   "license": "MIT",
   "dependencies": {
     "@coreui/coreui": "^2.1.8",
     "@coreui/react": "^2.1.5",
-    "@eosio-toppings/api-mongodb-plugin": "^0.0.0",
-    "@eosio-toppings/api-rpc": "0.0.0",
+    "@eosio-toppings/api-mongodb-plugin": "^0.1.1",
+    "@eosio-toppings/api-rpc": "^0.1.1",
     "axios": "^0.18.0",
     "cogo-toast": "^1.0.4",
     "connected-react-router": "^6.3.2",

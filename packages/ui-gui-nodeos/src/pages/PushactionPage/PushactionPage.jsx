@@ -292,7 +292,7 @@ const PushactionPage = (props) => {
                       <ButtonPrimary type="submit">Push</ButtonPrimary>
                     </Col>
                   </FormGroup>
-                  <Tooltip placement="bottom" target="PayloadItem"
+                  {/* <Tooltip placement="bottom" target="PayloadItem"
                     isOpen={isOpenPayloadTooltip}
                     toggle={() => togglePayloadTooltip(!isOpenPayloadTooltip)}
                     delay={{show: 0, hide: 0}}
@@ -328,7 +328,7 @@ const PushactionPage = (props) => {
                     autohide={true}
                     >
                     After selecting the name of the smart contract, you can choose the name of the action you plan to push here
-                  </Tooltip>
+                  </Tooltip> */}
                 </Form>
               )} 
               </CardBody>
