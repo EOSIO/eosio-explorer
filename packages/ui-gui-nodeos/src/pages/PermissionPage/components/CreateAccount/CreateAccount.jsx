@@ -120,6 +120,7 @@ const CreateAccount = (props) => {
                         <InputStyled type="text"
                           name="ownerPublic"
                           id="ownerPublic"
+                          placeholder="Generating keys..."
                           value={
                             values.ownerPublic 
                             || payload.ownerPublicKey
@@ -135,6 +136,7 @@ const CreateAccount = (props) => {
                         <InputStyled type="text"
                             name="ownerPrivate"
                             id="ownerPrivate"
+                            placeholder="Generating keys..."
                             value={
                               values.ownerPrivate
                               || payload.ownerPrivateKey
@@ -151,6 +153,7 @@ const CreateAccount = (props) => {
                         <InputStyled type="text"
                           name="activePublic"
                           id="activePublic"
+                          placeholder="Generating keys..."
                           value={
                             values.activePublic
                             || payload.activePublicKey
@@ -166,6 +169,7 @@ const CreateAccount = (props) => {
                         <InputStyled type="text"
                             name="activePrivate"
                             id="activePrivate"
+                            placeholder="Generating keys..."
                             value={
                               values.activePrivate
                               || payload.activePrivateKey

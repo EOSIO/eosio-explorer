@@ -49,7 +49,6 @@ const EditButtonCell = styled.td`
 `
 
 const PermissionLink = styled(Link)`
-  color: inherit;
   :hover {
     font-weight: strong;
     color: 4d9cc3;
@@ -159,7 +158,7 @@ const Permissionlist = (props) => {
                                             </td>
                                             <EditButtonCell width="40%">
                                               <ButtonPrimary 
-                                                    style={{margin:'0 auto'}}
+                                                    style={{marginLeft: '55%'}}
                                                     onClick={() => getKeysData(newList[account][0].account, list)}
                                                     block
                                                     >
@@ -215,7 +214,7 @@ const Permissionlist = (props) => {
                                             </td>
                                             <EditButtonCell width="40%">
                                               <ButtonPrimary 
-                                                    style={{margin:'0 auto'}}
+                                                    style={{marginLeft:'55%'}}
                                                     onClick={() => getKeysData(newList[account][0].account, list)}
                                                     block
                                                     >
