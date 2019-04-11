@@ -61,7 +61,7 @@ const CreateAccount = (props) => {
                   {
                     ((!creationSuccess) && submitError) ?
                         <UncontrolledAlert className="text-white bg-danger text-center">
-                        Error creating the account: {submitError}
+                          Error creating the account: {submitError}
                         </UncontrolledAlert>
                       : null
                   }
