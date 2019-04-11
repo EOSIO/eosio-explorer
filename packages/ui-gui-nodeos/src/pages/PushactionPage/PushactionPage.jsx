@@ -86,14 +86,14 @@ const PushactionPage = (props) => {
       ];
       updateValues(vals);
 
-      // Confirm the successful prefill with a popup message
-      if(!action.error && action.act.name && action.act.account) {
-        cogoToast.success(`Prefilled action: ${action.act.name} from ${action.act.account}`, {
-          heading: "Action Prefilled",
-          position: "bottom-center",
-          hideAfter: 3.5
-        });
-      }
+      // Confirm the successful prefill with a popup message (moved this down to the prefill action callback temporarily, will be moved back here later)
+      // if(!action.error && action.act.name && action.act.account) {
+      //   cogoToast.success(`Prefilled action: ${action.act.name} from ${action.act.account}`, {
+      //     heading: "Action Prefilled",
+      //     position: "bottom-center",
+      //     hideAfter: 3.5
+      //   });
+      // }
     }
     else {
       didMountRef.current = true;
@@ -350,6 +350,14 @@ const PushactionPage = (props) => {
                   setActionList(smartContractsList.find(smartContract => smartContract.name === action.act.account).abi.actions);
                   resetValidation();
                   window.scrollTo(0, 0);
+                  // Confirm the successful prefill with a popup message
+                  if(!action.error && action.act.name && action.act.account) {
+                    cogoToast.success(`Prefilled action: ${action.act.name} from ${action.act.account}`, {
+                      heading: "Action Prefilled",
+                      position: "bottom-center",
+                      hideAfter: 3.5
+                    });
+                  }
                 }} />
               </CardBody>
             </CardStyled>
