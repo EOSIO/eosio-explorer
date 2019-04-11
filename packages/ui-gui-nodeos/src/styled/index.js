@@ -10,6 +10,7 @@ import CheckBoxDivStyled from './CheckBoxDivStyled';
 import DropdownStyled from './DropdownStyled';
 import RadioButtonDivStyled from './RadioButtonDivStyled';
 import OverlayStyled from './OverlayStyled';
+import ErrorDivStyled from './ErrorDivStyled';
 
 export { 
   CardStyled, 
@@ -23,5 +24,6 @@ export {
   CheckBoxDivStyled,
   DropdownStyled,
   RadioButtonDivStyled,
-  OverlayStyled
+  OverlayStyled,
+  ErrorDivStyled
 }

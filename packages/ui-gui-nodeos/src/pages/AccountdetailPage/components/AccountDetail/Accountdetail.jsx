@@ -9,7 +9,7 @@ import { push } from 'connected-react-router'
 import { CardBody, Col, Row, Form, FormGroup } from 'reactstrap';
 import styled from 'styled-components';
 import { CodeViewer } from 'components';
-import { CardStyled, CardHeaderStyled, ButtonPrimary, InputStyled} from 'styled';
+import { CardStyled, CardHeaderStyled, ButtonPrimary, InputStyled, ErrorDivStyled } from 'styled';
 
 
 const FirstCardStyled = styled(CardStyled)`
@@ -30,9 +30,6 @@ const DivFlexStyled = styled.div`
 const CustomButton = styled(ButtonPrimary)`
   width: 170px;
 `
-const ErrorDiv = styled.div`
-  font-weight: bold;
-`
 
 const Accountdetail = (props) => {
 
@@ -41,7 +38,7 @@ const Accountdetail = (props) => {
 
   useEffect(()=>{
     let { router: { location: {pathname} } } = props;
-    if(pathname == '/account' || pathname == '/account/'){
+    if(pathname === '/account' || pathname === '/account/'){
       setShowDetailsSection(false);
     }else{
       setShowDetailsSection(true)
@@ -88,7 +85,7 @@ const Accountdetail = (props) => {
       <div>
         { showDetailsSection                     
           ? error
-            ? <ErrorDiv>No account found with Account name: {params.account_name}</ErrorDiv>
+            ? <ErrorDivStyled>No account found with Account Name {params.account_name}</ErrorDivStyled>
             : isFetching
               ? `loading...`
               : (Object.keys(payload).length === 0 && payload.constructor === Object) 
@@ -115,7 +112,7 @@ const Accountdetail = (props) => {
                               <FormGroup row>
                                 <Col sm={2}>Owner Public Key:</Col>
                                 <Col sm={10}>                                            
-                                  {payload.permissions[0].perm_name == "owner" 
+                                  {payload.permissions[0].perm_name === "owner" 
                                     ? payload.permissions[0].required_auth.keys[0].key 
                                     : payload.permissions[1].required_auth.keys[0].key}
                                 </Col>
@@ -123,7 +120,7 @@ const Accountdetail = (props) => {
                               <FormGroup row>
                                 <Col sm={2}>Active Public Key:</Col>
                                 <Col sm={10}>
-                                  {payload.permissions[0].perm_name == "active" 
+                                  {payload.permissions[0].perm_name === "active" 
                                     ? payload.permissions[0].required_auth.keys[0].key 
                                     : payload.permissions[1].required_auth.keys[0].key}
                                 </Col>

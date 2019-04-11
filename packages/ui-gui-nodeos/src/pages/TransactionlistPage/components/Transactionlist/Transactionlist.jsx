@@ -5,7 +5,7 @@ import { push } from 'connected-react-router'
 import { pollingStart, pollingStop } from './TransactionlistReducer';
 import { CardTitle, CardBody } from 'reactstrap';
 import styled from 'styled-components';
-import { CardStyled,CardHeaderStyled, TableStyled, ButtonPrimary, InputStyled} from 'styled';
+import { CardStyled,CardHeaderStyled, TableStyled, ButtonPrimary, ButtonSecondary, InputStyled} from 'styled';
 
 
 const FirstCardStyled = styled(CardStyled)`
@@ -22,6 +22,9 @@ const DivFlexStyled = styled.div`
 const SearchInputStyled = styled(InputStyled)`
   width: 30%;
   margin-right: 10px;
+`
+const CustomErrorButton = styled(ButtonSecondary)`
+  width: auto;
 `
 
 const Transactionlist = (props) => {
@@ -66,7 +69,7 @@ const Transactionlist = (props) => {
           </CardTitle>
            
           <div>{error
-              ? <button onClick={props.pollingStart}>{JSON.stringify(error)} Click to Reload.</button>
+              ? <CustomErrorButton onClick={props.pollingStart}>Connection error, click to reload</CustomErrorButton>
               : isFetching
                 ? `loading...`
                 : <TableStyled borderless>
