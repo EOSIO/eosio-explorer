@@ -5,7 +5,6 @@ export default styled.div`
     display: block;
     position: relative;
     padding-left: 35px;
-    margin-bottom: 12px;
     cursor: pointer;
     font-size: 22px;
     -webkit-user-select: none;
@@ -31,7 +30,8 @@ export default styled.div`
     background-color: #f8f9fa;
     border: solid 1px #8ba5bf;
     border-radius: 50%;
-    margin-top: -2px;
+    margin-top: -5px;
+    margin-left: 30px;
   }
 
     /* On mouse-over, add a grey background color */

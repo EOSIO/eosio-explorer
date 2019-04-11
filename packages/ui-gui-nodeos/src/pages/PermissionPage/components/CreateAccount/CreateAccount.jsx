@@ -13,22 +13,6 @@ import useForm from 'helpers/useForm';
 import validate from './CreateAccountValidatorEngine/CreateAccountValidatorEngine';
 import { CardStyled, OverlayStyled, CardHeaderStyled, ButtonPrimary, InputStyled} from 'styled';
 
-const overlayOn = {
-  position: "fixed",
-  display: "block",
-  width: "100%",
-  height: "100%",
-  top: 0,
-  left: 0,
-  backgroundColor: "rgba(0,0,0,0.5)",
-  zIndex: 999,
-  cursor: "pointer"
-}
-
-const overlayOff = {
-  display: "none"
-}
-
 const CreateAccount = (props) => {
 
   const { values, handleChange, handleSubmit, errors } = useForm(createAccount, validate);
@@ -136,6 +120,7 @@ const CreateAccount = (props) => {
                         <InputStyled type="text"
                           name="ownerPublic"
                           id="ownerPublic"
+                          placeholder="Generating keys..."
                           value={
                             values.ownerPublic 
                             || payload.ownerPublicKey
@@ -151,6 +136,7 @@ const CreateAccount = (props) => {
                         <InputStyled type="text"
                             name="ownerPrivate"
                             id="ownerPrivate"
+                            placeholder="Generating keys..."
                             value={
                               values.ownerPrivate
                               || payload.ownerPrivateKey
@@ -167,6 +153,7 @@ const CreateAccount = (props) => {
                         <InputStyled type="text"
                           name="activePublic"
                           id="activePublic"
+                          placeholder="Generating keys..."
                           value={
                             values.activePublic
                             || payload.activePublicKey
@@ -182,6 +169,7 @@ const CreateAccount = (props) => {
                         <InputStyled type="text"
                             name="activePrivate"
                             id="activePrivate"
+                            placeholder="Generating keys..."
                             value={
                               values.activePrivate
                               || payload.activePrivateKey
