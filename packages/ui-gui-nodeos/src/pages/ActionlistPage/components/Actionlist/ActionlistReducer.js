@@ -11,6 +11,7 @@ import { combineEpics, ofType } from 'redux-observable';
 
 import apiMongodb from 'services/api-mongodb';
 import { errorLog } from 'helpers/error-logger';
+import paramsToQuery from 'helpers/params-to-query';
 
 // IMPORTANT
 // Must modify action prefix since action types must be unique in the whole app
@@ -44,11 +45,13 @@ const fetchEpic = ( action$, state$ ) => action$.pipe(
   ofType(FETCH_START),
   mergeMap(action => {
     let { value: { actionlistPage: { actionlist: { smartContractName, records } }} } = state$;
-    let getActionQuery =  smartContractName ?
-                          "?account_name=" + smartContractName.toLowerCase() :
-                          "";
-    getActionQuery += "?records_count=" + records;    
+    let params = { records_count: records };
+    
+    if(smartContractName)
+      params.account_name = smartContractName.toLowerCase();
 
+    let getActionQuery = paramsToQuery(params);
+    
     return apiMongodb(`get_actions${getActionQuery}`).pipe(
       map(res => fetchFulfilled(res.response)),
       catchError(error => {
