@@ -98,7 +98,7 @@ const PushactionPage = (props) => {
     else {
       didMountRef.current = true;
     }
-
+    
   }, [props.pushactionPage.action])
 
   // This useEffect fires on component load only and performs some setup tasks
@@ -247,18 +247,24 @@ const PushactionPage = (props) => {
                     <Col xs="9">
                       <CustomDropdown id="PermissionDropdown" isOpen={isOpenDropDownPermission} toggle={()=>{toggleDropDownPermission(!isOpenDropDownPermission)}}>
                         <DropdownToggle className={errors.permission && "invalid"} caret>                        
-                          {(selectedPermission.account + "@" + selectedPermission.permission)}
+                          {(selectedPermission._id === defaultId)
+                            ? (selectedPermission.account + "@" + selectedPermission.permission + " (default)")
+                            : (selectedPermission.account + "@" + selectedPermission.permission)}
                         </DropdownToggle>
                         <DropdownMenu modifiers={dropdownMaxHeight}>
-                          {(list).map((permission)=> permission.private_key &&
+                          {(list).map( permission => permission.private_key &&
                               <DropdownItem 
                                 key={permission._id} 
                                 onClick={(e) => { 
                                   selectedPermission = list.find(p => p.account === action.act.authorization.actor && p.permission === action.act.authorization.permission) || selectedPermission;
                                   updateAction("permission", action, { actor: permission.account, permission: permission.permission }, props.updateActionToPush);
                                   resetValidation(e);
-                                }}>
-                              {permission.account}@{permission.permission}</DropdownItem>)}
+                              }}>
+                                {(defaultId === permission._id)
+                                 ? (permission.account + '@'+ permission.permission +' (default)')
+                                 : (permission.account + '@'+ permission.permission)
+                                }  
+                              </DropdownItem>)}
                         </DropdownMenu>     
                       </CustomDropdown>  
                       {/* Hidden inputs for validation and to make sure validation messages are shown by Bootstrap  */}
