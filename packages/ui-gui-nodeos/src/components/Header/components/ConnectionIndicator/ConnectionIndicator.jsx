@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { connect } from 'react-redux';
-import { STATUS_NORMAL, STATUS_STOPPED } from './ConnectionIndicatorReducer'
+import { STATUS_NORMAL } from './ConnectionIndicatorReducer'
 
 import styled from 'styled-components';
 

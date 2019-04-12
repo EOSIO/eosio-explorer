@@ -5,8 +5,8 @@
 */
 
 import { combineReducers } from 'redux';
-import { interval, of } from 'rxjs';
-import { mergeMap, mapTo, map, takeUntil, catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { mergeMap, mapTo, map, catchError } from 'rxjs/operators';
 
 import { combineEpics, ofType } from 'redux-observable';
 

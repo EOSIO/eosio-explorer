@@ -40,7 +40,7 @@ const Transactiondetail = (props) => {
               : isFetching           
                 ? `loading...`
                 : payload.length === 0 
-                  ? <ErrorDivStyled>No transaction found with transaction id ${params.id}</ErrorDivStyled>
+                  ? <ErrorDivStyled>No transaction found with transaction id {params.id}</ErrorDivStyled>
                   : <div>
                       <Row>
                         <Col sm="12">
@@ -94,7 +94,7 @@ const Transactiondetail = (props) => {
                                   </thead>
                                   <tbody>
                                     {(payload[0].action_traces).map((eachAction,index)=>
-                                      <tr onClick={evt=> props.push(`/action/${eachAction.block_num}/${eachAction.receipt.global_sequence}`)} key={eachAction.index}>
+                                      <tr key={eachAction.act.name} onClick={evt=> props.push(`/action/${eachAction.block_num}/${eachAction.receipt.global_sequence}`)}>
                                         <td>{index+1}</td>
                                         <td>{eachAction.act.name}</td>  
                                         <td>{eachAction.act.account}</td>                                    

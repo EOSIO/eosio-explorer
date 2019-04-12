@@ -34,7 +34,7 @@ export const fetchFulfilled = payload => ({ type: FETCH_FULFILLED, payload });
 export const fetchRejected = ( payload, error ) => ({ type: FETCH_REJECTED, payload, error });
 export const pollingStart = () => ({ type: POLLING_START });
 export const pollingStop = () => ({ type: POLLING_STOP });
-export const filterSet = (enabled) => ({ type: FILTER_SET }, enabled);
+export const filterSet = (enabled) => ({ type: FILTER_SET, enabled});
 export const filterToggle = () => ({ type: FILTER_TOGGLE });
 export const recordsUpdate = (count) => ({ type: RECORDS_UPDATE, recordsCount: count });
 

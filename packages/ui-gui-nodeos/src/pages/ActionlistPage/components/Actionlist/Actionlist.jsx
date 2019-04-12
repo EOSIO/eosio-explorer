@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 
 import { connect } from 'react-redux';
 import { Row, Col, CardTitle, Form } from 'reactstrap';
