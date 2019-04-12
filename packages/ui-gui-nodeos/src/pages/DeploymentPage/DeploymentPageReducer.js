@@ -194,6 +194,7 @@ const deploymentReducer = (state=dataInitState, action) => {
         stdoutLog: [],
         stderrLog: [],
         errors: [],
+        abiContents: null,
         output: null,
         deployed: false
       }
