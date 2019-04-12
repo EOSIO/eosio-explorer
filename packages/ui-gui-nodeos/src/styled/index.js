@@ -3,6 +3,7 @@ import CardStyled from './CardStyled';
 import CardHeaderStyled from './CardHeaderStyled';
 import PageTitleDivStyled from './PageTitleDivStyled';
 import InputStyled from './InputStyled';
+import ButtonGroupSeperated from './ButtonGroupSeperated';
 import ButtonPrimary from './ButtonPrimary';
 import ButtonSecondary from './ButtonSecondary';
 import TableStyled from './TableStyled';
@@ -18,6 +19,7 @@ export {
   CardHeaderStyled,
   PageTitleDivStyled,
   InputStyled,
+  ButtonGroupSeperated,
   ButtonPrimary,
   ButtonSecondary,
   TableStyled,

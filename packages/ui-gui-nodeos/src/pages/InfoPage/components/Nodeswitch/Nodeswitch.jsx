@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 
 import { connect } from 'react-redux';
 
-import { Button, ButtonGroup, Col, Form, FormGroup, UncontrolledTooltip, Label, FormFeedback } from 'reactstrap';
+import { Button, Col, Form, FormGroup, UncontrolledTooltip, Label, FormFeedback } from 'reactstrap';
 import styled from 'styled-components';
 
 import { connectStart, connectReset, pathInitState, errorReset } from 'reducers/endpoint';
 import useForm from 'helpers/useForm';
 import validate from './NodeswitchValidatorEngine';
-import { InputStyled, ButtonPrimary, ButtonSecondary } from 'styled';
+import { InputStyled, ButtonGroupSeperated, ButtonPrimary, ButtonSecondary } from 'styled';
 
 
 const ButtonNow = styled(Button)`
@@ -90,7 +90,7 @@ const Nodeswitch = (props) => {
             }
           </Col>
           <Col xs="12" className="text-right mt-3">
-            <ButtonGroup className="float-right">
+            <ButtonGroupSeperated className="float-right">
               <ButtonPrimary type="submit" disabled={ !isDirtyForm }>CONNECT</ButtonPrimary>
               <ButtonSecondary
                 id="ResetCxn"
@@ -101,7 +101,7 @@ const Nodeswitch = (props) => {
                   setKey(Date.now());
                 }}
               >RESET</ButtonSecondary>
-            </ButtonGroup>
+            </ButtonGroupSeperated>
             <UncontrolledTooltip placement="top" target="ResetCxn"
                 delay={{show: 0, hide: 0}}
                 trigger="hover"

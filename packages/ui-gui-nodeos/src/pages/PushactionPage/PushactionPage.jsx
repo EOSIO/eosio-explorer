@@ -15,7 +15,7 @@ import Actionhistory from './components/Actionhistory';
 import styled from 'styled-components';
 import cogoToast from 'cogo-toast';
 
-import { PageTitleDivStyled, CardStyled, CardHeaderStyled, ButtonPrimary, DropdownStyled, OverlayStyled } from 'styled';
+import { PageTitleDivStyled, CardStyled, CardHeaderStyled, ButtonGroupSeperated, ButtonPrimary, ButtonSecondary, DropdownStyled, OverlayStyled } from 'styled';
 
 const FirstCardStyled = styled(CardStyled)`
   border-top: solid 2px #1173a4;
@@ -65,6 +65,17 @@ const updateAction = (name, action, value, callback) => {
   } else if (name === "payload") {
     action.payload = value;
   }
+  callback(action);
+};
+
+/**
+ * Sets the action object to undefined, then calls the given callback function on the empty action.
+ * Used to cause the reducer to reset the action object to its initial, empty value.
+ * @param {*} action The action object to be cleared
+ * @param {*} callback The function to call on the cleared action
+ */
+const clearAction = (action, callback) => {
+  action = undefined;
   callback(action);
 };
 
@@ -290,8 +301,14 @@ const PushactionPage = (props) => {
                     </Col>
                   </FormGroup>
                   <FormGroup row className="mb-0">
-                    <Col xs="12" className="text-right">
-                      <ButtonPrimary type="submit">Push</ButtonPrimary>
+                    <Col xs="12">
+                      <ButtonGroupSeperated className="float-right">
+                        <ButtonSecondary type="button" onClick={(e) => {
+                          clearAction(action, props.updateActionToPush);
+                          resetValidation(e);
+                        }}>Clear</ButtonSecondary>
+                        <ButtonPrimary type="submit">Push</ButtonPrimary>
+                      </ButtonGroupSeperated>
                     </Col>
                   </FormGroup>
                   {/* <Tooltip placement="bottom" target="PayloadItem"

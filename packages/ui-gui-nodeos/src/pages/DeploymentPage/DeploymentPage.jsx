@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import {
-    CardBody, Row, Col, ButtonGroup, Spinner,
+    CardBody, Row, Col, Spinner,
     Nav, NavLink, NavItem, TabContent, TabPane,
     Form, FormGroup, Label, Badge,
     DropdownToggle, DropdownMenu, DropdownItem,
@@ -15,7 +15,7 @@ import { DragDropCodeViewer, CodeViewer } from 'components';
 import { 
     CardStyled, CardHeaderStyled, PageTitleDivStyled,
     InputStyled, ButtonPrimary, ButtonSecondary,
-    DropdownStyled, OverlayStyled
+    DropdownStyled, OverlayStyled, ButtonGroupSeperated
 } from 'styled';
 import cogoToast from 'cogo-toast';
 
@@ -39,6 +39,12 @@ const LogCardHeaderStyled = styled(CardHeaderStyled)`
   border: none;
   background-color: #ffffff;
   padding: 5px 20px;
+`
+
+const ButtonPrimaryResponsive = styled(ButtonPrimary)`
+  max-width: 130px;
+  display: inline-block;
+  width: 100%;
 `
 
 const DeploymentPage = (props) => {
@@ -237,7 +243,7 @@ const DeploymentPage = (props) => {
                                 <Form>
                                     <FormGroup row>
                                         <Col sm={4}>
-                                            <ButtonGroup className="float-left">
+                                            <ButtonGroupSeperated className="float-left">
                                                 <ButtonPrimary
                                                     id="GenerateAbi"
                                                     onClick={(ev)=>generateAbi(ev)}
@@ -252,7 +258,7 @@ const DeploymentPage = (props) => {
                                                     >
                                                     Import ABI
                                                 </ButtonSecondary>
-                                            </ButtonGroup>
+                                            </ButtonGroupSeperated>
                                             <input type="file"
                                                 id="abiImporter"
                                                 accept=".abi"
@@ -321,7 +327,7 @@ const DeploymentPage = (props) => {
                                             </DropdownStyled>
                                         </Col>
                                         <Col xs={3}>
-                                            <ButtonPrimary
+                                            <ButtonPrimaryResponsive
                                                 id="DeployContract"
                                                 className="btn float-right"
                                                 disabled={path.length === 0 || 
@@ -330,7 +336,7 @@ const DeploymentPage = (props) => {
                                                 onClick={(ev)=>deployContract(ev)}
                                                 >
                                                 Deploy
-                                            </ButtonPrimary>
+                                            </ButtonPrimaryResponsive>
                                         </Col>
                                     </FormGroup>
                                 </Form>
