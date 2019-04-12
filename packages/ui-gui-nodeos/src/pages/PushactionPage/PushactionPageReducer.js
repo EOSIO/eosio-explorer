@@ -173,21 +173,20 @@ export const combinedEpic = combineEpics(
   recordsUpdateEpic
 );
 
-
-const actionToPushInitState = {
-  _id: "",
-  act: {
-    account: "",
-    name: "",
-    authorization: [{
-      actor: "",
-      permission: ""
-    }]
-  },
-  payload: undefined,
-  pushSuccess: false
+const getActionInitState = () =>{
+  return { _id: "",
+            act: {
+              account: "",
+              name: "",
+              authorization: [{
+                actor: "",
+                permission: ""
+              }]
+            },
+            payload: undefined,
+            pushSuccess: false
+          }
 }
-
 const dataInitState = {
   actionsList: [],
   error: undefined
@@ -196,7 +195,7 @@ const dataInitState = {
 // Mapping function to map an action object retrieved from the API to our action object in the push action form
 const mapPrefilledAction = (prefilledAction) => {
   if (!prefilledAction)
-    return actionToPushInitState;
+    return getActionInitState();
 
   let action = prefilledAction.find(x => x !== undefined);
   return {
@@ -213,7 +212,7 @@ const mapPrefilledAction = (prefilledAction) => {
 // Mapping function to update the action object with the user's input
 const mapUpdatedAction = (updatedAction) => {
   if (!updatedAction)
-    return actionToPushInitState;
+    return getActionInitState();
   
   return {
     _id: updatedAction._id,
@@ -314,7 +313,7 @@ const actionIdReducer = (state = "", action) => {
 };
 
 // Manages the action object
-const actionReducer = (state = actionToPushInitState, action) => {
+const actionReducer = (state = getActionInitState(), action) => {
   switch (action.type) {
     case ACTION_UPDATE:
       // User updates the action
@@ -331,7 +330,7 @@ const actionReducer = (state = actionToPushInitState, action) => {
     case ACTION_PUSH_FULFILLED:
       // Action push is successful
       return {
-        ...actionToPushInitState,
+        ...getActionInitState(),
         error: undefined,
         pushSuccess: true
       };
