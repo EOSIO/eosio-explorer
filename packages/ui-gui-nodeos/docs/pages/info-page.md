@@ -6,7 +6,7 @@ The info page contains high level information about the currently connected `nod
 
 ## Connections
 
-The Connections panel will indicate to users the URL of the endpoints the user is currently connected to for both `nodeos` and MongoDB running services. The user can choose to change either of these by directly editing the fields, and then clicking the **Connect** button. A **Reset** button is available in cases when the user would like to revert to the default configured endpoints.
+The connections panel will indicate to users the URL of the endpoints the user is currently connected to for both `nodeos` and MongoDB running services. The user can choose to change either of these by directly editing the fields, and then clicking the **Connect** button. A **Reset** button is available in cases when the user would like to revert to the default configured endpoints.
 
 ### Changing the Connection
 
@@ -19,14 +19,14 @@ The **Connect** button will be enabled once these values have been changed. Reve
 
 ## Blockchain Information
 
-The Blockchain Information panel will simply display the key information of the running `nodeos` instance the user is connected to. It will show the following fields to the user:
+The blockchain information panel will simply display the key information of the running `nodeos` instance the user is connected to. It will show the following fields to the user:
 * Server version
 * Server version string
 * Chain ID
 
 ## Headblock Information
 
-The Headblock Information panel will denote the current head block of the blockchain running at the connected instance. It will show the following fields to the user:
+The headblock information panel will denote the current head block of the blockchain running at the connected instance. It will show the following fields to the user:
 * Block number
 * Block ID
 * Timestamp of creation
@@ -34,6 +34,6 @@ The Headblock Information panel will denote the current head block of the blockc
 
 ## Last Irreversible Block Information
 
-The Last Irreversible Block Information panel will denote the latest irreversible block in the blockchain. It will show the following fields to the user:
+The last irreversible block information panel will denote the latest irreversible block in the blockchain. It will show the following fields to the user:
 * Block number
 * Block ID

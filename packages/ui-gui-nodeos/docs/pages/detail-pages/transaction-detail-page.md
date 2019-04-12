@@ -6,7 +6,7 @@ The transaction detail page contains more information about a specific transacti
 
 ## Transaction Detail
 
-The Transaction Detail panel contains the basic information about a particular transaction. The panel will display the following fields:
+The transaction detail panel contains the basic information about a particular transaction. The panel will display the following fields:
 * Transaction ID
 * Block number
 * Timestamp

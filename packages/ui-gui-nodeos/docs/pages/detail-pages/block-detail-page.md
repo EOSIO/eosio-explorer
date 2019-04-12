@@ -6,7 +6,7 @@ The block detail page contains more information about a specific block. You will
 
 ## Block Detail
 
-The Block Detail panel contains the basic information on the specific block. The fields here are exactly the same as in the Block List Page, showing the following:
+The block detail panel contains the basic information on the specific block. The fields here are exactly the same as in the Block List Page, showing the following:
 * Block number
 * Block ID
 * Timestamp
