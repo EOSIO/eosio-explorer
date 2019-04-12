@@ -70,33 +70,29 @@ const updateAction = (name, action, value, callback) => {
 
 const PushactionPage = (props) => {
 
-  // didMountRef used to prevent action prefill popup being triggered on the first render
-  const didMountRef = useRef(false);
+  // prefillingAction used to prevent action prefill popup being triggered when the page is reloaded with a prefilled action present
+  const prefillingAction = useRef(false);
 
   // This useEffect tracks the action object and will fire every time the action object changes
   useEffect(() => {
-    if(didMountRef.current) {
-      /* useForm keeps track of the push action form's values through change events, but these events only fire when the user performs an action. 
-      * This page contains asynchronous events which update the action object so we need to manually update these values after the action object has changed. */
-      let vals = [
-        { name: "smartContractName", value: action.act.account },
-        { name: "actionType", value: action.act.name },
-        { name: "payload", value: action.payload },
-        { name: "permission", value: selectedPermission._id }
-      ];
-      updateValues(vals);
+    /* useForm keeps track of the push action form's values through change events, but these events only fire when the user performs an action. 
+    * This page contains asynchronous events which update the action object so we need to manually update these values after the action object has changed. */
+    let vals = [
+      { name: "smartContractName", value: action.act.account },
+      { name: "actionType", value: action.act.name },
+      { name: "payload", value: action.payload },
+      { name: "permission", value: selectedPermission._id }
+    ];
+    updateValues(vals);
 
-      // Confirm the successful prefill with a popup message (moved this down to the prefill action callback temporarily, will be moved back here later)
-      // if(!action.error && action.act.name && action.act.account) {
-      //   cogoToast.success(`Prefilled action: ${action.act.name} from ${action.act.account}`, {
-      //     heading: "Action Prefilled",
-      //     position: "bottom-center",
-      //     hideAfter: 3.5
-      //   });
-      // }
-    }
-    else {
-      didMountRef.current = true;
+    // Confirm the successful prefill with a popup message (moved this down to the prefill action callback temporarily, will be moved back here later)
+    if(prefillingAction.current && action.act.name && action.act.account) {
+      prefillingAction.current = false;
+      cogoToast.success(`Prefilled action: ${action.act.name} from ${action.act.account}`, {
+        heading: "Action Prefilled",
+        position: "bottom-center",
+        hideAfter: 3.5
+      });
     }
 
   }, [props.pushactionPage.action])
@@ -276,8 +272,14 @@ const PushactionPage = (props) => {
                       <Label>Payload:</Label>
                     </Col>
                     <Col xs="12">
-                      <CodeViewer readOnly={false} height="250" value={action.payload} className={errors.payload && "invalid"}
-                        onChange={(newVal) => { updateAction("payload", action, newVal, props.updateActionToPush); }} />
+                      <CodeViewer 
+                        language="json"
+                        readOnly={false} 
+                        height="250" 
+                        value={action.payload} 
+                        className={errors.payload && "invalid"}
+                        onChange={(newVal) => { updateAction("payload", action, newVal, props.updateActionToPush); }} 
+                      />
                       <Input type="hidden" id="payload" name="payload" value={action.payload || ""} onChange={(e) => { handleChange(e); } } invalid={!!errors.payload} />
                       {
                         errors.payload && 
@@ -344,20 +346,13 @@ const PushactionPage = (props) => {
               <CardBody>
                 {/* Actionhistory component takes a "prefillCallback" prop, which will be called whenever one of the prefill buttons are clicked */}
                 <Actionhistory prefillCallback={(action) => {
-                  // When "Prefill" is clicked, set the actionId variable in the reducer to the _id of the selected
-                  // action and rebuild the Action Type list with actions available to the smart contract of this action.
+                  // When "Prefill" is clicked, set the actionId variable in the reducer to an object containing the block number and global sequence
+                  // of that action. Then rebuild the Action Type list with actions available to the smart contract of that action.
                   props.actionIdSet({ block_num: action.block_num, global_sequence: action.receipt.global_sequence });
                   setActionList(smartContractsList.find(smartContract => smartContract.name === action.act.account).abi.actions);
                   resetValidation();
                   window.scrollTo(0, 0);
-                  // Confirm the successful prefill with a popup message
-                  if(!action.error && action.act.name && action.act.account) {
-                    cogoToast.success(`Prefilled action: ${action.act.name} from ${action.act.account}`, {
-                      heading: "Action Prefilled",
-                      position: "bottom-center",
-                      hideAfter: 3.5
-                    });
-                  }
+                  prefillingAction.current = true;
                 }} />
               </CardBody>
             </CardStyled>

@@ -45,7 +45,7 @@ export const actionPush = (action) => ({ type: ACTION_PUSH, actionToPush: action
 export const actionPushFulfilled = (response) => ({ type: ACTION_PUSH_FULFILLED, response });
 export const actionPushRejected = (payload, error) => ({ type: ACTION_PUSH_REJECTED, payload, error });
 export const fetchSmartContracts = () => ({ type: FETCH_SMART_CONTRACTS });
-export const fetchFulfilledSmartContract = (payload, error) => ({ type: FETCH_SMART_CONTRACTS_FULFILLED, payload, error });
+export const fetchFulfilledSmartContract = (payload) => ({ type: FETCH_SMART_CONTRACTS_FULFILLED, payload });
 export const fetchRejectedSmartContract = (payload, error) => ({ type: FETCH_SMART_CONTRACTS_REJECTED, payload, error });
 export const recordsUpdate = (count) => ({ type: RECORDS_UPDATE, recordsCount: count });
 
@@ -56,7 +56,6 @@ const fetchEpic = (action$, state$) => action$.pipe(
     let { value: { pushactionPage: { actionId, records } } } = state$;
     let actionHistoryParams = { records_count: records };
     let getActionParams = { };
-
     // Check that we have block number and global sequence. Global sequence can be equal to 0 so we have to account for that here as well
     if(actionId.block_num && (actionId.global_sequence === 0 || actionId.global_sequence)) {
       getActionParams.block_num = actionId.block_num;
@@ -65,7 +64,7 @@ const fetchEpic = (action$, state$) => action$.pipe(
 
     let actionHistoryQuery = paramsToQuery(actionHistoryParams);
     let getActionQuery = paramsToQuery(getActionParams);
-
+    
     // If the actionId has been set by a user clicking "Prefill"
     if (getActionQuery) {
       // First, get the action history list
@@ -112,7 +111,7 @@ const fetchSmartContractsEpic = action$ => action$.pipe(
   mergeMap(action => {
     // Get the list of smart contract to populate the Smart Contract Name dropdown
     return apiMongodb(`get_smart_contracts`).pipe(
-      map(smartContractsResponse => fetchFulfilledSmartContract(smartContractsResponse.response, null)),
+      map(smartContractsResponse => fetchFulfilledSmartContract(smartContractsResponse.response)),
       catchError(error => {
         errorLog(error);
         return of(fetchRejectedSmartContract(error.response, { status: error.status }))

@@ -17,15 +17,20 @@ const LimitSelectDropdown = (props) => {
   }, [count]);
 
   return (
-    <DropdownStyled isOpen={isOpen} toggle={() => { toggleIsOpen(!isOpen) }}>
-      <DropdownToggle caret>{count}</DropdownToggle>
-      <DropdownMenu>
-        <DropdownItem onClick={() => { updateCount(10) }}>10</DropdownItem>
-        <DropdownItem onClick={() => { updateCount(20) }}>20</DropdownItem>
-        <DropdownItem onClick={() => { updateCount(50) }}>50</DropdownItem>
-        <DropdownItem onClick={() => { updateCount(100) }}>100</DropdownItem>
-      </DropdownMenu>
-    </DropdownStyled>
+    <div>
+      <span className="d-inline-block mr-3 text-muted">Show rows:</span>
+      <div className="d-inline-block">
+        <DropdownStyled isOpen={isOpen} toggle={() => { toggleIsOpen(!isOpen) }}>
+          <DropdownToggle caret>{count}</DropdownToggle>
+          <DropdownMenu>
+            <DropdownItem onClick={() => { updateCount(10) }}>10</DropdownItem>
+            <DropdownItem onClick={() => { updateCount(20) }}>20</DropdownItem>
+            <DropdownItem onClick={() => { updateCount(50) }}>50</DropdownItem>
+            <DropdownItem onClick={() => { updateCount(100) }}>100</DropdownItem>
+          </DropdownMenu>
+        </DropdownStyled>
+      </div>
+    </div>
   )
 }
 

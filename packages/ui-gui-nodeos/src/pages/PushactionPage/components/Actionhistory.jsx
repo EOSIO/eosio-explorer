@@ -14,6 +14,12 @@ const CustomButton = styled(ButtonPrimary)`
   height: 32px;
 `
 
+const TableStyledNoPointer = styled(TableStyled)`
+  tbody tr:hover{
+    cursor: initial;
+  }
+`
+
 const Actionhistory = (props) => {
 
   let { pushactionPage: { isFetching, data: { actionsList = [] }, records } } = props;
@@ -27,7 +33,7 @@ const Actionhistory = (props) => {
         ) : (
           <Row>
             <Col xs="12">
-              <TableStyled borderless>
+              <TableStyledNoPointer borderless>
                 <thead>
                   <tr className="font-weight-bold">
                     <th width="20%">Smart Contract Name</th>
@@ -53,7 +59,7 @@ const Actionhistory = (props) => {
                     </tr>
                   )}
                 </tbody>
-              </TableStyled>
+              </TableStyledNoPointer>
             </Col>
             {actionsList.length > 0 &&
               <Col xs="12" className="text-right">

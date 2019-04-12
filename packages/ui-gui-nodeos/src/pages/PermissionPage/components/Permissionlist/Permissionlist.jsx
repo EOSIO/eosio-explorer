@@ -160,7 +160,7 @@ const Permissionlist = (props) => {
                                             </td>
                                             <EditButtonCell width="40%">
                                               <ButtonPrimary 
-                                                    style={{marginLeft: '55%'}}
+                                                    style={{float:'right', marginRight:'5%'}}
                                                     onClick={() => getKeysData(newList[account][0].account, list)}
                                                     block
                                                     >
@@ -216,7 +216,7 @@ const Permissionlist = (props) => {
                                             </td>
                                             <EditButtonCell width="40%">
                                               <ButtonPrimary 
-                                                    style={{marginLeft:'55%'}}
+                                                    style={{float:'right', marginRight:'5%'}}
                                                     onClick={() => getKeysData(newList[account][0].account, list)}
                                                     block
                                                     >
