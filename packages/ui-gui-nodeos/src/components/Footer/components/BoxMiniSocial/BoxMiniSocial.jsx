@@ -3,7 +3,7 @@ const BoxMiniSocial = ({
   src = "",
   iconClass = ""
 }) =>
-  <a href={src} target="_blank">
+  <a href={src} target="_blank"  rel="noopener noreferrer">
     <div className="BoxMiniSocial">
       <i className={iconClass}></i>
     </div>

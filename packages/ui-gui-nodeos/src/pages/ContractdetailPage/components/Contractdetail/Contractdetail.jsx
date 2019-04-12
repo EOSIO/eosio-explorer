@@ -7,7 +7,7 @@ import MultiIndex from '../MultiIndex';
 import pathNameConsumer from 'helpers/pathname-consumer';
 import { push } from 'connected-react-router'
 
-import { Row, Col, CardBody, Input } from 'reactstrap';
+import { Row, Col, CardBody } from 'reactstrap';
 import styled from 'styled-components';
 import { CodeViewer } from 'components';
 import { CardStyled, CardHeaderStyled, ButtonPrimary, ButtonSecondary, ErrorDivStyled, InputStyled} from 'styled';
@@ -44,7 +44,7 @@ const Contractdetail = (props) => {
 
   useEffect(()=>{
     let { router: { location: {pathname} } } = props;
-    if(pathname == '/contract' || pathname == '/contract/'){
+    if(pathname === '/contract' || pathname === '/contract/'){
       setShowDetailsSection(false);
     }else{
       setShowDetailsSection(true)
@@ -72,7 +72,8 @@ const Contractdetail = (props) => {
                         evt => {
                           if (evt.key === 'Enter') {
                             setInputValue("")
-                            { inputValue ? props.push('/contract/'+inputValue) : console.log("No search text")} 
+                            if(inputValue !== "")
+                              props.push('/contract/'+inputValue)
                           }
                         }
                       }
@@ -81,7 +82,8 @@ const Contractdetail = (props) => {
                       color="secondary"                           
                       onClick={evt=> {
                         setInputValue("")
-                        {inputValue ? props.push('/contract/'+inputValue) : console.log("No search text") }                          
+                        if(inputValue !== "")
+                          props.push('/contract/'+inputValue)                         
                       }}>
                 Search</ButtonPrimary>
               </DivFlexStyled>
@@ -91,35 +93,37 @@ const Contractdetail = (props) => {
         </Col>                
       </Row>
 
-      {showDetailsSection 
-        ? error
-          ? <CustomErrorButton onClick={props.fetchStart}>Connection error, click to reload</CustomErrorButton>
-          : isFetching
-            ? `loading...`
-            : !(payload.length !== 0 && payload[0].hasOwnProperty("abi") === true)
-              ? <ErrorDivStyled>No Smart Contract found with Smart Contract Name {params.account_name}</ErrorDivStyled>
-              : <div>
-                  <Row> 
-                    <Col sm="12">
-                      <CardStyled>
-                        <CardHeaderStyled>Smart Contract Detail</CardHeaderStyled>
-                        <CardBody>
-                          <CodeViewer 
-                            language="json"
-                            value={JSON.stringify(payload[0].abi, null, 2)}
-                            readOnly={true}
-                            height={300}
-                          />
-                        </CardBody>
-                      </CardStyled>
-                    </Col>
-                  </Row>  
-                  
-                  { payload[0].abi.tables.length === 0 
-                    ? <DivMessageStyled>No Multi-Index table present for this contract</DivMessageStyled>
-                    : <MultiIndex abiData={payload[0]} />}
-                </div>        
-        :console.log("No details section")      
+      {showDetailsSection && 
+        <div>
+          {error
+            ? <CustomErrorButton onClick={props.fetchStart}>Connection error, click to reload</CustomErrorButton>
+            : isFetching
+              ? `loading...`
+              : !(payload.length !== 0 && payload[0].hasOwnProperty("abi") === true)
+                ? <ErrorDivStyled>No Smart Contract found with Smart Contract Name {params.account_name}</ErrorDivStyled>
+                : <div>
+                    <Row> 
+                      <Col sm="12">
+                        <CardStyled>
+                          <CardHeaderStyled>Smart Contract Detail</CardHeaderStyled>
+                          <CardBody>
+                            <CodeViewer 
+                              language="json"
+                              value={JSON.stringify(payload[0].abi, null, 2)}
+                              readOnly={true}
+                              height={300}
+                            />
+                          </CardBody>
+                        </CardStyled>
+                      </Col>
+                    </Row>  
+                    
+                    { payload[0].abi.tables.length === 0 
+                      ? <DivMessageStyled>No Multi-Index table present for this contract</DivMessageStyled>
+                      : <MultiIndex abiData={payload[0]} />}
+                  </div>      
+          } 
+        </div>    
       }
     </div>
   );

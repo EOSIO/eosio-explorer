@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { connect } from 'react-redux';
 
@@ -6,7 +6,7 @@ import { fetchStart, paramsSet } from './MultiIndexReducer';
 
 import { push } from 'connected-react-router'
 
-import { Card, CardBody, Dropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap';
+import { CardBody, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap';
 import styled from 'styled-components';
 import { CodeViewer } from 'components';
 import { DropdownStyled, CardStyled, CardHeaderStyled } from 'styled';

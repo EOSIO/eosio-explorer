@@ -55,7 +55,8 @@ const Transactionlist = (props) => {
                       evt => {
                         if (evt.key === 'Enter') {
                           setInputValue("");
-                          {inputValue ? props.push('/transaction/'+inputValue) : console.log("No search text")} 
+                          if(inputValue !== "")
+                            props.push('/transaction/'+inputValue) 
                         }
                       }
                     }
@@ -63,7 +64,8 @@ const Transactionlist = (props) => {
               <ButtonPrimary             
                     onClick={evt=> {
                       setInputValue("");
-                      {inputValue ? props.push('/transaction/'+inputValue) : console.log("No search text")}                          
+                      if(inputValue !== "")
+                        props.push('/transaction/'+inputValue)                           
                     }}>
               Search</ButtonPrimary>
             </DivFlexStyled>

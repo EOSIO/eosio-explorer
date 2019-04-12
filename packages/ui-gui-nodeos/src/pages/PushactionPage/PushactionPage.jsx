@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import {
   Card, CardBody, Row, Col, Form, FormGroup, FormFeedback, Label, Input, 
-  UncontrolledAlert, DropdownToggle, DropdownMenu, DropdownItem, Spinner, Tooltip
+  UncontrolledAlert, DropdownToggle, DropdownMenu, DropdownItem, Spinner
 } from 'reactstrap';
 
 import { actionIdSet, updateActionToPush, actionPush, fetchStart, fetchSmartContracts } from './PushactionPageReducer';
@@ -116,7 +116,7 @@ const PushactionPage = (props) => {
     updateAction("", action, null, props.updateActionToPush);
   }, [])
 
-  let { permission: { data }, pushactionPage: { action, actionId, isPushingAction, smartContracts: { smartContractsList = [] }, isFetchingSmartContract } } = props;
+  let { permission: { data }, pushactionPage: { action, isPushingAction, smartContracts: { smartContractsList = [] }, isFetchingSmartContract } } = props;
   let { list, defaultId } = data;  
 
   // Get the default permission. Overwrite it with the action object's permission, if the action object has a permission.
@@ -127,10 +127,10 @@ const PushactionPage = (props) => {
   // Set up useForm functionality. This contains the callback function which will be called on successful form submit
   const { handleChange, handleSubmit, updateValues, resetValidation, setAdditionalValues, errors } = useForm(function () { window.scrollTo(0, 0); props.actionPush(action); }, validate);
 
-  const [ isOpenAccountTooltip, toggleAccountTooltip ] = useState(false);
-  const [ isOpenActionTooltip, toggleActionTooltip ] = useState(false);
-  const [ isOpenPermissionTooltip, togglePermissionTooltip ] = useState(false);
-  const [ isOpenPayloadTooltip, togglePayloadTooltip ] = useState(false);
+  // const [ isOpenAccountTooltip, toggleAccountTooltip ] = useState(false);
+  // const [ isOpenActionTooltip, toggleActionTooltip ] = useState(false);
+  // const [ isOpenPermissionTooltip, togglePermissionTooltip ] = useState(false);
+  // const [ isOpenPayloadTooltip, togglePayloadTooltip ] = useState(false);
 
   const [isOpenDropDownSmartContract, toggleDropDownSmartContract] = useState(false);
   const [isOpenDropDownActionType, toggleDropDownActionType] = useState(false);

@@ -69,7 +69,8 @@ const Blocklist = (props) => {
                         evt => {
                           if (evt.key === 'Enter') {
                             setInputValue("");
-                            {inputValue ? props.push('/block/'+inputValue) : console.log("No search text")}
+                            if(inputValue !== "") 
+                              props.push('/block/'+inputValue) 
                           }
                         }
                       }
@@ -77,7 +78,8 @@ const Blocklist = (props) => {
                 <ButtonPrimary
                       onClick={evt=> {
                         setInputValue("");
-                        {inputValue ? props.push('/block/'+inputValue) : console.log("No search text")}
+                        if(inputValue !== "") 
+                          props.push('/block/'+inputValue)
                       }}>
                 SEARCH</ButtonPrimary>
                 </DivFlexStyled>

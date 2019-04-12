@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { connect } from 'react-redux';
 
-import { Col, Form, FormGroup, Label, Button } from 'reactstrap';
+import { Col, Form, FormGroup, Label } from 'reactstrap';
 
 import { pollingStart } from 'reducers/headblock';
 import { LoadingSpinner } from 'components';
