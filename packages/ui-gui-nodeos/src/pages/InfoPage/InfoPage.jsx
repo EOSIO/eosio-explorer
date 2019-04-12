@@ -1,7 +1,6 @@
 import './InfoPage.scss';
 
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { CardBody, Col, Row } from 'reactstrap';
 
 import { StandardTemplate } from 'templates';

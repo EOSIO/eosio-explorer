@@ -4,7 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import {  Nav, NavItem } from 'reactstrap';
-import { AppNavbarBrand } from '@coreui/react';
+//import { AppNavbarBrand } from '@coreui/react';
 import styled from 'styled-components';
 
 import ConnectionIndicator from './components/ConnectionIndicator';

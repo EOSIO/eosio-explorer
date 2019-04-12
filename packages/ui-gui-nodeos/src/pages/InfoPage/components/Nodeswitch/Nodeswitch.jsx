@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import { connect } from 'react-redux';
 
-import { Button, ButtonGroup, Col, Form, FormGroup, UncontrolledTooltip, Label, FormFeedback } from 'reactstrap';
+import { ButtonGroup, Col, Form, FormGroup, UncontrolledTooltip, Label, FormFeedback } from 'reactstrap';
 import styled from 'styled-components';
 
 import { connectStart, connectReset, pathInitState, errorReset } from 'reducers/endpoint';
@@ -10,17 +10,6 @@ import useForm from 'helpers/useForm';
 import validate from './NodeswitchValidatorEngine';
 import { InputStyled, ButtonPrimary, ButtonSecondary } from 'styled';
 
-
-const ButtonNow = styled(Button)`
-   width: 130px;
-    height: 40px;
-    border-radius: 2px;
-    background-color: #4d9cc3;
-    opacity: 1;
-    color: #ffffff;
-    font-size: 14px;
-    font-weight: 500;
-`
 const CenteredLabel = styled(Label)`
   margin-top: 6px;
 `

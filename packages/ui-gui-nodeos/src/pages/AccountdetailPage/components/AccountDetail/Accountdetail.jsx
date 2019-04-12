@@ -64,7 +64,8 @@ const Accountdetail = (props) => {
                   evt => {
                     if (evt.key === 'Enter') {
                       setInputValue("")
-                      { inputValue ? props.push('/account/'+inputValue) : console.log("No search text")} 
+                      if(inputValue !== "")
+                        props.push('/account/'+inputValue)
                     }
                   }
                 }
@@ -72,7 +73,8 @@ const Accountdetail = (props) => {
               <ButtonPrimary                        
                 onClick={evt=> {
                   setInputValue("")
-                  {inputValue ? props.push('/account/'+inputValue) : console.log("No search text") }                          
+                  if(inputValue !== "")
+                    props.push('/account/'+inputValue)
                 }}>
               Search</ButtonPrimary>
             </DivFlexStyled>            
@@ -81,8 +83,9 @@ const Accountdetail = (props) => {
       </Col>
     </Row>
       <div>
-        { showDetailsSection                     
-          ? error
+        { showDetailsSection &&
+          <div>                     
+           {error
             ? <ErrorDivStyled>No account found with Account Name {params.account_name}</ErrorDivStyled>
             : isFetching
               ? `loading...`
@@ -158,7 +161,9 @@ const Accountdetail = (props) => {
                       </Col>  
                     </Row>        
                   </div> 
-          : console.log("No details section") }                                         
+            }
+          </div>
+        }                                         
       </div>
     </div>
   );

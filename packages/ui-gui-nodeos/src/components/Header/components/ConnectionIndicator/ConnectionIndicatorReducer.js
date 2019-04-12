@@ -4,7 +4,7 @@
   http://blog.jakoblind.no/reduce-redux-boilerplate/
 */
 
-import { combineReducers } from 'redux';
+//import { combineReducers } from 'redux';
 import { of } from 'rxjs';
 import { mergeMap, throttleTime } from 'rxjs/operators';
 
@@ -32,10 +32,7 @@ const pollingEpic = ( action$, state$ ) => action$.pipe(
       let { headblock:
         { data: headblockData },
         lastblockinfo:
-        { data: lastblockinfoData },
-        connectionIndicator: {
-          last
-        }
+        { data: lastblockinfoData }
       } = value;
 
       let { payload : [{block_num: headblockNum }={}]= [] } = headblockData;

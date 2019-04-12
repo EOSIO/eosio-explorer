@@ -35,7 +35,7 @@ class TestRPCPage extends Component {
   }
 
   render() {
-    let { text } = this.state;
+    
     return (
       <StandardTemplate>
         <div className="InfoPage animated fadeIn">

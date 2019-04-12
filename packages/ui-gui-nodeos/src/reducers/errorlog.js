@@ -5,10 +5,10 @@
 */
 
 import { combineReducers } from 'redux';
-import { interval, of } from 'rxjs';
-import { mergeMap, mapTo, filter } from 'rxjs/operators';
+//import { interval, of } from 'rxjs';
+import { mapTo, filter } from 'rxjs/operators';
 
-import { combineEpics, ofType } from 'redux-observable';
+import { combineEpics } from 'redux-observable';
 
 
 // IMPORTANT

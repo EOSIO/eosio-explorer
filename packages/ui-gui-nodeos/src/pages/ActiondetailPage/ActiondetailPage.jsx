@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 
 import { LoadingSpinner } from 'components';
 import { StandardTemplate } from 'templates';
-import pathNameConsumer from 'helpers/pathname-consumer';
 import { fetchStart, paramsSet } from './ActiondetailPageReducer';
 import Actiondetail from './components/Actiondetail';
 import Actionjson from './components/Actionjson';
@@ -26,7 +25,7 @@ const ActiondetailPage = (props) => {
   }, [])
 
    let { actiondetailPage: { data, isFetching } } = props;
-   let { payload, error } = data;
+   let { error } = data;
 
   return (
     <StandardTemplate>

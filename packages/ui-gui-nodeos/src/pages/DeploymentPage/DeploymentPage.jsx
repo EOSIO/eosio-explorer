@@ -307,6 +307,8 @@ const DeploymentPage = (props) => {
                                                                 `${permission.account}@${permission.permission}`;
                                                             if (currentId === permission._id) 
                                                                 return msg;
+                                                            else
+                                                                return null;
                                                         })
                                                     }
                                                 </DropdownToggle>

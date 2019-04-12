@@ -1,15 +1,13 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import {
-  Form, FormGroup, Label, Col, CardBody, Table
-} from 'reactstrap';
+import { CardBody, Table } from 'reactstrap';
 import cogoToast from 'cogo-toast';
 
 import { connect } from 'react-redux';
 import { fetchStart, accountImport, defaultSet } from 'reducers/permission';
 import { panelSelect } from 'pages/PermissionPage/PermissionPageReducer';
-import { RadioButtonDivStyled, TableStyled, CardStyled, CardHeaderStyled, ButtonPrimary } from 'styled';
+import { RadioButtonDivStyled, CardStyled, CardHeaderStyled, ButtonPrimary } from 'styled';
 
 const InfoDiv = styled.div`
   color: #181c1e;
@@ -68,6 +66,8 @@ const Permissionlist = (props) => {
       result[permission.account].push(permission);
       return result;
     }
+    else
+      return null;
   }, Object.create({})) : null;
 
   useEffect(()=>{

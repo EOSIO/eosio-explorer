@@ -1,4 +1,3 @@
-import { from } from 'rxjs';
 import apiRpc from '@eosio-toppings/api-rpc';
 import store from "store";
 

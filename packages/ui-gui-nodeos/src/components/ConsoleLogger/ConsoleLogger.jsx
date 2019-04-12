@@ -4,7 +4,7 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux';
 
 import Terminal from 'terminal-in-react';
-import { CardStyled,CardHeaderStyled, TableStyled, ButtonPrimary, CheckBoxDivStyled, InputStyled} from 'styled';
+import { CardHeaderStyled } from 'styled';
 
 import { panelSet } from 'reducers/errorlog';
 
