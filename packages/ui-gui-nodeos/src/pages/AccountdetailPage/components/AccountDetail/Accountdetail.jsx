@@ -116,10 +116,10 @@ const Accountdetail = (props) => {
                                   {payload.permissions[0].perm_name === "owner"
                                     ? payload.permissions[0].required_auth.keys.length > 0
                                       ? payload.permissions[0].required_auth.keys[0].key 
-                                      : ""
+                                      : "No Public Key"
                                     :  payload.permissions[1].required_auth.keys.length > 0
                                       ? payload.permissions[1].required_auth.keys[0].key
-                                      : ""
+                                      : "No Public Key"
                                   }
                                 </Col>
                               </FormGroup>
@@ -129,10 +129,10 @@ const Accountdetail = (props) => {
                                   {payload.permissions[0].perm_name === "active"
                                     ? payload.permissions[0].required_auth.keys.length > 0
                                       ? payload.permissions[0].required_auth.keys[0].key 
-                                      : ""
+                                      : "No Public Key"
                                     : payload.permissions[1].required_auth.keys.length > 0 
                                       ? payload.permissions[1].required_auth.keys[0].key
-                                      : ""
+                                      : "No Public Key"
                                   }
                                 </Col>
                               </FormGroup>
