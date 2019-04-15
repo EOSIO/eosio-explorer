@@ -151,6 +151,33 @@ const dataInitState = {
   defaultId: "1"
 }
 
+const reinitializedState = function () {
+  return {
+    list: [
+      {
+        _id: '1',
+        account: 'eosio',
+        permission: 'owner',
+        public_key: 'EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV',
+        private_key: '5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3'
+      },
+      {
+        _id: '2',
+        account: 'eosio',
+        permission: 'active',
+        public_key: 'EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV',
+        private_key: '5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3'
+      }
+    ],
+    importSuccess: false,
+    importError: null,
+    submitError: null,
+    isSubmitting: false,
+    creationSuccess: false,
+    defaultId: "1"
+  }
+};
+
 // Sort permission list by alphabetical order
 const alphabeticalSort = (a, b) => {
   let acctNameA = a.account,
@@ -163,13 +190,20 @@ const alphabeticalSort = (a, b) => {
 }
 
 const composePermissionList = (originalList, payloadList) => {
-  let hash = Object.create(null);
-  originalList.concat(payloadList).forEach((el={}) => {
-    hash[el._id] = Object.assign(hash[el._id] || {}, el);
-  })
-  let composedList = Object.keys(hash).map(k => hash[k]);
-  composedList.sort(alphabeticalSort);
-  return composedList;
+  payloadList.map(function(el) {    
+    let index = originalList.findIndex(eachItem => el.account === eachItem.account && el.permission === eachItem.permission);
+    if (index >= 0) {
+      if (originalList[index].public_key !== el.public_key) {
+        originalList[index].public_key = el.public_key;
+        originalList[index].private_key = null;
+      }            
+    } else {
+      originalList.push(el);
+    }
+    return null;       
+  });  
+  originalList.sort(alphabeticalSort);
+  return originalList;
 }
 
 const addKeysToAccount = (accountData, list) => {
@@ -271,7 +305,7 @@ const dataReducer = (state=dataInitState, action) => {
         isSubmitting: false
       };
     case ACCOUNT_CLEAR:
-      return dataInitState;
+      return reinitializedState();
     default:
       return state;
   }
