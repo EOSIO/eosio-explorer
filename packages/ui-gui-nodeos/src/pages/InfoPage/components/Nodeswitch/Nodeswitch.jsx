@@ -116,8 +116,8 @@ const Nodeswitch = (props) => {
             handleConfirm={()=>{
               toggleConnectModal(false); 
               props.errorReset();
-              props.accountClear();
               props.connectStart(values.nodeos, values.mongodb);
+              props.accountClear();
             }}
             >
             Are you sure you want to connect to the new Nodeos instance at {values.nodeos}? 
@@ -136,10 +136,10 @@ const Nodeswitch = (props) => {
             handleConfirm={() => {
               toggleResetModal(false);
               props.errorReset();
-              props.accountClear();
               props.connectReset();
               setValues(pathInitState);
               setKey(Date.now());
+              props.accountClear();
             }}
             >
             Are you sure you want to restart the Nodeos connection to its initial state? 

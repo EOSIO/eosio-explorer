@@ -151,6 +151,33 @@ const dataInitState = {
   defaultId: "1"
 }
 
+const reinitializedState = function () {
+  return {
+    list: [
+      {
+        _id: '1',
+        account: 'eosio',
+        permission: 'owner',
+        public_key: 'EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV',
+        private_key: '5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3'
+      },
+      {
+        _id: '2',
+        account: 'eosio',
+        permission: 'active',
+        public_key: 'EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV',
+        private_key: '5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3'
+      }
+    ],
+    importSuccess: false,
+    importError: null,
+    submitError: null,
+    isSubmitting: false,
+    creationSuccess: false,
+    defaultId: "1"
+  }
+};
+
 // Sort permission list by alphabetical order
 const alphabeticalSort = (a, b) => {
   let acctNameA = a.account,
@@ -278,7 +305,7 @@ const dataReducer = (state=dataInitState, action) => {
         isSubmitting: false
       };
     case ACCOUNT_CLEAR:
-      return dataInitState;
+      return reinitializedState();
     default:
       return state;
   }
