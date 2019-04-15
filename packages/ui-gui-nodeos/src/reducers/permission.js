@@ -163,17 +163,18 @@ const alphabeticalSort = (a, b) => {
 }
 
 const composePermissionList = (originalList, payloadList) => {
-  payloadList.map(el => {    
+  payloadList.map(function(el) {    
     let index = originalList.findIndex(eachItem => el.account === eachItem.account && el.permission === eachItem.permission);
-    if(index >= 0){
-      if(originalList[index].public_key !== el.public_key){
+    if (index >= 0) {
+      if (originalList[index].public_key !== el.public_key) {
         originalList[index].public_key = el.public_key;
-        originalList[index].private_key = "";
+        originalList[index].private_key = null;
       }            
-    }else{
+    } else {
       originalList.push(el);
-    }       
-  })  
+    }
+    return null;       
+  });  
   originalList.sort(alphabeticalSort);
   return originalList;
 }
