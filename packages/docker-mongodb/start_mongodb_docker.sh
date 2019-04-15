@@ -7,6 +7,11 @@ cd "$(dirname "$0")"
 # sourcing variable from config file
 source ./config.file
 
+# override config if there are any local config changes
+if [ -f "./config.file.local" ]; then
+  source ./config.file.local
+fi
+
 # docker did not stop properly
 if [ "$(docker ps -q -f status=exited -f name=$MONGODB_CONTAINER_NAME)" ]; then
   docker rm $MONGODB_CONTAINER_NAME

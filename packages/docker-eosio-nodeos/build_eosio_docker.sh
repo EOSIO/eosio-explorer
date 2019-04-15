@@ -9,6 +9,11 @@ SCRIPTPATH="$( pwd -P )"
 # sourcing variable from config file
 source ./config.file
 
+# override config if there are any local config changes
+if [ -f "./config.file.local" ]; then
+  source ./config.file.local
+fi
+
 # make sure Docker and Node.js is installed
 if [ ! -x "$(command -v docker)" ] ||
    [ ! -x "$(command -v npm)" ]; then

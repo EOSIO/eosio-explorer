@@ -9,6 +9,11 @@ ROOTPATH="../.."
 # sourcing variable from config file
 source ./config.file
 
+# override config if there are any local config changes
+if [ -f "./config.file.local" ]; then
+  source ./config.file.local
+fi
+
 if [ "$(docker ps -q -f name=$MONGODB_CONTAINER_NAME)" ]; then
     if [ "$(docker ps -aq -f status=running -f name=$MONGODB_CONTAINER_NAME)" ]; then
         echo "=== MongoDB container is already running. ==="

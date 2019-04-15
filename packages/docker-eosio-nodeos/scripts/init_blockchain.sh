@@ -9,6 +9,11 @@ PATH="$PATH:/opt/eosio/bin:/opt/eosio/bin/scripts"
 # sourcing variable from config file
 source ./scripts/config.file
 
+# override config if there are any local config changes
+if [ -f "./scripts/config.file.local" ]; then
+  source ./scripts/config.file.local
+fi
+
 CONTRACTSPATH="$( pwd -P )/contracts"
 
 set -m

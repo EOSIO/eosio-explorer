@@ -8,3 +8,6 @@ yarn-debug.log*
 yarn-error.log*
 
 *.log
+
+# local config
+config.file.local

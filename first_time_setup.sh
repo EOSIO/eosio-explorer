@@ -5,6 +5,7 @@ NC='\033[0m' # No Color
 GREEN='\033[0;32m'
 
 SCRIPTPATH="$( pwd -P )"
+APPGUI="$SCRIPTPATH/apps/gui-nodeos"
 EOSDOCKER="$SCRIPTPATH/packages/docker-eosio-nodeos"
 MONGODOCKER="$SCRIPTPATH/packages/docker-mongodb"
 COMPILER="$SCRIPTPATH/packages/api-eosio-compiler/docker-eosio-cdt"
@@ -14,6 +15,27 @@ ISDEV=false
 if [ "$1" == "-dev" -o "$1" == "--develop" ]; then
   ISDEV=true
 fi
+
+echo "=============================="
+echo "INITIALISING CONFIG IN PACKAGES"
+echo "=============================="
+
+# sourcing variable from config file
+source ./init_config.file
+
+# copy init config into different packages
+cp -f ./init_config.file ./config.file.local
+cp -f ./init_config.file $APPGUI/config.file.local
+cp -f ./init_config.file $EOSDOCKER/config.file.local
+cp -f ./init_config.file $EOSDOCKER/scripts/config.file.local
+cp -f ./init_config.file $MONGODOCKER/config.file.local
+
+echo "REACT_APP_MONGODB_PORT=$MONGODB_PORT" > $GUI/.env.local
+echo "REACT_APP_MONGODB_DB_NAME=$MONGODB_DB_NAME" >> $GUI/.env.local
+
+echo "Copying initial config done."
+echo " "
+
 
 echo "=============================="
 echo "INSTALLING DEPENDENCIES"

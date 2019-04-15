@@ -6,6 +6,11 @@ ROOTPATH="../.."
 # sourcing variable from config file
 source ./config.file
 
+# override config if there are any local config changes
+if [ -f "./config.file.local" ]; then
+  source ./config.file.local
+fi
+
 echo "=== Checking if nodeos container is running... ==="
 if [ "$(docker ps -q -f name=$NODEOS_CONTAINER_NAME)" ]; then
     if [ "$(docker ps -aq -f status=running -f name=$NODEOS_CONTAINER_NAME)" ]; then
