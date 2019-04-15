@@ -163,9 +163,6 @@ const alphabeticalSort = (a, b) => {
 }
 
 const composePermissionList = (originalList, payloadList) => {
-  console.log("originalList ", originalList);
-  console.log("payloadList ", JSON.stringify(payloadList));
-  
   payloadList.map(el => {    
     let index = originalList.findIndex(eachItem => el.account === eachItem.account && el.permission === eachItem.permission);
     if(index >= 0){
@@ -179,14 +176,6 @@ const composePermissionList = (originalList, payloadList) => {
   })  
   originalList.sort(alphabeticalSort);
   return originalList;
-
-  // let hash = Object.create(null);
-  // originalList.concat(payloadList).forEach((el={}) => {
-  //   hash[el._id] = Object.assign(hash[el._id] || {}, el);
-  // })
-  // let composedList = Object.keys(hash).map(k => hash[k]);
-  // composedList.sort(alphabeticalSort);
-  // return composedList;
 }
 
 const addKeysToAccount = (accountData, list) => {
