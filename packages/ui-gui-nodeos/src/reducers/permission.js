@@ -216,12 +216,11 @@ const checkSyncState = (localStore, dbStore) => {
     (isSynced, iter) => {
       let _recordExists = (iter["account"] !== 'eosio') ? dbStore.findIndex(
         permission => iter["account"]+"@"+iter["permission"] === permission["account"]+"@"+permission["permission"]
-      ) : 0;
+      ) > 0 : true;
       let _publicKeyMatch = (iter["account"] !== 'eosio') ? dbStore.findIndex(
         permission => iter["public_key"] === permission["public_key"]
-      ) : 0;
-      console.log(isSynced);
-      return (_recordExists >= 0) && (_publicKeyMatch >= 0);
+      ) > 0 : true;
+      return (_recordExists && _publicKeyMatch);
     }, true
   );
   return syncResult;
