@@ -211,9 +211,26 @@ const storeNewAccount = (createResponse, list) => {
 
 }
 
+const checkSyncState = (localStore, dbStore) => {
+  let syncResult = localStore.reduce(
+    (isSynced, iter) => {
+      let _recordExists = (iter["account"] !== 'eosio') ? dbStore.findIndex(
+        permission => iter["account"]+"@"+iter["permission"] === permission["account"]+"@"+permission["permission"]
+      ) : 0;
+      let _publicKeyMatch = (iter["account"] !== 'eosio') ? dbStore.findIndex(
+        permission => iter["public_key"] === permission["public_key"]
+      ) : 0;
+      console.log(isSynced);
+      return (_recordExists >= 0) && (_publicKeyMatch >= 0);
+    }, true
+  );
+  return syncResult;
+};
+
 const dataReducer = (state=dataInitState, action) => {
   switch (action.type) {
     case FETCH_FULFILLED:
+      checkSyncState(action.payload.originalList, action.payload.response);
       return {
         ...state,
         creationSuccess: false,
