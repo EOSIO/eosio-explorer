@@ -23,13 +23,13 @@ else
     (cd ${ROOTPATH}/packages/ && exec docker-mongodb/start_mongodb_docker.sh && printf "${GREEN}restarted${NC}")
 fi
 
-if [ "$(docker ps -q -f name=eosio_gui_nodeos_container)" ]; then
-    if [ "$(docker ps -aq -f status=running -f name=eosio_gui_nodeos_container)" ]; then
+if [ "$(docker ps -q -f name=$NODEOS_CONTAINER_NAME)" ]; then
+    if [ "$(docker ps -aq -f status=running -f name=$NODEOS_CONTAINER_NAME)" ]; then
         echo "=== Blockchain container is already running. ==="
     else
-        if [ "$(docker ps -aq -f status=paused -f name=eosio_gui_nodeos_container)" ]; then
+        if [ "$(docker ps -aq -f status=paused -f name=$NODEOS_CONTAINER_NAME)" ]; then
             echo "=== Resuming paused blockchain container... ==="
-            docker unpause eosio_gui_nodeos_container
+            docker unpause $NODEOS_CONTAINER_NAME
         fi
     fi
 else

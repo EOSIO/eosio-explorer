@@ -3,11 +3,14 @@ set -o errexit
 
 ROOTPATH="../.."
 
+# sourcing variable from config file
+source ./config.file
+
 echo "=== Checking if nodeos container is running... ==="
-if [ "$(docker ps -q -f name=eosio_gui_nodeos_container)" ]; then
-    if [ "$(docker ps -aq -f status=running -f name=eosio_gui_nodeos_container)" ]; then
+if [ "$(docker ps -q -f name=$NODEOS_CONTAINER_NAME)" ]; then
+    if [ "$(docker ps -aq -f status=running -f name=$NODEOS_CONTAINER_NAME)" ]; then
         echo "=== Blockchain container is running, stopping the operation... ==="
-        docker stop eosio_gui_nodeos_container
+        docker stop $NODEOS_CONTAINER_NAME
     fi
 fi
 

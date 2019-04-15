@@ -6,6 +6,9 @@ echo "start building eosio docker"
 cd "$(dirname "$0")"
 SCRIPTPATH="$( pwd -P )"
 
+# sourcing variable from config file
+source ./config.file
+
 # make sure Docker and Node.js is installed
 if [ ! -x "$(command -v docker)" ] ||
    [ ! -x "$(command -v npm)" ]; then
@@ -31,13 +34,13 @@ fi
 # create a clean data folder in eosio_docker to preserve block data
 echo "clean up data remnants"
 echo "Checking if previous container is running"
-if [ "$(docker ps -q -f name=eosio_gui_nodeos_container)" ]; then
-    if [ "$(docker ps -aq -f status=running -f name=eosio_gui_nodeos_container)" ]; then
+if [ "$(docker ps -q -f name=$NODEOS_CONTAINER_NAME)" ]; then
+    if [ "$(docker ps -aq -f status=running -f name=$NODEOS_CONTAINER_NAME)" ]; then
         echo "Previous container is running, stopping"
-        docker rm --force eosio_gui_nodeos_container
+        docker rm --force $NODEOS_CONTAINER_NAME
     fi
 fi
-if [ ! "$(docker ps -q -f name=eosio_gui_nodeos_container)" ]; then
+if [ ! "$(docker ps -q -f name=$NODEOS_CONTAINER_NAME)" ]; then
   echo "No container running"
 fi
 echo "Re-initializing block log folder"

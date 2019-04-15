@@ -49,11 +49,11 @@ echo " "
 echo "=============================="
 echo "STARTING EOSIO DOCKER"
 echo "=============================="
-if [ "$(docker ps -q -f status=paused -f name=eosio_gui_nodeos_container)" ]; then
+if [ "$(docker ps -q -f status=paused -f name=$NODEOS_CONTAINER_NAME)" ]; then
   echo 'resuming eosio docker'
-  docker unpause eosio_gui_nodeos_container
+  docker unpause $NODEOS_CONTAINER_NAME
 else
-  if [ ! "$(docker ps -q -f name=eosio_gui_nodeos_container)" ]; then
+  if [ ! "$(docker ps -q -f name=$NODEOS_CONTAINER_NAME)" ]; then
     if find "$EOSDOCKER/data" -mindepth 1 -print -quit 2>/dev/null | grep -q .; then
         echo "eosio docker is not running, but data folder exists"
         echo "cleaning data now"
