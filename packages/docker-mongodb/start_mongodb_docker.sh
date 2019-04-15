@@ -19,7 +19,7 @@ if [ ! "$(docker ps -q -f name=$MONGODB_CONTAINER_NAME)" ]; then
     rm -r "$(pwd)"/data/*
   fi
 
-  docker run -d --rm -p 27017:27017 --name $MONGODB_CONTAINER_NAME -v $(pwd)/data:/data/db mongo
+  docker run -d --rm -p $MONGODB_PORT:$MONGODB_PORT --name $MONGODB_CONTAINER_NAME -v $(pwd)/data:/data/db mongo
 else
   echo "docker already running"
 fi

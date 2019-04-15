@@ -23,9 +23,9 @@ if [ ! -x "$(command -v docker)" ] ||
 fi
 
 # build docker image, if necessary
-if [[ "$(docker images -q eosio-gui-nodeos:eos1.6.3)" == "" ]]; then
-  echo "Build docker image eosio-gui-nodeos version eos1.6.3, this may take some time"
-  docker build -t eosio-gui-nodeos:eos1.6.3 . --no-cache
+if [[ "$(docker images -q $NODEOS_IMAGE_NAME)" == "" ]]; then
+  echo "Build docker image $NODEOS_IMAGE_PREFIX version $NODEOS_VERSION, this may take some time"
+  docker build -t $NODEOS_IMAGE_NAME . --no-cache
 else
   echo "Docker image already exists, skip building"
 fi
