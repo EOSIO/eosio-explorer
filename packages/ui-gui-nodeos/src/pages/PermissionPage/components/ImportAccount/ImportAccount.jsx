@@ -46,7 +46,9 @@ const ImportAccount = (props) => {
     useEffect(()=>{
         const vals = [
             {name: "ownerPrivate", value: keysData[0].permission === "owner" ? keysData[0].private_key : keysData[1].private_key},
-            {name: "activePrivate", value: keysData[1].permission === "active" ? keysData[1].private_key : keysData[0].private_key}
+            {name: "activePrivate", value: keysData[1].permission === "active" ? keysData[1].private_key : keysData[0].private_key},
+            {name: "ownerPublic", value: keysData[0].permission === "owner" ? keysData[0].public_key : keysData[1].public_key},
+            {name: "activePublic", value: keysData[1].permission === "active" ? keysData[1].public_key : keysData[0].public_key}
         ]
         updateValues(vals);
         window.scrollTo(0, 0);
