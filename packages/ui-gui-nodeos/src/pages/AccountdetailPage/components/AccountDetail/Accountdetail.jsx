@@ -113,17 +113,27 @@ const Accountdetail = (props) => {
                               <FormGroup row>
                                 <Col sm={2}>Owner Public Key:</Col>
                                 <Col sm={10}>                                            
-                                  {payload.permissions[0].perm_name === "owner" 
-                                    ? payload.permissions[0].required_auth.keys[0].key 
-                                    : payload.permissions[1].required_auth.keys[0].key}
+                                  {payload.permissions[0].perm_name === "owner"
+                                    ? payload.permissions[0].required_auth.keys.length > 0
+                                      ? payload.permissions[0].required_auth.keys[0].key 
+                                      : ""
+                                    :  payload.permissions[1].required_auth.keys.length > 0
+                                      ? payload.permissions[1].required_auth.keys[0].key
+                                      : ""
+                                  }
                                 </Col>
                               </FormGroup>
                               <FormGroup row>
                                 <Col sm={2}>Active Public Key:</Col>
                                 <Col sm={10}>
-                                  {payload.permissions[0].perm_name === "active" 
-                                    ? payload.permissions[0].required_auth.keys[0].key 
-                                    : payload.permissions[1].required_auth.keys[0].key}
+                                  {payload.permissions[0].perm_name === "active"
+                                    ? payload.permissions[0].required_auth.keys.length > 0
+                                      ? payload.permissions[0].required_auth.keys[0].key 
+                                      : ""
+                                    : payload.permissions[1].required_auth.keys.length > 0 
+                                      ? payload.permissions[1].required_auth.keys[0].key
+                                      : ""
+                                  }
                                 </Col>
                               </FormGroup>
                               { contractError || !(contractPayload.length !== 0 && contractPayload[0].hasOwnProperty("abi") === true)
