@@ -3,7 +3,10 @@ set -o errexit
 
 # change to script's directory
 cd "$(dirname "$0")"
-if [ "$(docker ps -q -f name=eosio-mongodb)" ]; then
-  docker stop eosio-mongodb && rm -rf data && mkdir data
-fi
 
+# sourcing variable from config file
+source ./config.file
+
+if [ "$(docker ps -q -f name=$MONGODB_CONTAINER_NAME)" ]; then
+  docker stop $MONGODB_CONTAINER_NAME && rm -rf data && mkdir data
+fi

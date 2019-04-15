@@ -3,6 +3,9 @@
 # change to script's directory
 cd "$(dirname "$0")"
 
+# sourcing variable from config file
+source ./config.file
+
 # docker did not stop properly
 if [ "$(docker ps -q -f status=exited -f name=eosio_gui_nodeos_container)" ]; then
   docker rm eosio_gui_nodeos_container
@@ -27,7 +30,7 @@ if [ ! "$(docker ps -q -f name=eosio_gui_nodeos_container)" ]; then
     echo "run docker container from the eosio-gui-nodeos:eos1.6.3 image"
     docker run --rm --name eosio_gui_nodeos_container -d \
     -p 8888:8888 -p 9876:9876 \
-    --link eosio-mongodb \
+    --link $MONGODB_CONTAINER_NAME \
     --mount type=bind,src="$(pwd)"/contracts,dst=/opt/eosio/bin/contracts \
     --mount type=bind,src="$(pwd)"/scripts,dst=/opt/eosio/bin/scripts \
     --mount type=bind,src="$(pwd)"/data,dst=/mnt/dev/data \
