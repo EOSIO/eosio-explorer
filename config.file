@@ -1,2 +1,4 @@
 MONGODB_CONTAINER_NAME=eosio-mongodb
 NODEOS_CONTAINER_NAME=eosio_gui_nodeos_container
+
+UI_DEV_PORT=3000
