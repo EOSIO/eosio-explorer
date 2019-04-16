@@ -135,6 +135,7 @@ const DeploymentPage = (props) => {
             endpoint: nodeos,
             account_name: currentPermission["account"],
             private_key: currentPermission["private_key"],
+            permission: currentPermission["permission"],
             abiSource: (imported) ? abiPath : null
         }
         logClear();

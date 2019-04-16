@@ -52,6 +52,7 @@ Router.post("/deploy", async (req, res) => {
         let endpoint = path.basename(body["endpoint"]);
         let account_name = path.basename(body["account_name"]);
         let private_key = path.basename(body["private_key"]);
+        let permission = body["permission"];
         let COMPILE_SCRIPT = "";
 
         const directories = Helper.parseDirectoriesToInclude(path.dirname(body["source"]));
@@ -107,7 +108,7 @@ Router.post("/deploy", async (req, res) => {
                     console.log(`stdout: ${stdout}`);
                     let abi = (body["abiSource"] && body["abiSource"] != "null") ? body["abiSource"] : abiPath;
                     console.log(body["abiSource"], abiPath, abi, typeof body["abiSource"]);
-                    deployContract(endpoint, account_name, private_key, wasmPath, abi)
+                    deployContract(endpoint, account_name, private_key, permission, wasmPath, abi)
                     .then(result => {
                       console.log("Contract deployed successfully ", result);
                       res.send({
@@ -296,7 +297,7 @@ Router.post("/import", async (req, res) => {
     }
 })
 
-async function deployContract(blockchainUrl, account_name, private_key, wasm_path, abi_path){
+async function deployContract(blockchainUrl, account_name, private_key, permission, wasm_path, abi_path){
   if(blockchainUrl.indexOf("http://") < 0)
   {
     blockchainUrl = "http://" + blockchainUrl;
@@ -333,7 +334,7 @@ async function deployContract(blockchainUrl, account_name, private_key, wasm_pat
             authorization: [
               {
                 actor: account_name,
-                permission: 'active',
+                permission: permission,
               },
             ],
             data: {
@@ -349,7 +350,7 @@ async function deployContract(blockchainUrl, account_name, private_key, wasm_pat
             authorization: [
               {
                 actor: account_name,
-                permission: 'active',
+                permission: permission,
               },
             ],
             data: {
