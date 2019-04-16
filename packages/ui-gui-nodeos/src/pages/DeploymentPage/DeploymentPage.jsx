@@ -58,6 +58,11 @@ const DeploymentPage = (props) => {
         errors, output, imported, deployed
     } = deployContainer;
     let { list, defaultId } = data;
+    let selectedPermission = list.find(permission => defaultId === permission._id) || {};
+    let noOfPermissions = list.slice(0).reduce((accounts, el) => {
+        if (el.private_key) accounts++;
+        return accounts;
+    }, 0);
 
     const [ clickDeploy, setClickDeploy ] = useState(false);
     const [ isOpenDropDown, toggleDropDown ] = useState(false);
@@ -305,27 +310,29 @@ const DeploymentPage = (props) => {
                                         </Label>
                                         <Col xs={5}>
                                             <DropdownStyled className="float-left" isOpen={isOpenDropDown} toggle={()=>{toggleDropDown(!isOpenDropDown)}}>
-                                                <DropdownToggle caret>
+                                                <DropdownToggle caret={noOfPermissions > 0}>
                                                     {
-                                                        list.map((permission) => {
-                                                            let msg = (currentId === defaultId) ? 
-                                                                `${permission.account}@${permission.permission} (default)` :
-                                                                `${permission.account}@${permission.permission}`;
-                                                            if (currentId === permission._id) 
-                                                                return msg;
-                                                            else
-                                                                return null;
-                                                        })
+                                                      Object.keys(selectedPermission).length > 0
+                                                        ? (selectedPermission._id === defaultId)
+                                                          ? (selectedPermission.account+"@"+selectedPermission.permission+" (default)")
+                                                          : (selectedPermission.account+"@"+selectedPermission.permission)
+                                                        : noOfPermissions > 0 
+                                                          ? "Select Permission"
+                                                          : "No Available Permissions"
                                                     }
                                                 </DropdownToggle>
-                                                <DropdownMenu right>
+                                                {
+                                                  noOfPermissions > 0
+                                                  ? <DropdownMenu right>
                                                     {
-                                                        list.map((permission)=> permission.private_key &&
-                                                            <DropdownItem key={permission._id} onClick={()=>{setCurrentId(permission._id)}}>
-                                                                {`${permission.account}@${permission.permission}`}
-                                                            </DropdownItem>)
+                                                      list.map((permission)=> permission.private_key &&
+                                                        <DropdownItem key={permission._id} onClick={()=>{setCurrentId(permission._id)}}>
+                                                          {`${permission.account}@${permission.permission}`}
+                                                        </DropdownItem>)
                                                     }
-                                                </DropdownMenu>
+                                                  </DropdownMenu>
+                                                  : null
+                                                }
                                             </DropdownStyled>
                                         </Col>
                                         <Col xs={3}>

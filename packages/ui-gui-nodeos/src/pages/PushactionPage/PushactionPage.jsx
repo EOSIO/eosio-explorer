@@ -258,7 +258,7 @@ const PushactionPage = (props) => {
                               ? (selectedPermission._id === defaultId)
                                   ? (selectedPermission.account + "@" + selectedPermission.permission + " (default)")
                                   : (selectedPermission.account + "@" + selectedPermission.permission)
-                              : "Select Permission"}
+                              : "No Available Permission"}
                         </DropdownToggle>
                         <DropdownMenu modifiers={dropdownMaxHeight}>
                           {(list).map( permission => permission.private_key &&
