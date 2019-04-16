@@ -6,7 +6,7 @@ import { Col, Form, FormGroup, UncontrolledTooltip, Label, FormFeedback } from '
 import BasicModal from 'components/BasicModal';
 import styled from 'styled-components';
 
-import { connectStart, connectReset, pathInitState, errorReset } from 'reducers/endpoint';
+import { connectSwitch, connectReset, pathInitState, errorReset } from 'reducers/endpoint';
 import useForm from 'helpers/useForm';
 import { useToggle } from 'helpers/useToggle';
 import validate from './NodeswitchValidatorEngine';
@@ -116,7 +116,7 @@ const Nodeswitch = (props) => {
             handleConfirm={()=>{
               toggleConnectModal(false); 
               props.errorReset();
-              props.connectStart(values.nodeos, values.mongodb);
+              props.connectSwitch(values.nodeos, values.mongodb);
             }}
             >
             Are you sure you want to connect to the new Nodeos instance at {values.nodeos}? 
@@ -155,7 +155,7 @@ export default connect(
     endpoint
   }),
   {
-    connectStart,
+    connectSwitch,
     connectReset,
     errorReset,
     accountClear

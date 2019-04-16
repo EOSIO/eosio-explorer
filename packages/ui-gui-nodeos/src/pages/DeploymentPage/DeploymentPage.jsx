@@ -58,7 +58,6 @@ const DeploymentPage = (props) => {
         errors, output, imported, deployed
     } = deployContainer;
     let { list, defaultId } = data;
-    let selectedPermission = list.find(permission => defaultId === permission._id) || {};
     let noOfPermissions = list.slice(0).reduce((accounts, el) => {
         if (el.private_key) accounts++;
         return accounts;
@@ -68,7 +67,7 @@ const DeploymentPage = (props) => {
     const [ isOpenDropDown, toggleDropDown ] = useState(false);
     const [ currentFile, setCurrentFile ] = useState("");
     const [ activeTab, setActiveTab ] = useState("1");
-    const [ currentId, setCurrentId ] = useState(defaultId);
+    const [ currentId, setCurrentId ] = useState(defaultId || null);
 
     const importRef = React.createRef();
 
@@ -312,24 +311,28 @@ const DeploymentPage = (props) => {
                                             <DropdownStyled className="float-left" isOpen={isOpenDropDown} toggle={()=>{toggleDropDown(!isOpenDropDown)}}>
                                                 <DropdownToggle caret={noOfPermissions > 0}>
                                                     {
-                                                      Object.keys(selectedPermission).length > 0
-                                                        ? (selectedPermission._id === defaultId)
-                                                          ? (selectedPermission.account+"@"+selectedPermission.permission+" (default)")
-                                                          : (selectedPermission.account+"@"+selectedPermission.permission)
-                                                        : noOfPermissions > 0 
-                                                          ? "Select Permission"
-                                                          : "No Available Permissions"
+                                                      noOfPermissions > 0
+                                                      ? list.map(permission => {
+                                                        let msg = (currentId === defaultId) ?
+                                                          `${permission.account}@${permission.permission} (default)` :
+                                                          `${permission.account}@${permission.permission}`;
+                                                        if (currentId === permission._id) 
+                                                          return msg;
+                                                        else
+                                                          return null;
+                                                      })
+                                                      : "No Permissions Available"
                                                     }
                                                 </DropdownToggle>
                                                 {
                                                   noOfPermissions > 0
                                                   ? <DropdownMenu right>
-                                                    {
-                                                      list.map((permission)=> permission.private_key &&
-                                                        <DropdownItem key={permission._id} onClick={()=>{setCurrentId(permission._id)}}>
-                                                          {`${permission.account}@${permission.permission}`}
-                                                        </DropdownItem>)
-                                                    }
+                                                      {
+                                                        list.map((permission)=> permission.private_key &&
+                                                          <DropdownItem key={permission._id} onClick={()=>{setCurrentId(permission._id)}}>
+                                                            {`${permission.account}@${permission.permission}`}
+                                                          </DropdownItem>)
+                                                      }
                                                   </DropdownMenu>
                                                   : null
                                                 }

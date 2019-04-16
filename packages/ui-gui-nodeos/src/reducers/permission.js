@@ -125,6 +125,31 @@ export const combinedEpic = combineEpics(
   createEpic
 );
 
+const dataInitState = {
+  list: [
+    {
+      _id: '1',
+      account: 'eosio',
+      permission: 'owner',
+      public_key: 'EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV',
+      private_key: '5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3'
+    },
+    {
+      _id: '2',
+      account: 'eosio',
+      permission: 'active',
+      public_key: 'EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV',
+      private_key: '5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3'
+    }
+  ],
+  importSuccess: false,
+  importError: null,
+  submitError: null,
+  isSubmitting: false,
+  creationSuccess: false,
+  defaultId: "1"
+}
+
 const reinitializedState = (endpoint = {
   nodeos: "http://localhost:8888",
   mongodb: "mongodb://localhost:27017/mongopluginmainnet"
@@ -173,9 +198,6 @@ const composePermissionList = (originalList = [], payloadList = []) => {
   payloadList.map(function(el) {    
     let index = originalList.findIndex(eachItem => el.account === eachItem.account && el.permission === eachItem.permission);
     if (index >= 0) {
-      if (el.account === 'eosio') {
-        console.log(el);
-      }
       if (originalList[index].public_key !== el.public_key) {
         originalList[index].public_key = el.public_key;
         originalList[index].private_key = null;
@@ -227,7 +249,7 @@ const storeNewAccount = (createResponse, list) => {
 
 }
 
-const dataReducer = (state=reinitializedState(), action) => {
+const dataReducer = (state=dataInitState, action) => {
   switch (action.type) {
     case FETCH_FULFILLED:
       return {
@@ -287,7 +309,7 @@ const dataReducer = (state=reinitializedState(), action) => {
         isSubmitting: false
       };
     case ACCOUNT_CLEAR:
-      return reinitializedState(action.endpoint);
+      return reinitializedState(action.endpoint, dataInitState);
     default:
       return state;
   }
