@@ -254,9 +254,11 @@ const PushactionPage = (props) => {
                     <Col xs="9">
                       <CustomDropdown id="PermissionDropdown" isOpen={isOpenDropDownPermission} toggle={()=>{toggleDropDownPermission(!isOpenDropDownPermission)}}>
                         <DropdownToggle className={errors.permission && "invalid"} caret>                        
-                          {(selectedPermission._id === defaultId)
-                            ? (selectedPermission.account + "@" + selectedPermission.permission + " (default)")
-                            : (selectedPermission.account + "@" + selectedPermission.permission)}
+                          { Object.keys(selectedPermission).length > 0
+                              ? (selectedPermission._id === defaultId)
+                                  ? (selectedPermission.account + "@" + selectedPermission.permission + " (default)")
+                                  : (selectedPermission.account + "@" + selectedPermission.permission)
+                              : "No Permissions Available"}
                         </DropdownToggle>
                         <DropdownMenu modifiers={dropdownMaxHeight}>
                           {(list).map( permission => permission.private_key &&

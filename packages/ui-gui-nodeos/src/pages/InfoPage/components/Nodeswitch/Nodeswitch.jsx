@@ -3,12 +3,15 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import { Col, Form, FormGroup, UncontrolledTooltip, Label, FormFeedback } from 'reactstrap';
+import BasicModal from 'components/BasicModal';
 import styled from 'styled-components';
 
-import { connectStart, connectReset, pathInitState, errorReset } from 'reducers/endpoint';
+import { connectSwitch, connectReset, pathInitState, errorReset } from 'reducers/endpoint';
 import useForm from 'helpers/useForm';
+import { useToggle } from 'helpers/useToggle';
 import validate from './NodeswitchValidatorEngine';
 import { InputStyled, ButtonGroupSeperated, ButtonPrimary, ButtonSecondary } from 'styled';
+import { accountClear } from 'reducers/permission';
 
 const CenteredLabel = styled(Label)`
   margin-top: 6px;
@@ -16,12 +19,15 @@ const CenteredLabel = styled(Label)`
 
 const Nodeswitch = (props) => {
 
-  const { values, handleChange, handleSubmit, setValues, errors } = useForm(()=>{
+  const { values, handleChange, setValues, errors } = useForm(()=>{
     props.errorReset();
+    props.accountClear();
     props.connectStart(values.nodeos, values.mongodb);
   }, validate);
 
   const [key, setKey] = useState(Date.now());
+  const [connectModal, toggleConnectModal] = useToggle(false);
+  const [resetModal, toggleResetModal] = useToggle(false);
 
   let { endpoint: { path : { nodeos, mongodb }, error: mongodb_endpoint_error}} = props;
 
@@ -36,7 +42,7 @@ const Nodeswitch = (props) => {
 
   return (
     <div className="Nodeswitch">
-      <Form key={key} onSubmit={ handleSubmit }>
+      <Form key={key}>
         <FormGroup row className="mb-0">
           <Col xs="3">
             <CenteredLabel htmlFor="nodeos">Connected Nodeos:</CenteredLabel>
@@ -80,15 +86,15 @@ const Nodeswitch = (props) => {
           </Col>
           <Col xs="12" className="text-right mt-3">
             <ButtonGroupSeperated className="float-right">
-              <ButtonPrimary type="submit" disabled={ !isDirtyForm }>CONNECT</ButtonPrimary>
+              <ButtonPrimary
+                disabled={ !isDirtyForm }
+                onClick={()=>toggleConnectModal(true)}
+                >
+                CONNECT
+              </ButtonPrimary>
               <ButtonSecondary
                 id="ResetCxn"
-                onClick={()=>{
-                  props.errorReset();
-                  props.connectReset();
-                  setValues(pathInitState);
-                  setKey(Date.now());
-                }}
+                onClick={()=>toggleResetModal(true)}
               >RESET</ButtonSecondary>
             </ButtonGroupSeperated>
             <UncontrolledTooltip placement="top" target="ResetCxn"
@@ -102,6 +108,44 @@ const Nodeswitch = (props) => {
           </Col>
         </FormGroup>
       </Form>
+      {
+        connectModal && (
+          <BasicModal header="Confirmation to Connect to New Nodeos"
+            toggle={toggleConnectModal}
+            open={connectModal}
+            handleConfirm={()=>{
+              toggleConnectModal(false); 
+              props.errorReset();
+              props.connectSwitch(values.nodeos, values.mongodb);
+            }}
+            >
+            Are you sure you want to connect to the new Nodeos instance at {values.nodeos}? 
+            You will <b>permanently</b> lose all private keys stored in your local storage. 
+            <b> Please ensure that your Connected MongoDB endpoint matches the new Nodeos instance
+              or you will encounter account and permission issues.
+            </b>
+          </BasicModal>
+        )
+      }
+      {
+        resetModal && (
+          <BasicModal header="Confirmation to Reset Nodeos Connection"
+            toggle={toggleResetModal}
+            open={resetModal}
+            handleConfirm={() => {
+              toggleResetModal(false);
+              props.errorReset();
+              props.connectReset();
+              setValues(pathInitState);
+              setKey(Date.now());
+              props.accountClear();
+            }}
+            >
+            Are you sure you want to restart the Nodeos connection to its initial state? 
+            You will <b>permanently</b> lose all private keys stored in your local storage. 
+          </BasicModal>
+        )
+      }
     </div>
   );
 }
@@ -111,9 +155,10 @@ export default connect(
     endpoint
   }),
   {
-    connectStart,
+    connectSwitch,
     connectReset,
-    errorReset
+    errorReset,
+    accountClear
   }
 
 )(Nodeswitch);

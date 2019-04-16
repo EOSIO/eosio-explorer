@@ -58,12 +58,16 @@ const DeploymentPage = (props) => {
         errors, output, imported, deployed
     } = deployContainer;
     let { list, defaultId } = data;
+    let noOfPermissions = list.slice(0).reduce((accounts, el) => {
+        if (el.private_key) accounts++;
+        return accounts;
+    }, 0);
 
     const [ clickDeploy, setClickDeploy ] = useState(false);
     const [ isOpenDropDown, toggleDropDown ] = useState(false);
     const [ currentFile, setCurrentFile ] = useState("");
     const [ activeTab, setActiveTab ] = useState("1");
-    const [ currentId, setCurrentId ] = useState(defaultId);
+    const [ currentId, setCurrentId ] = useState(defaultId || null);
 
     const importRef = React.createRef();
 
@@ -305,27 +309,33 @@ const DeploymentPage = (props) => {
                                         </Label>
                                         <Col xs={5}>
                                             <DropdownStyled className="float-left" isOpen={isOpenDropDown} toggle={()=>{toggleDropDown(!isOpenDropDown)}}>
-                                                <DropdownToggle caret>
+                                                <DropdownToggle caret={noOfPermissions > 0}>
                                                     {
-                                                        list.map((permission) => {
-                                                            let msg = (currentId === defaultId) ? 
-                                                                `${permission.account}@${permission.permission} (default)` :
-                                                                `${permission.account}@${permission.permission}`;
-                                                            if (currentId === permission._id) 
-                                                                return msg;
-                                                            else
-                                                                return null;
-                                                        })
+                                                      noOfPermissions > 0
+                                                      ? list.map(permission => {
+                                                        let msg = (currentId === defaultId) ?
+                                                          `${permission.account}@${permission.permission} (default)` :
+                                                          `${permission.account}@${permission.permission}`;
+                                                        if (currentId === permission._id) 
+                                                          return msg;
+                                                        else
+                                                          return null;
+                                                      })
+                                                      : "No Permissions Available"
                                                     }
                                                 </DropdownToggle>
-                                                <DropdownMenu right>
-                                                    {
+                                                {
+                                                  noOfPermissions > 0
+                                                  ? <DropdownMenu right>
+                                                      {
                                                         list.map((permission)=> permission.private_key &&
-                                                            <DropdownItem key={permission._id} onClick={()=>{setCurrentId(permission._id)}}>
-                                                                {`${permission.account}@${permission.permission}`}
-                                                            </DropdownItem>)
-                                                    }
-                                                </DropdownMenu>
+                                                          <DropdownItem key={permission._id} onClick={()=>{setCurrentId(permission._id)}}>
+                                                            {`${permission.account}@${permission.permission}`}
+                                                          </DropdownItem>)
+                                                      }
+                                                  </DropdownMenu>
+                                                  : null
+                                                }
                                             </DropdownStyled>
                                         </Col>
                                         <Col xs={3}>

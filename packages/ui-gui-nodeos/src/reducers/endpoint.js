@@ -6,11 +6,12 @@
 
 import { combineReducers } from 'redux';
 import { of } from 'rxjs';
-import { mergeMap, mapTo, map, catchError } from 'rxjs/operators';
+import { mergeMap, mapTo, map, flatMap, catchError } from 'rxjs/operators';
 
 import { combineEpics, ofType } from 'redux-observable';
 
 import apiMongodb from 'services/api-mongodb';
+import { accountClear } from 'reducers/permission';
 import paramsToQuery from 'helpers/params-to-query';
 
 // IMPORTANT
@@ -19,6 +20,7 @@ const actionPrefix = `endpoint/`;
 
 //Action Type
 export const CONNECT_START = actionPrefix + `CONNECT_START`;
+const CONNECT_SWITCH = actionPrefix + `CONNECT_SWITCH`;
 const CONNECT_FULFILLED = actionPrefix + `CONNECT_FULFILLED`;
 const CONNECT_REJECTED = actionPrefix + `CONNECT_REJECTED`;
 const CONNECT_RESET = actionPrefix + `CONNECT_RESET`;
@@ -26,20 +28,39 @@ const ERROR_RESET = actionPrefix + `ERROR_RESET`;
 
 //Action Creator
 export const connectStart = (nodeos, mongodb) => ({ type: CONNECT_START, nodeos, mongodb });
+export const connectSwitch = (nodeos, mongodb) => ({ type: CONNECT_SWITCH, nodeos, mongodb });
 export const connectFulfilled = payload => ({ type: CONNECT_FULFILLED, payload });
 export const connectRejected = ( error ) => ({ type: CONNECT_REJECTED, error });
 export const connectReset = () => ({ type: CONNECT_RESET });
 
 export const errorReset = () => ({ type: ERROR_RESET });
+
 // Epic
 const connectEpic = ( action$, state$ ) => action$.pipe(
   ofType(CONNECT_START),
   mergeMap(action =>{
-
+      
       let {value: { endpoint: { path : { mongodbTemp }}}} = state$;
 
       return apiMongodb(`set_endpoint${paramsToQuery({path: mongodbTemp})}`).pipe(
         map(res => connectFulfilled(res.response)),
+        catchError((error={}) => of(connectRejected(error.response)))
+        )
+    }
+  )
+);
+
+const swapEpic = ( action$, state$ ) => action$.pipe(
+  ofType(CONNECT_SWITCH),
+  mergeMap(action =>{
+      
+      let {value: { endpoint: { path : { mongodbTemp }}}} = state$;
+
+      return apiMongodb(`set_endpoint${paramsToQuery({path: mongodbTemp})}`).pipe(
+        flatMap(res => ([connectFulfilled(res.response), accountClear({
+          nodeos: action.nodeos,
+          mongodb: action.mongodb
+        })])),
         catchError((error={}) => of(connectRejected(error.response)))
         )
     }
@@ -54,6 +75,7 @@ const resetEpic = ( action$, state$ ) => action$.pipe(
 
 export const combinedEpic = combineEpics(
   connectEpic,
+  swapEpic,
   resetEpic,
 );
 
@@ -67,6 +89,7 @@ export const pathInitState = {
 const pathReducer = (state=pathInitState, action) => {
   switch (action.type) {
     case CONNECT_START:
+    case CONNECT_SWITCH:
       return {
         nodeos: action.nodeos,
         mongodb: state.mongodb,

@@ -55,11 +55,11 @@ class PermissionPage extends Component {
 
   render() {
 
-    const { panelSelect, panel, accountClear, fetchStart } = this.props;
+    const { panelSelect, panel, accountClear, fetchStart, endpoint: { path } } = this.props;
 
     // Initialize local redux store state, then re-fetch MongoDB permissions
     function reInitialize () {
-      accountClear();
+      accountClear(path);
       fetchStart();
       cogoToast.success("Successfully re-initialized the local storage state", {
         heading: 'Account Storage Reinitialization',
@@ -138,7 +138,7 @@ class PermissionPage extends Component {
               open={this.state.modalIsOpen}
               handleConfirm={()=>{this.toggleModal(); reInitialize();}}
               >
-              Are you sure you want to reset all permissions in the local storage?
+              Are you sure you want to reset all permissions? You will <b>permanently</b> lose all your private keys in the local storage!
             </BasicModal>
           )
         }
@@ -148,8 +148,8 @@ class PermissionPage extends Component {
 }
 
 export default connect(
-  ({ permission, permissionPage: { panel } }) => ({
-    permission, panel,
+  ({ permission, permissionPage: { panel }, endpoint }) => ({
+    permission, panel, endpoint
   }),
   {
     panelSelect,
