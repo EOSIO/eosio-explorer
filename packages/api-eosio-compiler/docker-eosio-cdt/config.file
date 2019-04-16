@@ -1,4 +1,4 @@
 CDT_CONTAINER_NAME=eosio_gui_nodeos_cdt_container
-CDT_IMAGE_PREFIX=eosio-gui-nodeos-cdt
+CDT_IMAGE_PREFIX=eosio_gui_nodeos_cdt
 CDT_VERSION=1.5.0
 CDT_IMAGE_NAME=$CDT_IMAGE_PREFIX:$CDT_VERSION

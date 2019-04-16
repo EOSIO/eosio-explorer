@@ -49,16 +49,16 @@ The list below contains the **default settings** which you will see throughout t
 ### Docker MongoDB
 
 ```
-MONGODB_CONTAINER_NAME=eosio-mongodb
+MONGODB_CONTAINER_NAME=eosio_mongodb
 MONGODB_PORT=27788
-MONGODB_DB_NAME=gui-nodeos
+MONGODB_DB_NAME=gui_nodeos
 MONGODB_PATH=mongodb://$MONGODB_CONTAINER_NAME:$MONGODB_PORT/$MONGODB_DB_NAME
 ```
 
 ### Docker EOSIO Nodeos
 ```
 NODEOS_CONTAINER_NAME=eosio_gui_nodeos_container
-NODEOS_IMAGE_PREFIX=eosio-gui-nodeos
+NODEOS_IMAGE_PREFIX=eosio_gui_nodeos
 NODEOS_VERSION=eos1.6.3
 NODEOS_IMAGE_NAME=$NODEOS_IMAGE_PREFIX:$NODEOS_VERSION
 ```
@@ -67,7 +67,7 @@ NODEOS_IMAGE_NAME=$NODEOS_IMAGE_PREFIX:$NODEOS_VERSION
 ```
 LOCAL_SERVICE_PORT=8081
 CDT_CONTAINER_NAME=eosio_gui_nodeos_cdt_container
-CDT_IMAGE_PREFIX=eosio-gui-nodeos-cdt
+CDT_IMAGE_PREFIX=eosio_gui_nodeos_cdt
 CDT_VERSION=1.5.0
 CDT_IMAGE_NAME=$CDT_IMAGE_PREFIX:$CDT_VERSION
 ```
