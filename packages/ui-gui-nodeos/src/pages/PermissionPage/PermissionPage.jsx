@@ -138,7 +138,7 @@ class PermissionPage extends Component {
               open={this.state.modalIsOpen}
               handleConfirm={()=>{this.toggleModal(); reInitialize();}}
               >
-              Are you sure you want to reset all permissions in the local storage?
+              Are you sure you want to reset all permissions? You will <b>permanently</b> lose all your private keys in the local storage!
             </BasicModal>
           )
         }

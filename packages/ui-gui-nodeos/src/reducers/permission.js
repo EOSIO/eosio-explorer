@@ -202,7 +202,6 @@ const composePermissionList = (originalList, payloadList) => {
     }
     return null;       
   });  
-  originalList.sort(alphabeticalSort);
   return originalList;
 }
 
