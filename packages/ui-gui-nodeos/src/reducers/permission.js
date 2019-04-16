@@ -189,7 +189,7 @@ const alphabeticalSort = (a, b) => {
   return 0;
 }
 
-const composePermissionList = (originalList, payloadList) => {
+const composePermissionList = (originalList = [], payloadList = []) => {
   payloadList.map(function(el) {    
     let index = originalList.findIndex(eachItem => el.account === eachItem.account && el.permission === eachItem.permission);
     if (index >= 0) {

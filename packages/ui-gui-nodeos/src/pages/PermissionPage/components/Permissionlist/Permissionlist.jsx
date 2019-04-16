@@ -79,8 +79,8 @@ const Permissionlist = (props) => {
     return result;
   }, Object.create({})) : null;
   let defaultAccountsList = (Object.keys(baseDefaultAccountsList).length > 0) ? 
-    Object.keys(baseDefaultAccountsList).sort().map(key => baseDefaultAccountsList[key]) : null;
-  let numberOfDefaultAccounts = (defaultAccountsList) ? Object.keys(defaultAccountsList).length : 0;
+    Object.keys(baseDefaultAccountsList).sort().map(key => baseDefaultAccountsList[key]) : {};
+  let numberOfDefaultAccounts = Object.keys(defaultAccountsList || {}).length;
   
   let baseImportAccountsList = (clonedList.length > 0) ? clonedList.reduce((result, permission, idx) => {
     if (permission.account && !permission.private_key && idx >= calculateMaxAccountsToShow(clonedList.length, numberOfDefaultAccounts)) {
@@ -90,8 +90,8 @@ const Permissionlist = (props) => {
     return result;
   }, Object.create({})) : null;
   let importAccountsList = (Object.keys(baseImportAccountsList).length > 0) ?
-     Object.keys(baseImportAccountsList).sort().map(key => baseImportAccountsList[key]) : null;
-  let numberOfImportAccounts = (importAccountsList) ? Object.keys(importAccountsList).length : 0;
+     Object.keys(baseImportAccountsList).sort().map(key => baseImportAccountsList[key]) : {};
+  let numberOfImportAccounts = Object.keys(importAccountsList || {}).length;
 
   useEffect(()=>{
     props.fetchStart();
@@ -145,9 +145,10 @@ const Permissionlist = (props) => {
                                   </InfoDiv>
                                   <PermissionTable borderless>
                                     {
-                                      defaultAccountsList && Object.keys(defaultAccountsList) && numberOfDefaultAccounts > 0 
+                                      defaultAccountsList && numberOfDefaultAccounts > 0 
                                         ? Object.keys(defaultAccountsList).map((account) => (
-                                        (defaultAccountsList[account].length === 2 && 
+                                        (defaultAccountsList[account] && 
+                                          defaultAccountsList[account].length === 2 && 
                                           defaultAccountsList[account][0].private_key &&
                                           containsOnlyActiveOrOwner(defaultAccountsList[account])
                                           ) &&
@@ -236,9 +237,10 @@ const Permissionlist = (props) => {
                                     </InfoDiv>
                                     <PermissionTable borderless>
                                     {
-                                      (importAccountsList && Object.keys(importAccountsList) && numberOfImportAccounts > 0) 
+                                      (importAccountsList && numberOfImportAccounts > 0) 
                                       ? Object.keys(importAccountsList).map((account) => (
-                                        (importAccountsList[account].length === 2 && 
+                                        (importAccountsList[account] &&
+                                          importAccountsList[account].length === 2 && 
                                           !importAccountsList[account][0].private_key &&
                                           containsOnlyActiveOrOwner(importAccountsList[account])
                                           ) &&

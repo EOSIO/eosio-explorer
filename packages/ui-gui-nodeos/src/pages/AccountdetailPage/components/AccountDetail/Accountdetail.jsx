@@ -46,7 +46,7 @@ const Accountdetail = (props) => {
 
   let { accountdetail: { isFetching, data, contractData, params } } = props;
   let { payload={}, error } = data;
-  let { contractPayload, contractError } = contractData;
+  let { contractPayload = [], contractError } = contractData;
 
   return (
     <div className="Accountdetail">
@@ -113,11 +113,12 @@ const Accountdetail = (props) => {
                               <FormGroup row>
                                 <Col sm={2}>Owner Public Key:</Col>
                                 <Col sm={10}>                                            
-                                  {payload.permissions[0].perm_name === "owner"
+                                  {payload.permissions && 
+                                    payload.permissions[0].perm_name === "owner"
                                     ? payload.permissions[0].required_auth.keys.length > 0
                                       ? payload.permissions[0].required_auth.keys[0].key 
                                       : "No Public Key"
-                                    :  payload.permissions[1].required_auth.keys.length > 0
+                                    : payload.permissions && payload.permissions[1].required_auth.keys.length > 0
                                       ? payload.permissions[1].required_auth.keys[0].key
                                       : "No Public Key"
                                   }
@@ -126,11 +127,12 @@ const Accountdetail = (props) => {
                               <FormGroup row>
                                 <Col sm={2}>Active Public Key:</Col>
                                 <Col sm={10}>
-                                  {payload.permissions[0].perm_name === "active"
+                                  {payload.permissions &&
+                                    payload.permissions[0].perm_name === "active"
                                     ? payload.permissions[0].required_auth.keys.length > 0
                                       ? payload.permissions[0].required_auth.keys[0].key 
                                       : "No Public Key"
-                                    : payload.permissions[1].required_auth.keys.length > 0 
+                                    : payload.permissions && payload.permissions[1].required_auth.keys.length > 0 
                                       ? payload.permissions[1].required_auth.keys[0].key
                                       : "No Public Key"
                                   }
