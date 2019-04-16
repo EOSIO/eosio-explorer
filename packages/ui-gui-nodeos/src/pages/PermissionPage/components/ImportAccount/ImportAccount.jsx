@@ -50,10 +50,10 @@ const ImportAccount = (props) => {
             {name: "ownerPublic", value: keysData[0].permission === "owner" ? keysData[0].public_key : keysData[1].public_key},
             {name: "activePublic", value: keysData[1].permission === "active" ? keysData[1].public_key : keysData[0].public_key}
         ] : [
-            {name: "ownerPrivate", value: "Not Found"},
-            {name: "activePrivate", value: "Not Found"},
-            {name: "ownerPublic", value: "Not Found"},
-            {name: "activePublic", value: "Not Found"}
+            {name: "ownerPrivate", value: "No private key"},
+            {name: "activePrivate", value: "No private key"},
+            {name: "ownerPublic", value: "No public key"},
+            {name: "activePublic", value: "No public key"}
         ]
         updateValues(vals);
         window.scrollTo(0, 0);
@@ -117,7 +117,7 @@ const ImportAccount = (props) => {
                                             keysData[0].permission === "owner" ? 
                                                 keysData[0].public_key
                                                 : keysData[1].public_key
-                                                || " "
+                                                || "No public key"
                                         }
                                         onChange={handleChange}
                                         readOnly
@@ -134,7 +134,7 @@ const ImportAccount = (props) => {
                                                 keysData[0].permission === "owner" ? 
                                                     keysData[0].private_key
                                                     : keysData[1].private_key
-                                                    || "None"
+                                                    || "No private key"
                                             }
                                             onChange={handleChange}
                                             invalid={!!errors.ownerPrivate}
@@ -159,7 +159,7 @@ const ImportAccount = (props) => {
                                                 keysData[1].permission === "active" ? 
                                                     keysData[1].public_key
                                                     : keysData[0].public_key
-                                                    || " "
+                                                    || "No public key"
                                             }
                                             onChange={handleChange}
                                             readOnly
@@ -176,7 +176,7 @@ const ImportAccount = (props) => {
                                                 keysData[1].permission === "active" ? 
                                                     keysData[1].private_key
                                                     : keysData[0].private_key
-                                                    || "None"
+                                                    || "No private key"
                                             }
                                             onChange={handleChange}
                                             invalid={!!errors.activePrivate}

@@ -36,11 +36,14 @@ export const errorReset = () => ({ type: ERROR_RESET });
 const connectEpic = ( action$, state$ ) => action$.pipe(
   ofType(CONNECT_START),
   mergeMap(action =>{
-
+      
       let {value: { endpoint: { path : { mongodbTemp }}}} = state$;
 
       return apiMongodb(`set_endpoint${paramsToQuery({path: mongodbTemp})}`).pipe(
-        flatMap(res => ([connectFulfilled(res.response), accountClear()])),
+        flatMap(res => ([connectFulfilled(res.response), accountClear({
+          nodeos: action.nodeos,
+          mongodb: action.mongodb
+        })])),
         catchError((error={}) => of(connectRejected(error.response)))
         )
     }

@@ -65,7 +65,7 @@ const calculateMaxAccountsToShow = (baseListLength, currentNumberOfDefaultAccoun
 const Permissionlist = (props) => {
 
   let { 
-    permission: { isFetching, data }, 
+    permission: { isFetching, data },
     panelSelect, defaultSet 
   } = props;
   let { list, defaultId } = data;
@@ -78,7 +78,7 @@ const Permissionlist = (props) => {
     } 
     return result;
   }, Object.create({})) : null;
-  let defaultAccountsList = (Object.keys(baseDefaultAccountsList).length > 0) ? 
+  let defaultAccountsList = (Object.keys(baseDefaultAccountsList || {}).length > 0) ? 
     Object.keys(baseDefaultAccountsList).sort().map(key => baseDefaultAccountsList[key]) : {};
   let numberOfDefaultAccounts = Object.keys(defaultAccountsList || {}).length;
   
@@ -89,7 +89,7 @@ const Permissionlist = (props) => {
     }
     return result;
   }, Object.create({})) : null;
-  let importAccountsList = (Object.keys(baseImportAccountsList).length > 0) ?
+  let importAccountsList = (Object.keys(baseImportAccountsList || {}).length > 0) ?
      Object.keys(baseImportAccountsList).sort().map(key => baseImportAccountsList[key]) : {};
   let numberOfImportAccounts = Object.keys(importAccountsList || {}).length;
 
@@ -216,8 +216,8 @@ const Permissionlist = (props) => {
                                       ))
                                       : <tbody>
                                         <tr>
-                                          <td width="100%">
-                                            No default accounts available
+                                          <td width="100%" style={{textAlign:"center"}}>
+                                            <strong>No accounts available</strong>
                                           </td>
                                         </tr>
                                       </tbody>
@@ -283,9 +283,9 @@ const Permissionlist = (props) => {
                                         </tbody>
                                       ))
                                       : <tbody>
-                                        <tr width="100%">
-                                          <td>
-                                            No accounts available
+                                        <tr>
+                                          <td width="100%" style={{textAlign:"center"}}>
+                                            <strong>No accounts available</strong>
                                           </td>
                                         </tr>
                                       </tbody>
@@ -302,7 +302,7 @@ const Permissionlist = (props) => {
 }
 
 export default connect(
-  ({ permission, permissionPage: { panel }}) => ({
+  ({ permission, permissionPage: { panel } }) => ({
     permission, panel
   }),
   {
