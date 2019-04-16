@@ -50,7 +50,7 @@ const ImportAccount = (props) => {
             {name: "ownerPublic", value: keysData[0].permission === "owner" ? keysData[0].public_key : keysData[1].public_key},
             {name: "activePublic", value: keysData[1].permission === "active" ? keysData[1].public_key : keysData[0].public_key}
         ] : [
-            {name: "ownerPrivate", value: "Undefined"},
+            {name: "ownerPrivate", value: "Not Found"},
             {name: "activePrivate", value: "Not Found"},
             {name: "ownerPublic", value: "Not Found"},
             {name: "activePublic", value: "Not Found"}
