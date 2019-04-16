@@ -51,7 +51,7 @@ const Actionhistory = (props) => {
                       <td>{action.act.account}</td>
                       <td>{action.act.name}</td>
                       <td>{action.createdAt}</td>
-                      <td>{action.act.authorization[0].actor + "@" + action.act.authorization[0].permission}</td>
+                      <td>{(action.act.authorization.length > 0) ? action.act.authorization[0].actor + "@" + action.act.authorization[0].permission : ""}</td>
                       <td className="text-center">
                         {/* When the prefill button is clicked, call the prefill callback supplied by the parent component */}
                         <CustomButton block size="sm" onClick={(e) => { e.preventDefault(); props.prefillCallback(action); }}>Prefill</CustomButton>
