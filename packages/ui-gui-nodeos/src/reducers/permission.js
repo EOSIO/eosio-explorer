@@ -39,7 +39,7 @@ export const fetchRejected = ( payload, error ) => ({ type: FETCH_REJECTED, payl
 export const defaultSet = ( id ) => ({ type: DEFAULT_SET, id });
 export const accountAdd = accountData => ({ type: ACCOUNT_ADD, accountData });
 export const accountImport = accountData => ({ type: ACCOUNT_IMPORT, accountData });
-export const accountClear = () => ({ type: ACCOUNT_CLEAR });
+export const accountClear = endpoint => ({ type: ACCOUNT_CLEAR, endpoint });
 export const createStart = account => ({ type: CREATE_START, account });
 export const createFulfilled = payload => ({ type: CREATE_FULFILLED, payload });
 export const createRejected = ( payload, error ) => ({ type: CREATE_REJECTED, payload, error });
@@ -125,7 +125,6 @@ export const combinedEpic = combineEpics(
   createEpic
 );
 
-//Reducer
 const dataInitState = {
   list: [
     {
@@ -151,9 +150,15 @@ const dataInitState = {
   defaultId: "1"
 }
 
-const reinitializedState = function () {
+const reinitializedState = (endpoint = {
+  nodeos: "http://localhost:8888",
+  mongodb: "mongodb://localhost:27017/mongopluginmainnet"
+}) => {
   return {
-    list: [
+    list: (
+      endpoint["nodeos"] === 'http://localhost:8888' &&
+      endpoint["mongodb"] === 'mongodb://localhost:27017/mongopluginmainnet'
+    ) ? [
       {
         _id: '1',
         account: 'eosio',
@@ -168,7 +173,7 @@ const reinitializedState = function () {
         public_key: 'EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV',
         private_key: '5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3'
       }
-    ],
+    ] : [],
     importSuccess: false,
     importError: null,
     submitError: null,
@@ -189,7 +194,7 @@ const alphabeticalSort = (a, b) => {
   return 0;
 }
 
-const composePermissionList = (originalList, payloadList) => {
+const composePermissionList = (originalList = [], payloadList = []) => {
   payloadList.map(function(el) {    
     let index = originalList.findIndex(eachItem => el.account === eachItem.account && el.permission === eachItem.permission);
     if (index >= 0) {
@@ -202,7 +207,6 @@ const composePermissionList = (originalList, payloadList) => {
     }
     return null;       
   });  
-  originalList.sort(alphabeticalSort);
   return originalList;
 }
 
@@ -305,7 +309,7 @@ const dataReducer = (state=dataInitState, action) => {
         isSubmitting: false
       };
     case ACCOUNT_CLEAR:
-      return reinitializedState();
+      return reinitializedState(action.endpoint, dataInitState);
     default:
       return state;
   }

@@ -28,7 +28,7 @@ const ImportAccount = (props) => {
     let {
         permission: {
             data: {
-                keysData,
+                keysData = [[],[]],
                 importSuccess
             }
         },
@@ -37,18 +37,23 @@ const ImportAccount = (props) => {
 
     function importAccount() {
         accountAdd({
-            accountName: keysData[0].account,
+            accountName: (keysData) ? keysData[0].account : "Unknown",
             ownerPrivate: values.ownerPrivate,
             activePrivate: values.activePrivate
         });
     }
 
     useEffect(()=>{
-        const vals = [
+        const vals = (keysData) ? [
             {name: "ownerPrivate", value: keysData[0].permission === "owner" ? keysData[0].private_key : keysData[1].private_key},
             {name: "activePrivate", value: keysData[1].permission === "active" ? keysData[1].private_key : keysData[0].private_key},
             {name: "ownerPublic", value: keysData[0].permission === "owner" ? keysData[0].public_key : keysData[1].public_key},
             {name: "activePublic", value: keysData[1].permission === "active" ? keysData[1].public_key : keysData[0].public_key}
+        ] : [
+            {name: "ownerPrivate", value: "No private key"},
+            {name: "activePrivate", value: "No private key"},
+            {name: "ownerPublic", value: "No public key"},
+            {name: "activePublic", value: "No public key"}
         ]
         updateValues(vals);
         window.scrollTo(0, 0);
@@ -66,7 +71,7 @@ const ImportAccount = (props) => {
                             {
                                 importSuccess &&
                                 <UncontrolledAlert color="success">
-                                    Private keys for {keysData[0].account} successfully updated
+                                    Private keys for {keysData[0].account || "unknown account"} successfully updated
                                 </UncontrolledAlert>
                             }
                             <InfoDiv>
@@ -96,7 +101,7 @@ const ImportAccount = (props) => {
                                         <InputStyled type="text"
                                             name="accountName"
                                             id="accountName"
-                                            defaultValue={keysData[0].account}
+                                            defaultValue={keysData[0].account || "Unknown"}
                                             readOnly
                                             />
                                     </Col>
@@ -112,6 +117,7 @@ const ImportAccount = (props) => {
                                             keysData[0].permission === "owner" ? 
                                                 keysData[0].public_key
                                                 : keysData[1].public_key
+                                                || "No public key"
                                         }
                                         onChange={handleChange}
                                         readOnly
@@ -128,6 +134,7 @@ const ImportAccount = (props) => {
                                                 keysData[0].permission === "owner" ? 
                                                     keysData[0].private_key
                                                     : keysData[1].private_key
+                                                    || "No private key"
                                             }
                                             onChange={handleChange}
                                             invalid={!!errors.ownerPrivate}
@@ -152,6 +159,7 @@ const ImportAccount = (props) => {
                                                 keysData[1].permission === "active" ? 
                                                     keysData[1].public_key
                                                     : keysData[0].public_key
+                                                    || "No public key"
                                             }
                                             onChange={handleChange}
                                             readOnly
@@ -168,6 +176,7 @@ const ImportAccount = (props) => {
                                                 keysData[1].permission === "active" ? 
                                                     keysData[1].private_key
                                                     : keysData[0].private_key
+                                                    || "No private key"
                                             }
                                             onChange={handleChange}
                                             invalid={!!errors.activePrivate}

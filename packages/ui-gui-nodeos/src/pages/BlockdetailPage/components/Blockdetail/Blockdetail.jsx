@@ -89,9 +89,10 @@ const Blockdetail = (props) => {
                                 </thead>
                                 <tbody>
                                   {(payload[0].block.transactions).map((eachTransaction,index)=>
-                                    <tr onClick={evt=> props.push(`/transaction/${eachTransaction.trx.id}`)} key={eachTransaction.trx.id}>
+                                    <tr key={(typeof(eachTransaction.trx) !== "string") ? eachTransaction.trx.id : eachTransaction.trx} 
+                                        onClick={evt=> (typeof(eachTransaction.trx) !== "string") ? props.push(`/transaction/${eachTransaction.trx.id}`): ""}>
                                       <td>{index+1}</td>
-                                      <td className="hashText">{eachTransaction.trx.id}</td>                                      
+                                      <td className="hashText">{(typeof(eachTransaction.trx) !== "string") ? eachTransaction.trx.id : "Deferred transactions"}</td>                                      
                                     </tr>)}
                                 </tbody>
                                 </CustomTable>                               

@@ -53,22 +53,45 @@ const PermissionLink = styled(Link)`
   }
 `
 
+// Each account must have two permissions, so we multiply number of accounts by 2
+// N = 100
+const MAX_ACCOUNTS_TO_SHOW = 100 * 2;
+
+// If baseListLength < (MAX_ACCOUNTS_TO_SHOW - (currentNumberOfDefaultAccounts * 2))
+// Then we just show everything
+const calculateMaxAccountsToShow = (baseListLength, currentNumberOfDefaultAccounts) => 
+  (baseListLength - (MAX_ACCOUNTS_TO_SHOW - (currentNumberOfDefaultAccounts * 2)))
+
 const Permissionlist = (props) => {
 
   let { 
-    permission: { isFetching, data }, 
+    permission: { isFetching, data },
     panelSelect, defaultSet 
   } = props;
   let { list, defaultId } = data;
-  let newList = (list.length > 0) ? list.reduce((result, permission) => {
-    if (permission.account) {
+  let clonedList = list.slice(0);
+
+  let baseDefaultAccountsList = (clonedList.length > 0) ? clonedList.reduce((result, permission) => {
+    if (permission.account && permission.private_key) {
       result[permission.account] = result[permission.account] || [];
       result[permission.account].push(permission);
-      return result;
-    }
-    else
-      return null;
+    } 
+    return result;
   }, Object.create({})) : null;
+  let defaultAccountsList = (Object.keys(baseDefaultAccountsList || {}).length > 0) ? 
+    Object.keys(baseDefaultAccountsList).sort().map(key => baseDefaultAccountsList[key]) : {};
+  let numberOfDefaultAccounts = Object.keys(defaultAccountsList || {}).length;
+  
+  let baseImportAccountsList = (clonedList.length > 0) ? clonedList.reduce((result, permission, idx) => {
+    if (permission.account && !permission.private_key && idx >= calculateMaxAccountsToShow(clonedList.length, numberOfDefaultAccounts)) {
+      result[permission.account] = result[permission.account] || [];
+      result[permission.account].push(permission);
+    }
+    return result;
+  }, Object.create({})) : null;
+  let importAccountsList = (Object.keys(baseImportAccountsList || {}).length > 0) ?
+     Object.keys(baseImportAccountsList).sort().map(key => baseImportAccountsList[key]) : {};
+  let numberOfImportAccounts = Object.keys(importAccountsList || {}).length;
 
   useEffect(()=>{
     props.fetchStart();
@@ -91,6 +114,18 @@ const Permissionlist = (props) => {
       });
   }
 
+  function containsOnlyActiveOrOwner (permissionList) {
+    let _permissionOneCorrect = false;
+    let _permissionTwoCorrect = false;
+
+    if (permissionList.length > 0) {
+      _permissionOneCorrect = permissionList[0].permission === 'owner' || permissionList[0].permission === 'active';
+      _permissionTwoCorrect = permissionList[1].permission === 'owner' || permissionList[1].permission === 'active';
+    }
+
+    return _permissionOneCorrect && _permissionTwoCorrect;
+  }
+
   return (
     <div className="Permissionlist">
 
@@ -110,8 +145,13 @@ const Permissionlist = (props) => {
                                   </InfoDiv>
                                   <PermissionTable borderless>
                                     {
-                                      newList && Object.keys(newList).map((account) => (
-                                        (newList[account][0] && newList[account][0].private_key) &&
+                                      defaultAccountsList && numberOfDefaultAccounts > 0 
+                                        ? Object.keys(defaultAccountsList).map((account) => (
+                                        (defaultAccountsList[account] && 
+                                          defaultAccountsList[account].length === 2 && 
+                                          defaultAccountsList[account][0].private_key &&
+                                          containsOnlyActiveOrOwner(defaultAccountsList[account])
+                                          ) &&
                                         <tbody className="accountRow" key={account}>
                                           <tr>
                                             <td width="60%">
@@ -121,18 +161,20 @@ const Permissionlist = (props) => {
                                                     <td className="radio" width="20%">
                                                       <RadioButtonDivStyled>
                                                         <label className="radioContainer">
-                                                          <input name={newList[account][0]._id}
+                                                          <input name={defaultAccountsList[account][0]._id}
                                                             type="radio"
-                                                            checked={newList[account][0]._id === defaultId ? true : false}
-                                                            onClick={() => setAsDefault(newList[account][0]._id, newList[account][0].account, newList[account][0].permission)}
+                                                            checked={defaultAccountsList[account][0]._id === defaultId ? true : false}
+                                                            onClick={() => setAsDefault(defaultAccountsList[account][0]._id, 
+                                                              defaultAccountsList[account][0].account, 
+                                                              defaultAccountsList[account][0].permission)}
                                                             readOnly />
                                                           <span className="checkmark"></span>
                                                         </label>
                                                       </RadioButtonDivStyled>
                                                     </td>
                                                     <td className="permissionLabel" width="80%">
-                                                      <PermissionLink to={`/account/${newList[account][0].account}`}>
-                                                        {newList[account][0].account}@{newList[account][0].permission}
+                                                      <PermissionLink to={`/account/${defaultAccountsList[account][0].account}`}>
+                                                        {defaultAccountsList[account][0].account}@{defaultAccountsList[account][0].permission}
                                                       </PermissionLink>
                                                     </td>
                                                   </AccountRow>
@@ -140,18 +182,20 @@ const Permissionlist = (props) => {
                                                     <td className="radio" width="20%">
                                                       <RadioButtonDivStyled>
                                                         <label className="radioContainer">
-                                                          <input name={newList[account][1]._id}
+                                                          <input name={defaultAccountsList[account][1]._id}
                                                             type="radio"
-                                                            checked={newList[account][1]._id === defaultId ? true : false}
-                                                            onClick={() => setAsDefault(newList[account][1]._id, newList[account][1].account, newList[account][1].permission)}
+                                                            checked={defaultAccountsList[account][1]._id === defaultId ? true : false}
+                                                            onClick={() => setAsDefault(defaultAccountsList[account][1]._id, 
+                                                              defaultAccountsList[account][1].account, 
+                                                              defaultAccountsList[account][1].permission)}
                                                             readOnly />
                                                           <span className="checkmark"></span>
                                                         </label>
                                                       </RadioButtonDivStyled>
                                                     </td>
                                                     <td className="permissionLabel" width="80%">
-                                                      <PermissionLink to={`/account/${newList[account][1].account}`}>
-                                                        {newList[account][1].account}@{newList[account][1].permission}
+                                                      <PermissionLink to={`/account/${defaultAccountsList[account][1].account}`}>
+                                                        {defaultAccountsList[account][1].account}@{defaultAccountsList[account][1].permission}
                                                       </PermissionLink>
                                                     </td>
                                                   </AccountRow>
@@ -161,7 +205,7 @@ const Permissionlist = (props) => {
                                             <EditButtonCell width="40%">
                                               <ButtonPrimary 
                                                     style={{float:'right', marginRight:'5%'}}
-                                                    onClick={() => getKeysData(newList[account][0].account, list)}
+                                                    onClick={() => getKeysData(defaultAccountsList[account][0].account, list)}
                                                     block
                                                     >
                                                     Edit
@@ -170,6 +214,13 @@ const Permissionlist = (props) => {
                                           </tr>
                                         </tbody>
                                       ))
+                                      : <tbody>
+                                        <tr>
+                                          <td width="100%" style={{textAlign:"center"}}>
+                                            <strong>No accounts available</strong>
+                                          </td>
+                                        </tr>
+                                      </tbody>
                                     }
                                   </PermissionTable>
                                 </CardBody>
@@ -186,8 +237,13 @@ const Permissionlist = (props) => {
                                     </InfoDiv>
                                     <PermissionTable borderless>
                                     {
-                                      newList && Object.keys(newList).map((account) => (
-                                        (newList[account][0] && !newList[account][0].private_key) &&
+                                      (importAccountsList && numberOfImportAccounts > 0) 
+                                      ? Object.keys(importAccountsList).map((account) => (
+                                        (importAccountsList[account] &&
+                                          importAccountsList[account].length === 2 && 
+                                          !importAccountsList[account][0].private_key &&
+                                          containsOnlyActiveOrOwner(importAccountsList[account])
+                                          ) &&
                                         <tbody className="accountRow" key={account}>
                                           <tr>
                                             <td width="60%">
@@ -197,8 +253,8 @@ const Permissionlist = (props) => {
                                                     <td className="radio" width="20%">
                                                     </td>
                                                     <td className="permissionLabel" width="80%">
-                                                      <PermissionLink to={`/account/${newList[account][0].account}`}>
-                                                        {newList[account][0].account}@{newList[account][0].permission}
+                                                      <PermissionLink to={`/account/${importAccountsList[account][0].account}`}>
+                                                        {importAccountsList[account][0].account}@{importAccountsList[account][0].permission}
                                                       </PermissionLink>
                                                     </td>
                                                   </AccountRow>
@@ -206,8 +262,8 @@ const Permissionlist = (props) => {
                                                     <td className="radio" width="20%">
                                                     </td>
                                                     <td className="permissionLabel" width="80%">
-                                                      <PermissionLink to={`/account/${newList[account][1].account}`}>
-                                                        {newList[account][1].account}@{newList[account][1].permission}
+                                                      <PermissionLink to={`/account/${importAccountsList[account][1].account}`}>
+                                                        {importAccountsList[account][1].account}@{importAccountsList[account][1].permission}
                                                       </PermissionLink>
                                                     </td>
                                                   </AccountRow>
@@ -217,7 +273,7 @@ const Permissionlist = (props) => {
                                             <EditButtonCell width="40%">
                                               <ButtonPrimary 
                                                     style={{float:'right', marginRight:'5%'}}
-                                                    onClick={() => getKeysData(newList[account][0].account, list)}
+                                                    onClick={() => getKeysData(importAccountsList[account][0].account, list)}
                                                     block
                                                     >
                                                     Edit
@@ -226,6 +282,13 @@ const Permissionlist = (props) => {
                                           </tr>
                                         </tbody>
                                       ))
+                                      : <tbody>
+                                        <tr>
+                                          <td width="100%" style={{textAlign:"center"}}>
+                                            <strong>No accounts available</strong>
+                                          </td>
+                                        </tr>
+                                      </tbody>
                                     }
                                   </PermissionTable>
                                   </CardBody>
@@ -239,7 +302,7 @@ const Permissionlist = (props) => {
 }
 
 export default connect(
-  ({ permission, permissionPage: { panel }}) => ({
+  ({ permission, permissionPage: { panel } }) => ({
     permission, panel
   }),
   {
