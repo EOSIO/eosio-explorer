@@ -29,6 +29,7 @@ cp -f ./init_config.file $APPGUI/config.file.local
 cp -f ./init_config.file $EOSDOCKER/config.file.local
 cp -f ./init_config.file $EOSDOCKER/scripts/config.file.local
 cp -f ./init_config.file $MONGODOCKER/config.file.local
+cp -f ./init_config.file $COMPILER/config.file.local
 
 echo "REACT_APP_MONGODB_PORT=$MONGODB_PORT" > $GUI/.env.local
 echo "REACT_APP_MONGODB_DB_NAME=$MONGODB_DB_NAME" >> $GUI/.env.local
