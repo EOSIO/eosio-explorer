@@ -1,4 +1,12 @@
 #!/usr/bin/env bash
 set -o errexit
 
-docker rm -fv eosio_gui_nodeos_cdt_container
+# sourcing variable from config file
+source ./config.file
+
+# override config if there are any local config changes
+if [ -f "./config.file.local" ]; then
+  source ./config.file.local
+fi
+
+docker rm -fv $CDT_CONTAINER_NAME

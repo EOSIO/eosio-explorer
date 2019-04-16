@@ -1,5 +1,13 @@
 #!/usr/bin/env bash
 
+# sourcing variable from config file
+source ./config.file
+
+# override config if there are any local config changes
+if [ -f "./config.file.local" ]; then
+  source ./config.file.local
+fi
+
 RED='\033[0;31m'
 NC='\033[0m' # No Color
 GREEN='\033[0;32m'
@@ -27,11 +35,11 @@ echo " "
 echo "=============================="
 echo "STARTING MONGODB DOCKER"
 echo "=============================="
-if [ "$(docker ps -q -f status=paused -f name=eosio-mongodb)" ]; then
+if [ "$(docker ps -q -f status=paused -f name=$MONGODB_CONTAINER_NAME)" ]; then
   echo 'resuming mongodb docker'
-  docker unpause eosio-mongodb
+  docker unpause $MONGODB_CONTAINER_NAME
 else
-  if [ ! "$(docker ps -q -f name=eosio-mongodb)" ]; then
+  if [ ! "$(docker ps -q -f name=$MONGODB_CONTAINER_NAME)" ]; then
     if find "$MONGODOCKER/data" -mindepth 1 -print -quit 2>/dev/null | grep -q .; then
         echo "mongodb docker is not running, but data folder exists"
         echo "cleaning data now"
@@ -46,11 +54,11 @@ echo " "
 echo "=============================="
 echo "STARTING EOSIO DOCKER"
 echo "=============================="
-if [ "$(docker ps -q -f status=paused -f name=eosio_gui_nodeos_container)" ]; then
+if [ "$(docker ps -q -f status=paused -f name=$NODEOS_CONTAINER_NAME)" ]; then
   echo 'resuming eosio docker'
-  docker unpause eosio_gui_nodeos_container
+  docker unpause $NODEOS_CONTAINER_NAME
 else
-  if [ ! "$(docker ps -q -f name=eosio_gui_nodeos_container)" ]; then
+  if [ ! "$(docker ps -q -f name=$NODEOS_CONTAINER_NAME)" ]; then
     if find "$EOSDOCKER/data" -mindepth 1 -print -quit 2>/dev/null | grep -q .; then
         echo "eosio docker is not running, but data folder exists"
         echo "cleaning data now"

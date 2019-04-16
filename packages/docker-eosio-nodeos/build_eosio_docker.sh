@@ -6,6 +6,14 @@ echo "start building eosio docker"
 cd "$(dirname "$0")"
 SCRIPTPATH="$( pwd -P )"
 
+# sourcing variable from config file
+source ./config.file
+
+# override config if there are any local config changes
+if [ -f "./config.file.local" ]; then
+  source ./config.file.local
+fi
+
 # make sure Docker and Node.js is installed
 if [ ! -x "$(command -v docker)" ] ||
    [ ! -x "$(command -v npm)" ]; then
@@ -20,9 +28,9 @@ if [ ! -x "$(command -v docker)" ] ||
 fi
 
 # build docker image, if necessary
-if [[ "$(docker images -q eosio-gui-nodeos:eos1.6.3)" == "" ]]; then
-  echo "Build docker image eosio-gui-nodeos version eos1.6.3, this may take some time"
-  docker build -t eosio-gui-nodeos:eos1.6.3 . --no-cache
+if [[ "$(docker images -q $NODEOS_IMAGE_NAME)" == "" ]]; then
+  echo "Build docker image $NODEOS_IMAGE_PREFIX version $NODEOS_VERSION, this may take some time"
+  docker build -t $NODEOS_IMAGE_NAME . --no-cache
 else
   echo "Docker image already exists, skip building"
 fi
@@ -31,13 +39,13 @@ fi
 # create a clean data folder in eosio_docker to preserve block data
 echo "clean up data remnants"
 echo "Checking if previous container is running"
-if [ "$(docker ps -q -f name=eosio_gui_nodeos_container)" ]; then
-    if [ "$(docker ps -aq -f status=running -f name=eosio_gui_nodeos_container)" ]; then
+if [ "$(docker ps -q -f name=$NODEOS_CONTAINER_NAME)" ]; then
+    if [ "$(docker ps -aq -f status=running -f name=$NODEOS_CONTAINER_NAME)" ]; then
         echo "Previous container is running, stopping"
-        docker rm --force eosio_gui_nodeos_container
+        docker rm --force $NODEOS_CONTAINER_NAME
     fi
 fi
-if [ ! "$(docker ps -q -f name=eosio_gui_nodeos_container)" ]; then
+if [ ! "$(docker ps -q -f name=$NODEOS_CONTAINER_NAME)" ]; then
   echo "No container running"
 fi
 echo "Re-initializing block log folder"

@@ -4,19 +4,27 @@ set -o errexit
 # change to script's directory
 cd "$(dirname "$0")"
 
-# docker did not stop properly
-if [ "$(docker ps -q -f status=exited -f name=eosio-mongodb)" ]; then
-  docker rm eosio-mongodb
+# sourcing variable from config file
+source ./config.file
+
+# override config if there are any local config changes
+if [ -f "./config.file.local" ]; then
+  source ./config.file.local
 fi
 
-if [ ! "$(docker ps -q -f name=eosio-mongodb)" ]; then
+# docker did not stop properly
+if [ "$(docker ps -q -f status=exited -f name=$MONGODB_CONTAINER_NAME)" ]; then
+  docker rm $MONGODB_CONTAINER_NAME
+fi
+
+if [ ! "$(docker ps -q -f name=$MONGODB_CONTAINER_NAME)" ]; then
   if find "$(pwd)/data" -mindepth 1 -print -quit 2>/dev/null | grep -q .; then
     echo "mongodb docker is not running, but data folder exists"
     echo "cleaning data now"
     rm -r "$(pwd)"/data/*
   fi
 
-  docker run -d --rm -p 27017:27017 --name eosio-mongodb -v $(pwd)/data:/data/db mongo
+  docker run -d --rm -p $MONGODB_PORT:$MONGODB_PORT --name $MONGODB_CONTAINER_NAME -v $(pwd)/data:/data/db mongo --port $MONGODB_PORT
 else
   echo "docker already running"
 fi

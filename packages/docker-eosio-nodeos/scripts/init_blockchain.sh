@@ -3,12 +3,16 @@ set -o errexit
 
 echo "creating blockchain accounts and deploying smart contract"
 
-#This variable should be moved out to a global config file
-# 'eosio-mongodb' is the name of the mongo container, 
-MONGODB_PATH="mongodb://eosio-mongodb:27017/mongopluginmainnet"
-
 # set PATH
 PATH="$PATH:/opt/eosio/bin:/opt/eosio/bin/scripts"
+
+# sourcing variable from config file
+source ./scripts/config.file
+
+# override config if there are any local config changes
+if [ -f "./scripts/config.file.local" ]; then
+  source ./scripts/config.file.local
+fi
 
 CONTRACTSPATH="$( pwd -P )/contracts"
 

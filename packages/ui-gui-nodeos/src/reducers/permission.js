@@ -151,13 +151,13 @@ const dataInitState = {
 }
 
 const reinitializedState = (endpoint = {
-  nodeos: "http://localhost:8888",
-  mongodb: "mongodb://localhost:27017/mongopluginmainnet"
+  nodeos: `http://localhost:8888`,
+  mongodb: `mongodb://localhost:${process.env.REACT_APP_MONGODB_PORT}/${process.env.REACT_APP_MONGODB_DB_NAME}`,
 }) => {
   return {
     list: (
-      endpoint["nodeos"] === 'http://localhost:8888' &&
-      endpoint["mongodb"] === 'mongodb://localhost:27017/mongopluginmainnet'
+      endpoint["nodeos"] === `http://localhost:8888` &&
+      endpoint["mongodb"] === `mongodb://localhost:${process.env.REACT_APP_MONGODB_PORT}/${process.env.REACT_APP_MONGODB_DB_NAME}`
     ) ? [
       {
         _id: '1',
@@ -195,18 +195,18 @@ const alphabeticalSort = (a, b) => {
 }
 
 const composePermissionList = (originalList = [], payloadList = []) => {
-  payloadList.map(function(el) {    
+  payloadList.map(function(el) {
     let index = originalList.findIndex(eachItem => el.account === eachItem.account && el.permission === eachItem.permission);
     if (index >= 0) {
       if (originalList[index].public_key !== el.public_key) {
         originalList[index].public_key = el.public_key;
         originalList[index].private_key = null;
-      }            
+      }
     } else {
       originalList.push(el);
     }
-    return null;       
-  });  
+    return null;
+  });
   return originalList;
 }
 
@@ -231,8 +231,8 @@ const storeNewAccount = (createResponse, list) => {
     queryData[0]["private_key"] = (queryData[0].permission === 'owner') ? ownerPrivateKey : activePrivateKey;
     queryData[1]["private_key"] = (queryData[1].permission === 'owner') ? ownerPrivateKey : activePrivateKey;
   } else {
-    msg = `Created the account for ${accountName} but failed to query the 
-       account after creation. Please import the keys you just used in the previous 
+    msg = `Created the account for ${accountName} but failed to query the
+       account after creation. Please import the keys you just used in the previous
        panel.`;
     accountSuccess = false;
   }

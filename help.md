@@ -44,7 +44,7 @@ This command does a few things:
 
 1. Install all required dependencies
 2. Build the docker images
-3. Check and remove any existing docker with names `eosio-mongodb` and `eosio_gui_nodeos_container`
+3. Check and remove any existing docker with names `eosio_mongodb` and `eosio_gui_nodeos_container`
 4. Start the dockers
 5. Setup compiler api
 6. Start the GUI
@@ -160,7 +160,7 @@ eosio-toppings # project directory
 │   ├── *docker-eosio-nodeos # EOSIO docker
 │   │   ├── Dockerfile
 │   │   ├── README.md
-│   │   ├── build_eosio_docker.sh 
+│   │   ├── build_eosio_docker.sh
 │   │   ├── contracts # dummy contracts
 │   │   │   ├── byeworld
 │   │   │   │   ├── byeworld.abi
@@ -180,11 +180,11 @@ eosio-toppings # project directory
 │   │   │       └── testnote.cpp
 │   │   ├── remove_eosio_docker.sh # remove eosio docker and its content
 │   │   ├── scripts # Scripts for docker containers
-│   │   │   ├── accounts.json # list of sample account 
-│   │   │   ├── continue_blockchain.sh # resume blockchain 
-│   │   │   ├── create_accounts.sh # create dummy accounts 
+│   │   │   ├── accounts.json # list of sample account
+│   │   │   ├── continue_blockchain.sh # resume blockchain
+│   │   │   ├── create_accounts.sh # create dummy accounts
 │   │   │   ├── deploy_contract.sh # deploy contract
-│   │   │   └── init_blockchain.sh # initialize blockchain 
+│   │   │   └── init_blockchain.sh # initialize blockchain
 │   │   └── start_eosio_docker.sh # start eosio docker
 │   ├── *docker-mongodb # Mongodb Docker
 │   │   ├── README.md

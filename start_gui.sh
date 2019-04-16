@@ -9,6 +9,14 @@ GUI="$SCRIPTPATH/packages/ui-gui-nodeos"
 ISDEV=false
 ISFIRSTTIMESETUP=false
 
+# sourcing variable from config file
+source ./config.file
+
+# override config if there are any local config changes
+if [ -f "./config.file.local" ]; then
+  source ./config.file.local
+fi
+
 for arg in $@
 do
     case $arg in
@@ -30,9 +38,9 @@ echo "=============================="
 if $ISDEV; then
   if $ISFIRSTTIMESETUP; then
     # Set environment variable "LAST_FIRST_TIME_SETUP_TIMESTAMP" at dev build to create a new timestamp in CRA development
-    (cd $GUI && REACT_APP_LAST_FIRST_TIME_SETUP_TIMESTAMP=$(date +%s) yarn start)
+    (cd $GUI && REACT_APP_LAST_FIRST_TIME_SETUP_TIMESTAMP=$(date +%s) PORT=$UI_DEV_PORT yarn start)
   else
-    (cd $GUI && yarn start)
+    (cd $GUI && PORT=$UI_DEV_PORT yarn start)
   fi
 else
   (cd $GUI && yarn serve)

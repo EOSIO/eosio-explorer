@@ -6,6 +6,14 @@ echo "=== start of eosio-cdt docker setup ==="
 cd "$(dirname "$0")"
 SCRIPTPATH="$( pwd -P )"
 
+# sourcing variable from config file
+source ./config.file
+
+# override config if there are any local config changes
+if [ -f "./config.file.local" ]; then
+  source ./config.file.local
+fi
+
 # make sure Docker and Node.js is installed
 if [ ! -x "$(command -v docker)" ] ||
    [ ! -x "$(command -v npm)" ]; then
@@ -20,9 +28,9 @@ if [ ! -x "$(command -v docker)" ] ||
 fi
 
 # build docker image, if necessary
-if [[ "$(docker images -q eosio-gui-nodeos-cdt:1.5.0)" == "" ]]; then
-  echo "=== Build docker image eosio-gui-nodeos version cdt1.5.0, this will take some time for the first time run ==="
-  docker build -t eosio-gui-nodeos-cdt:1.5.0 . --no-cache
+if [[ "$(docker images -q $CDT_IMAGE_NAME)" == "" ]]; then
+  echo "=== Build docker image $CDT_IMAGE_PREFIX version $CDT_VERSION, this will take some time for the first time run ==="
+  docker build -t $CDT_IMAGE_NAME . --no-cache
 else
   echo "=== Docker image already exists, skip building ==="
 fi

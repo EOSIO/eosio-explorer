@@ -3,7 +3,18 @@ const path = require('path');
 const app = express();
 const mongodb = require('./routers/mongodb');
 
-const PORT = 5000;
+const fs = require('fs');
+const dotenv = require('dotenv');
+dotenv.config();
+const envConfig = fs.existsSync('.env.local') && dotenv.parse(fs.readFileSync('.env.local'));
+
+if (envConfig){
+  for (let k in envConfig) {
+    process.env[k] = envConfig[k];
+  }
+}
+
+const PORT = process.env.REACT_APP_UI_SERVE_PORT;
 
 //only serve api calls ( not the static build/ ) in development mode, create react app in develop will call the APIs from a proxy.
 if ( process.env.MODE !== 'development'){

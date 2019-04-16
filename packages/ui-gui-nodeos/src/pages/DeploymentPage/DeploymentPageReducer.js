@@ -7,7 +7,7 @@ import { combineEpics, ofType } from 'redux-observable';
 
 import { errorLog } from 'helpers/error-logger';
 
-const ENDPOINT = 'http://localhost:8081/api/eosio/';
+const ENDPOINT = `http://localhost:${process.env.REACT_APP_LOCAL_SERVICE_PORT}/api/eosio/`;
 
 const actionPrefix = `deployment/`;
 
@@ -88,7 +88,7 @@ const deployEpic = ( action$ ) => action$.pipe(
         let actualOutput;
         let nodeErr = [];
         let nodeStd = [];
-        
+
         /**
          * If compile succeeds but deployment fails, there will be no output object.
          * Therefore, if output doesn't exist, we can use the 'null' to determine
