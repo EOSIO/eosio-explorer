@@ -6,11 +6,12 @@
 
 import { combineReducers } from 'redux';
 import { of } from 'rxjs';
-import { mergeMap, mapTo, map, catchError } from 'rxjs/operators';
+import { mergeMap, mapTo, map, flatMap, catchError } from 'rxjs/operators';
 
 import { combineEpics, ofType } from 'redux-observable';
 
 import apiMongodb from 'services/api-mongodb';
+import { accountClear } from 'reducers/permission';
 import paramsToQuery from 'helpers/params-to-query';
 
 // IMPORTANT
@@ -39,7 +40,7 @@ const connectEpic = ( action$, state$ ) => action$.pipe(
       let {value: { endpoint: { path : { mongodbTemp }}}} = state$;
 
       return apiMongodb(`set_endpoint${paramsToQuery({path: mongodbTemp})}`).pipe(
-        map(res => connectFulfilled(res.response)),
+        flatMap(res => ([connectFulfilled(res.response), accountClear()])),
         catchError((error={}) => of(connectRejected(error.response)))
         )
     }

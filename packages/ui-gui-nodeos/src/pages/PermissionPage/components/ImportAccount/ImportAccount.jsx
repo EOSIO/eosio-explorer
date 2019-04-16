@@ -134,7 +134,7 @@ const ImportAccount = (props) => {
                                                 keysData[0].permission === "owner" ? 
                                                     keysData[0].private_key
                                                     : keysData[1].private_key
-                                                    || " "
+                                                    || "None"
                                             }
                                             onChange={handleChange}
                                             invalid={!!errors.ownerPrivate}
@@ -176,7 +176,7 @@ const ImportAccount = (props) => {
                                                 keysData[1].permission === "active" ? 
                                                     keysData[1].private_key
                                                     : keysData[0].private_key
-                                                    || " "
+                                                    || "None"
                                             }
                                             onChange={handleChange}
                                             invalid={!!errors.activePrivate}

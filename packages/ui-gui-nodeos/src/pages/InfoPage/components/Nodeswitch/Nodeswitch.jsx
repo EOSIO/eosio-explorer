@@ -117,7 +117,6 @@ const Nodeswitch = (props) => {
               toggleConnectModal(false); 
               props.errorReset();
               props.connectStart(values.nodeos, values.mongodb);
-              props.accountClear();
             }}
             >
             Are you sure you want to connect to the new Nodeos instance at {values.nodeos}? 
