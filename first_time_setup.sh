@@ -8,7 +8,8 @@ SCRIPTPATH="$( pwd -P )"
 APPGUI="$SCRIPTPATH/apps/gui-nodeos"
 EOSDOCKER="$SCRIPTPATH/packages/docker-eosio-nodeos"
 MONGODOCKER="$SCRIPTPATH/packages/docker-mongodb"
-COMPILER="$SCRIPTPATH/packages/api-eosio-compiler/docker-eosio-cdt"
+LOCALSERVICE="$SCRIPTPATH/packages/api-eosio-compiler"
+COMPILER="$LOCALSERVICE/docker-eosio-cdt"
 GUI="$SCRIPTPATH/packages/ui-gui-nodeos"
 ISDEV=false
 
@@ -33,6 +34,9 @@ cp -f ./init_config.file $COMPILER/config.file.local
 
 echo "REACT_APP_MONGODB_PORT=$MONGODB_PORT" > $GUI/.env.local
 echo "REACT_APP_MONGODB_DB_NAME=$MONGODB_DB_NAME" >> $GUI/.env.local
+echo "REACT_APP_LOCAL_SERVICE_PORT=$LOCAL_SERVICE_PORT" >> $GUI/.env.local
+
+echo "LOCAL_SERVICE_PORT=$LOCAL_SERVICE_PORT" > $LOCALSERVICE/.env.local
 
 echo "Copying initial config done."
 echo " "

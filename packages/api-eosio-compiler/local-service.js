@@ -6,7 +6,18 @@ const cors = require('cors');
 const app = express();
 const serviceLogic = require('./service-logic');
 
-const PORT = 8081;
+const fs = require('fs');
+const dotenv = require('dotenv');
+dotenv.config();
+const envConfig = fs.existsSync('.env.local') && dotenv.parse(fs.readFileSync('.env.local'));
+
+if (envConfig){
+  for (let k in envConfig) {
+    process.env[k] = envConfig[k];
+  }
+}
+
+const PORT = process.env.LOCAL_SERVICE_PORT;
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
