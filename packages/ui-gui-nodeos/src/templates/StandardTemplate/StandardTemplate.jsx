@@ -1,17 +1,26 @@
-import './StandardTemplate.scss';
 import React from 'react';
 import { Container } from 'reactstrap';
 
 import { Footer, Header, HelpFAB, ConsoleLogger } from 'components';
+import styled from 'styled-components';
 
 import {
   AppHeader
 } from '@coreui/react';
 
+const StandardTemplateStyled = styled.div`
+  .app-header {
+    height: 80px;
+    + .app-body {
+        margin-top: 89px;
+    }
+  }
+`;
+
 const StandardTemplate = ({
   children = undefined,
 }) => (
-  <div className="StandardTemplate app">
+  <StandardTemplateStyled className="app">
     <AppHeader fixed>
       <Header />
     </AppHeader>
@@ -26,7 +35,7 @@ const StandardTemplate = ({
     <Footer/>
     <div id="modal"></div>
     <ConsoleLogger/>
-  </div>
+  </StandardTemplateStyled>
 )
 
 export default StandardTemplate;
