@@ -21,6 +21,7 @@ set -m
 # start nodeos ( local node of blockchain )
 # run it in a background job such that docker run could continue
 nodeos -e -p eosio -d /mnt/dev/data \
+  --signature-provider EOS5GnobZ231eekYUJHGTcmy2qve1K23r5jSFQbMfwWTtPB7mFZ1L=KEY:5Jr65kdYmn33C3UabzhmWDm2PuqbRfPuDStts3ZFNSBLM7TqaiL \
   --config-dir /mnt/dev/config \
   --plugin eosio::mongo_db_plugin -m $MONGODB_PATH  \
   --http-validate-host=false \
@@ -30,8 +31,8 @@ nodeos -e -p eosio -d /mnt/dev/data \
   --http-server-address=0.0.0.0:8888 \
   --access-control-allow-origin=* \
   --contracts-console \
-  --verbose-http-errors &
-
+  --verbose-http-errors \
+  --genesis-json "./scripts/genesis.json" &
 
 sleep 1s
 until curl localhost:8888/v1/chain/get_info
@@ -42,7 +43,7 @@ done
 echo "create wallet: eosio"
 # First key import is for eosio system account
 cleos wallet create -n eosio --to-console | tail -1 | sed -e 's/^"//' -e 's/"$//' > eosio_wallet_password.txt
-cleos wallet import -n eosio --private-key 5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3
+cleos wallet import -n eosio --private-key 5Jr65kdYmn33C3UabzhmWDm2PuqbRfPuDStts3ZFNSBLM7TqaiL
 
 echo "deploying bios contract"
 deploy_contract.sh eosio.bios eosio eosio $(cat eosio_wallet_password.txt) true

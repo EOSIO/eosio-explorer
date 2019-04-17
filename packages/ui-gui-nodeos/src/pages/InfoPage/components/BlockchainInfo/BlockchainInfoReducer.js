@@ -6,13 +6,14 @@
 
 import { combineReducers } from 'redux';
 import { of, from } from 'rxjs';
-import { mergeMap, map, catchError, mapTo } from 'rxjs/operators';
+import { mergeMap, map, flatMap, catchError, mapTo } from 'rxjs/operators';
 
 import { combineEpics, ofType } from 'redux-observable';
 
 import apiRpc from 'services/api-rpc';
 import { CONNECT_START } from 'reducers/endpoint';
 import { errorLog } from 'helpers/error-logger';
+import { accountClear } from 'reducers/permission';
 
 // IMPORTANT
 // Must modify action prefix since action types must be unique in the whole app
@@ -20,17 +21,19 @@ const actionPrefix = `InfoPage/BlockchainInfo/`;
 
 //Action Type
 const FETCH_START = actionPrefix + `FETCH_START`;
+const SWITCH_CHECK = actionPrefix + `SWITCH_CHECK`;
 const FETCH_FULFILLED = actionPrefix + `FETCH_FULFILLED`;
 const FETCH_REJECTED = actionPrefix + `FETCH_REJECTED`;
 
 //Action Creator
 export const fetchStart = () => ({ type: FETCH_START });
+export const switchCheck = () => ({ type: SWITCH_CHECK });
 export const fetchFulfilled = payload => ({ type: FETCH_FULFILLED, payload });
 export const fetchRejected = ( payload, error ) => ({ type: FETCH_REJECTED, payload, error });
 
 //Epic
 
-const query = {"privateKey": "5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3"};
+const query = {"privateKey": "5Jr65kdYmn33C3UabzhmWDm2PuqbRfPuDStts3ZFNSBLM7TqaiL"};
 
 const fetchEpic = action$ => action$.pipe(
   ofType(FETCH_START),
@@ -45,6 +48,21 @@ const fetchEpic = action$ => action$.pipe(
   ),
 );
 
+const switchCheckEpic = action$ => action$.pipe(
+  ofType(SWITCH_CHECK),
+  mergeMap(action =>
+    from(apiRpc("get_info", query)).pipe(
+      flatMap(res => {
+        return ([fetchFulfilled(res), accountClear(res.chain_id)]);
+      }),
+      catchError(error => {
+        errorLog(error);
+        return of(fetchRejected(error.response, { status: error.status }))
+      })
+    )
+  ),
+)
+
 const endpointConnectEpic = action$ => action$.pipe(
   ofType(CONNECT_START),
   mapTo(fetchStart())
@@ -53,6 +71,7 @@ const endpointConnectEpic = action$ => action$.pipe(
 
 export const combinedEpic = combineEpics(
   fetchEpic,
+  switchCheckEpic,
   endpointConnectEpic
 );
 
@@ -66,6 +85,7 @@ const dataInitState = {
 const dataReducer = (state=dataInitState, action) => {
   switch (action.type) {
     case FETCH_START:
+    case SWITCH_CHECK: 
         return dataInitState;
 
     case FETCH_FULFILLED:
@@ -88,6 +108,7 @@ const dataReducer = (state=dataInitState, action) => {
 const isFetchingReducer = (state = false, action) => {
   switch (action.type) {
     case FETCH_START:
+    case SWITCH_CHECK:
       return true;
 
     case FETCH_FULFILLED:
