@@ -61,17 +61,6 @@ echo "BUILDING EOSIO_CDT DOCKER USED BY COMPILER SERVICE"
 echo "=============================="
 (cd $COMPILER && ./build_eosio_cdt_docker.sh && printf "${GREEN}done${NC}")
 
-if !($ISDEV); then
-# create a static build of application for production
-echo " "
-echo "=============================="
-echo "BUILDING APPLICATION"
-echo "=============================="
-
-# Set environment variable "LAST_FIRST_TIME_SETUP_TIMESTAMP" at build time to create a new timestamp while serving the app.
-(cd $GUI && REACT_APP_LAST_FIRST_TIME_SETUP_TIMESTAMP=$(date +%s) yarn build && printf "${GREEN}done${NC}")
-fi
-
 # remove existing dockers
 ./remove_dockers.sh
 
