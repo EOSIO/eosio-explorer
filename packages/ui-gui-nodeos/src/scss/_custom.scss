@@ -14,6 +14,21 @@ h2.pageTitle {
     font-size: 100%;
 }
 
+.alert-success{
+    color: #6b8765;
+    background-color: #b2eaa7;
+    border-color: #b2eaa7;
+    font-weight: bold;
+    border-radius: 2px;
+}
+
+.alert-danger {
+    color: #8f2d39;
+    background-color: #ec909b;
+    border-color: #ec909b;
+    border-radius: 2px;
+    font-weight: bold;
+}
 
 /* Loading Spinner */
 .circonf {

@@ -9,10 +9,8 @@ const CutomDropDown = styled(DropdownStyled)`
   }
   .dropdown-menu{
     min-width: 100px;
-  }
-  
+  }  
 `
-
 const LimitSelectDropdown = (props) => {
 
   // didMountRef used to prevent onChange being triggered on the first render

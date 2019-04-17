@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
-import {
-  Card, CardBody, Row, Col, Form, FormGroup, FormFeedback, Label, Input, 
+import { CardBody, Row, Col, Form, FormGroup, FormFeedback, Label, Input, 
   UncontrolledAlert, DropdownToggle, DropdownMenu, DropdownItem, Spinner
 } from 'reactstrap';
 
@@ -176,12 +175,9 @@ const PushactionPage = (props) => {
                   </UncontrolledAlert>
                 }
                 { action.error &&
-                <Card className="text-white bg-danger text-center">
-                  <CardBody>
-                    <p className="mb-1">Error(s)</p>
-                    <p className="mb-1">{action.error.error}</p>
-                  </CardBody>
-                </Card>
+                  <UncontrolledAlert color="danger"> 
+                    Error(s): {action.error.error}
+                  </UncontrolledAlert>
                 }
                 <FormGroup row>
                     <Col xs="3">
