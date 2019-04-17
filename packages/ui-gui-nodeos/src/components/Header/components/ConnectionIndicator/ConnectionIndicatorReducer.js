@@ -68,19 +68,21 @@ const reducer = (state=initState, action) => {
   switch (action.type) {
     case LAST_STORE:
       let status = {}
+      
       status.headblockStatus = STATUS_NORMAL;
-      if ( typeof action.curr.headblockNum === "undefined" || action.curr.headblockNum === state.last.headblockNum){
+      if ( !(state.last.headblockNum === 0) && ( typeof action.curr.headblockNum === "undefined" || action.curr.headblockNum === state.last.headblockNum )){
         status.headblockStatus = STATUS_STOPPED;
       }
 
       status.lastblockinfoStatus = STATUS_NORMAL;
-      if ( typeof action.curr.lastblockinfoNum === "undefined" || action.curr.lastblockinfoNum === state.last.lastblockinfoNum){
+      if ( !(state.last.lastblockinfoNum === 0) && ( typeof action.curr.lastblockinfoNum === "undefined" || action.curr.lastblockinfoNum === state.last.lastblockinfoNum )){
         status.lastblockinfoStatus = STATUS_STOPPED;
       }
+
       return {
         ...state,
         last: {...action.curr},
-        status
+        status: {...status}
       };
     default:
       return state;
