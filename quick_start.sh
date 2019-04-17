@@ -100,6 +100,12 @@ do
   fi
 done
 
+echo " "
+echo "=============================="
+echo "STARTING COMPILER SERVICE"
+echo "=============================="
+(cd $COMPILER && yarn start > compiler.log &)
+
 # If it is ./quick_start.sh with -d or from first time setup, clear the browser storage by adding a new timestamp when start CRA dev.
 if $ISDEV; then
   if ($ISDELETE || $ISFIRSTTIMESETUP); then

@@ -29,12 +29,12 @@ do
   esac
 done
 
-# start compiler service in background
-echo " "
-echo "=============================="
-echo "STARTING COMPILER SERVICE"
-echo "=============================="
-(cd $COMPILER && yarn start > compiler.log &)
+# # start compiler service in background
+# echo " "
+# echo "=============================="
+# echo "STARTING COMPILER SERVICE"
+# echo "=============================="
+# (cd $COMPILER && yarn start > compiler.log &)
 
 echo " "
 echo "=============================="

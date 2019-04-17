@@ -16,7 +16,7 @@ fi
 
 # Verify everything is clean and setup properly
 echo "[Quick Start Engage] First time setup..."
-./build_eosio_cdt_docker.sh
+sh ./build_eosio_cdt_docker.sh
 
 # Checks if the Docker container is already running. If it is, then compile the contract as normal.
 if [ "$(docker ps -q -f name=$CDT_CONTAINER_NAME)" ]; then
@@ -38,7 +38,7 @@ if [ ! "$(docker ps -q -f name=$CDT_CONTAINER_NAME)" ]; then
     rm -rf compiled_contracts
     mkdir compiled_contracts
 
-    ./start_eosio_cdt_docker.sh
+    sh ./start_eosio_cdt_docker.sh
 
     echo ">> Attempt compilation of smart contract file"
     shift 1
