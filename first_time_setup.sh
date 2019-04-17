@@ -31,19 +31,21 @@ cp -f ./init_config.file $EOSDOCKER/config.file.local
 cp -f ./init_config.file $EOSDOCKER/scripts/config.file.local
 cp -f ./init_config.file $MONGODOCKER/config.file.local
 cp -f ./init_config.file $COMPILER/config.file.local
+cp -f ./init_config.file $GUI/scripts/config.file.local
 
 # print init config and save it as .env.local into different packages
 echo "REACT_APP_MONGODB_PORT=$MONGODB_PORT" > $GUI/.env.local
 echo "REACT_APP_MONGODB_DB_NAME=$MONGODB_DB_NAME" >> $GUI/.env.local
 echo "REACT_APP_LOCAL_SERVICE_PORT=$LOCAL_SERVICE_PORT" >> $GUI/.env.local
 echo "REACT_APP_UI_SERVE_PORT=$UI_SERVE_PORT" >> $GUI/.env.local
+echo "REACT_APP_MONGODB_CONTAINER_NAME=$MONGODB_CONTAINER_NAME" >> $GUI/.env.local
 
 echo "LOCAL_SERVICE_PORT=$LOCAL_SERVICE_PORT" > $LOCALSERVICE/.env.local
 
-echo "Copying initial config done."
+printf "${GREEN}done${NC}"
 echo " "
 
-
+echo " "
 echo "=============================="
 echo "INSTALLING DEPENDENCIES"
 echo "=============================="
@@ -60,6 +62,12 @@ echo "=============================="
 echo "BUILDING EOSIO_CDT DOCKER USED BY COMPILER SERVICE"
 echo "=============================="
 (cd $COMPILER && ./build_eosio_cdt_docker.sh && printf "${GREEN}done${NC}")
+
+echo " "
+echo "=============================="
+echo "BUILDING GUI DOCKER"
+echo "=============================="
+(cd $GUI/scripts/ && ./build_gui_docker.sh && printf "${GREEN}done${NC}")
 
 # remove existing dockers
 ./remove_dockers.sh

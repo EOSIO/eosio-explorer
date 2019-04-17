@@ -18,10 +18,10 @@ echo " "
 echo "=============================="
 echo "BUILDING GUI"
 echo "=============================="
-sh ./build_gui.sh
+(cd $GUI/scripts/ && ./build_gui.sh)
 
 echo " "
 echo "=============================="
 echo "STARTING GUI"
 echo "=============================="
-sh ./start_gui.sh
+(cd $GUI/scripts/ && ./start_gui.sh)

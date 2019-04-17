@@ -6,6 +6,8 @@ GREEN='\033[0;32m'
 
 SCRIPTPATH="$( pwd -P )"
 GUI="$SCRIPTPATH/packages/ui-gui-nodeos"
+COMPILER="$SCRIPTPATH/packages/api-eosio-compiler"
+
 ISDEV=false
 CLEARBROWSERSTORAGE=false
 
@@ -29,7 +31,12 @@ do
   esac
 done
 
-echo 'in start ' + $ISDEV
+# start compiler service in background
+echo " "
+echo "=============================="
+echo "STARTING COMPILER SERVICE"
+echo "=============================="
+(cd $COMPILER && yarn start > compiler.log &)
 
 echo " "
 echo "=============================="

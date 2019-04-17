@@ -7,6 +7,7 @@ GREEN='\033[0;32m'
 SCRIPTPATH="$( pwd -P )"
 EOSDOCKER="$SCRIPTPATH/packages/docker-eosio-nodeos"
 MONGODOCKER="$SCRIPTPATH/packages/docker-mongodb"
+GUIDOCKER="$SCRIPTPATH/packages/ui-gui-nodeos/scripts"
 
 # remove existing dockers
 echo " "
@@ -25,7 +26,4 @@ echo " "
 echo "=============================="
 echo "CLEANING EXISTING GUI DOCKER"
 echo "=============================="
-if [ "$(docker ps -q -f name=nodeos-gui)" ]; then
-  (docker stop nodeos-gui && printf "${GREEN}done${NC}")
-  echo " "
-fi
+(cd $GUIDOCKER && ./remove_gui_docker.sh && printf "${GREEN}done${NC}")
