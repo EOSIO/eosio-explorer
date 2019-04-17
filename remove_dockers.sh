@@ -20,3 +20,12 @@ echo "=============================="
 echo "CLEANING EXISTING MONGODB DOCKER"
 echo "=============================="
 (cd $MONGODOCKER && ./remove_mongodb_docker.sh && printf "${GREEN}done${NC}")
+
+echo " "
+echo "=============================="
+echo "CLEANING EXISTING GUI DOCKER"
+echo "=============================="
+if [ "$(docker ps -q -f name=nodeos-gui)" ]; then
+  (docker stop nodeos-gui && printf "${GREEN}done${NC}")
+  echo " "
+fi

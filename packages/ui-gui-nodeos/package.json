@@ -46,7 +46,6 @@
     "start": "react-app-rewired start",
     "start-ui": "react-app-rewired start",
     "build": "react-app-rewired build",
-    "postbuild": "react-snap",
     "test": "react-app-rewired test --env=jsdom",
     "eject": "react-scripts eject",
     "serve": "node serve.js"

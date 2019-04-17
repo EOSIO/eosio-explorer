@@ -36,3 +36,17 @@ if [ "$(docker ps -aq -f name=$MONGODB_CONTAINER_NAME)" ]; then
         echo "MongoDB container not running"
     fi
 fi
+
+echo " "
+echo "=============================="
+echo "PAUSING NODEOS GUI DOCKER"
+echo "=============================="
+# Checks if the Docker container is already running. If it is, then compile the contract as normal.
+if [ "$(docker ps -aq -f name=eosio-nodeos)" ]; then
+    if [ "$(docker ps -aq -f status=running -f name=eosio-nodeos)" ]; then
+        echo "nodeos gui container is running, stopping the operation"
+        docker pause eosio-nodeos
+    else 
+        echo "nodeos gui container not running"
+    fi
+fi

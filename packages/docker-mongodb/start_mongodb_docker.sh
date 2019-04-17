@@ -22,9 +22,10 @@ if [ ! "$(docker ps -q -f name=$MONGODB_CONTAINER_NAME)" ]; then
     echo "mongodb docker is not running, but data folder exists"
     echo "cleaning data now"
     rm -r "$(pwd)"/data/*
+    docker volume rm --force $MONGODB_VOLUME_NAME
   fi
-
-  docker run -d --rm -p $MONGODB_PORT:$MONGODB_PORT --name $MONGODB_CONTAINER_NAME -v $(pwd)/data:/data/db mongo --port $MONGODB_PORT
+  docker volume create --name=$MONGODB_VOLUME_NAME
+  docker run -d --rm -p $MONGODB_PORT:$MONGODB_PORT --name $MONGODB_CONTAINER_NAME -v mongodata:/data/db mongo --port $MONGODB_PORT
 else
   echo "docker already running"
 fi

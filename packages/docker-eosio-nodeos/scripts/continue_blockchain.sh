@@ -22,7 +22,8 @@ nodeos -e -p eosio -d /mnt/dev/data \
   --http-server-address=0.0.0.0:8888 \
   --access-control-allow-origin=* \
   --contracts-console \
-  --verbose-http-errors
+  --verbose-http-errors \
+  --max-transaction-time 300
 
 # `--hard-replay` option is needed
 # because the docker stop signal is not being passed to nodeos process directly
