@@ -52,9 +52,7 @@ const switchCheckEpic = action$ => action$.pipe(
   ofType(SWITCH_CHECK),
   mergeMap(action =>
     from(apiRpc("get_info", query)).pipe(
-      flatMap(res => {
-        return ([fetchFulfilled(res), accountClear(res.chain_id)]);
-      }),
+      flatMap(res => ([fetchFulfilled(res), accountClear(res.chain_id)])),
       catchError(error => {
         errorLog(error);
         return of(fetchRejected(error.response, { status: error.status }))

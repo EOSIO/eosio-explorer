@@ -53,24 +53,13 @@ const connectEpic = ( action$, state$ ) => action$.pipe(
 const swapEpic = ( action$, state$ ) => action$.pipe(
   ofType(CONNECT_SWITCH),
   mergeMap(action =>{
-
-      console.log(state$);
-      
       let {value: 
         { 
           endpoint: { path : { mongodbTemp } }
         }
       } = state$;
-
-      //connectFulfilled(res.response), accountClear()
-
       return apiMongodb(`set_endpoint${paramsToQuery({path: mongodbTemp})}`).pipe(
-        flatMap(res => 
-          { 
-            console.log(res.response);
-            return ([connectFulfilled(res.response), switchCheck()])
-          }
-        ),
+        flatMap(res => ([connectFulfilled(res.response), switchCheck()])),
         catchError((error={}) => of(connectRejected(error.response)))
         )
     }
