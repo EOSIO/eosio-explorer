@@ -31,8 +31,10 @@ nodeos -e -p eosio -d /mnt/dev/data \
   --http-server-address=0.0.0.0:8888 \
   --access-control-allow-origin=* \
   --contracts-console \
+  --max-transaction-time 300 \
   --verbose-http-errors \
   --genesis-json "./scripts/genesis.json" &
+
 
 sleep 1s
 until curl localhost:8888/v1/chain/get_info
