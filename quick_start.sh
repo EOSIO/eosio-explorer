@@ -18,18 +18,36 @@ MONGODOCKER="$SCRIPTPATH/packages/docker-mongodb"
 COMPILER="$SCRIPTPATH/packages/api-eosio-compiler"
 GUI="$SCRIPTPATH/packages/ui-gui-nodeos"
 ISDEV=false
+ISDELETE=false
+ISFIRSTTIMESETUP=false
 
 for arg in $@
 do
     case $arg in
       -d|--delete)
         ./remove_dockers.sh
+        ISDELETE=true
         ;;
       -dev|--develop)
         ISDEV=true
         ;;
+      --first-time-setup)
+        ISFIRSTTIMESETUP=true
+        ;;
   esac
 done
+
+# If it is not -dev and it is first-time-setup or -d, build with a new timestamp.
+if (!($ISDEV) && ( $ISDELETE || $ISFIRSTTIMESETUP)); then
+# create a static build of application for production
+echo " "
+echo "=============================="
+echo "BUILDING APPLICATION"
+echo "=============================="
+
+# Set environment variable "LAST_FIRST_TIME_SETUP_TIMESTAMP" at build time to create a new timestamp while serving the app.
+(cd $GUI && REACT_APP_LAST_FIRST_TIME_SETUP_TIMESTAMP=$(date +%s) yarn build && printf "${GREEN}done${NC}")
+fi
 
 echo " "
 echo "=============================="
@@ -105,11 +123,16 @@ echo "=============================="
 echo "STARTING GUI"
 echo "=============================="
 
-# $2 should be either argument "--first-time-setup" or null
+# If it is ./quick_start.sh with -d or from first time setup, clear the browser storage by adding a new timestamp when start CRA dev.
 if $ISDEV; then
-  ./start_gui.sh -dev $2
+  if ($ISDELETE || $ISFIRSTTIMESETUP); then
+    ./start_gui.sh -dev --clear-browser-storage
+  else
+    ./start_gui.sh -dev
+  fi
 else
-  ./start_gui.sh $2
+  # It will start a serve which already build with a new timestamp
+  ./start_gui.sh
 fi
 
 P1=$!

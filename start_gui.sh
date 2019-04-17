@@ -7,7 +7,7 @@ GREEN='\033[0;32m'
 SCRIPTPATH="$( pwd -P )"
 GUI="$SCRIPTPATH/packages/ui-gui-nodeos"
 ISDEV=false
-ISFIRSTTIMESETUP=false
+CLEARBROWSERSTORAGE=false
 
 # sourcing variable from config file
 source ./config.file
@@ -23,8 +23,8 @@ do
       -dev|--develop)
         ISDEV=true
         ;;
-      --first-time-setup)
-        ISFIRSTTIMESETUP=true
+      --clear-browser-storage)
+        CLEARBROWSERSTORAGE=true
         ;;
   esac
 done
@@ -36,7 +36,7 @@ echo "=============================="
 echo "STARTING GUI"
 echo "=============================="
 if $ISDEV; then
-  if $ISFIRSTTIMESETUP; then
+  if $CLEARBROWSERSTORAGE; then
     # Set environment variable "LAST_FIRST_TIME_SETUP_TIMESTAMP" at dev build to create a new timestamp in CRA development
     (cd $GUI && REACT_APP_LAST_FIRST_TIME_SETUP_TIMESTAMP=$(date +%s) PORT=$UI_DEV_PORT yarn start)
   else
