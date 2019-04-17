@@ -19,6 +19,9 @@ const TableStyledNoPointer = styled(TableStyled)`
     cursor: initial;
   }
 `
+const ColStyled = styled(Col)`
+  margin-bottom: 20px;
+`
 
 const Actionhistory = (props) => {
 
@@ -32,6 +35,11 @@ const Actionhistory = (props) => {
           <LoadingSpinner />
         ) : (
           <Row>
+            {actionsList.length > 0 &&
+              <ColStyled xs="12" className="text-right">
+                <LimitSelectDropdown limit={records} onChange={(limit) => { props.recordsUpdate(limit) }} />
+              </ColStyled>
+            }
             <Col xs="12">
               <TableStyledNoPointer borderless>
                 <thead>
@@ -60,12 +68,7 @@ const Actionhistory = (props) => {
                   )}
                 </tbody>
               </TableStyledNoPointer>
-            </Col>
-            {actionsList.length > 0 &&
-              <Col xs="12" className="text-right">
-                <LimitSelectDropdown limit={records} onChange={(limit) => { props.recordsUpdate(limit) }} />
-              </Col>
-            }
+            </Col>            
           </Row>
         )}
         </Col>

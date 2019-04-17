@@ -60,7 +60,7 @@ const MultiIndex = (props) => {
               ? `No data in Multi-Index table ${params.table_name}`
               : <div>
                   <CardStyled>
-                    <CardHeaderStyled>Multi-Index table Raw data</CardHeaderStyled>
+                    <CardHeaderStyled>Multi-Index Table Raw Data</CardHeaderStyled>
                     <CardBody>
                       <CodeViewer
                         language="json"

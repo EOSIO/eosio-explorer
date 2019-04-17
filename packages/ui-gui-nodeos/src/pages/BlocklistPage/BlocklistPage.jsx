@@ -15,7 +15,7 @@ class BlocklistPage extends Component {
         <div className="BlocklistPage animated fadeIn">
           <Row>
             <Col sm="12">
-              <PageTitleDivStyled>Block List Page</PageTitleDivStyled>
+              <PageTitleDivStyled>Blocks Page</PageTitleDivStyled>
             </Col>
           </Row>
           <Row>

@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
-import {
-  Card, CardBody, Row, Col, Form, FormGroup, FormFeedback, Label, Input, 
+import { CardBody, Row, Col, Form, FormGroup, FormFeedback, Label, Input, 
   UncontrolledAlert, DropdownToggle, DropdownMenu, DropdownItem, Spinner
 } from 'reactstrap';
 
@@ -98,6 +97,7 @@ const PushactionPage = (props) => {
 
     // Confirm the successful prefill with a popup message (moved this down to the prefill action callback temporarily, will be moved back here later)
     if(prefillingAction.current && action.act.name && action.act.account) {
+      props.actionIdSet({ block_num: null, global_sequence: null });
       prefillingAction.current = false;
       cogoToast.success(`Prefilled action: ${action.act.name} from ${action.act.account}`, {
         heading: "Action Prefilled",
@@ -175,12 +175,9 @@ const PushactionPage = (props) => {
                   </UncontrolledAlert>
                 }
                 { action.error &&
-                <Card className="text-white bg-danger text-center">
-                  <CardBody>
-                    <p className="mb-1">Error(s)</p>
-                    <p className="mb-1">{action.error.error}</p>
-                  </CardBody>
-                </Card>
+                  <UncontrolledAlert color="danger"> 
+                    Error(s): {action.error.error}
+                  </UncontrolledAlert>
                 }
                 <FormGroup row>
                     <Col xs="3">
@@ -313,6 +310,7 @@ const PushactionPage = (props) => {
                       <ButtonGroupSeperated className="float-right">
                         <ButtonSecondary type="button" onClick={(e) => {
                           clearAction(action, props.updateActionToPush);
+                          props.actionIdSet({ block_num: null, global_sequence: null });
                           resetValidation(e);
                         }}>Clear</ButtonSecondary>
                         <ButtonPrimary type="submit">Push</ButtonPrimary>
@@ -374,7 +372,8 @@ const PushactionPage = (props) => {
                   // When "Prefill" is clicked, set the actionId variable in the reducer to an object containing the block number and global sequence
                   // of that action. Then rebuild the Action Type list with actions available to the smart contract of that action.
                   props.actionIdSet({ block_num: action.block_num, global_sequence: action.receipt.global_sequence });
-                  setActionList(smartContractsList.find(smartContract => smartContract.name === action.act.account).abi.actions);
+                  let actionListToSet = smartContractsList.find(smartContract => smartContract.name === action.act.account);
+                  actionListToSet ? setActionList(smartContractsList.find(smartContract => smartContract.name === action.act.account).abi.actions) : setActionList([]);
                   resetValidation();
                   window.scrollTo(0, 0);
                   prefillingAction.current = true;

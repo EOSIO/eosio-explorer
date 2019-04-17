@@ -80,6 +80,15 @@ const WrappedLink = styled(Link)`
   }
 `
 
+const matchPath = (pathname, path) => {  
+  let splitArr = pathname.split("/");
+  if(splitArr.find(el => el === path)){
+    return true;
+  }else{
+    return false;
+  } 
+}
+
 const Header = (props) => {
 
   let { router: { location: {pathname} } } = props;
@@ -109,19 +118,19 @@ const Header = (props) => {
               <Link to={`/`} className={`nav-link ${pathname === `/` ? `active` : ``}`}>INFO</Link>
             </NavItem>
             <NavItem className="px-3">
-              <Link to={`/block-list`} className={`nav-link ${pathname === `/block-list` ? `active` : ``}`}>BLOCKS</Link>
+              <Link to={`/block-list`} className={`nav-link ${pathname === `/block-list` || matchPath(pathname, 'block') ? `active` : ``}`}>BLOCKS</Link>
             </NavItem>
             <NavItem className="px-3">
-              <Link to={`/transaction-list`} className={`nav-link ${pathname === `/transaction-list` ? `active` : ``}`}>TRANSACTIONS</Link>
+              <Link to={`/transaction-list`} className={`nav-link ${pathname === `/transaction-list` || matchPath(pathname, 'transaction') ? `active` : ``}`}>TRANSACTIONS</Link>
             </NavItem>
             <NavItem className="px-3">
-              <Link to={`/action-list`} className={`nav-link ${pathname === `/action-list` ? `active` : ``}`}>ACTIONS</Link>
+              <Link to={`/action-list`} className={`nav-link ${pathname === `/action-list` || matchPath(pathname, 'action') ? `active` : ``}`}>ACTIONS</Link>
             </NavItem>
             <NavItem className="px-3">
-              <Link to={`/account`} className={`nav-link ${pathname === `/account` ? `active` : ``}`}>ACCOUNTS</Link>
+              <Link to={`/account`} className={`nav-link ${pathname === `/account` || matchPath(pathname, 'account') ? `active` : ``}`}>ACCOUNTS</Link>
             </NavItem>
             <NavItem className="px-3">
-              <Link to={`/contract`} className={`nav-link ${pathname === `/contract` ? `active` : ``}`}>SMART CONTRACT</Link>
+              <Link to={`/contract`} className={`nav-link ${pathname === `/contract` || matchPath(pathname, 'contract') ? `active` : ``}`}>SMART CONTRACT</Link>
             </NavItem>
           </Nav>
         </NavWrapper>

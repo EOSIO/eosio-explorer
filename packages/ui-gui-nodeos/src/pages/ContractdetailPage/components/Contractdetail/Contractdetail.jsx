@@ -15,10 +15,7 @@ import { CardStyled, CardHeaderStyled, ButtonPrimary, ButtonSecondary, ErrorDivS
 const FirstCardStyled = styled(CardStyled)`
   border-top: solid 2px #1173a4;
 `
-const SearchLabel = styled.label`
-  padding-right: 10px;
-  margin-top: 10px;
-`
+
 const SearchInputStyled = styled(InputStyled)`
   width: 30%;
   margin-right: 10px;
@@ -64,7 +61,6 @@ const Contractdetail = (props) => {
             <CardHeaderStyled>Search Smart Contract</CardHeaderStyled>
             <CardBody>
               <DivFlexStyled>
-                <SearchLabel>Multi-Index Table Search by Smart Contract Name:</SearchLabel>
                 <SearchInputStyled 
                       placeholder="Smart Contract Name"
                       value={inputValue}

@@ -92,7 +92,7 @@ const Transactiondetail = (props) => {
                                       <th width="40%">Smart Contract Name</th>                                   
                                     </tr>
                                   </thead>
-                                  <tbody>
+                                  <tbody className="hashText">
                                     {(payload[0].action_traces).map((eachAction,index)=>
                                       <tr key={eachAction.act.name} onClick={evt=> props.push(`/action/${eachAction.block_num}/${eachAction.receipt.global_sequence}`)}>
                                         <td>{index+1}</td>

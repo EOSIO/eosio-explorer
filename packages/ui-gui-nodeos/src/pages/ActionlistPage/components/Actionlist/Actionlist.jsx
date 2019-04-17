@@ -12,10 +12,6 @@ const FormStyled = styled(Form)`
   display: flex;
   justify-content: flex-end;
 `
-const FilterLabel = styled.label`
-  padding-right: 10px;
-  margin-top: 10px;
-`
 const FilterInputStyled = styled(InputStyled)`
   width: 30%;
   margin-right: 10px;
@@ -49,7 +45,6 @@ const Actionlist = (props) => {
                   props.smartContractNameSearch(val);
                 }
               }}>
-              <FilterLabel>Filter by Smart Contract Name:</FilterLabel>
               <FilterInputStyled disabled={!!smartContractName} name="smartContractNameSearch" placeholder="Smart Contract Name..." defaultValue={smartContractName} />
               <ButtonPrimary color="primary">{smartContractName ? "Clear" : "Filter"}</ButtonPrimary>
             </FormStyled>
@@ -73,7 +68,7 @@ const Actionlist = (props) => {
                     <th width="34%">Timestamp</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody className="hashText">
                   {payload.length < 1 
                     ? <tr><td colSpan="3" className="text-center">No actions found for the Smart Contract Name</td></tr>
                     : payload.map((action, index)=>
