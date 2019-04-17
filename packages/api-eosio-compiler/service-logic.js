@@ -18,7 +18,7 @@ const ERR_DEST = path.resolve("./docker-eosio-cdt/stderr.txt");
 const DEL_TARGETS = ["./docker-eosio-cdt/contracts/**", "!./docker-eosio-cdt/contracts"];
 const DEST = path.resolve("./docker-eosio-cdt/contracts");
 const CWD = path.resolve('./docker-eosio-cdt')
-const SHUTDOWN_CMD = './remove_eosio_cdt_docker.sh';
+const SHUTDOWN_CMD = 'sh ./remove_eosio_cdt_docker.sh';
 
 const OPTIONS = {
   overwrite: true,
@@ -57,7 +57,7 @@ Router.post("/deploy", async (req, res) => {
 
         const directories = Helper.parseDirectoriesToInclude(path.dirname(body["source"]));
         results = await copy(path.dirname(body["source"]), DEST, OPTIONS);
-        COMPILE_SCRIPT = "./setup_eosio_cdt_docker.sh "+compileTarget+" "+directories.join(' ');
+        COMPILE_SCRIPT = "sh ./setup_eosio_cdt_docker.sh "+compileTarget+" "+directories.join(' ');
 
         console.log("Deleted files:\n", deletedFiles.join('\n'));
         results.forEach((file) => console.log("Copied file: ", file["src"]));
@@ -175,7 +175,7 @@ Router.post("/compile", async (req, res) => {
       let COMPILE_SCRIPT = "";
       const directories = Helper.parseDirectoriesToInclude(path.dirname(body["source"]));
       results = await copy(path.dirname(body["source"]), DEST, OPTIONS);
-      COMPILE_SCRIPT = "./setup_eosio_cdt_docker.sh "+compileTarget+" "+directories.join(' ');
+      COMPILE_SCRIPT = "sh ./setup_eosio_cdt_docker.sh "+compileTarget+" "+directories.join(' ');
 
       console.log("Deleted files:\n", deletedFiles.join('\n'));
       results.forEach((file) => console.log("Copied file: ", file["src"]));
@@ -187,9 +187,9 @@ Router.post("/compile", async (req, res) => {
       exec(COMPILE_SCRIPT, {
         cwd: CWD
       }, (err, stdout, stderr) => {
-        execSync(SHUTDOWN_CMD, {
-            cwd: CWD
-        })
+        // execSync(SHUTDOWN_CMD, {
+        //     cwd: CWD
+        // })
         let parsedStdOut = Helper.parseLog(fs.readFileSync(LOG_DEST, 'utf-8'));
         let parsedStdErr = Helper.parseLog(fs.readFileSync(ERR_DEST, 'utf-8'));
         if (err) {

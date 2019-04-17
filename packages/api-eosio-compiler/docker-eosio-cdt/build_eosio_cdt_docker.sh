@@ -26,7 +26,7 @@ if [ ! -x "$(command -v docker)" ] ||
   echo ""
   exit
 fi
-
+ docker build -t $CDT_IMAGE_NAME .
 # build docker image, if necessary
 if [[ "$(docker images -q $CDT_IMAGE_NAME)" == "" ]]; then
   echo "=== Build docker image $CDT_IMAGE_PREFIX version $CDT_VERSION, this will take some time for the first time run ==="
