@@ -6,7 +6,7 @@ export default styled(Table)`
   tr{
     border: solid 1px #e8ebf0;
   }  
-  tbody tr:nth-of-type(even){
+  tbody tr:nth-of-type(odd){
     background-color: #fbfbfc;
   }
   

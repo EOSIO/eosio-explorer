@@ -11,10 +11,6 @@ import { pollingStart, pollingStop, filterToggle, recordsUpdate } from './Blockl
 const FirstCardStyled = styled(CardStyled)`
   border-top: solid 2px #1173a4;
 `
-const SearchLabel = styled.label`
-  padding-right: 10px;
-  margin-top: 10px;
-`
 const SearchInputStyled = styled(InputStyled)`
   width: 65%;
   margin-right: 10px;
@@ -61,7 +57,6 @@ const Blocklist = (props) => {
             </Col>
             <Col sm="6">
               <DivFlexStyled>
-              <SearchLabel>Search Blocks:</SearchLabel>
                 <SearchInputStyled
                       placeholder="Block number / Block ID"
                       value={inputValue}
@@ -102,11 +97,11 @@ const Blocklist = (props) => {
                             <th width="20%">Timestamp</th>
                           </tr>
                         </thead>
-                        <tbody>
+                        <tbody className="hashText">
                           {payload.map(eachBlock=>
                             <tr onClick={evt=>props.push(`/block/${eachBlock.block_id}`)} key={eachBlock.block_id}>
                               <td>{eachBlock.block_num}</td>
-                              <td className="hashText">{eachBlock.block_id}</td>
+                              <td>{eachBlock.block_id}</td>
                               <td className="text-center">{eachBlock.block.transactions.length}</td>
                               <td>{eachBlock.createdAt}</td>
                             </tr>)}

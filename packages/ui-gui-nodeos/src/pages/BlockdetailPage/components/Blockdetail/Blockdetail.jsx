@@ -74,8 +74,8 @@ const Blockdetail = (props) => {
                         </Col>
                       </Row>
 
-                      {(payload[0].block.transactions).length > 0 
-                        ?<Row>
+                      {(payload[0].block.transactions).length > 0 &&
+                        <Row>
                           <Col sm="12">
                             <CardStyled>
                               <CardHeaderStyled>Transaction List</CardHeaderStyled>
@@ -87,12 +87,12 @@ const Blockdetail = (props) => {
                                     <th width="84%">Transaction ID</th>                                    
                                   </tr>
                                 </thead>
-                                <tbody>
+                                <tbody className="hashText">
                                   {(payload[0].block.transactions).map((eachTransaction,index)=>
                                     <tr key={(typeof(eachTransaction.trx) !== "string") ? eachTransaction.trx.id : eachTransaction.trx} 
                                         onClick={evt=> (typeof(eachTransaction.trx) !== "string") ? props.push(`/transaction/${eachTransaction.trx.id}`): ""}>
                                       <td>{index+1}</td>
-                                      <td className="hashText">{(typeof(eachTransaction.trx) !== "string") ? eachTransaction.trx.id : "Deferred transactions"}</td>                                      
+                                      <td>{(typeof(eachTransaction.trx) !== "string") ? eachTransaction.trx.id : "Deferred transactions"}</td>                                      
                                     </tr>)}
                                 </tbody>
                                 </CustomTable>                               
@@ -100,7 +100,6 @@ const Blockdetail = (props) => {
                             </CardStyled>
                           </Col>
                         </Row>
-                        : console.log("No transactions") 
                       }  
                       <Row>
                         <Col sm="12">

@@ -15,10 +15,7 @@ import { CardStyled, CardHeaderStyled, ButtonPrimary, InputStyled, ErrorDivStyle
 const FirstCardStyled = styled(CardStyled)`
   border-top: solid 2px #1173a4;
 `
-const SearchLabel = styled.label`
-  padding-right: 10px;
-  margin-top: 10px;
-`
+
 const SearchInputStyled = styled(InputStyled)`
   width: 30%;
   margin-right: 10px;
@@ -56,7 +53,6 @@ const Accountdetail = (props) => {
           <CardHeaderStyled>Search Account</CardHeaderStyled>
           <CardBody>         
             <DivFlexStyled>
-              <SearchLabel>Search Account Name:</SearchLabel>
               <SearchInputStyled 
                 placeholder="Account Name"
                 value={inputValue}

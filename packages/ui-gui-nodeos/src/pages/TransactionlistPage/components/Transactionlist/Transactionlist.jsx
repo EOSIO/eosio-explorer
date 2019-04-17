@@ -12,10 +12,7 @@ import { CardStyled,CardHeaderStyled, TableStyled, ButtonPrimary, ButtonSecondar
 const FirstCardStyled = styled(CardStyled)`
   border-top: solid 2px #1173a4;
 `
-const SearchLabel = styled.label`
-  padding-right: 10px;
-  margin-top: 10px;
-`
+
 const DivFlexStyled = styled.div`
   display: flex;
   justify-content: flex-end;
@@ -47,7 +44,6 @@ const Transactionlist = (props) => {
         <CardBody>         
           <CardTitle>
             <DivFlexStyled>
-              <SearchLabel>Search Transactions:</SearchLabel>
               <SearchInputStyled 
                     placeholder="Transaction ID"
                     value={inputValue}
@@ -86,10 +82,10 @@ const Transactionlist = (props) => {
                             <th width="30%">Timestamp</th>
                           </tr>
                         </thead>
-                        <tbody>
+                        <tbody className="hashText">
                           {payload.map(eachTransaction=>
                             <tr onClick={evt=>props.push(`/transaction/${eachTransaction.trx_id}`)} key={eachTransaction.trx_id}>
-                              <td className="hashText">{eachTransaction.trx_id}</td>
+                              <td>{eachTransaction.trx_id}</td>
                               <td>{eachTransaction.block_num}</td>
                               <td>{eachTransaction.createdAt}</td>
                             </tr>)}
