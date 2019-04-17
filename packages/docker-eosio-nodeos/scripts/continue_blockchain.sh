@@ -13,6 +13,8 @@ set -m
 # start nodeos ( local node of blockchain )
 # run it in a background job such that docker run could continue
 nodeos -e -p eosio -d /mnt/dev/data \
+  --genesis-json "./scripts/genesis.json" \
+  --signature-provider EOS5GnobZ231eekYUJHGTcmy2qve1K23r5jSFQbMfwWTtPB7mFZ1L=KEY:5Jr65kdYmn33C3UabzhmWDm2PuqbRfPuDStts3ZFNSBLM7TqaiL \
   --config-dir /mnt/dev/config \
   --hard-replay \
   --http-validate-host=false \

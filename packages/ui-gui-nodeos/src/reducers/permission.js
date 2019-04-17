@@ -39,10 +39,12 @@ export const fetchRejected = ( payload, error ) => ({ type: FETCH_REJECTED, payl
 export const defaultSet = ( id ) => ({ type: DEFAULT_SET, id });
 export const accountAdd = accountData => ({ type: ACCOUNT_ADD, accountData });
 export const accountImport = accountData => ({ type: ACCOUNT_IMPORT, accountData });
-export const accountClear = endpoint => ({ type: ACCOUNT_CLEAR, endpoint });
+export const accountClear = chainId => ({ type: ACCOUNT_CLEAR, chainId });
 export const createStart = account => ({ type: CREATE_START, account });
 export const createFulfilled = payload => ({ type: CREATE_FULFILLED, payload });
 export const createRejected = ( payload, error ) => ({ type: CREATE_REJECTED, payload, error });
+
+export const LOCAL_CHAIN_ID = "32b303dbe6bc3cf9a0d28fbdc95ea3cd18310923ac20f11fab3ca5ab4f18f135";
 
 //Epic
 
@@ -131,15 +133,15 @@ const dataInitState = {
       _id: '1',
       account: 'eosio',
       permission: 'owner',
-      public_key: 'EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV',
-      private_key: '5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3'
+      public_key: 'EOS5GnobZ231eekYUJHGTcmy2qve1K23r5jSFQbMfwWTtPB7mFZ1L',
+      private_key: '5Jr65kdYmn33C3UabzhmWDm2PuqbRfPuDStts3ZFNSBLM7TqaiL'
     },
     {
       _id: '2',
       account: 'eosio',
       permission: 'active',
-      public_key: 'EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV',
-      private_key: '5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3'
+      public_key: 'EOS5GnobZ231eekYUJHGTcmy2qve1K23r5jSFQbMfwWTtPB7mFZ1L',
+      private_key: '5Jr65kdYmn33C3UabzhmWDm2PuqbRfPuDStts3ZFNSBLM7TqaiL'
     }
   ],
   importSuccess: false,
@@ -150,28 +152,26 @@ const dataInitState = {
   defaultId: "1"
 }
 
-const reinitializedState = (endpoint = {
-  nodeos: `http://localhost:8888`,
-  mongodb: `mongodb://localhost:${process.env.REACT_APP_MONGODB_PORT}/${process.env.REACT_APP_MONGODB_DB_NAME}`,
-}) => {
+const reinitializedState = (
+  chainId = LOCAL_CHAIN_ID
+) => {
   return {
     list: (
-      endpoint["nodeos"] === `http://localhost:8888` &&
-      endpoint["mongodb"] === `mongodb://localhost:${process.env.REACT_APP_MONGODB_PORT}/${process.env.REACT_APP_MONGODB_DB_NAME}`
+      chainId === LOCAL_CHAIN_ID
     ) ? [
       {
         _id: '1',
         account: 'eosio',
         permission: 'owner',
-        public_key: 'EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV',
-        private_key: '5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3'
+        public_key: 'EOS5GnobZ231eekYUJHGTcmy2qve1K23r5jSFQbMfwWTtPB7mFZ1L',
+        private_key: '5Jr65kdYmn33C3UabzhmWDm2PuqbRfPuDStts3ZFNSBLM7TqaiL'
       },
       {
         _id: '2',
         account: 'eosio',
         permission: 'active',
-        public_key: 'EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV',
-        private_key: '5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3'
+        public_key: 'EOS5GnobZ231eekYUJHGTcmy2qve1K23r5jSFQbMfwWTtPB7mFZ1L',
+        private_key: '5Jr65kdYmn33C3UabzhmWDm2PuqbRfPuDStts3ZFNSBLM7TqaiL'
       }
     ] : [],
     importSuccess: false,
@@ -309,7 +309,7 @@ const dataReducer = (state=dataInitState, action) => {
         isSubmitting: false
       };
     case ACCOUNT_CLEAR:
-      return reinitializedState(action.endpoint, dataInitState);
+      return reinitializedState(action.chainId);
     default:
       return state;
   }

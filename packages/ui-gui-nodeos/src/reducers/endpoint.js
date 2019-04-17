@@ -11,7 +11,7 @@ import { mergeMap, mapTo, map, flatMap, catchError } from 'rxjs/operators';
 import { combineEpics, ofType } from 'redux-observable';
 
 import apiMongodb from 'services/api-mongodb';
-import { accountClear } from 'reducers/permission';
+import { switchCheck } from 'pages/InfoPage/components/BlockchainInfo/BlockchainInfoReducer';
 import paramsToQuery from 'helpers/params-to-query';
 
 // IMPORTANT
@@ -53,14 +53,13 @@ const connectEpic = ( action$, state$ ) => action$.pipe(
 const swapEpic = ( action$, state$ ) => action$.pipe(
   ofType(CONNECT_SWITCH),
   mergeMap(action =>{
-      
-      let {value: { endpoint: { path : { mongodbTemp }}}} = state$;
-
+      let {value: 
+        { 
+          endpoint: { path : { mongodbTemp } }
+        }
+      } = state$;
       return apiMongodb(`set_endpoint${paramsToQuery({path: mongodbTemp})}`).pipe(
-        flatMap(res => ([connectFulfilled(res.response), accountClear({
-          nodeos: action.nodeos,
-          mongodb: action.mongodb
-        })])),
+        flatMap(res => ([connectFulfilled(res.response), switchCheck()])),
         catchError((error={}) => of(connectRejected(error.response)))
         )
     }
