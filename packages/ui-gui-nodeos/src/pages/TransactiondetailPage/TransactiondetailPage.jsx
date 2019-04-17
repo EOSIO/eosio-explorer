@@ -13,7 +13,7 @@ class TransactiondetailPage extends Component {
         <div className="TransactiondetailPage animated fadeIn">
           <Row>
             <Col sm="12">
-              <PageTitleDivStyled>Transaction Detail Page</PageTitleDivStyled>
+              <PageTitleDivStyled>Transactions Page | Transaction Detail</PageTitleDivStyled>
             </Col>
           </Row>
           <Row>

@@ -80,7 +80,7 @@ class PermissionPage extends Component {
             <Col sm="8">
               <Row>
                 <Col sm="12">
-                  <PageTitleDivStyled>Manage Accounts</PageTitleDivStyled>
+                  <PageTitleDivStyled>Manage Accounts Page</PageTitleDivStyled>
                 </Col>
               </Row>
               <Row>

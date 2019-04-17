@@ -14,7 +14,7 @@ class AccountdetailPage extends Component {
         <div className="AccountdetailPage">
           <Row>
             <Col sm="12">
-              <PageTitleDivStyled>Account Detail Page</PageTitleDivStyled>
+              <PageTitleDivStyled>Accounts Page</PageTitleDivStyled>
             </Col>
           </Row>
           <Row>

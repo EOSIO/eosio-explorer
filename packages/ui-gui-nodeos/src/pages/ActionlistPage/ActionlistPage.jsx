@@ -20,7 +20,7 @@ class ActionlistPage extends Component {
         <div className="ActionlistPage animated fadeIn">
           <Row>
             <Col xs="12">
-              <PageTitleDivStyled>Action List Page</PageTitleDivStyled>
+              <PageTitleDivStyled>Actions Page</PageTitleDivStyled>
             </Col>
           </Row>
           <Row>

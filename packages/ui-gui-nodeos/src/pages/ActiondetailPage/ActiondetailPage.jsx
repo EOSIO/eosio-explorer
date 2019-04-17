@@ -32,7 +32,7 @@ const ActiondetailPage = (props) => {
       <div className="ActiondetailPage animated fadeIn">
         <Row>
           <Col xs="12">
-            <PageTitleDivStyled>Action Detail Page</PageTitleDivStyled>
+            <PageTitleDivStyled>Actions Page | Action Detail</PageTitleDivStyled>
           </Col>
         </Row>
         <Row>
