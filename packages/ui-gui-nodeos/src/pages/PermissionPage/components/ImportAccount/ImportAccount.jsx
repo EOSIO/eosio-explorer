@@ -10,16 +10,8 @@ import { accountAdd } from 'reducers/permission';
 import validate from './ImportAccountValidatorEngine/ImportAccountValidatorEngine';
 import useForm from 'helpers/useForm';
 import styled from 'styled-components';
-import { CardStyled, CardHeaderStyled, ButtonPrimary, InputStyled} from 'styled';
+import { CardStyled, CardHeaderStyled, ButtonPrimary, InputStyled, InfoDivStyled} from 'styled';
 
-const InfoDiv = styled.div`
-  color: #181c1e;
-  background-color: #d5d7d8;
-  border-color: #c5c6c8;
-  padding: 20px;  
-  margin-bottom: 20px;
-  border-radius: 3px;
-`
 
 const ImportAccount = (props) => {
 
@@ -74,8 +66,8 @@ const ImportAccount = (props) => {
                                     Private keys for {keysData[0].account || "unknown account"} successfully updated
                                 </UncontrolledAlert>
                             }
-                            <InfoDiv>
-                                <h5 className="alert-heading">Before you update your private keys...</h5>
+                            <InfoDivStyled>
+                                <p className="infoHeader">Before you update your private keys...</p>
                                 <p>
                                     Ensure that the private keys you use are <code>base58 WIF</code> compliant. <b>WIF</b> stands for 
                                     "Wallet Import Format" and is a convenience specification for copying and pasting private keys.
@@ -91,7 +83,7 @@ const ImportAccount = (props) => {
                                     to them. Private keys are very sensitive information and should be kept to yourself as much
                                     as possible.
                                 </p>
-                            </InfoDiv>
+                            </InfoDivStyled>
                             <Form onSubmit={
                                 handleSubmit
                             }>                    

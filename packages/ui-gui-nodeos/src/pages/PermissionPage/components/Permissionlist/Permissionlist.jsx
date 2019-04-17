@@ -7,16 +7,7 @@ import cogoToast from 'cogo-toast';
 import { connect } from 'react-redux';
 import { fetchStart, accountImport, defaultSet } from 'reducers/permission';
 import { panelSelect } from 'pages/PermissionPage/PermissionPageReducer';
-import { RadioButtonDivStyled, CardStyled, CardHeaderStyled, ButtonPrimary } from 'styled';
-
-const InfoDiv = styled.div`
-  color: #181c1e;
-  background-color: #d5d7d8;
-  border-color: #c5c6c8;
-  padding: 20px;  
-  margin-bottom: 20px;
-  border-radius: 3px;
-`
+import { RadioButtonDivStyled, CardStyled, CardHeaderStyled, ButtonPrimary, InfoDivStyled } from 'styled';
 
 const PermissionTable = styled(Table)`
   tr {
@@ -136,13 +127,13 @@ const Permissionlist = (props) => {
                                   Default Signature Account
                                 </CardHeaderStyled>
                                 <CardBody>
-                                  <InfoDiv>
+                                  <InfoDivStyled>
                                     These are your currently available accounts that possess both public and private keys. They can be
                                     used for signing transactions and pushing actions. 
                                     The <b>eosio</b> account owns the system contract responsible for numerous important functions, so please
                                     be aware that you can not deploy new contracts locally under that permission. 
                                     Click the "Edit" button to change an account's private key. Click the radio button to set the default account for authorizing actions.
-                                  </InfoDiv>
+                                  </InfoDivStyled>
                                   <PermissionTable borderless>
                                     {
                                       defaultAccountsList && numberOfDefaultAccounts > 0 
@@ -228,13 +219,13 @@ const Permissionlist = (props) => {
                                 <CardStyled>
                                   <CardHeaderStyled>Import Account</CardHeaderStyled>
                                   <CardBody>
-                                    <InfoDiv>
+                                    <InfoDivStyled>
                                       The accounts in this panel do not have private keys assigned to them yet. You can click 
                                       the "Import Keys" button to assign your private keys to these accounts. <b>Note:</b> Be 
                                       sure that the private keys you import to the accounts here correspond to the public
                                       key fetched from the MongoDB. Otherwise you won't be able to do anything with them, even
                                       if you import keys.
-                                    </InfoDiv>
+                                    </InfoDivStyled>
                                     <PermissionTable borderless>
                                     {
                                       (importAccountsList && numberOfImportAccounts > 0) 
