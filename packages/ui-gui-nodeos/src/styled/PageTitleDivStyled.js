@@ -4,5 +4,5 @@ export default styled.div`
   font-size: 25px;
   color: #443f54;
   font-weight: 250;
-  margin-bottom: 25px;
+  margin: 10px 0 20px 0;
 `
