@@ -187,9 +187,9 @@ Router.post("/compile", async (req, res) => {
       exec(COMPILE_SCRIPT, {
         cwd: CWD
       }, (err, stdout, stderr) => {
-        // execSync(SHUTDOWN_CMD, {
-        //     cwd: CWD
-        // })
+        execSync(SHUTDOWN_CMD, {
+            cwd: CWD
+        })
         let parsedStdOut = Helper.parseLog(fs.readFileSync(LOG_DEST, 'utf-8'));
         let parsedStdErr = Helper.parseLog(fs.readFileSync(ERR_DEST, 'utf-8'));
         if (err) {
