@@ -5,7 +5,7 @@ import {
   Nav, NavLink, NavItem, TabContent, TabPane,
   Form, FormGroup, Label, Badge,
   DropdownToggle, DropdownMenu, DropdownItem,
-  UncontrolledTooltip
+  UncontrolledTooltip, Tooltip
 } from 'reactstrap';
 import { StandardTemplate } from 'templates';
 import { connect } from 'react-redux';
@@ -14,7 +14,7 @@ import InputInstructions from './components/InputInstructions';
 import { DragDropCodeViewer, CodeViewer } from 'components';
 import {
   CardStyled, CardHeaderStyled, PageTitleDivStyled,
-  InputStyled, ButtonPrimary, ButtonSecondary,
+  InputStyled, ButtonPrimary,
   DropdownStyled, OverlayStyled, ButtonGroupSeperated
 } from 'styled';
 import cogoToast from 'cogo-toast';
@@ -22,9 +22,20 @@ import cogoToast from 'cogo-toast';
 import { defaultSet } from 'reducers/permission';
 import { folderSet, abiImport, contractCompile, contractDeploy, logClear, outputClear } from './DeploymentPageReducer';
 
+const ActionButton = styled(ButtonPrimary)`
+  width: 156px
+`
+
 const tabPane = {
-  maxHeight: "350px",
-  overflowY: "scroll"
+  maxHeight: "200px",
+  overflowY: "auto"
+}
+
+const outputPane = {
+  height: "400px",
+  padding: "1.5em",
+  overflowY: "auto",
+  backgroundColor: "#f8f9fa"
 }
 
 const FirstCardStyled = styled(CardStyled)`
@@ -47,6 +58,14 @@ const ButtonPrimaryResponsive = styled(ButtonPrimary)`
   width: 100%;
 `
 
+/**
+ * Define constants to match the action state
+ * The UI's useEffect relies on this state to determine what kind of toast to show
+ * Fixes a problem where toast won't display if user deploys a contract after generating ABI
+ */
+const COMPILE_STATE = 1;
+const DEPLOY_STATE = 2;
+
 const DeploymentPage = (props) => {
 
   let { permission: { data }, deployContainer, isProcessing, nodeos,
@@ -55,7 +74,8 @@ const DeploymentPage = (props) => {
   } = props;
   let { path, stdoutLog, stderrLog,
     abiPath, abiContents, compiled,
-    errors, output, imported, deployed
+    errors, output, imported, deployed,
+    compilerState
   } = deployContainer;
   let { list, defaultId } = data;
   let noOfPermissions = list.slice(0).reduce((accounts, el) => {
@@ -68,6 +88,8 @@ const DeploymentPage = (props) => {
   const [currentFile, setCurrentFile] = useState("");
   const [activeTab, setActiveTab] = useState("1");
   const [currentId, setCurrentId] = useState(defaultId || null);
+  const [compileTooltip, toggleCompileTooltip] = useState(false);
+  const [deployTooltip, toggleDeployTooltip] = useState(false);
 
   const importRef = React.createRef();
 
@@ -76,7 +98,7 @@ const DeploymentPage = (props) => {
   }, [])
 
   useEffect(() => {
-    if (!deployed && !clickDeploy) {
+    if (!deployed && !clickDeploy && compilerState === COMPILE_STATE) {
       if (compiled && currentFile.length > 0) {
         cogoToast.success(
           "Smart contract successfully generated",
@@ -93,20 +115,20 @@ const DeploymentPage = (props) => {
           { heading: 'Compile Unsuccessful', position: 'bottom-center', hideAfter: 3 }
         );
       }
-    } else if (!deployed && clickDeploy) {
+    } else if (!deployed && clickDeploy && compilerState === DEPLOY_STATE) {
       cogoToast.error(
         "Smart contract could not be deployed, please check ABI / Deployment Log",
         { heading: 'Deployment Unsuccessful', position: 'bottom-center', hideAfter: 3 }
       );
       setClickDeploy(false);
-    } else if (deployed && clickDeploy) {
+    } else if (deployed && clickDeploy && compilerState === DEPLOY_STATE) {
       cogoToast.success(
         "Smart contract successfully deployed",
         { heading: 'Deployment Success', position: 'bottom-center', hideAfter: 3 }
       );
       setClickDeploy(false);
     }
-  }, [compiled]);
+  }, [compilerState]);
 
   function handleChange(ev) {
     ev.preventDefault();
@@ -244,25 +266,35 @@ const DeploymentPage = (props) => {
               <CardHeaderStyled>
                 Step 2 - ABI File (Optional)
                   </CardHeaderStyled>
-              <CardBody>
+              <CardBody className="clearfix">
+                <Row>
+                  <Col sm={12}>
+                    <CodeViewer
+                      language="json"
+                      readOnly={true}
+                      value={abiContents}
+                      height="350"
+                    />
+                  </Col>
+                </Row> <br />
                 <Form>
                   <FormGroup row >
-                    <Col sm={4}>
-                      <ButtonGroupSeperated className="float-right">
-                        <ButtonPrimary
+                    <Col sm={12}>
+                      <ButtonGroupSeperated className="float-right" style={{marginRight: '1.35em'}}>
+                        <ActionButton
                           id="GenerateAbi"
                           onClick={(ev) => generateAbi(ev)}
                           disabled={path.length === 0 || currentFile.length === 0 || isProcessing}
                         >
-                          Generate ABI
-                        </ButtonPrimary>
-                        <ButtonSecondary
+                          GENERATE ABI
+                        </ActionButton>
+                        <ActionButton
                           id="ImportAbi"
                           onClick={() => { clickButton() }}
                           disabled={isProcessing}
                         >
-                          Import ABI
-                        </ButtonSecondary>
+                          IMPORT ABI
+                        </ActionButton>
                       </ButtonGroupSeperated>
                       <input type="file"
                         id="abiImporter"
@@ -274,20 +306,15 @@ const DeploymentPage = (props) => {
                     </Col>
                   </FormGroup>
                 </Form>
-                <CodeViewer
-                  language="json"
-                  readOnly={true}
-                  value={abiContents}
-                  height="350"
-                />
-                <UncontrolledTooltip placement="top" target="GenerateAbi"
+                <Tooltip placement="top" target="GenerateAbi"
+                  isOpen={compileTooltip}
+                  toggle={()=>toggleCompileTooltip(!compileTooltip)}
                   delay={{ show: 0, hide: 0 }}
-                  trigger="hover"
                   autohide={true}
                 >
                   Click this button to compile the smart contract and view the resulting ABI
                   file in the viewer below.
-                </UncontrolledTooltip>
+                </Tooltip>
                 <UncontrolledTooltip placement="top" target="ImportAbi"
                   delay={{ show: 0, hide: 0 }}
                   trigger="hover"
@@ -297,20 +324,22 @@ const DeploymentPage = (props) => {
                 </UncontrolledTooltip>
               </CardBody>
             </CardStyled>
-            <CardStyled className="clearfix">
+            <CardStyled>
               <CardHeaderStyled>
                 Step 3 - Deploy {imported && <Badge color="primary" pill>Imported ABI</Badge>}
               </CardHeaderStyled>
-              <CardBody>
-
+              <CardBody className="clearfix">
                 <Form>
                   <FormGroup row>
-                    <Label for="permissionSelect" xs={4}>
+                    <Label className="text-center" for="permissionSelect" xs={4}>
                       With the following permission:
-                                        </Label>
-                    <Col xs={5}>
-                      <DropdownStyled className="float-left" isOpen={isOpenDropDown} toggle={() => { toggleDropDown(!isOpenDropDown) }}>
-                        <DropdownToggle caret={noOfPermissions > 0}>
+                    </Label>
+                    <Col xs={6}>
+                      <DropdownStyled className="float-right" 
+                        isOpen={isOpenDropDown} 
+                        toggle={() => { toggleDropDown(!isOpenDropDown) }}
+                        style={{width: "100%"}}>
+                        <DropdownToggle style={{width: "100%"}} caret={noOfPermissions > 0}>
                           {
                             noOfPermissions > 0
                               ? list.map(permission => {
@@ -327,7 +356,7 @@ const DeploymentPage = (props) => {
                         </DropdownToggle>
                         {
                           noOfPermissions > 0
-                            ? <DropdownMenu right>
+                            ? <DropdownMenu style={{width: "100%"}} right>
                               {
                                 list.map((permission) => permission.private_key &&
                                   <DropdownItem key={permission._id} onClick={() => { setCurrentId(permission._id) }}>
@@ -339,7 +368,7 @@ const DeploymentPage = (props) => {
                         }
                       </DropdownStyled>
                     </Col>
-                    <Col xs={3}>
+                    <Col xs={2}>
                       <ButtonPrimaryResponsive
                         id="DeployContract"
                         className="btn float-right"
@@ -348,28 +377,29 @@ const DeploymentPage = (props) => {
                           isProcessing}
                         onClick={(ev) => deployContract(ev)}
                       >
-                        Deploy
-                                            </ButtonPrimaryResponsive>
+                        DEPLOY
+                      </ButtonPrimaryResponsive>
                     </Col>
                   </FormGroup>
                 </Form>
-                <UncontrolledTooltip placement="top" target="DeployContract"
+                <Tooltip placement="top" target="DeployContract"
+                  isOpen={deployTooltip}
+                  toggle={()=>toggleDeployTooltip(!deployTooltip)}
                   delay={{ show: 0, hide: 0 }}
-                  trigger="hover"
                   autohide={true}
                 >
                   Compiles and deploys the smart contract at once.
-                                </UncontrolledTooltip>
+                </Tooltip>
               </CardBody>
             </CardStyled>
           </Col>
           <Col xs="6">
             <LogCardStyled>
               <LogCardHeaderStyled className="clearfix">
-                <span style={{ fontSize: "16px" }}>
+                <span style={{ fontSize: "14px" }}>
                   ABI / Deployment Log
-                                </span>
-                <ButtonPrimary
+                </span>
+                <ActionButton
                   className="float-right"
                   id="ClearLogs"
                   onClick={() => {
@@ -378,8 +408,8 @@ const DeploymentPage = (props) => {
                     logClear();
                   }}
                 >
-                  Clear All Logs
-                </ButtonPrimary>
+                  CLEAR ALL LOGS
+                </ActionButton>
                 <UncontrolledTooltip placement="top" target="ClearLogs"
                   delay={{ show: 0, hide: 0 }}
                   trigger="hover"
@@ -390,7 +420,7 @@ const DeploymentPage = (props) => {
               </LogCardHeaderStyled>
               <CardBody>
                 <div>
-                  <Nav tabs>
+                  <Nav tabs justified>
                     <NavItem>
                       <NavLink
                         className={activeTab === "1" ? 'active' : ''}
@@ -462,22 +492,23 @@ const DeploymentPage = (props) => {
                   </TabContent>
                 </div>
               </CardBody>
-              <LogCardHeaderStyled>
-                <span style={{ fontSize: "16px" }}>Deployment Result</span>
-              </LogCardHeaderStyled>
               <CardBody>
+              <div style={outputPane}>
+                <p style={{ fontSize: "14px" }}><b>Deployment Result</b></p>
+                <br />
                 {
                   !deployed
-                    ? <span>No successful deployment</span>
+                    ? <p>No successful deployment</p>
                     : output
-                      ? <div style={tabPane}>
+                      ? <div>
                         <h5>Successfully deployed the {currentFile.split('.')[0]} smart contract:</h5>
                         <pre>{JSON.stringify(output, null, 4)}</pre>
                       </div>
-                      : <div style={tabPane}>
+                      : <div>
                         <h5>Something went wrong, please view the log for possible errors and causes</h5>
                       </div>
                 }
+              </div>
               </CardBody>
             </LogCardStyled>
           </Col>

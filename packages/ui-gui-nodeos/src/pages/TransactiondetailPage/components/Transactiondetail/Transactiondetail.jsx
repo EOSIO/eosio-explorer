@@ -56,19 +56,19 @@ const Transactiondetail = (props) => {
                                 </FormGroup>
                                 <FormGroup row>
                                   <Col sm={2}>Block Number:</Col>
-                                  <Col sm={10}>
+                                  <Col sm={10} className="hashText">
                                     {payload[0].block_num}
                                   </Col>
                                 </FormGroup>
                                 <FormGroup row>
                                   <Col sm={2}>Timestamp:</Col>
-                                  <Col sm={10}>
+                                  <Col sm={10} className="hashText">
                                     {payload[0].createdAt}
                                   </Col>
                                 </FormGroup>
                                 <FormGroup row>
                                   <Col sm={2}>Number of Actions:</Col>
-                                  <Col sm={10}>
+                                  <Col sm={10} className="hashText">
                                     {payload[0].action_traces.length}
                                   </Col>
                                 </FormGroup>

@@ -28,7 +28,7 @@ const LastIrreversibleBlockInfo = (props) => {
             <Col xs="2">
               <Label>Block Number:</Label>
             </Col>
-            <Col xs="10">
+            <Col xs="10" className="hashText">
               <p className="form-control-static">{payload && payload.last_irreversible_block_num}</p>
             </Col>
           </FormGroup>

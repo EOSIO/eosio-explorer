@@ -5,7 +5,7 @@ export default styled(Button)`
   width: 130px;
   height: 40px;
   border-radius: 2px;
-  background-color: #bcbcbc;
+  background-color: #667d9a;
   opacity: 1;
   color: #ffffff;
   font-size: 14px;
@@ -14,17 +14,17 @@ export default styled(Button)`
   padding: 8px 8px 10px 8px;
 
   :disabled{
-    background-color: #bcbcbc;
+    background-color: #a4a4a4;
     opacity: 1;
     color: #ffffff;
   }
   :hover{
-    background-color: #9b9b9b;
+    background-color: #435a77;
     color: #ffffff;
     opacity: 1;
   }
   :not(:disabled):not(.disabled):active{
-    background-color: #838187;
+    background-color: #667d9a;
     opacity: 1;
     color: #ffffff;
   }

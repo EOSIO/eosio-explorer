@@ -19,7 +19,7 @@ const Actiondetail = (props) => {
               <Label>Smart Contract Name:</Label>
             </Col>
             <Col xs="10">
-              <p className="form-control-static">{action && action.act.account}</p>
+              <p className="form-control-static hashText">{action && action.act.account}</p>
             </Col>
           </FormGroup>
           <FormGroup row className="mb-0">
@@ -27,7 +27,7 @@ const Actiondetail = (props) => {
               <Label>Action Type:</Label>
             </Col>
             <Col xs="10">
-              <p className="form-control-static">{action && action.act.name}</p>
+              <p className="form-control-static hashText">{action && action.act.name}</p>
             </Col>
           </FormGroup>
           <FormGroup row className="mb-0">
@@ -35,7 +35,7 @@ const Actiondetail = (props) => {
               <Label>Timestamp:</Label>
             </Col>
             <Col xs="10">
-              <p className="form-control-static">{action && action.createdAt}</p>
+              <p className="form-control-static hashText">{action && action.createdAt}</p>
             </Col>
           </FormGroup>
           <FormGroup row className="mb-0">
@@ -53,7 +53,7 @@ const Actiondetail = (props) => {
               <Label>Actor:</Label>
             </Col>
             <Col xs="10">
-              <p className="form-control-static">
+              <p className="form-control-static hashText">
                 { action && (action.act && (action.act.authorization && 
                   action.act.authorization.map((auth, i) => (
                     auth.actor + (i > 0 && i < (action.act.authorization.length - 1) ? ", " : "")
