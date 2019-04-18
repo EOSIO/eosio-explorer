@@ -22,18 +22,18 @@ const OUTPUT_CLEAR = actionPrefix + `OUTPUT_CLEAR`;
 
 export const abiImport = fileContent => ({ type: ABI_IMPORT, fileContent });
 export const contractCompile = fullPath => ({ type: CONTRACT_COMPILE, fullPath });
-export const contractDeploy = ( fullPath, deployer ) => ({ type: CONTRACT_DEPLOY, fullPath, deployer });
+export const contractDeploy = (fullPath, deployer) => ({ type: CONTRACT_DEPLOY, fullPath, deployer });
 export const folderSet = path => ({ type: FOLDER_SET, path });
 export const logClear = () => ({ type: LOG_CLEAR });
 export const outputClear = () => ({ type: OUTPUT_CLEAR });
 
 export const processDone = payload => ({ type: PROCESS_DONE, payload });
-export const processFail = ( payload, error ) => ({ type: PROCESS_FAIL, payload, error });
+export const processFail = (payload, error) => ({ type: PROCESS_FAIL, payload, error });
 
-const importEpic = ( action$ ) => action$.pipe(
+const importEpic = (action$) => action$.pipe(
   ofType(ABI_IMPORT),
   mergeMap(action => {
-    return ajax.post(ENDPOINT+"import", action.fileContent).pipe(
+    return ajax.post(ENDPOINT + "import", action.fileContent).pipe(
       map(res => {
         let { imported, abiPath, errors } = res.response;
         return processDone({
@@ -51,14 +51,14 @@ const importEpic = ( action$ ) => action$.pipe(
   })
 );
 
-const compileEpic = ( action$ ) => action$.pipe(
+const compileEpic = (action$) => action$.pipe(
   ofType(CONTRACT_COMPILE),
   mergeMap(action => {
-    return ajax.post(ENDPOINT+"compile", action.fullPath).pipe(
+    return ajax.post(ENDPOINT + "compile", action.fullPath).pipe(
       map(res => {
         let { compiled, wasmLocation, abi, abiContents, stdout, stderr, errors } = res.response;
         let nodeErr = [],
-            nodeStd = [];
+          nodeStd = [];
 
         return processDone({
           abiContents: abiContents,
@@ -79,10 +79,10 @@ const compileEpic = ( action$ ) => action$.pipe(
   })
 );
 
-const deployEpic = ( action$ ) => action$.pipe(
+const deployEpic = (action$) => action$.pipe(
   ofType(CONTRACT_DEPLOY),
   mergeMap(action => {
-    return ajax.post(ENDPOINT+"deploy", {...action.fullPath, ...action.deployer}).pipe(
+    return ajax.post(ENDPOINT + "deploy", { ...action.fullPath, ...action.deployer }).pipe(
       map(res => {
         let { compiled, wasmLocation, abi, abiContents, stdout, stderr, errors, deployed, output } = res.response;
         let actualOutput;
@@ -160,7 +160,7 @@ const dataInitState = {
   errors: []
 }
 
-const deploymentReducer = (state=dataInitState, action) => {
+const deploymentReducer = (state = dataInitState, action) => {
   switch (action.type) {
     case CONTRACT_COMPILE:
     case CONTRACT_DEPLOY:
