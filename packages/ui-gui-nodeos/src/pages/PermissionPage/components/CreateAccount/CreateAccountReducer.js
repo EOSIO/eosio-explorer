@@ -73,7 +73,7 @@ const dataInitState = {
 const dataReducer = (state=dataInitState, action) => {
   switch (action.type) {
     case FETCH_START:
-        return dataInitState;
+      return dataInitState;
 
     case FETCH_FULFILLED:
       return {
