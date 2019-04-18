@@ -44,10 +44,10 @@ const Nodeswitch = (props) => {
     <div className="Nodeswitch">
       <Form key={key}>
         <FormGroup row className="mb-0">
-          <Col xs="3">
+          <Col xs="2">
             <CenteredLabel htmlFor="nodeos">Connected Nodeos:</CenteredLabel>
           </Col>
-          <Col xs="9">
+          <Col xs="10">
             <InputStyled
               type="text"
               id="nodeos"
@@ -64,10 +64,10 @@ const Nodeswitch = (props) => {
                 </FormFeedback>
               }
           </Col>
-          <Col xs="3" style={{marginTop: "10px"}}>
+          <Col xs="2" style={{marginTop: "10px"}}>
             <CenteredLabel htmlFor="mongodb">Connected MongoDB</CenteredLabel>
           </Col>
-          <Col xs="9" style={{marginTop: "10px"}}>
+          <Col xs="10" style={{marginTop: "10px"}}>
             <InputStyled
               type="text"
               id="mongodb"

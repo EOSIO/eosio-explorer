@@ -32,7 +32,7 @@ const Headblock = (props) => {
             <Col xs="2">
               <Label>Block Number:</Label>
             </Col>
-            <Col xs="10" >
+            <Col xs="10" className="hashText">
               <p className="form-control-static">{block_num}</p>
             </Col>
           </FormGroup>
@@ -48,7 +48,7 @@ const Headblock = (props) => {
             <Col xs="2">
               <Label>Timestamp:</Label>
             </Col>
-            <Col xs="10">
+            <Col xs="10" className="hashText">
               <p className="form-control-static">{block && block.timestamp}</p>
             </Col>
           </FormGroup>
@@ -56,7 +56,7 @@ const Headblock = (props) => {
             <Col xs="2">
               <Label>Block Producer:</Label>
             </Col>
-            <Col xs="10">
+            <Col xs="10" className="hashText">
               <p className="form-control-static">{block && block.producer}</p>
             </Col>
           </FormGroup>

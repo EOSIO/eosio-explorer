@@ -30,6 +30,15 @@ export const outputClear = () => ({ type: OUTPUT_CLEAR });
 export const processDone = payload => ({ type: PROCESS_DONE, payload });
 export const processFail = (payload, error) => ({ type: PROCESS_FAIL, payload, error });
 
+/**
+ * Define constants to match the action state
+ * The UI's useEffect relies on this state to determine what kind of toast to show
+ * Fixes a problem where toast won't display if user deploys a contract after generating ABI
+ */
+const INIT_STATE = 0;
+const COMPILE_STATE = 1;
+const DEPLOY_STATE = 2;
+
 const importEpic = (action$) => action$.pipe(
   ofType(ABI_IMPORT),
   mergeMap(action => {
@@ -66,6 +75,7 @@ const compileEpic = (action$) => action$.pipe(
           wasmPath: wasmLocation,
           stdoutLog: (stdout instanceof Array) ? stdout : nodeStd,
           stderrLog: (stderr instanceof Array) ? stderr : nodeErr,
+          compilerState: COMPILE_STATE,
           compiled: compiled,
           errors: errors,
           imported: false
@@ -106,6 +116,7 @@ const deployEpic = (action$) => action$.pipe(
           wasmPath: wasmLocation,
           stdoutLog: (stdout instanceof Array) ? stdout : nodeStd,
           stderrLog: (stderr instanceof Array) ? stderr : nodeErr,
+          compilerState: DEPLOY_STATE,
           compiled: compiled,
           deployed: deployed,
           output: (actualOutput) ? actualOutput : null,
@@ -153,6 +164,7 @@ const dataInitState = {
   wasmPath: "",
   abiPath: "",
   abiContents: "",
+  compilerState: INIT_STATE,
   output: null,
   compiled: false,
   imported: false,
@@ -183,6 +195,7 @@ const deploymentReducer = (state = dataInitState, action) => {
         deployed: false,
         compiled: false,
         imported: false,
+        compilerState: INIT_STATE,
         errors: [],
         stderrLog: [],
         stdoutLog: [],
@@ -191,6 +204,7 @@ const deploymentReducer = (state = dataInitState, action) => {
     case OUTPUT_CLEAR:
       return {
         ...state,
+        compilerState: INIT_STATE,
         stdoutLog: [],
         stderrLog: [],
         errors: [],

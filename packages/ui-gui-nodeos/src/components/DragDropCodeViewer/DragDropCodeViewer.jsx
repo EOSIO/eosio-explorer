@@ -83,10 +83,10 @@ class DragDropCodeViewer extends Component {
                 <div {...getRootProps()}>
                   <input {...getInputProps()} />
                     <Jumbotron>
-                      <p className="lead text-center">Drag and Drop files <strong>here</strong> or click <strong>browse</strong> to choose a file.</p>
-                      <hr className="my-4" />
+                      <p id="ddLabel" className="lead text-center">Drag & Drop files <strong>here</strong> or click <strong>Browse</strong> to choose a file.</p>
+                      <br />
                       <p className="lead text-center browseButton">
-                        <ButtonPrimary onClick={(e) => e.preventDefault()} >Browse</ButtonPrimary>
+                        <ButtonPrimary onClick={(e) => e.preventDefault()} >BROWSE</ButtonPrimary>
                       </p>
                     </Jumbotron>
                 </div>

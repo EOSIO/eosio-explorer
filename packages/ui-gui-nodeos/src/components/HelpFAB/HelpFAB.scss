@@ -9,5 +9,16 @@
     position: fixed;
     z-index: 1;
     border-radius: 50%;
+    height: 48px;
+    width: 48px;
+    background-color: #ffffff !important;
+    border: 1px solid #667d9a !important;
   };
+
+  .material-icons.md-fab {
+    font-size: 60px;
+    color: #667d9a;
+    margin-top: -12px;
+    margin-left: -18px;
+  }
 }

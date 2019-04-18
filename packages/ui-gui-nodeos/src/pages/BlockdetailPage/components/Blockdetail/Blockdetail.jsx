@@ -46,7 +46,7 @@ const Blockdetail = (props) => {
                               <Form> 
                                 <FormGroup row>
                                   <Col sm={2}>Block Number:</Col>
-                                  <Col sm={10}>
+                                  <Col sm={10} className="hashText">
                                     {payload[0].block_num}
                                   </Col>
                                 </FormGroup>
@@ -58,13 +58,13 @@ const Blockdetail = (props) => {
                                 </FormGroup>
                                 <FormGroup row>
                                   <Col sm={2}>Timestamp:</Col>
-                                  <Col sm={10}>
+                                  <Col sm={10} className="hashText">
                                     {payload[0].createdAt}
                                   </Col>
                                 </FormGroup>
                                 <FormGroup row>
                                   <Col sm={2}>Number of Transactions:</Col>
-                                  <Col sm={10}>
+                                  <Col sm={10} className="hashText">
                                     {payload[0].block.transactions.length}
                                   </Col>
                                 </FormGroup>

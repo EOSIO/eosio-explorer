@@ -108,8 +108,9 @@ const ImportAccount = (props) => {
                         keysData[0].permission === "owner" ?
                           keysData[0].public_key
                           : keysData[1].public_key
-                          || "No public key"
+                          || ""
                       }
+                      placeholder="Public key not found"
                       onChange={handleChange}
                       readOnly
                     />
@@ -125,8 +126,9 @@ const ImportAccount = (props) => {
                         keysData[0].permission === "owner" ?
                           keysData[0].private_key
                           : keysData[1].private_key
-                          || "No private key"
+                          || ""
                       }
+                      placeholder="Enter private key"
                       onChange={handleChange}
                       invalid={!!errors.ownerPrivate}
                       required
@@ -150,8 +152,9 @@ const ImportAccount = (props) => {
                         keysData[1].permission === "active" ?
                           keysData[1].public_key
                           : keysData[0].public_key
-                          || "No public key"
+                          || ""
                       }
+                      placeholder="Public key not found"
                       onChange={handleChange}
                       readOnly
                     />
@@ -167,8 +170,9 @@ const ImportAccount = (props) => {
                         keysData[1].permission === "active" ?
                           keysData[1].private_key
                           : keysData[0].private_key
-                          || "No private key"
+                          || ""
                       }
+                      placeholder="Enter private key"
                       onChange={handleChange}
                       invalid={!!errors.activePrivate}
                       required

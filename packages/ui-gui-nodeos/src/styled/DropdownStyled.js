@@ -39,8 +39,11 @@ export default styled(Dropdown)`
     border: 0;
     transform: translate3d(0, 40px, 0px);
   }
+  .dropdown-item:hover {
+    background-color: #e3edf2;
+  }
   .dropdown-item:active{
-      background-color: #e3edf2;
+    background-color: #e3edf2;
   }
   .dropdown-item:focus{     
     outline: none;
