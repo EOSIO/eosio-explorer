@@ -25,6 +25,8 @@ if [ "$(docker ps -q -f name=$MONGODB_CONTAINER_NAME)" ]; then
     fi
 else
     echo "=== MongoDB Container not found, restarting it instead ==="
+    docker volume rm --force $MONGODB_VOLUME_NAME
+    sleep 10 #else docker fails  sometimes
     (cd ${ROOTPATH}/packages/ && exec docker-mongodb/start_mongodb_docker.sh && printf "${GREEN}restarted${NC}")
 fi
 
