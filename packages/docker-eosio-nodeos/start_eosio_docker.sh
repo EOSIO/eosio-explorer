@@ -39,7 +39,7 @@ if [ ! "$(docker ps -q -f name=$NODEOS_CONTAINER_NAME)" ]; then
     -v /$(pwd)/contracts:/opt/eosio/bin/contracts \
     -v /$(pwd)/scripts:/opt/eosio/bin/scripts \
     -v /$(pwd)/data:/mnt/dev/data \
-    -i eosio-gui-nodeos:eos1.6.3 \
+    $NODEOS_IMAGE_NAME \
     "$script"
 
     if [ "$1" != "--nolog" ]
