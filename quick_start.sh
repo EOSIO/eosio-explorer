@@ -37,18 +37,6 @@ do
   esac
 done
 
-# If it is not -dev and it is first-time-setup or -d, build with a new timestamp.
-if (!($ISDEV) && ( $ISDELETE || $ISFIRSTTIMESETUP)); then
-# create a static build of application for production
-echo " "
-echo "=============================="
-echo "BUILDING APPLICATION"
-echo "=============================="
-
-# Set environment variable "LAST_FIRST_TIME_SETUP_TIMESTAMP" at build time to create a new timestamp while serving the app.
-(cd $GUI && REACT_APP_LAST_FIRST_TIME_SETUP_TIMESTAMP=$(date +%s) yarn build && printf "${GREEN}done${NC}")
-fi
-
 echo " "
 echo "=============================="
 echo "STARTING MONGODB DOCKER"
@@ -58,10 +46,10 @@ if [ "$(docker ps -q -f status=paused -f name=$MONGODB_CONTAINER_NAME)" ]; then
   docker unpause $MONGODB_CONTAINER_NAME
 else
   if [ ! "$(docker ps -q -f name=$MONGODB_CONTAINER_NAME)" ]; then
-    if find "$MONGODOCKER/data" -mindepth 1 -print -quit 2>/dev/null | grep -q .; then
-        echo "mongodb docker is not running, but data folder exists"
-        echo "cleaning data now"
-        rm -r $MONGODOCKER/data/*
+    if [ "$(docker volume ls --format '{{.Name}}' -f name=$MONGODB_VOLUME_NAME)" ]; then
+        echo "mongodb docker is not running, but mongo volume exists"
+        echo "removing volume"
+        docker volume rm --force $MONGODB_VOLUME_NAME
         sleep 10 #else docker fails  sometimes
     fi
   fi
@@ -85,6 +73,19 @@ else
     fi
   fi
   (cd $EOSDOCKER && ./start_eosio_docker.sh --nolog && printf "${GREEN}done${NC}")
+fi
+
+
+# If it is not -dev and it is first-time-setup or -d, build with a new timestamp.
+if (!($ISDEV) && ( $ISDELETE || $ISFIRSTTIMESETUP)); then
+  # create a static build of application for production
+  echo " "
+  echo "=============================="
+  echo "BUILDING APPLICATION"
+  echo "=============================="
+
+  # Set environment variable "LAST_FIRST_TIME_SETUP_TIMESTAMP" at build time to create a new timestamp while serving the app.
+  (cd $GUI && REACT_APP_LAST_FIRST_TIME_SETUP_TIMESTAMP=$(date +%s) yarn build && printf "${GREEN}done${NC}")
 fi
 
 # start compiler service in background
