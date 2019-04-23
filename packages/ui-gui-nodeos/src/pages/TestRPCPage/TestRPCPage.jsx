@@ -38,7 +38,7 @@ class TestRPCPage extends Component {
     
     return (
       <StandardTemplate>
-        <div className="InfoPage animated fadeIn">
+        <div className="InfoPage ">
           <p><strong>Calls from rpc ( push action )</strong> </p>
           <p><strong>Result:</strong></p>
           <p><strong>{this.state.text}</strong> </p>

@@ -211,7 +211,7 @@ const DeploymentPage = (props) => {
           />
         </div>
       }
-      <div className="DeploymentPage animated fadeIn">
+      <div className="DeploymentPage ">
         <Row>
           <Col xs="12">
             <PageTitleDivStyled>Deploy Contracts Page</PageTitleDivStyled>
