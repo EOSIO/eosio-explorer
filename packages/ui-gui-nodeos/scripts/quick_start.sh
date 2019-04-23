@@ -67,7 +67,7 @@ else
   if [ ! "$(docker ps -q -f name=$NODEOS_CONTAINER_NAME)" ]; then
     if find "$EOSDOCKER/data" -mindepth 1 -print -quit 2>/dev/null | grep -q .; then
         echo "eosio docker is not running, but data folder exists"
-        echo "cleaning data now"
+        echo "cleaning data"
         rm -r $EOSDOCKER/data/*
         sleep 10 #else docker fails  sometimes
     fi

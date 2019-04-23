@@ -13,4 +13,6 @@ fi
 cd "$(dirname "$0")"
 if [ "$(docker ps -q -f name=$NODEOS_CONTAINER_NAME)" ]; then
   docker stop $NODEOS_CONTAINER_NAME && rm -r data/*
+else
+  echo 'eosio docker is not running'
 fi

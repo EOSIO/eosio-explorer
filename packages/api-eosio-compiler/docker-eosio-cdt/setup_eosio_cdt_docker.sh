@@ -21,7 +21,7 @@ sh ./build_eosio_cdt_docker.sh
 # Checks if the Docker container is already running. If it is, then compile the contract as normal.
 if [ "$(docker ps -q -f name=$CDT_CONTAINER_NAME)" ]; then
     if [ "$(docker ps -aq -f status=running -f name=$CDT_CONTAINER_NAME)" ]; then
-        echo "=== Docker container is currently occupied, please wait. ==="
+        echo "$CDT_CONTAINER_NAME docker is already running"
     fi
 fi
 
@@ -33,23 +33,23 @@ if [ ! "$(docker ps -q -f name=$CDT_CONTAINER_NAME)" ]; then
         # Cleanup.
         docker rm -fv $CDT_CONTAINER_NAME
     fi
-    echo "=== clear compiled_contracts cache ==="
+    echo "cleaning compiled_contracts cache"
     # clean out the previous compiled contracts
     rm -rf compiled_contracts
     mkdir compiled_contracts
 
     sh ./start_eosio_cdt_docker.sh
 
-    echo ">> Attempt compilation of smart contract file"
+    echo "starting compilation of smart contract"
     shift 1
     echo "$@"
     docker exec -i $CDT_CONTAINER_NAME ./scripts/compile_contract.sh "$FULLFILEPATH" "$@" \
         > stdout.txt 2> stderr.txt \
         && echo "exec pass" || echo "exec fail"
 
-    echo ">> See log.txt for piped file..."
+    echo "check log.txt for piped file"
 
-    echo ">> Attempt copying of smart contract..."
+    echo "copying compiled smart contract"
     docker cp $CDT_CONTAINER_NAME:/opt/eosio/bin/compiled_contracts/$CONTRACTNAME "$(pwd)"/compiled_contracts
-    echo ">> docker cp operation finished"
+    echo "copying compiled smart contract finished"
 fi
