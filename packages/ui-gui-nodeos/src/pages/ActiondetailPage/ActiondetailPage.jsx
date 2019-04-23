@@ -29,7 +29,7 @@ const ActiondetailPage = (props) => {
 
   return (
     <StandardTemplate>
-      <div className="ActiondetailPage animated fadeIn">
+      <div className="ActiondetailPage">
         <Row>
           <Col xs="12">
             <PageTitleDivStyled>Actions Page | Action Detail</PageTitleDivStyled>

@@ -12,7 +12,7 @@ class BlocklistPage extends Component {
 
     return (
       <StandardTemplate>
-        <div className="BlocklistPage animated fadeIn">
+        <div className="BlocklistPage">
           <Row>
             <Col sm="12">
               <PageTitleDivStyled>Blocks Page</PageTitleDivStyled>
