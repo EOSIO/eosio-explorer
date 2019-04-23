@@ -12,11 +12,11 @@ RED='\033[0;31m'
 NC='\033[0m' # No Color
 GREEN='\033[0;32m'
 
-SCRIPTPATH="$( pwd -P )"
-EOSDOCKER="$SCRIPTPATH/packages/docker-eosio-nodeos"
-MONGODOCKER="$SCRIPTPATH/packages/docker-mongodb"
-COMPILER="$SCRIPTPATH/packages/api-eosio-compiler"
-GUI="$SCRIPTPATH/packages/ui-gui-nodeos"
+SCRIPTPATH="$( pwd -P )/.."
+EOSDOCKER="$SCRIPTPATH/docker-eosio-nodeos"
+MONGODOCKER="$SCRIPTPATH/docker-mongodb"
+COMPILER="$SCRIPTPATH/api-eosio-compiler"
+GUI="$SCRIPTPATH/ui-gui-nodeos"
 ISDEV=false
 ISDELETE=false
 ISFIRSTTIMESETUP=false
@@ -76,18 +76,6 @@ else
 fi
 
 
-# If it is not -dev and it is first-time-setup or -d, build with a new timestamp.
-if (!($ISDEV) && ( $ISDELETE || $ISFIRSTTIMESETUP)); then
-  # create a static build of application for production
-  echo " "
-  echo "=============================="
-  echo "BUILDING APPLICATION"
-  echo "=============================="
-
-  # Set environment variable "LAST_FIRST_TIME_SETUP_TIMESTAMP" at build time to create a new timestamp while serving the app.
-  (cd $GUI && REACT_APP_LAST_FIRST_TIME_SETUP_TIMESTAMP=$(date +%s) yarn build && printf "${GREEN}done${NC}")
-fi
-
 # start compiler service in background
 echo " "
 echo "=============================="
@@ -118,6 +106,18 @@ do
     exit 0
   fi
 done
+
+# If it is first-time-setup or it is not -dev and -d, build with a new timestamp.
+if ( $ISFIRSTTIMESETUP || (!($ISDEV) && $ISDELETE )); then
+  # create a static build of application for production
+  echo " "
+  echo "=============================="
+  echo "BUILDING APPLICATION"
+  echo "=============================="
+
+  # Set environment variable "LAST_FIRST_TIME_SETUP_TIMESTAMP" at build time to create a new timestamp while serving the app.
+  (cd $GUI && REACT_APP_LAST_FIRST_TIME_SETUP_TIMESTAMP=$(date +%s) yarn build && printf "${GREEN}done${NC}")
+fi
 
 echo " "
 echo "=============================="

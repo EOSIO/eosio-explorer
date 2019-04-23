@@ -4,13 +4,13 @@ RED='\033[0;31m'
 NC='\033[0m' # No Color
 GREEN='\033[0;32m'
 
-SCRIPTPATH="$( pwd -P )"
-APPGUI="$SCRIPTPATH/apps/gui-nodeos"
-EOSDOCKER="$SCRIPTPATH/packages/docker-eosio-nodeos"
-MONGODOCKER="$SCRIPTPATH/packages/docker-mongodb"
-LOCALSERVICE="$SCRIPTPATH/packages/api-eosio-compiler"
+SCRIPTPATH="$( pwd -P )/.."
+APPGUI="$SCRIPTPATH/../apps/gui-nodeos"
+EOSDOCKER="$SCRIPTPATH/docker-eosio-nodeos"
+MONGODOCKER="$SCRIPTPATH/docker-mongodb"
+LOCALSERVICE="$SCRIPTPATH/api-eosio-compiler"
 COMPILER="$LOCALSERVICE/docker-eosio-cdt"
-GUI="$SCRIPTPATH/packages/ui-gui-nodeos"
+GUI="$SCRIPTPATH/ui-gui-nodeos"
 ISDEV=false
 
 if [ "$1" == "-dev" -o "$1" == "--develop" ]; then
