@@ -22,6 +22,7 @@ if [ ! "$(docker ps -q -f name=$MONGODB_CONTAINER_NAME)" ]; then
     echo "mongodb docker is not running, but mongodb volume exists"
     echo "cleaning data now"
     docker volume rm --force $MONGODB_VOLUME_NAME
+    sleep 10
   fi
   docker volume create --name=$MONGODB_VOLUME_NAME
   docker run -d --rm -p $MONGODB_PORT:$MONGODB_PORT --name $MONGODB_CONTAINER_NAME -v $MONGODB_VOLUME_NAME:/data/db mongo --port $MONGODB_PORT
