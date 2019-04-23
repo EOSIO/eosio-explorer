@@ -4,7 +4,7 @@ RED='\033[0;31m'
 NC='\033[0m' # No Color
 GREEN='\033[0;32m'
 
-SCRIPTPATH="$( pwd -P )/.."
+SCRIPTPATH="$( pwd -P )/../.."
 EOSDOCKER="$SCRIPTPATH/docker-eosio-nodeos"
 MONGODOCKER="$SCRIPTPATH/docker-mongodb"
 
