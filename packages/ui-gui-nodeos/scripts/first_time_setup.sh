@@ -5,7 +5,6 @@ NC='\033[0m' # No Color
 GREEN='\033[0;32m'
 
 SCRIPTPATH="$( pwd -P )/../.."
-APPGUI="$SCRIPTPATH/../apps/gui-nodeos"
 EOSDOCKER="$SCRIPTPATH/docker-eosio-nodeos"
 MONGODOCKER="$SCRIPTPATH/docker-mongodb"
 LOCALSERVICE="$SCRIPTPATH/api-eosio-compiler"
@@ -25,7 +24,6 @@ echo "=============================="
 source ../init_config.file
 
 # copy init config into different packages
-cp -f ../init_config.file $APPGUI/config.file.local
 cp -f ../init_config.file $EOSDOCKER/config.file.local
 cp -f ../init_config.file $EOSDOCKER/scripts/config.file.local
 cp -f ../init_config.file $MONGODOCKER/config.file.local

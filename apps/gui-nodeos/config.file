@@ -1,2 +1,0 @@
-MONGODB_CONTAINER_NAME=eosio_mongodb
-NODEOS_CONTAINER_NAME=eosio_gui_nodeos_container
