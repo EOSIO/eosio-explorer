@@ -21,7 +21,7 @@ class InfoPage extends Component {
 
     return (
       <StandardTemplate>
-        <div className="InfoPage animated fadeIn">
+        <div className="InfoPage">
           <Row>
             <Col xs="12">
               <PageTitleDivStyled>Info Page</PageTitleDivStyled>

@@ -151,7 +151,7 @@ const PushactionPage = (props) => {
           />
         </div>
       }
-      <div className="PushactionPage animated fadeIn">
+      <div className="PushactionPage ">
         <Row>
           <Col sm="12">
             <PageTitleDivStyled>Push Actions Page</PageTitleDivStyled>
