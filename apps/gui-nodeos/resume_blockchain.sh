@@ -40,11 +40,11 @@ if [ "$(docker ps -q -f name=$NODEOS_CONTAINER_NAME)" ]; then
         fi
     fi
 else
-    if find "$EOSDOCKER/data" -mindepth 1 -print -quit 2>/dev/null | grep -q .; then
-        echo "=== Blockchain container is not running, but old data folder exists ==="
-        echo ">>> CLEANING..."
-        rm -r ${ROOTPATH}/packages/docker-eosio-nodeos/data/*
-        sleep 10 #else docker fails  sometimes
+    if [ "$(docker volume ls --format '{{.Name}}' -f name=$NODEOS_VOLUME_NAME)" ]; then
+      echo "eosio docker is not running, but eosio volume exists"
+      echo "cleaning data now"
+      docker volume rm --force $NODEOS_VOLUME_NAME
+      sleep 10
     fi
     echo "=== Blockchain container not found, restarting it instead ==="
     (cd ${ROOTPATH}/packages/ && exec docker-eosio-nodeos/start_eosio_docker.sh && printf "${GREEN}Restarted${NC}")

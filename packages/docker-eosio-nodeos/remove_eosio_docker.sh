@@ -12,5 +12,8 @@ fi
 # change to script's directory
 cd "$(dirname "$0")"
 if [ "$(docker ps -q -f name=$NODEOS_CONTAINER_NAME)" ]; then
-  docker stop $NODEOS_CONTAINER_NAME && rm -r data/*
+  docker stop $NODEOS_CONTAINER_NAME
+fi
+if [ "$(docker volume ls --format '{{.Name}}' -f name=$NODEOS_VOLUME_NAME)" ]; then
+    docker volume rm --force $NODEOS_VOLUME_NAME
 fi
