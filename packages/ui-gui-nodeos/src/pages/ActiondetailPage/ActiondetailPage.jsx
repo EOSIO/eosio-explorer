@@ -32,7 +32,7 @@ const ActiondetailPage = (props) => {
       <div className="ActiondetailPage">
         <Row>
           <Col xs="12">
-            <PageTitleDivStyled>Actions Page | Action Detail</PageTitleDivStyled>
+            <PageTitleDivStyled>Actions | Action Detail Page</PageTitleDivStyled>
           </Col>
         </Row>
         <Row>

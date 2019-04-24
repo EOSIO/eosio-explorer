@@ -17,7 +17,7 @@ const Indicator = styled.i`
   flex: 0 0 10px;
   height: 10px;
   border-radius: 50%;
-  background-color: ${props => props.status === STATUS_NORMAL ? "green" : "red"};
+  background-color: ${props => props.status === STATUS_NORMAL ? "#67c056" : "red"};
 `
 
 const StyledDiv = styled.div`

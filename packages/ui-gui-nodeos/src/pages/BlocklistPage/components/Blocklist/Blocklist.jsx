@@ -42,7 +42,7 @@ const Blocklist = (props) => {
         <CardHeaderStyled>Block List</CardHeaderStyled>
         <CardBody>
           <Row>
-            <Col sm="6">
+            <Col sm="5">
               <CheckBoxDivStyled>
                 <label className="checkboxContainer">No empty blocks
 
@@ -55,7 +55,7 @@ const Blocklist = (props) => {
               </CheckBoxDivStyled>
 
             </Col>
-            <Col sm="6">
+            <Col sm="7">
               <DivFlexStyled>
                 <SearchInputStyled
                       placeholder="Block number / Block ID"

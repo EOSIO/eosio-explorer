@@ -51,7 +51,7 @@ const Actionhistory = (props) => {
                     <th width="15%" className="text-center">Action</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody className="hashText">
                   {actionsList.length < 1 ?
                     <tr><td colSpan="5" className="text-center">No actions could be found for the given Smart Contract name</td></tr>
                   : actionsList.map((action, index)=>

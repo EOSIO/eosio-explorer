@@ -11,6 +11,7 @@ import {
 const StandardTemplateStyled = styled.div`
   .app-header {
     height: 80px;
+    border-bottom: solid 3px #443f54;
     + .app-body {
         margin-top: 89px;
     }
