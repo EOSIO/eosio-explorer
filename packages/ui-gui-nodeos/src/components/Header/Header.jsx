@@ -29,34 +29,46 @@ const StyledEosioLogoSmallSVG = styled(EosioLogoSmallSVG)`
 `;
 
 const NavWrapper = styled.div`
+  width: auto;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   min-height: 40px;
   padding: 0 10px;
   :nth-child(1){
-    flex: 1 1 220px;
-    margin-left: -10px;
+    flex: 1.1 0 0;
+  }
+  :nth-child(2){
+    flex: 5 0 0;
   }
   :nth-child(3){
-    flex: 3.5 3.5 580px;
+    flex: 0.25 1 0; 
+    padding: 0;
+  }
+  :nth-child(4){
+    flex: 3 0 0;
   }
   :nth-child(5){
-    flex: 2 2 360px;
-    margin-right: -25px;
+    flex: 1 0 0;
   }
 `
 
+const NavWrapperRow = styled(NavWrapper)`
+  flex-direction: row;
+  justify-content: space-around;
+`
+
 const NavHead = styled.div`
-  text-align: center;
-  font-size: 10px;
+  font-size: 9px;
   color: #bcbcbc;
 `
 
 const VerticalLine = styled.div`
-  height: 30px;
+  height: 40px;
   width: 1px;
+  margin: auto 0;
   background-color: #e8ebf0;
+  margin-right: 20px;
 `
 
 const LogoWrapper = styled.div`
@@ -64,11 +76,13 @@ const LogoWrapper = styled.div`
 `
 
 const AppName = styled.div`
-  width: 70px;
-  margin-left: 5px;
+  width: 75px;
+  margin-left: 10px;
   margin-top: 4px;
-  font-size: 18px;
-  line-height: 20px;
+  font-size: 20px;
+  line-height: 1;
+  color:#443f54;
+  font-weight: normal;
 `
 
 const WrappedLink = styled(Link)`
@@ -101,16 +115,12 @@ const Header = (props) => {
               <LogoWrapper>
                 <StyledEosioLogoSmallSVG/>
                 <AppName>
-                  EOSIO DEV&nbsp;GUI
+                  eosio explorer
                 </AppName>
-              </LogoWrapper>
-              <NavItem className="px-3">
-                <ConnectionIndicator/>
-              </NavItem>
+              </LogoWrapper>              
             </Nav>
           </WrappedLink>
         </NavWrapper>
-        <VerticalLine>&nbsp;</VerticalLine>
         <NavWrapper>
           <NavHead>INSPECT</NavHead>
           <Nav className="nav-items d-md-down-none" navbar>
@@ -129,12 +139,12 @@ const Header = (props) => {
             <NavItem className="px-3">
               <Link to={`/account`} className={`nav-link ${pathname === `/account` || matchPath(pathname, 'account') ? `active` : ``}`}>ACCOUNTS</Link>
             </NavItem>
-            <NavItem className="px-3">
+            <NavItem className="px-3 last-item">
               <Link to={`/contract`} className={`nav-link ${pathname === `/contract` || matchPath(pathname, 'contract') ? `active` : ``}`}>SMART CONTRACT</Link>
             </NavItem>
           </Nav>
         </NavWrapper>
-        <VerticalLine>&nbsp;</VerticalLine>
+        <NavWrapper></NavWrapper>
         <NavWrapper>
           <NavHead>INTERACT</NavHead>
           <Nav className="nav-items d-md-down-none" navbar>
@@ -144,11 +154,19 @@ const Header = (props) => {
             <NavItem className="px-3">
               <Link to={`/deploy`} className={`nav-link ${pathname === `/deploy` ? `active` : ``}`}>DEPLOY CONTRACTS</Link>
             </NavItem>
-            <NavItem className="px-3">
+            <NavItem className="px-3 last-item">
               <Link to={`/push-action`} className={`nav-link ${pathname === `/push-action` ? `active` : ``}`}>PUSH ACTIONS</Link>
             </NavItem>
           </Nav>
-        </NavWrapper>
+        </NavWrapper>        
+        <NavWrapperRow>
+          <VerticalLine>&nbsp;</VerticalLine>
+          <Nav className="nav-items d-md-down-none" navbar>              
+            <NavItem className="px-3">
+              <ConnectionIndicator/>
+            </NavItem>
+          </Nav>
+        </NavWrapperRow>
     </div>
   )
 }

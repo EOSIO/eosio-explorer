@@ -3,12 +3,14 @@
   justify-content: space-between;
   align-items: center;
   font-weight: 600;
-  letter-spacing: 0.02rem;
-  font-size: 11px;
+  letter-spacing: 0.1px;
+  font-size: 10px;
   min-width: 992px;
   width: 100%;
-  max-width: 1366px;
+  //max-width: 1366px;
   margin: 0 auto;
+  margin-right: 20px;
+  margin-left: 20px;
 
   /* Remove header responsiveness from Core UI */
   .navbar-brand {
@@ -21,6 +23,19 @@
     display: inherit !important;
   }
   .nav-items{
-    justify-content: space-evenly;
+    justify-content: space-between;
+  }
+  .nav-item .nav-link{
+    text-align: left;
+  }
+  .px-3{
+    padding-left: 0 !important;
+    min-width: auto;
+  }
+  .last-item{
+    padding-right: 0 !important;       
+    @media screen and (max-width: 1200px){
+      flex: 0 1 0;
+    }
   }
 }
