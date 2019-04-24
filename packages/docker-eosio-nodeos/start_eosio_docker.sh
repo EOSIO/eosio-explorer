@@ -33,7 +33,7 @@ if [ ! "$(docker ps -q -f name=$NODEOS_CONTAINER_NAME)" ]; then
 
     docker volume create --name=$NODEOS_VOLUME_NAME
     # --link is to get access to other container
-    echo "run docker container from the $NODEOS_IMAGE_NAME image"
+    echo "running docker container from the $NODEOS_IMAGE_NAME image"
     docker run --rm --name $NODEOS_CONTAINER_NAME -d \
     -p 8888:8888 -p 9876:9876 \
     --link $MONGODB_CONTAINER_NAME \
@@ -43,9 +43,9 @@ if [ ! "$(docker ps -q -f name=$NODEOS_CONTAINER_NAME)" ]; then
 
     if [ "$1" != "--nolog" ]
     then
-        echo "=== follow $NODEOS_CONTAINER_NAME logs ==="
+        echo "follow $NODEOS_CONTAINER_NAME logs"
         docker logs $NODEOS_CONTAINER_NAME --follow
     fi
 else
-    echo "docker already running"
+    echo "docker is already running"
 fi

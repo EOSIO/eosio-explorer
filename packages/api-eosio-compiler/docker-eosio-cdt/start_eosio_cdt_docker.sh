@@ -12,7 +12,7 @@ if [ -f "./config.file.local" ]; then
   source ./config.file.local
 fi
 
-echo "=== run docker container from the $CDT_IMAGE_NAME image ==="
+echo "starting docker container from the $CDT_IMAGE_NAME image"
 # -d: Detach docker container, let it run in background
 # --name: Assign name to the container
 # --mount: Mount filesystem from host to container.

@@ -29,8 +29,8 @@ fi
  docker build -t $CDT_IMAGE_NAME .
 # build docker image, if necessary
 if [[ "$(docker images -q $CDT_IMAGE_NAME)" == "" ]]; then
-  echo "=== Build docker image $CDT_IMAGE_PREFIX version $CDT_VERSION, this will take some time for the first time run ==="
+  echo "building docker image $CDT_IMAGE_PREFIX version $CDT_VERSION, this may take some time"
   docker build -t $CDT_IMAGE_NAME . --no-cache
 else
-  echo "=== Docker image already exists, skip building ==="
+  echo "docker image already exists, skip building"
 fi

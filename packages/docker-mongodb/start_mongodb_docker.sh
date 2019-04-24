@@ -20,7 +20,7 @@ fi
 if [ ! "$(docker ps -q -f name=$MONGODB_CONTAINER_NAME)" ]; then
   if [ "$(docker volume ls --format '{{.Name}}' -f name=$MONGODB_VOLUME_NAME)" ]; then
     echo "mongodb docker is not running, but mongodb volume exists"
-    echo "cleaning data now"
+    echo "cleaning mongodb volume"
     docker volume rm --force $MONGODB_VOLUME_NAME
     sleep 10
   fi

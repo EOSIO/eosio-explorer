@@ -15,8 +15,11 @@ fi
 if [ "$(docker ps -q -f name=$MONGODB_CONTAINER_NAME)" ]; then
   docker stop $MONGODB_CONTAINER_NAME 
   echo "waiting for docker to stop"
-  sleep 10s  
+  sleep 10s
+else
+  echo "mongodb docker is not running"  
 fi
+#remove docker volume after stopping mongodb or when mongodb container does not exists
 if [ "$(docker volume ls --format '{{.Name}}' -f name=$MONGODB_VOLUME_NAME)" ]; then
     docker volume rm --force $MONGODB_VOLUME_NAME
 fi
