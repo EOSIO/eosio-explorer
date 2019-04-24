@@ -38,4 +38,10 @@
       flex: 0 1 0;
     }
   }
+  .connectionInd{
+    padding-right: 0 !important;
+    @media screen and (max-width: 1200px){
+      padding-right: 1rem !important;
+    }
+  }
 }

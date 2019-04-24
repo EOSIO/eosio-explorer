@@ -18,7 +18,7 @@ const DivFlexStyled = styled.div`
   justify-content: flex-end;
 `
 const SearchInputStyled = styled(InputStyled)`
-  width: 30%;
+  width: 38%;
   margin-right: 10px;
 `
 const CustomErrorButton = styled(ButtonSecondary)`

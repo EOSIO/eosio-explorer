@@ -49,7 +49,13 @@ const NavWrapper = styled.div`
     flex: 3 0 0;
   }
   :nth-child(5){
-    flex: 1 0 0;
+    flex: 0.3 0 0;
+    @media screen and (max-width: 1200px){
+      padding: 0;
+    }
+  }
+  :nth-child(6){
+    flex: 0.6 0 0;
   }
 `
 
@@ -68,7 +74,6 @@ const VerticalLine = styled.div`
   width: 1px;
   margin: auto 0;
   background-color: #e8ebf0;
-  margin-right: 20px;
 `
 
 const LogoWrapper = styled.div`
@@ -158,11 +163,13 @@ const Header = (props) => {
               <Link to={`/push-action`} className={`nav-link ${pathname === `/push-action` ? `active` : ``}`}>PUSH ACTIONS</Link>
             </NavItem>
           </Nav>
-        </NavWrapper>        
+        </NavWrapper>   
         <NavWrapperRow>
           <VerticalLine>&nbsp;</VerticalLine>
+        </NavWrapperRow>     
+        <NavWrapperRow>          
           <Nav className="nav-items d-md-down-none" navbar>              
-            <NavItem className="px-3">
+            <NavItem className="px-3 connectionInd">
               <ConnectionIndicator/>
             </NavItem>
           </Nav>
