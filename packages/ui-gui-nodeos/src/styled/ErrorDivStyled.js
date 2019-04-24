@@ -1,7 +1,9 @@
 import styled from 'styled-components';
 
 export default styled.div`
-  font-size: 17px;
+  font-size: 14px;
   font-weight: bold;
-  margin-bottom: 30px;
+  color: #4e4b5d;
+  text-align: center;
+  padding: 150px 0;
 `

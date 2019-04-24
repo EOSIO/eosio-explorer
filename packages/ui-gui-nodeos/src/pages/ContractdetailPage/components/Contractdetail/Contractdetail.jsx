@@ -32,7 +32,9 @@ const DivMessageStyled = styled.div`
 const CustomErrorButton = styled(ButtonSecondary)`
   width: auto;
 `
-
+const CustomErrorDiv = styled(ErrorDivStyled)`
+  padding: 30px 0 0 0;
+`
 
 const Contractdetail = (props) => {
 
@@ -96,7 +98,7 @@ const Contractdetail = (props) => {
             : isFetching
               ? `loading...`
               : !(payload.length !== 0 && payload[0].hasOwnProperty("abi") === true)
-                ? <ErrorDivStyled>No Smart Contract found with Smart Contract Name {params.account_name}</ErrorDivStyled>
+                ? <CustomErrorDiv>No Smart Contract found with Smart Contract Name {params.account_name}</CustomErrorDiv>
                 : <div>
                     <Row> 
                       <Col sm="12">

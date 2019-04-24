@@ -10,8 +10,19 @@ const CardStyledNoBorder = styled(CardStyled)`
 `
 
 const OrderedList = styled.ol`
+  padding-left: 40px;
+  counter-reset: my-counter;
+  list-style: none;
+
   li {
-    margin-top: 1.5em;
+    margin-top: 1.5rem;
+    counter-increment: my-counter;
+    position: relative;    
+  }
+  li:before {
+    content: counter(my-counter)". ";    
+    position: absolute;
+    left: -30px;
   }
 `
 class InputInstructions extends Component {
