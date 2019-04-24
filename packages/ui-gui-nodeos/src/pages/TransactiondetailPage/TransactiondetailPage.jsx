@@ -10,10 +10,10 @@ class TransactiondetailPage extends Component {
   render() {
     return (
       <StandardTemplate>
-        <div className="TransactiondetailPage animated fadeIn">
+        <div className="TransactiondetailPage">
           <Row>
             <Col sm="12">
-              <PageTitleDivStyled>Transactions Page | Transaction Detail</PageTitleDivStyled>
+              <PageTitleDivStyled>Transactions | Transaction Detail Page</PageTitleDivStyled>
             </Col>
           </Row>
           <Row>

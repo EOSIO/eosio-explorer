@@ -12,10 +12,10 @@ class BlockdetailPage extends Component {
 
     return (
       <StandardTemplate>
-        <div className="BlockdetailPage animated fadeIn">
+        <div className="BlockdetailPage ">
           <Row>
             <Col sm="12">
-              <PageTitleDivStyled>Blocks Page | Block Detail</PageTitleDivStyled>
+              <PageTitleDivStyled>Blocks | Block Detail Page </PageTitleDivStyled>
             </Col>
           </Row>
           <Row>

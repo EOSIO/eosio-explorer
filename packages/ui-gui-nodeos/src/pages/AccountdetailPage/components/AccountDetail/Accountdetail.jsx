@@ -96,19 +96,19 @@ const Accountdetail = (props) => {
                             <Form> 
                               <FormGroup row>
                                 <Col sm={2}>Account Name:</Col>
-                                <Col sm={10}>
+                                <Col sm={10} className="hashText">
                                   {payload.account_name}
                                 </Col>
                               </FormGroup>
                               <FormGroup row>
                                 <Col sm={2}>Account Creation Date:</Col>
-                                <Col sm={10}>
+                                <Col sm={10} className="hashText">
                                   {payload.created}
                                 </Col>
                               </FormGroup>
                               <FormGroup row>
                                 <Col sm={2}>Owner Public Key:</Col>
-                                <Col sm={10}>                                            
+                                <Col sm={10} className="hashText">                                            
                                   {payload.permissions && 
                                     payload.permissions[0].perm_name === "owner"
                                     ? payload.permissions[0].required_auth.keys.length > 0
@@ -122,7 +122,7 @@ const Accountdetail = (props) => {
                               </FormGroup>
                               <FormGroup row>
                                 <Col sm={2}>Active Public Key:</Col>
-                                <Col sm={10}>
+                                <Col sm={10} className="hashText">
                                   {payload.permissions &&
                                     payload.permissions[0].perm_name === "active"
                                     ? payload.permissions[0].required_auth.keys.length > 0
@@ -137,11 +137,11 @@ const Accountdetail = (props) => {
                               { contractError || !(contractPayload.length !== 0 && contractPayload[0].hasOwnProperty("abi") === true)
                                 ? <FormGroup row>
                                     <Col sm={2}>Smart Contract:</Col>
-                                    <Col sm={10}> No Smart Contract </Col>
+                                    <Col sm={10} className="hashText"> No Smart Contract </Col>
                                   </FormGroup> 
                                 : <FormGroup row>
                                     <Col sm={2}>Smart Contract:</Col>
-                                    <Col sm={10}>
+                                    <Col sm={10} className="hashText">
                                       <Link to={`/contract/${contractPayload[0].name}`}>
                                         {contractPayload[0].name}
                                       </Link>                                      

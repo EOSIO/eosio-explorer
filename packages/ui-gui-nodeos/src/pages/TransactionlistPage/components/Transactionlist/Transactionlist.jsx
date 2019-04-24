@@ -18,7 +18,7 @@ const DivFlexStyled = styled.div`
   justify-content: flex-end;
 `
 const SearchInputStyled = styled(InputStyled)`
-  width: 30%;
+  width: 38%;
   margin-right: 10px;
 `
 const CustomErrorButton = styled(ButtonSecondary)`
@@ -69,8 +69,6 @@ const Transactionlist = (props) => {
            
           <div>{error
               ? <CustomErrorButton onClick={props.pollingStart}>Connection error, click to reload</CustomErrorButton>
-              : isFetching
-                ? <LoadingSpinner />
                 : 
                   <Row>
                     <Col xs="12">
@@ -83,7 +81,9 @@ const Transactionlist = (props) => {
                           </tr>
                         </thead>
                         <tbody className="hashText">
-                          {payload.map(eachTransaction=>
+                          {(isFetching || payload.length <= 0) ? (
+                            <tr><td colSpan="3" className="text-center"><LoadingSpinner /></td></tr>
+                          ) : payload.map(eachTransaction=>
                             <tr onClick={evt=>props.push(`/transaction/${eachTransaction.trx_id}`)} key={eachTransaction.trx_id}>
                               <td>{eachTransaction.trx_id}</td>
                               <td>{eachTransaction.block_num}</td>

@@ -74,7 +74,7 @@ class PermissionPage extends Component {
     
     return (
       <StandardTemplate>
-        <div className="PermissionPage animated fadeIn">          
+        <div className="PermissionPage ">          
           <Row>
             <Col sm="2"></Col>
             <Col sm="8">

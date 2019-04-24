@@ -11,7 +11,7 @@ class TransactionlistPage extends Component {
 
     return (
       <StandardTemplate>
-        <div className="TransactionlistPage animated fadeIn">
+        <div className="TransactionlistPage">
           <Row>
             <Col sm="12">
               <PageTitleDivStyled>Transactions Page</PageTitleDivStyled>

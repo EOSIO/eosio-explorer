@@ -17,7 +17,7 @@ class ActionlistPage extends Component {
 
     return (
       <StandardTemplate>
-        <div className="ActionlistPage animated fadeIn">
+        <div className="ActionlistPage">
           <Row>
             <Col xs="12">
               <PageTitleDivStyled>Actions Page</PageTitleDivStyled>

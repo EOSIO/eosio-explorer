@@ -42,7 +42,7 @@ const Blocklist = (props) => {
         <CardHeaderStyled>Block List</CardHeaderStyled>
         <CardBody>
           <Row>
-            <Col sm="6">
+            <Col sm="5">
               <CheckBoxDivStyled>
                 <label className="checkboxContainer">No empty blocks
 
@@ -55,7 +55,7 @@ const Blocklist = (props) => {
               </CheckBoxDivStyled>
 
             </Col>
-            <Col sm="6">
+            <Col sm="7">
               <DivFlexStyled>
                 <SearchInputStyled
                       placeholder="Block number / Block ID"
@@ -83,9 +83,7 @@ const Blocklist = (props) => {
           <div>
             { error
               ? <CustomErrorButton onClick={props.pollingStart}>Connection error, click to reload</CustomErrorButton>
-              : isFetching
-                ? <LoadingSpinner />
-                : 
+              : 
                 <Row>
                   <Col xs="12">
                     <TableStyled borderless>
@@ -98,7 +96,9 @@ const Blocklist = (props) => {
                           </tr>
                         </thead>
                         <tbody className="hashText">
-                          {payload.map(eachBlock=>
+                          {(isFetching || payload.length <= 0) ? (
+                            <tr><td colSpan="4" className="text-center"><LoadingSpinner /></td></tr>
+                          ) : payload.map(eachBlock=>
                             <tr onClick={evt=>props.push(`/block/${eachBlock.block_id}`)} key={eachBlock.block_id}>
                               <td>{eachBlock.block_num}</td>
                               <td>{eachBlock.block_id}</td>

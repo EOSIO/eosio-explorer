@@ -24,21 +24,20 @@ else
 fi
 
 if [ ! "$(docker ps -q -f name=$NODEOS_CONTAINER_NAME)" ]; then
-    # check if data folder is empty else we'll have dirty flag problem in blockchain
-    if find "$(pwd)/data" -mindepth 1 -print -quit 2>/dev/null | grep -q .; then
-        echo "eosio docker is not running, but data folder exists"
-        echo "cleaning data"
-        rm -r "$(pwd)"/data/*
+    if [ "$(docker volume ls --format '{{.Name}}' -f name=$NODEOS_VOLUME_NAME)" ]; then
+      echo "eosio docker is not running, but eosio volume exists"
+      echo "cleaning data now"
+      docker volume rm --force $NODEOS_VOLUME_NAME
+      sleep 10
     fi
 
+    docker volume create --name=$NODEOS_VOLUME_NAME
     # --link is to get access to other container
     echo "running docker container from the $NODEOS_IMAGE_NAME image"
     docker run --rm --name $NODEOS_CONTAINER_NAME -d \
     -p 8888:8888 -p 9876:9876 \
     --link $MONGODB_CONTAINER_NAME \
-    -v /$(pwd)/contracts:/opt/eosio/bin/contracts \
-    -v /$(pwd)/scripts:/opt/eosio/bin/scripts \
-    -v /$(pwd)/data:/mnt/dev/data \
+    -v $NODEOS_VOLUME_NAME:/mnt/dev/data \
     $NODEOS_IMAGE_NAME \
     "$script"
 
