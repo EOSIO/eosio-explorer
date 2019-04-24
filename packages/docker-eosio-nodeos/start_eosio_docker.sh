@@ -31,14 +31,20 @@ if [ ! "$(docker ps -q -f name=$NODEOS_CONTAINER_NAME)" ]; then
         rm -r "$(pwd)"/data/*
     fi
 
+    if [ "$(docker volume ls --format '{{.Name}}' -f name=$NODEOS_VOLUME_NAME)" ]; then
+      echo "mongodb docker is not running, but mongodb volume exists"
+      echo "cleaning data now"
+      docker volume rm --force $NODEOS_VOLUME_NAME
+      sleep 10
+    fi
+
+    docker volume create --name=$NODEOS_VOLUME_NAME
     # --link is to get access to other container
     echo "run docker container from the $NODEOS_IMAGE_NAME image"
     docker run --rm --name $NODEOS_CONTAINER_NAME -d \
     -p 8888:8888 -p 9876:9876 \
     --link $MONGODB_CONTAINER_NAME \
-    -v /$(pwd)/contracts:/opt/eosio/bin/contracts \
-    -v /$(pwd)/scripts:/opt/eosio/bin/scripts \
-    -v /$(pwd)/data:/mnt/dev/data \
+    -v $NODEOS_VOLUME_NAME:/mnt/dev/data \
     $NODEOS_IMAGE_NAME \
     "$script"
 

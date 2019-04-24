@@ -7,3 +7,6 @@ RUN wget https://github.com/EOSIO/eos/releases/download/v1.6.3/eosio_1.6.3-1-ubu
 RUN apt-get update && sudo apt install -y ./eosio_1.6.3-1-ubuntu-18.04_amd64.deb
 
 WORKDIR /opt/eosio/bin/
+
+COPY ./scripts /opt/eosio/bin/scripts
+COPY ./contracts /opt/eosio/bin/contracts
