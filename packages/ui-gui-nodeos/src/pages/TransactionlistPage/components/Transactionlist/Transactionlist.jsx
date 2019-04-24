@@ -57,7 +57,8 @@ const Transactionlist = (props) => {
                       }
                     }
                     onChange={evt=>{setInputValue(evt.target.value)}}/>
-              <ButtonPrimary             
+              <ButtonPrimary    
+                    disabled = { inputValue === "" ? true : false }         
                     onClick={evt=> {
                       setInputValue("");
                       if(inputValue !== "")

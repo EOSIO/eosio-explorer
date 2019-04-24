@@ -17,7 +17,7 @@ const FirstCardStyled = styled(CardStyled)`
 `
 
 const SearchInputStyled = styled(InputStyled)`
-  width: 30%;
+  width: 38%;
   margin-right: 10px;
 `
 const DivFlexStyled = styled.div`
@@ -66,7 +66,8 @@ const Accountdetail = (props) => {
                   }
                 }
                 onChange={evt=>{setInputValue(evt.target.value)}}/>
-              <ButtonPrimary                        
+              <ButtonPrimary
+                disabled = { inputValue === "" ? true : false }                        
                 onClick={evt=> {
                   setInputValue("")
                   if(inputValue !== "")
