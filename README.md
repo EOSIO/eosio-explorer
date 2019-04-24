@@ -29,9 +29,13 @@ Please refer to below default settings section.
 
 A more detailed explanation on how to get started with the EOSIO Toppings tool can be found in the [help document](help.md).
 
+All the startup scripts are put in the app folder "ui-gui-nodeos" (`/packages/ui-gui-nodeos`).
+
+Please refer to this app folder for below sections.
+
 To get quickly set up and running with this tool, please perform the following steps:
 1. Directly clone this monorepo (using `git clone`)
-2. Navigate to the root level of the cloned repository and run `./first_time_setup.sh` to install and build all the necessary dependencies
+2. Navigate to the scripts folder of the ui-gui-nodeos package (`/packages/ui-gui-nodeos/scripts`) of the cloned repository and run `./first_time_setup.sh` to install and build all the necessary dependencies
 3. Run `./quick_start.sh`, which will automatically start the tool in your browser at `http://localhost:3000` after creating the necessary containers and services
 
 ## Config
