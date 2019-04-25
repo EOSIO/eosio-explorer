@@ -3,9 +3,8 @@ import styled from 'styled-components';
 import {
   CardBody, Row, Col, Spinner,
   Nav, NavLink, NavItem, TabContent, TabPane,
-  Form, FormGroup, Label, Badge,
-  DropdownToggle, DropdownMenu, DropdownItem,
-  UncontrolledTooltip, Tooltip
+  Form, FormGroup, Label, Badge, Tooltip,
+  DropdownToggle, DropdownMenu, DropdownItem  
 } from 'reactstrap';
 import { StandardTemplate } from 'templates';
 import { connect } from 'react-redux';
@@ -333,13 +332,13 @@ const DeploymentPage = (props) => {
                   Click this button to compile the smart contract and view the resulting ABI
                   file in the viewer below.
                 </Tooltip>
-                <UncontrolledTooltip placement="top" target="ImportAbi"
+                <ToolTipStyled placement="top" target="ImportAbi"
                   delay={{ show: 0, hide: 0 }}
                   trigger="hover"
                   autohide={true}
                 >
                   Click this button to import a pre-made ABI file and review it in the viewer below
-                </UncontrolledTooltip>
+                </ToolTipStyled>
               </CardBody>
             </CardStyled>
             <CardStyled>
@@ -428,13 +427,13 @@ const DeploymentPage = (props) => {
                 >
                   CLEAR ALL LOGS
                 </ActionButton>
-                <UncontrolledTooltip placement="top" target="ClearLogs"
+                <ToolTipStyled placement="top" target="ClearLogs"
                   delay={{ show: 0, hide: 0 }}
                   trigger="hover"
                   autohide={true}
                 >
                   Click this button to remove all the currently displayed warnings and error logs
-                </UncontrolledTooltip>
+                </ToolTipStyled>
               </LogCardHeaderStyled>
               <CardBody>
                 <div>

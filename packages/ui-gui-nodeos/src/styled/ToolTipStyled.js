@@ -8,7 +8,8 @@ export default styled(UncontrolledTooltip)`
     font-weight: 500;
     text-align: left;
   }
+  
   .arrow:before{
-    border-right-color : #443f54;
+    border-${props => props.placement}-color : #443f54;
   }
 `
