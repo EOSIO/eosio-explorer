@@ -36,7 +36,17 @@ const ImageDiv = styled.div`
   margin-bottom: 1rem;
   margin-top: 3rem;
 `
-
+const DivFlexStyled = styled.div`
+  display: flex;
+  justify-content: space-between;
+  button{
+    margin-top: -7px;
+  }
+`
+const DragDropSVGStyled = styled(DragDropSVG)`
+  width: 20px;
+  height: 29px;
+`
 class DragDropCodeViewer extends Component {
   constructor() {
     super();
@@ -112,15 +122,28 @@ class DragDropCodeViewer extends Component {
                 <div {...getRootProps()}>
                   <input {...getInputProps()} />
                     <Jumbotron>
-                      <ImageDiv className="text-center">
-                        <DragDropSVG />
-                      </ImageDiv>   
-                      <br />                   
-                      <p id="ddLabel" className="lead text-center">Drag & Drop files here or<br/> click browse to choose a file.</p>
-                      <br />
-                      <p className="lead text-center browseButton">
-                        <ButtonPrimary onClick={(e) => e.preventDefault()} >BROWSE</ButtonPrimary>
-                      </p>
+                      {
+                        this.state.value && this.state.value !== "" 
+                        ? <DivFlexStyled>
+                            <div className="text-center">
+                              <DragDropSVGStyled />&nbsp;&nbsp;
+                              <label>Drag & Drop files here or click browse to choose a file.</label>
+                            </div>                           
+                            <ButtonPrimary onClick={(e) => e.preventDefault()} >BROWSE</ButtonPrimary>
+                          </DivFlexStyled>
+                        : <div>
+                            <ImageDiv className="text-center">
+                              <DragDropSVG />
+                            </ImageDiv>   
+                            <br />                   
+                            <p id="ddLabel" className="lead text-center">Drag & Drop files here or<br/> click browse to choose a file.</p>
+                            <br />
+                            <p className="lead text-center browseButton">
+                              <ButtonPrimary onClick={(e) => e.preventDefault()} >BROWSE</ButtonPrimary>
+                            </p>
+                          </div>                          
+                      }                 
+                      
                     </Jumbotron>
                 </div>
               </section>
