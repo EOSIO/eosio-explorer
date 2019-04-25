@@ -2,20 +2,44 @@ import './InfoPage.scss';
 
 import React, { Component } from 'react';
 import { CardBody, Col, Row } from 'reactstrap';
+import { connect } from 'react-redux';
 
 import { StandardTemplate } from 'templates';
 import Nodeswitch from './components/Nodeswitch';
 import Headblock from './components/Headblock';
 import BlockchainInfo from './components/BlockchainInfo';
 import LastIrreversibleBlockInfo from './components/LastIrreversibleBlockInfo';
+import WelcomePopup from './components/WelcomePopup';
 import { CardStyled, CardHeaderStyled, PageTitleDivStyled } from 'styled';
 import styled from 'styled-components';
+
+import { toggleShowAgain } from './components/WelcomePopup/WelcomePopupReducer'
 
 const FirstCardStyled = styled(CardStyled)`
   border-top: solid 2px #1173a4;
 `
 
 class InfoPage extends Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      modalIsOpen: false
+    }
+  }
+
+  componentDidMount() {
+    this.setState({
+      modalIsOpen: !this.props.showWelcomePopup
+    })
+  }
+
+  toggleModal () {
+    this.setState({
+      modalIsOpen: !this.state.modalIsOpen
+    });
+  }
 
   render() {
 
@@ -80,9 +104,24 @@ class InfoPage extends Component {
             </Col>
           </Row>
         </div>
+        {
+          (this.state.modalIsOpen) && (
+            <WelcomePopup
+              toggle={()=>this.toggleModal()}
+              open={this.state.modalIsOpen}
+              />
+          )
+        } 
       </StandardTemplate>
     );
   }
 }
 
-export default InfoPage;
+export default connect(
+  ({ infoPage: { welcomePopupState: { showWelcomePopup } }}) => ({
+    showWelcomePopup
+  }),
+  {
+    toggleShowAgain
+  }
+)(InfoPage);

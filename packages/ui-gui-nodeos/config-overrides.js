@@ -10,9 +10,7 @@ module.exports = function override(config, env) {
 
   // only do the overriding in production environment
   if ( process.env.NODE_ENV === "production" ){
-
-    //for dedug
-    // console.log(util.inspect(config));
+    console.log('\x1b[31m%s\x1b[0m', 'Please be patient, creating the optimized production build may take a few minutes depending on your machine.');
   }
 
   return config;
