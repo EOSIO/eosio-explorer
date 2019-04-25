@@ -1,7 +1,7 @@
-import { Tooltip } from 'reactstrap';
+import { UncontrolledTooltip } from 'reactstrap';
 import styled from 'styled-components';
 
-export default styled(Tooltip)`
+export default styled(UncontrolledTooltip)`
   .tooltip-inner{
     background-color: #443f54;
     font-size: 10px;

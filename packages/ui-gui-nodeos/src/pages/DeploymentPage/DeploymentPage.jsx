@@ -13,7 +13,7 @@ import InputInstructions from './components/InputInstructions';
 import { DragDropCodeViewer, CodeViewer } from 'components';
 import {
   CardStyled, CardHeaderStyled, PageTitleDivStyled,
-  InputStyled, ButtonPrimary, ToolTipStyled,
+  InputStyled, ButtonPrimary, ToolTipUncontrolledStyled, 
   DropdownStyled, OverlayStyled, ButtonGroupSeperated
 } from 'styled';
 import cogoToast from 'cogo-toast';
@@ -263,14 +263,14 @@ const DeploymentPage = (props) => {
                         </Col>
                       </FormGroup>
                     </Form>
-                    <ToolTipStyled placement="right" target="rootFolder"
+                    <ToolTipUncontrolledStyled placement="right" target="rootFolder"
                       delay={{ show: 0, hide: 0}}
                       trigger="hover focus"
                       autohide={true}
                     >
                       Input the absolute folder path containing your .cpp file in this field.
                       <br/>For example:<br/> /Users/syzygy/contracts/mycontract
-                      </ToolTipStyled>
+                      </ToolTipUncontrolledStyled>
                   </Col>
                 </Row>
               </CardBody>
@@ -332,13 +332,13 @@ const DeploymentPage = (props) => {
                   Click this button to compile the smart contract and view the resulting ABI
                   file in the viewer below.
                 </Tooltip>
-                <ToolTipStyled placement="top" target="ImportAbi"
+                <ToolTipUncontrolledStyled placement="top" target="ImportAbi"
                   delay={{ show: 0, hide: 0 }}
                   trigger="hover"
                   autohide={true}
                 >
                   Click this button to import a pre-made ABI file and review it in the viewer below
-                </ToolTipStyled>
+                </ToolTipUncontrolledStyled>
               </CardBody>
             </CardStyled>
             <CardStyled>
@@ -427,13 +427,13 @@ const DeploymentPage = (props) => {
                 >
                   CLEAR ALL LOGS
                 </ActionButton>
-                <ToolTipStyled placement="top" target="ClearLogs"
+                <ToolTipUncontrolledStyled placement="top" target="ClearLogs"
                   delay={{ show: 0, hide: 0 }}
                   trigger="hover"
                   autohide={true}
                 >
                   Click this button to remove all the currently displayed warnings and error logs
-                </ToolTipStyled>
+                </ToolTipUncontrolledStyled>
               </LogCardHeaderStyled>
               <CardBody>
                 <div>
