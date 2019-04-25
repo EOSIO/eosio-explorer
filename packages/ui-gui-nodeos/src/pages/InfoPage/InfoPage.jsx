@@ -23,14 +23,9 @@ class InfoPage extends Component {
     super(props);
 
     this.state = {
-      modalIsOpen: false
+      modalIsOpen: !this.props.showWelcomePopup,
+      hasRendered: false
     }
-  }
-
-  componentDidMount() {
-    this.setState({
-      modalIsOpen: !this.props.showWelcomePopup
-    })
   }
 
   toggleModal () {
@@ -116,8 +111,12 @@ class InfoPage extends Component {
 }
 
 export default connect(
-  ({ infoPage: { welcomePopupState: { showWelcomePopup } }}) => ({
-    showWelcomePopup
+  ({
+    infoPage: { 
+      welcomePopupState: { showWelcomePopup } 
+    },
+  }) => ({
+    showWelcomePopup,
   }),
   null
 )(InfoPage);
