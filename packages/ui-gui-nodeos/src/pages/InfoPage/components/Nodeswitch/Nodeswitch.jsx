@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import { connect } from 'react-redux';
 
-import { Col, Form, FormGroup, UncontrolledTooltip, Label, FormFeedback } from 'reactstrap';
+import { Col, Form, FormGroup, Label, FormFeedback } from 'reactstrap';
 import BasicModal from 'components/BasicModal';
 import styled from 'styled-components';
 
@@ -10,7 +10,7 @@ import { connectSwitch, connectReset, pathInitState, errorReset } from 'reducers
 import useForm from 'helpers/useForm';
 import { useToggle } from 'helpers/useToggle';
 import validate from './NodeswitchValidatorEngine';
-import { InputStyled, ButtonGroupSeperated, ButtonPrimary, ButtonSecondary } from 'styled';
+import { InputStyled, ButtonGroupSeperated, ButtonPrimary, ButtonSecondary, ToolTipUncontrolledStyled } from 'styled';
 import { accountClear } from 'reducers/permission';
 
 const CenteredLabel = styled(Label)`
@@ -97,14 +97,14 @@ const Nodeswitch = (props) => {
                 onClick={()=>toggleResetModal(true)}
               >RESET</ButtonSecondary>
             </ButtonGroupSeperated>
-            <UncontrolledTooltip placement="top" target="ResetCxn"
+            <ToolTipUncontrolledStyled placement="top" target="ResetCxn"
                 delay={{show: 0, hide: 0}}
                 trigger="hover"
                 autohide={true}
                 >
                 Clicking this button will reset the input endpoints for both Nodeos and MongoDB
                 URLs to the default ones.
-            </UncontrolledTooltip>
+            </ToolTipUncontrolledStyled>
           </Col>
         </FormGroup>
       </Form>

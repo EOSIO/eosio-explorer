@@ -7,7 +7,7 @@ import pathNameConsumer from 'helpers/pathname-consumer';
 import { CardBody, Col, Row, Form, FormGroup} from 'reactstrap';
 import styled from 'styled-components';
 import { CodeViewer } from 'components';
-import { CardStyled, CardHeaderStyled, TableStyled, ErrorDivStyled } from 'styled';
+import { CardStyled, CardHeaderStyled, TableStyled, ErrorDivStyled, ButtonPrimary } from 'styled';
 
 
 const FirstCardStyled = styled(CardStyled)`
@@ -36,7 +36,16 @@ const Blockdetail = (props) => {
               : isFetching 
                 ? `loading...`
                 : payload.length === 0 
-                  ? <ErrorDivStyled>No block found with block id or block number {params.id_or_num}</ErrorDivStyled>
+                  ? <CardStyled>
+                      <CardHeaderStyled></CardHeaderStyled>
+                      <CardBody>
+                        <ErrorDivStyled>No Block found with Block ID or Block Number {params.id_or_num} <br/><br/>
+                          <ButtonPrimary
+                            onClick={evt=> props.push(`/block-list`)}>Back
+                          </ButtonPrimary>           
+                        </ErrorDivStyled>           
+                      </CardBody>
+                    </CardStyled>
                   : <div>
                       <Row>
                         <Col sm="12">

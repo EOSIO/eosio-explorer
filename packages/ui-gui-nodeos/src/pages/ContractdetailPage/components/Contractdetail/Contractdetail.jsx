@@ -17,7 +17,7 @@ const FirstCardStyled = styled(CardStyled)`
 `
 
 const SearchInputStyled = styled(InputStyled)`
-  width: 30%;
+  width: 38%;
   margin-right: 10px;
 `
 const DivFlexStyled = styled.div`
@@ -32,7 +32,9 @@ const DivMessageStyled = styled.div`
 const CustomErrorButton = styled(ButtonSecondary)`
   width: auto;
 `
-
+const CustomErrorDiv = styled(ErrorDivStyled)`
+  padding: 30px 0 0 0;
+`
 
 const Contractdetail = (props) => {
 
@@ -75,7 +77,7 @@ const Contractdetail = (props) => {
                       }
                       onChange={evt=>{setInputValue(evt.target.value)}}/>
                 <ButtonPrimary
-                      color="secondary"                           
+                      disabled = { inputValue === "" }                          
                       onClick={evt=> {
                         setInputValue("")
                         if(inputValue !== "")
@@ -96,7 +98,7 @@ const Contractdetail = (props) => {
             : isFetching
               ? `loading...`
               : !(payload.length !== 0 && payload[0].hasOwnProperty("abi") === true)
-                ? <ErrorDivStyled>No Smart Contract found with Smart Contract Name {params.account_name}</ErrorDivStyled>
+                ? <CustomErrorDiv>No Smart Contract found with Smart Contract Name {params.account_name}</CustomErrorDiv>
                 : <div>
                     <Row> 
                       <Col sm="12">

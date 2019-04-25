@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { connect } from 'react-redux';
 import { Row, Col, CardTitle, Form } from 'reactstrap';
@@ -13,7 +13,7 @@ const FormStyled = styled(Form)`
   justify-content: flex-end;
 `
 const FilterInputStyled = styled(InputStyled)`
-  width: 30%;
+  width: 38%;
   margin-right: 10px;
 `
 const CustomErrorButton = styled(ButtonSecondary)`
@@ -26,7 +26,7 @@ const Actionlist = (props) => {
     props.pollingStart();
     return () => { props.pollingStop() }
   }, [])
-
+  const [inputValue, setInputValue] = useState("");
   let { actionlist: { isFetching, data, smartContractName, records } } = props;
   let { payload = [], error } = data;
 
@@ -40,13 +40,20 @@ const Actionlist = (props) => {
                 let val = e.target.smartContractNameSearch.value;
                 if(smartContractName) {
                   props.smartContractNameSearch("");
+                  setInputValue("");
                   e.target.smartContractNameSearch.value = "";
                 } else {
                   props.smartContractNameSearch(val);
+                  setInputValue(val);
                 }
               }}>
-              <FilterInputStyled disabled={!!smartContractName} name="smartContractNameSearch" placeholder="Smart Contract Name..." defaultValue={smartContractName} />
-              <ButtonPrimary color="primary">{smartContractName ? "Clear" : "Filter"}</ButtonPrimary>
+              <FilterInputStyled
+                  disabled={!!smartContractName} 
+                  name="smartContractNameSearch" 
+                  placeholder="Smart Contract Name..." 
+                  defaultValue={smartContractName} 
+                  onChange={evt=>{setInputValue(evt.target.value)}}/>
+              <ButtonPrimary color="primary" disabled = { inputValue  === "" ? true : false }>{smartContractName ? "Clear" : "Filter"}</ButtonPrimary>
             </FormStyled>
           </CardTitle>
         </Col>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { 
-  CardBody, Row, Col, Tooltip
+  CardBody, Row, Col
 } from 'reactstrap';
 import cogoToast from 'cogo-toast';
 
@@ -15,7 +15,7 @@ import ImportAccount from './components/ImportAccount';
 import { panelSelect } from './PermissionPageReducer';
 import { fetchStart, accountClear } from 'reducers/permission';
 import styled from 'styled-components';
-import { PageTitleDivStyled, CardStyled, ButtonGroupSeperated, ButtonPrimary, ButtonSecondary } from 'styled';
+import { PageTitleDivStyled, CardStyled, ButtonGroupSeperated, ButtonPrimary, ButtonSecondary, ToolTipStyled } from 'styled';
 
 const FirstCardStyled = styled(CardStyled)`
   border-top: solid 2px #1173a4;
@@ -99,7 +99,7 @@ class PermissionPage extends Component {
                             >
                             Back
                           </ButtonPrimary>
-                          <Tooltip placement="top" target="ResetPermissionBtn"
+                          <ToolTipStyled placement="bottom" target="ResetPermissionBtn"
                             isOpen={this.state.resetTooltip && panel === "permission-list"}
                             toggle={()=>this.toggleResetTooltip()}
                             delay={{show: 0, hide: 0}}
@@ -108,7 +108,7 @@ class PermissionPage extends Component {
                             All private keys are stored locally on your machine. Clicking this button will
                             revert the local storage to its default state. This means all your
                             currently stored private keys will be cleared!
-                          </Tooltip>
+                          </ToolTipStyled>
                         </Col>
                       </Row>
                       <br/>

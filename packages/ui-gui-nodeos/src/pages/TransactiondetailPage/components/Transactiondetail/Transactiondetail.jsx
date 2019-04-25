@@ -7,7 +7,7 @@ import pathNameConsumer from 'helpers/pathname-consumer';
 import { CardBody, Col, Row, Form, FormGroup} from 'reactstrap';
 import styled from 'styled-components';
 import { CodeViewer } from 'components';
-import { CardStyled, CardHeaderStyled, TableStyled, ButtonSecondary,ErrorDivStyled } from 'styled';
+import { CardStyled, CardHeaderStyled, TableStyled, ButtonSecondary,ErrorDivStyled, ButtonPrimary } from 'styled';
 
 const FirstCardStyled = styled(CardStyled)`
   border-top: solid 2px #1173a4;
@@ -40,7 +40,16 @@ const Transactiondetail = (props) => {
               : isFetching           
                 ? `loading...`
                 : payload.length === 0 
-                  ? <ErrorDivStyled>No transaction found with transaction id {params.id}</ErrorDivStyled>
+                  ? <CardStyled>
+                      <CardHeaderStyled></CardHeaderStyled>
+                      <CardBody>
+                        <ErrorDivStyled>No Transaction found with Transaction ID {params.id} <br/><br/>
+                          <ButtonPrimary
+                            onClick={evt=> props.push(`/transaction-list`)}>Back
+                          </ButtonPrimary>           
+                        </ErrorDivStyled>           
+                      </CardBody>
+                    </CardStyled>
                   : <div>
                       <Row>
                         <Col sm="12">

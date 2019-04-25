@@ -6,7 +6,7 @@ import { pollingStart, pollingStop, recordsUpdate } from './TransactionlistReduc
 import { Row, Col, CardTitle, CardBody } from 'reactstrap';
 import styled from 'styled-components';
 import { LimitSelectDropdown, LoadingSpinner } from 'components';
-import { CardStyled,CardHeaderStyled, TableStyled, ButtonPrimary, ButtonSecondary, InputStyled} from 'styled';
+import { CardStyled, CardHeaderStyled, TableStyled, ButtonPrimary, ButtonSecondary, InputStyled} from 'styled';
 
 
 const FirstCardStyled = styled(CardStyled)`
@@ -57,7 +57,8 @@ const Transactionlist = (props) => {
                       }
                     }
                     onChange={evt=>{setInputValue(evt.target.value)}}/>
-              <ButtonPrimary             
+              <ButtonPrimary    
+                    disabled = { inputValue === "" }         
                     onClick={evt=> {
                       setInputValue("");
                       if(inputValue !== "")

@@ -15,16 +15,17 @@ import { CardStyled, CardHeaderStyled, ButtonPrimary, InputStyled, ErrorDivStyle
 const FirstCardStyled = styled(CardStyled)`
   border-top: solid 2px #1173a4;
 `
-
 const SearchInputStyled = styled(InputStyled)`
-  width: 30%;
+  width: 38%;
   margin-right: 10px;
 `
 const DivFlexStyled = styled.div`
   display: flex;
   justify-content: flex-end;
 `
-
+const CustomErrorDiv = styled(ErrorDivStyled)`
+  padding: 30px 0 0 0;
+`
 const Accountdetail = (props) => {
 
   const [inputValue, setInputValue] = useState("");
@@ -66,7 +67,8 @@ const Accountdetail = (props) => {
                   }
                 }
                 onChange={evt=>{setInputValue(evt.target.value)}}/>
-              <ButtonPrimary                        
+              <ButtonPrimary
+                disabled = { inputValue === ""}                        
                 onClick={evt=> {
                   setInputValue("")
                   if(inputValue !== "")
@@ -82,7 +84,7 @@ const Accountdetail = (props) => {
         { showDetailsSection &&
           <div>                     
            {error
-            ? <ErrorDivStyled>No account found with Account Name {params.account_name}</ErrorDivStyled>
+            ? <CustomErrorDiv>No Account found with Account Name {params.account_name}</CustomErrorDiv>
             : isFetching
               ? `loading...`
               : (Object.keys(payload).length === 0 && payload.constructor === Object) 
