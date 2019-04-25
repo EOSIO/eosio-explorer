@@ -13,6 +13,8 @@ import RadioButtonDivStyled from './RadioButtonDivStyled';
 import OverlayStyled from './OverlayStyled';
 import ErrorDivStyled from './ErrorDivStyled';
 import InfoDivStyled from './InfoDivStyled';
+import ToolTipStyled from './ToolTipStyled';
+
 
 export { 
   CardStyled, 
@@ -29,5 +31,6 @@ export {
   RadioButtonDivStyled,
   OverlayStyled,
   ErrorDivStyled,
-  InfoDivStyled
+  InfoDivStyled,
+  ToolTipStyled
 }

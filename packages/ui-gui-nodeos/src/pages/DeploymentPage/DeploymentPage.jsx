@@ -14,7 +14,7 @@ import InputInstructions from './components/InputInstructions';
 import { DragDropCodeViewer, CodeViewer } from 'components';
 import {
   CardStyled, CardHeaderStyled, PageTitleDivStyled,
-  InputStyled, ButtonPrimary,
+  InputStyled, ButtonPrimary, ToolTipStyled,
   DropdownStyled, OverlayStyled, ButtonGroupSeperated
 } from 'styled';
 import cogoToast from 'cogo-toast';
@@ -22,8 +22,22 @@ import cogoToast from 'cogo-toast';
 import { defaultSet } from 'reducers/permission';
 import { folderSet, abiImport, contractCompile, contractDeploy, logClear, outputClear } from './DeploymentPageReducer';
 
+const ToolTipSVG = () => 
+  <svg width="18px" height="18px" viewBox="0 0 18 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">   
+    <g id="Final-Version" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+      <g id="Artboard" transform="translate(-93.000000, -44.000000)">
+          <g id="Group-15" transform="translate(93.000000, 44.000000)">
+              <circle id="Oval" fill="#667D96" cx="9" cy="9" r="9"></circle>
+              <text id="i" fontFamily="ProximaNova-Semibold, Proxima Nova" fontSize="14" fontWeight="500" fill="#FFFFFF">
+                  <tspan x="7.313" y="14">i</tspan>
+              </text>
+          </g>
+      </g>
+    </g>
+  </svg>
+
 const ActionButton = styled(ButtonPrimary)`
-  width: 156px
+  width: 156px;
 `
 
 const tabPane = {
@@ -56,6 +70,10 @@ const ButtonPrimaryResponsive = styled(ButtonPrimary)`
   max-width: 130px;
   display: inline-block;
   width: 100%;
+`
+const ColStyled = styled(Col)`
+  margin: auto 0;
+  padding-top: 5px;
 `
 
 /**
@@ -234,26 +252,26 @@ const DeploymentPage = (props) => {
                     /> <br />
                     <Form>
                       <FormGroup row>
-                        <Label for="rootFolder" sm={2}>
-                          Root Folder Path:
-                          </Label>
+                        <ColStyled sm={2}>
+                          <Label> Root Folder Path: </Label>&nbsp;&nbsp;
+                          <Label id="rootFolder"><ToolTipSVG /></Label>
+                        </ColStyled>
                         <Col sm={10}>
                           <InputStyled type="text"
-                            name="rootFolder"
-                            id="rootFolder"
+                            name="rootFolder"                            
                             value={path}
                             onChange={(ev) => handleChange(ev)} />
                         </Col>
                       </FormGroup>
                     </Form>
-                    <UncontrolledTooltip placement="top" target="rootFolder"
-                      delay={{ show: 0, hide: 0 }}
+                    <ToolTipStyled placement="right" target="rootFolder"
+                      delay={{ show: 0, hide: 0}}
                       trigger="hover focus"
                       autohide={true}
                     >
                       Input the absolute folder path containing your .cpp file in this field.
-                      For example: /Users/syzygy/contracts/mycontract
-                      </UncontrolledTooltip>
+                      <br/>For example:<br/> /Users/syzygy/contracts/mycontract
+                      </ToolTipStyled>
                   </Col>
                 </Row>
               </CardBody>
