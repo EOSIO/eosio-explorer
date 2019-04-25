@@ -39,6 +39,9 @@ const ImageDiv = styled.div`
 const DivFlexStyled = styled.div`
   display: flex;
   justify-content: space-between;
+  font-weight: 500;
+  color: #393742;
+  font-size: 14px;
   button{
     margin-top: -7px;
   }

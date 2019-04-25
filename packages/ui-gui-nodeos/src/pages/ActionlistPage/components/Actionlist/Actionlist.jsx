@@ -53,7 +53,7 @@ const Actionlist = (props) => {
                   placeholder="Smart Contract Name..." 
                   defaultValue={smartContractName} 
                   onChange={evt=>{setInputValue(evt.target.value)}}/>
-              <ButtonPrimary color="primary" disabled = { inputValue  === "" ? true : false }>{smartContractName ? "Clear" : "Filter"}</ButtonPrimary>
+              <ButtonPrimary color="primary" disabled = { inputValue  === "" }>{smartContractName ? "Clear" : "Filter"}</ButtonPrimary>
             </FormStyled>
           </CardTitle>
         </Col>
