@@ -71,7 +71,7 @@ const Blocklist = (props) => {
                       }
                       onChange={evt=>{setInputValue(evt.target.value)}}/>
                 <ButtonPrimary
-                      disabled = { inputValue === "" ? true : false }
+                      disabled = { inputValue === "" }
                       onClick={evt=> {
                         setInputValue("");
                         if(inputValue !== "") 
