@@ -13,8 +13,6 @@ import WelcomePopup from './components/WelcomePopup';
 import { CardStyled, CardHeaderStyled, PageTitleDivStyled } from 'styled';
 import styled from 'styled-components';
 
-import { toggleShowAgain } from './components/WelcomePopup/WelcomePopupReducer'
-
 const FirstCardStyled = styled(CardStyled)`
   border-top: solid 2px #1173a4;
 `
@@ -121,7 +119,5 @@ export default connect(
   ({ infoPage: { welcomePopupState: { showWelcomePopup } }}) => ({
     showWelcomePopup
   }),
-  {
-    toggleShowAgain
-  }
+  null
 )(InfoPage);
