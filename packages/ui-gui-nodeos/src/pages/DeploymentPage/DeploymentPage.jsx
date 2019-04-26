@@ -71,14 +71,15 @@ const ButtonPrimaryResponsive = styled(ButtonPrimary)`
   display: inline-block;
   width: 100%;
 `
-const ColStyled = styled(Col)`
-  margin: auto 0;
-  padding-top: 5px;
-`
 const LabelStyled = styled(Label)`
   display: inline;
+  margin: auto;
 `
-
+const DivFlexStyled = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`
 /**
  * Define constants to match the action state
  * The UI's useEffect relies on this state to determine what kind of toast to show
@@ -253,20 +254,14 @@ const DeploymentPage = (props) => {
                     <DragDropCodeViewer
                       setCurrentFile={setCurrentFile}
                     /> <br />
-                    <Form>
-                      <FormGroup row>
-                        <ColStyled sm={2}>
-                          <LabelStyled> Root Folder Path: </LabelStyled>&nbsp;&nbsp;
-                          <LabelStyled id="rootFolder"><ToolTipSVG /></LabelStyled>
-                        </ColStyled>
-                        <Col sm={10}>
-                          <InputStyled type="text"
+                    <DivFlexStyled>
+                      <LabelStyled> Root&nbsp;Folder&nbsp;Path: </LabelStyled>&nbsp;&nbsp;
+                      <LabelStyled id="rootFolder"><ToolTipSVG /></LabelStyled>&nbsp;&nbsp;
+                      <InputStyled type="text"
                             name="rootFolder"                            
                             value={path}
                             onChange={(ev) => handleChange(ev)} />
-                        </Col>
-                      </FormGroup>
-                    </Form>
+                    </DivFlexStyled>
                     <ToolTipUncontrolledStyled placement="right" target="rootFolder"
                       delay={{ show: 0, hide: 0}}
                       trigger="hover focus"
