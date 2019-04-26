@@ -19,6 +19,10 @@ const TableStyledNoPointer = styled(TableStyled)`
     cursor: initial;
   }
 `
+const TdStyled = styled.td`
+  padding-top: 17px !important;
+  font-family: monospace, monospace;
+`
 const ColStyled = styled(Col)`
   margin-bottom: 20px;
 `
@@ -51,15 +55,15 @@ const Actionhistory = (props) => {
                     <th width="15%" className="text-center">Action</th>
                   </tr>
                 </thead>
-                <tbody className="hashText">
+                <tbody>
                   {actionsList.length < 1 ?
                     <tr><td colSpan="5" className="text-center">No actions could be found for the given Smart Contract name</td></tr>
                   : actionsList.map((action, index)=>
                     <tr key={index} data-globalsequence={action.receipt.global_sequence}>
-                      <td>{action.act.account}</td>
-                      <td>{action.act.name}</td>
-                      <td>{action.createdAt}</td>
-                      <td>{(action.act.authorization.length > 0) ? action.act.authorization[0].actor + "@" + action.act.authorization[0].permission : ""}</td>
+                      <TdStyled>{action.act.account}</TdStyled>
+                      <TdStyled>{action.act.name}</TdStyled>
+                      <TdStyled>{action.createdAt}</TdStyled>
+                      <TdStyled>{(action.act.authorization.length > 0) ? action.act.authorization[0].actor + "@" + action.act.authorization[0].permission : ""}</TdStyled>
                       <td className="text-center">
                         {/* When the prefill button is clicked, call the prefill callback supplied by the parent component */}
                         <CustomButton block size="sm" onClick={(e) => { e.preventDefault(); props.prefillCallback(action); }}>Prefill</CustomButton>
