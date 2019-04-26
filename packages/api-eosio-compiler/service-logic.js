@@ -17,8 +17,7 @@ const LOG_DEST = path.resolve("./docker-eosio-cdt/stdout.txt");
 const ERR_DEST = path.resolve("./docker-eosio-cdt/stderr.txt");
 const DEL_TARGETS = ["./docker-eosio-cdt/contracts/**", "!./docker-eosio-cdt/contracts"];
 const DEST = path.resolve("./docker-eosio-cdt/contracts");
-const CWD = path.resolve('./docker-eosio-cdt')
-const SHUTDOWN_CMD = 'sh ./remove_eosio_cdt_docker.sh';
+const CWD = path.resolve('./docker-eosio-cdt');
 
 const OPTIONS = {
   overwrite: true,
@@ -76,9 +75,6 @@ Router.post("/deploy", async (req, res) => {
             cwd: CWD
         }, (err, stdout, stderr) => {
           console.log('compile script ran');
-            execSync(SHUTDOWN_CMD, {
-                cwd: CWD
-            })
             let parsedStdOut = Helper.parseLog(fs.readFileSync(LOG_DEST, 'utf-8'));
             let parsedStdErr = Helper.parseLog(fs.readFileSync(ERR_DEST, 'utf-8'));
             if (err) {
@@ -187,9 +183,6 @@ Router.post("/compile", async (req, res) => {
       exec(COMPILE_SCRIPT, {
         cwd: CWD
       }, (err, stdout, stderr) => {
-        execSync(SHUTDOWN_CMD, {
-            cwd: CWD
-        })
         let parsedStdOut = Helper.parseLog(fs.readFileSync(LOG_DEST, 'utf-8'));
         let parsedStdErr = Helper.parseLog(fs.readFileSync(ERR_DEST, 'utf-8'));
         if (err) {

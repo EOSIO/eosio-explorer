@@ -24,6 +24,18 @@ if [ "$(docker ps -q -f name=$NODEOS_CONTAINER_NAME)" ]; then
     fi
 fi
 
+echo " "
+echo "=============================="
+echo "PAUSING CDT DOCKER"
+echo "=============================="
+# Checks if the Docker container is already running. If it is, then compile the contract as normal.
+if [ "$(docker ps -aq -f name=$CDT_CONTAINER_NAME)" ]; then
+    if [ "$(docker ps -aq -f status=running -f name=$CDT_CONTAINER_NAME)" ]; then
+        docker pause $CDT_CONTAINER_NAME
+    else
+        echo "cdt docker is not running"
+    fi
+fi
 
 echo " "
 echo "=============================="
