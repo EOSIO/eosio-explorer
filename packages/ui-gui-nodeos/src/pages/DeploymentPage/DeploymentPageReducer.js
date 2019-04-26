@@ -49,7 +49,7 @@ const importEpic = (action$) => action$.pipe(
           abiContents: action["fileContent"].content,
           imported: imported,
           abiPath: abiPath,
-          errors: (errors.length > 0) ? errors.join("\n") : []
+          errors: (errors.length > 0) ? errors : []
         })
       }),
       catchError(err => {
