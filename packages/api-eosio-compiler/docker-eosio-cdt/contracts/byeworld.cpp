@@ -2,14 +2,14 @@
 #include <eosiolib/print.hpp>
 using namespace eosio;
 
-class [[eosio::contract("tataworld")]] tataworld : public contract {
+class [[eosio::contract("byeworld")]] byeworld : public contract {
   public:
       using contract::contract;
 
       [[eosio::action]]
       void sendmsg(const std::string &msg) {
-         print( "Wilkommen, ", msg );
+         print( "bye, ", msg );
       }
 };
 
-EOSIO_DISPATCH( tataworld, (sendmsg) )
+EOSIO_DISPATCH( byeworld, (sendmsg) )
