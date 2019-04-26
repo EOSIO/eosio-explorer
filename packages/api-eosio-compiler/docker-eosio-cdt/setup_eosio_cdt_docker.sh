@@ -23,12 +23,16 @@ if [ ! "$(docker ps -q -f name=$CDT_CONTAINER_NAME)" ]; then
         docker rm -fv $CDT_CONTAINER_NAME
     fi
     echo "cleaning compiled_contracts cache"
-    # clean out the previous compiled contracts
-    rm -rf compiled_contracts
-    mkdir compiled_contracts
 
     sh ./start_eosio_cdt_docker.sh
 fi
+
+# copying smart contract in docker
+docker cp "$(pwd)"/contracts $CDT_CONTAINER_NAME:/opt/eosio/bin/contracts/$CONTRACTNAME 
+
+# clean out the previous compiled contracts
+rm -rf compiled_contracts
+mkdir compiled_contracts
 
 echo "starting compilation of smart contract"
 shift 1
@@ -42,3 +46,5 @@ echo "check log.txt for piped file"
 echo "copying compiled smart contract"
 docker cp $CDT_CONTAINER_NAME:/opt/eosio/bin/compiled_contracts/$CONTRACTNAME "$(pwd)"/compiled_contracts
 echo "copying compiled smart contract finished"
+
+docker exec -i $CDT_CONTAINER_NAME rm -r ./contracts/* 

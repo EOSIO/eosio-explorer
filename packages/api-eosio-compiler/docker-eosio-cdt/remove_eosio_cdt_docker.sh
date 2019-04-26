@@ -9,4 +9,6 @@ if [ -f "./config.file.local" ]; then
   source ./config.file.local
 fi
 
-docker rm -fv $CDT_CONTAINER_NAME
+if [ "$(docker ps -q -f name=$CDT_CONTAINER_NAME)" ]; then
+  docker rm -fv $CDT_CONTAINER_NAME
+fi
