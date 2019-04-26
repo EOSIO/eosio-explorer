@@ -12,7 +12,7 @@
     "lerna": "^3.13.1"
   },
   "scripts": {
-    "start-gui": "cd packages/ui-gui-nodeos && yarn start",
+    "start-gui": "cd packages/eosio-explorer && yarn start",
     "start-nodeos": "cd packages/docker-eosio-nodeos && ./start_eosio_docker.sh --nolog",
     "start-mongodb": "cd packages/docker-mongodb && ./start_mongodb_docker.sh",
     "remove-nodeos": "cd packages/docker-eosio-nodeos && ./remove_eosio_docker.sh",

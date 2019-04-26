@@ -6,7 +6,7 @@ Navigating to this package root will give user access to the Dockerfile and buil
 
 Once the Docker image has been built, you can start the Docker container by running `./start_eosio_docker.sh` but be sure that you have a running MongoDB service available (at `mongodb://localhost:27788` for example) before starting it.
 
-You can stop the container directly by executing `docker stop eosio_gui_nodeos_container`. If you wish to reinitialize the container, you will need to delete and remake the `data` folder, which contains the block log and other related information before removing the container and restarting it again. You can run all of this in one command with the following:
+You can stop the container directly by executing `docker stop eosio_nodeos`. If you wish to reinitialize the container, you will need to delete and remake the `data` folder, which contains the block log and other related information before removing the container and restarting it again. You can run all of this in one command with the following:
 ```
-rm -rf data && mkdir data && docker rm -fv eosio_gui_nodeos_container && ./start_eosio_docker.sh
+rm -rf data && mkdir data && docker rm -fv eosio_nodeos && ./start_eosio_docker.sh
 ```

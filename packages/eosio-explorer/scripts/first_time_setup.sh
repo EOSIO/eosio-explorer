@@ -12,7 +12,7 @@ EOSDOCKER="$SCRIPTPATH/docker-eosio-nodeos"
 MONGODOCKER="$SCRIPTPATH/docker-mongodb"
 LOCALSERVICE="$SCRIPTPATH/api-eosio-compiler"
 COMPILER="$LOCALSERVICE/docker-eosio-cdt"
-GUI="$SCRIPTPATH/ui-gui-nodeos"
+GUI="$SCRIPTPATH/eosio-explorer"
 ISDEV=false
 
 if [ "$1" == "-dev" -o "$1" == "--develop" ]; then
@@ -37,7 +37,7 @@ cp -f ../init_config.file $GUI/config.file.local
 echo "REACT_APP_MONGODB_PORT=$MONGODB_PORT" > $GUI/.env.local
 echo "REACT_APP_MONGODB_DB_NAME=$MONGODB_DB_NAME" >> $GUI/.env.local
 echo "REACT_APP_LOCAL_SERVICE_PORT=$LOCAL_SERVICE_PORT" >> $GUI/.env.local
-echo "REACT_APP_UI_SERVE_PORT=$UI_SERVE_PORT" >> $GUI/.env.local
+echo "REACT_APP_APP_SERVE_PORT=$APP_SERVE_PORT" >> $GUI/.env.local
 
 echo "LOCAL_SERVICE_PORT=$LOCAL_SERVICE_PORT" > $LOCALSERVICE/.env.local
 

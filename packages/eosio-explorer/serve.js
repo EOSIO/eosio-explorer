@@ -14,7 +14,7 @@ if (envConfig){
   }
 }
 
-const PORT = process.env.REACT_APP_UI_SERVE_PORT;
+const PORT = process.env.REACT_APP_APP_SERVE_PORT;
 
 //only serve api calls ( not the static build/ ) in development mode, create react app in develop will call the APIs from a proxy.
 if ( process.env.MODE !== 'development'){

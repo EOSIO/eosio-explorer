@@ -8,7 +8,7 @@ NC='\033[0m' # No Color
 GREEN='\033[0;32m'
 
 SCRIPTPATH="$( pwd -P )/../.."
-GUI="$SCRIPTPATH/ui-gui-nodeos"
+GUI="$SCRIPTPATH/eosio-explorer"
 ISDEV=false
 CLEARBROWSERSTORAGE=false
 
@@ -36,14 +36,14 @@ echo 'in start ' + $ISDEV
 
 echo " "
 echo "=============================="
-echo "STARTING GUI"
+echo "STARTING APP"
 echo "=============================="
 if $ISDEV; then
   if $CLEARBROWSERSTORAGE; then
     # Set environment variable "LAST_FIRST_TIME_SETUP_TIMESTAMP" at dev build to create a new timestamp in CRA development
-    (cd $GUI && REACT_APP_LAST_FIRST_TIME_SETUP_TIMESTAMP=$(date +%s) PORT=$UI_DEV_PORT yarn start)
+    (cd $GUI && REACT_APP_LAST_FIRST_TIME_SETUP_TIMESTAMP=$(date +%s) PORT=$APP_DEV_PORT yarn start)
   else
-    (cd $GUI && PORT=$UI_DEV_PORT yarn start)
+    (cd $GUI && PORT=$APP_DEV_PORT yarn start)
   fi
 else
   (cd $GUI && yarn serve)

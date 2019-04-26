@@ -44,10 +44,10 @@ This command does a few things:
 
 1. Install all required dependencies
 2. Build the docker images
-3. Check and remove any existing docker with names `eosio_mongodb` and `eosio_gui_nodeos_container`
+3. Check and remove any existing docker with names `eosio_mongodb` and `eosio_nodeos`
 4. Start the dockers
 5. Setup compiler api
-6. Start the GUI
+6. Start the App
 
 ## Running Your Application
 
@@ -82,15 +82,6 @@ $ ./quick_start.sh
 eosio-toppings # project directory
 ├── LICENSE
 ├── README.md
-├── apps # general scripts for blockchain
-│   └── gui-nodeos
-│       ├── README.md
-│       ├── build_dockers.sh
-│       ├── clear_all_blockchain_data.sh
-│       ├── pause_blockchain.sh
-│       ├── resume_blockchain.sh
-│       └── start_blockchain.sh
-├── first_time_setup.sh # first time setup script
 ├── help.md
 ├── lerna.json
 ├── package.json
@@ -190,7 +181,7 @@ eosio-toppings # project directory
 │   │   ├── README.md
 │   │   ├── remove_mongodb_docker.sh
 │   │   └── start_mongodb_docker.sh
-│   └── ui-gui-nodeos # GUI for EOSIO blockchain
+│   └── eosio-explorer # App for EOSIO blockchain
 │       ├── README.md
 │       ├── config-overrides.js
 │       ├── package.json
@@ -211,7 +202,7 @@ eosio-toppings # project directory
 │           │   ├── App.jsx
 │           │   ├── App.scss
 │           │   └── index.js
-│           ├── components # common components used in GUI
+│           ├── components # common components used in App
 │           │   ├── CodeViewer
 │           │   │   ├── CodeViewer.jsx
 │           │   │   ├── CodeViewer.scss
@@ -250,7 +241,7 @@ eosio-toppings # project directory
 │           │   ├── WillRoute.jsx
 │           │   └── index.js
 │           ├── index.js
-│           ├── pages # Contains all the pages of GUI
+│           ├── pages # Contains all the pages of App
 │           │   ├── AccountdetailPage
 │           │   │   ├── AccountdetailPage.jsx
 │           │   │   ├── AccountdetailPageReducer.js
@@ -423,7 +414,7 @@ eosio-toppings # project directory
 │               │   └── index.js
 │               └── index.js
 ├── pause_dockers.sh # pause running dockers
-├── quick_start.sh # start/resume dockers, services & gui
+├── quick_start.sh # start/resume dockers, services & app
 ├── remove_dockers.sh # remove dockers and its contents
 └── yarn.lock
 
