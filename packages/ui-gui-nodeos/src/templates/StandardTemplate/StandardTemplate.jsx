@@ -36,7 +36,6 @@ const StandardTemplate = ({
       </main>
     </div>
     <Footer/>
-    <div id="modal"></div>
     <ConsoleLogger/>
   </StandardTemplateStyled>
 )
