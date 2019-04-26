@@ -6,8 +6,11 @@
   "dependencies": {
     "@coreui/coreui": "^2.1.8",
     "@coreui/react": "^2.1.5",
+    "@eosio-toppings/api-eosio-compiler": "^0.1.1",
     "@eosio-toppings/api-mongodb-plugin": "^0.1.1",
     "@eosio-toppings/api-rpc": "^0.1.1",
+    "@eosio-toppings/docker-eosio-nodeos": "^0.1.1",
+    "@eosio-toppings/docker-mongodb": "^0.1.1",
     "axios": "^0.18.0",
     "cogo-toast": "^1.0.4",
     "connected-react-router": "^6.3.2",
@@ -40,6 +43,9 @@
     "rxjs": "^6.4.0",
     "simple-line-icons": "^2.4.1",
     "terminal-in-react": "^4.3.1"
+  },
+  "bin": {
+    "eosio-explorer": "./cli.sh"
   },
   "scripts": {
     "prestart": "MODE=development node serve.js &",

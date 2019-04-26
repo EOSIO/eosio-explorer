@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# cd into current directory
+cd $( dirname "$0" )
+
 # sourcing variable from config file
 source ../config.file
 
