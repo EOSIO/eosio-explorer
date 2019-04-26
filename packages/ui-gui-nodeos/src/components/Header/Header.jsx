@@ -7,6 +7,8 @@ import {  Nav, NavItem } from 'reactstrap';
 //import { AppNavbarBrand } from '@coreui/react';
 import styled from 'styled-components';
 
+import { panelSelect } from 'pages/PermissionPage/PermissionPageReducer';
+
 import ConnectionIndicator from './components/ConnectionIndicator';
 
 const EosioLogoSmallSVG = ({className}) =>
@@ -110,7 +112,7 @@ const matchPath = (pathname, path) => {
 
 const Header = (props) => {
 
-  let { router: { location: {pathname} } } = props;
+  let { router: { location: {pathname} }, panelSelect } = props;
 
   return (
     <div className="Header">
@@ -154,7 +156,7 @@ const Header = (props) => {
           <NavHead>INTERACT</NavHead>
           <Nav className="nav-items d-md-down-none" navbar>
             <NavItem className="px-3">
-              <Link to={`/permission`} className={`nav-link ${pathname === `/permission` ? `active` : ``}`}>MANAGE ACCOUNTS</Link>
+              <Link onClick={()=>panelSelect("permission-list")} to={`/permission`} className={`nav-link ${pathname === `/permission` ? `active` : ``}`}>MANAGE ACCOUNTS</Link>
             </NavItem>
             <NavItem className="px-3">
               <Link to={`/deploy`} className={`nav-link ${pathname === `/deploy` ? `active` : ``}`}>DEPLOY CONTRACTS</Link>
@@ -183,6 +185,7 @@ export default connect(
     router
   }),
   {
+    panelSelect
   }
 
 )(Header);

@@ -69,7 +69,6 @@ const WelcomePopup = ({ toggle, open, toggleShowAgain }) => {
 
   const closeModal = () => {
     const doNotShowAgain = document.getElementById('toggleCheck').checked;
-    console.log("clicked");
     toggleShowAgain(doNotShowAgain);
     toggle();
   }

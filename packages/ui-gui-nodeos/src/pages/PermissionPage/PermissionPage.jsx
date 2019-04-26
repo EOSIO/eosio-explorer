@@ -39,7 +39,7 @@ class PermissionPage extends Component {
     props.panelSelect("permission-list");
     window.scrollTo(0,0);
 
-  }
+  } 
 
   toggleResetTooltip () {
     this.setState({
