@@ -132,14 +132,14 @@ const dataInitState = {
     {
       _id: '1',
       account: 'eosio',
-      permission: 'owner',
+      permission: 'active',
       public_key: 'EOS5GnobZ231eekYUJHGTcmy2qve1K23r5jSFQbMfwWTtPB7mFZ1L',
       private_key: '5Jr65kdYmn33C3UabzhmWDm2PuqbRfPuDStts3ZFNSBLM7TqaiL'
     },
     {
       _id: '2',
       account: 'eosio',
-      permission: 'active',
+      permission: 'owner',
       public_key: 'EOS5GnobZ231eekYUJHGTcmy2qve1K23r5jSFQbMfwWTtPB7mFZ1L',
       private_key: '5Jr65kdYmn33C3UabzhmWDm2PuqbRfPuDStts3ZFNSBLM7TqaiL'
     }
@@ -162,14 +162,14 @@ const reinitializedState = (
       {
         _id: '1',
         account: 'eosio',
-        permission: 'owner',
+        permission: 'active',
         public_key: 'EOS5GnobZ231eekYUJHGTcmy2qve1K23r5jSFQbMfwWTtPB7mFZ1L',
         private_key: '5Jr65kdYmn33C3UabzhmWDm2PuqbRfPuDStts3ZFNSBLM7TqaiL'
       },
       {
         _id: '2',
         account: 'eosio',
-        permission: 'active',
+        permission: 'owner',
         public_key: 'EOS5GnobZ231eekYUJHGTcmy2qve1K23r5jSFQbMfwWTtPB7mFZ1L',
         private_key: '5Jr65kdYmn33C3UabzhmWDm2PuqbRfPuDStts3ZFNSBLM7TqaiL'
       }
