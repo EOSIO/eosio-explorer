@@ -19,13 +19,17 @@ const reduxPersistFilters = [
       'deployContainer.wasmPath', 'deployContainer.abiPath', 'deployContainer.abiContents',
       'deployContainer.errors'
     ]
+  ),
+  createFilter(
+    'infoPage',
+    ['welcomePopupState.showWelcomePopup']
   )
 ]
 
 export default {
   key: 'root',
   storage,
-  whitelist: ['blocklistPage', 'deploymentPage', 'permission', 'endpoint'],
+  whitelist: ['blocklistPage', 'deploymentPage', 'permission', 'endpoint', 'infoPage'],
   transforms: [
     ...reduxPersistFilters
   ]

@@ -4,7 +4,7 @@ import { CardStyled, ButtonPrimary, PageTitleDivStyled, CheckBoxDivStyled } from
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 
-import { toggleShowAgain } from './WelcomePopupReducer';
+import { toggleShowAgain, toggleSessionShowAgain } from './WelcomePopupReducer';
 
 const InfoModalWrapper = styled.div`
   position: fixed;
@@ -70,6 +70,7 @@ const WelcomePopup = ({ toggle, open, toggleShowAgain }) => {
   const closeModal = () => {
     const doNotShowAgain = document.getElementById('toggleCheck').checked;
     toggleShowAgain(doNotShowAgain);
+    toggleSessionShowAgain(false);
     toggle();
   }
 
@@ -93,7 +94,7 @@ const WelcomePopup = ({ toggle, open, toggleShowAgain }) => {
                 and much more.
               </p>
               <p>If you have any feedback or you&apos;d like to contribute to the source code of EOSIO Explorer - 
-                please follow our GitHub repository: <a href="https://github.com/EOSIO/eos-toppings" target="_blank" rel="noopener noreferrer">https://github.com/EOSIO/eos-toppings</a>
+                please follow our GitHub repository: <a href="https://github.com/EOSIO/eos-toppings" target="_blank" rel="noopener noreferrer">https://github.com/EOSIO/eosio-toppings</a>
               </p>
               <CheckBoxDivStyled style={{marginTop: '29px'}}>
                 <label className="checkboxContainer">
@@ -123,6 +124,7 @@ const WelcomePopup = ({ toggle, open, toggleShowAgain }) => {
 export default connect(
   null,
   {
-    toggleShowAgain
+    toggleShowAgain,
+    toggleSessionShowAgain
   }
 )(WelcomePopup);
