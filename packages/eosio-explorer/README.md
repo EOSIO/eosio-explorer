@@ -1,5 +1,5 @@
-# ui-gui-nodeos
-The code for the full web application, built using React. 
+# eosio-explorer
+The code for the full web application, built using React.
 
 ## Quick Start
 1. `yarn install` to install all the dependencies
@@ -8,7 +8,7 @@ The code for the full web application, built using React.
 ## Build and Serve
 In production environment, `serve.js` is the file used to serve both API calls and the static files in the `build/...` files. During development, `src/setupProxy.js` is used to proxy the API calls to a background `serve.js` process. More details available in the [package.json](package.json), check `prestart`.
 
-To build from source, run `yarn run build` to create a static distribution for a production environment. To serve, you can do `node serve.js` directly. 
+To build from source, run `yarn run build` to create a static distribution for a production environment. To serve, you can do `node serve.js` directly.
 
 ## Documentation
 

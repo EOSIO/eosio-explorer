@@ -19,7 +19,7 @@ SCRIPTPATH="$( pwd -P )/../.."
 EOSDOCKER="$SCRIPTPATH/docker-eosio-nodeos"
 MONGODOCKER="$SCRIPTPATH/docker-mongodb"
 COMPILER="$SCRIPTPATH/api-eosio-compiler"
-GUI="$SCRIPTPATH/ui-gui-nodeos"
+GUI="$SCRIPTPATH/eosio-explorer"
 ISDEV=false
 ISDELETE=false
 ISFIRSTTIMESETUP=false
@@ -135,7 +135,7 @@ fi
 
 echo " "
 echo "=============================="
-echo "STARTING GUI"
+echo "STARTING APP"
 echo "=============================="
 
 # If it is ./quick_start.sh with -d or from first time setup, clear the browser storage by adding a new timestamp when start CRA dev.

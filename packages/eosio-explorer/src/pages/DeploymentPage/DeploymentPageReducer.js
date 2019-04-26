@@ -145,7 +145,7 @@ const consoleLogFormatting = ({ stdoutLog, stderrLog, errors }) => {
   }
 
   if (errors && errors.length > 0) {
-    console.log("=== GUI/Tool Errors ===");
+    console.log("=== App Errors ===");
     errors.forEach(line => console.log(line));
   }
 

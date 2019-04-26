@@ -13,7 +13,7 @@ The connections panel will indicate to users the URL of the endpoints the user i
 In order to change the connection to either the `nodeos` instance or the MongoDB service, you can edit the input fields in the Connections panel:
 
 * Connected Nodeos - Shows you the current URL for the `nodeos` instance you are connected to. It is `http://localhost:8888` by default.
-* Connected MongoDB - Shows you the current URL for the MongoDB service and database you are connected to. It is written similarly to a MongoDB connection string (`mongodb://<host>:<port>/<database>`). By default, it is `mongodb://localhost:27788/gui-nodeos`.
+* Connected MongoDB - Shows you the current URL for the MongoDB service and database you are connected to. It is written similarly to a MongoDB connection string (`mongodb://<host>:<port>/<database>`). By default, it is `mongodb://localhost:27788/eosio_nodeos_mongodb_plugin`.
 
 The **Connect** button will be enabled once these values have been changed. Reverting back to the original value will disable it once more. Clicking on it will connect you to the new endpoints you have input. You may refer to the indicators in the header to determine your current connection status (a green dot means you are connected while a red dot means connection failure or disconnection) to the endpoints.
 
