@@ -67,12 +67,16 @@ const LogCardHeaderStyled = styled(CardHeaderStyled)`
 
 const ButtonPrimaryResponsive = styled(ButtonPrimary)`
   max-width: 130px;
+  min-width: 71px;
   display: inline-block;
   width: 100%;
 `
 const ColStyled = styled(Col)`
   margin: auto 0;
   padding-top: 5px;
+`
+const LabelStyled = styled(Label)`
+  display: inline;
 `
 
 /**
@@ -252,8 +256,8 @@ const DeploymentPage = (props) => {
                     <Form>
                       <FormGroup row>
                         <ColStyled sm={2}>
-                          <Label> Root Folder Path: </Label>&nbsp;&nbsp;
-                          <Label id="rootFolder"><ToolTipSVG /></Label>
+                          <LabelStyled> Root Folder Path: </LabelStyled>&nbsp;&nbsp;
+                          <LabelStyled id="rootFolder"><ToolTipSVG /></LabelStyled>
                         </ColStyled>
                         <Col sm={10}>
                           <InputStyled type="text"
