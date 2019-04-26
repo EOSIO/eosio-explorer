@@ -94,11 +94,6 @@ class PermissionPage extends Component {
                                 <ButtonPrimary id="CreateAccountBtn" onClick={()=>{changePanel("create-account")}}>Create Account</ButtonPrimary>
                                 <CustomButton id="ResetPermissionBtn" onClick={()=>this.toggleModal()}>Reset All Permissions</CustomButton>
                           </ButtonGroupSeperated>
-                          <ButtonPrimary className="float-right" onClick={()=>{changePanel("permission-list")}}
-                            style={{display: (panel === "permission-list") ? 'none' : 'block'}}
-                            >
-                            Back
-                          </ButtonPrimary>
                           <ToolTipStyled placement="bottom" target="ResetPermissionBtn"
                             isOpen={this.state.resetTooltip && panel === "permission-list"}
                             toggle={()=>this.toggleResetTooltip()}

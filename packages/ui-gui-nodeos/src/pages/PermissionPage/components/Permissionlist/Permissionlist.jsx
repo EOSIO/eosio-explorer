@@ -149,7 +149,7 @@ const Permissionlist = (props) => {
                                               <AccountTable borderless>
                                                 <tbody>
                                                   <AccountRow>
-                                                    <td className="radio" width="20%">
+                                                    <td className="radio" width="12%">
                                                       <RadioButtonDivStyled>
                                                         <label className="radioContainer">
                                                           <input name={defaultAccountsList[account][0]._id}
@@ -163,14 +163,14 @@ const Permissionlist = (props) => {
                                                         </label>
                                                       </RadioButtonDivStyled>
                                                     </td>
-                                                    <td className="permissionLabel" width="80%">
+                                                    <td className="permissionLabel" width="88%">
                                                       <PermissionLink to={`/account/${defaultAccountsList[account][0].account}`}>
                                                         {defaultAccountsList[account][0].account}@{defaultAccountsList[account][0].permission}
                                                       </PermissionLink>
                                                     </td>
                                                   </AccountRow>
                                                   <AccountRow>
-                                                    <td className="radio" width="20%">
+                                                    <td className="radio" width="12%">
                                                       <RadioButtonDivStyled>
                                                         <label className="radioContainer">
                                                           <input name={defaultAccountsList[account][1]._id}
@@ -184,7 +184,7 @@ const Permissionlist = (props) => {
                                                         </label>
                                                       </RadioButtonDivStyled>
                                                     </td>
-                                                    <td className="permissionLabel" width="80%">
+                                                    <td className="permissionLabel" width="88%">
                                                       <PermissionLink to={`/account/${defaultAccountsList[account][1].account}`}>
                                                         {defaultAccountsList[account][1].account}@{defaultAccountsList[account][1].permission}
                                                       </PermissionLink>
@@ -241,18 +241,18 @@ const Permissionlist = (props) => {
                                               <AccountTable borderless>
                                                 <tbody>
                                                   <AccountRow>
-                                                    <td className="radio" width="20%">
+                                                    <td className="radio" width="5%">
                                                     </td>
-                                                    <td className="permissionLabel" width="80%">
+                                                    <td className="permissionLabel" width="95%">
                                                       <PermissionLink to={`/account/${importAccountsList[account][0].account}`}>
                                                         {importAccountsList[account][0].account}@{importAccountsList[account][0].permission}
                                                       </PermissionLink>
                                                     </td>
                                                   </AccountRow>
                                                   <AccountRow>
-                                                    <td className="radio" width="20%">
+                                                    <td className="radio" width="5%">
                                                     </td>
-                                                    <td className="permissionLabel" width="80%">
+                                                    <td className="permissionLabel" width="95%">
                                                       <PermissionLink to={`/account/${importAccountsList[account][1].account}`}>
                                                         {importAccountsList[account][1].account}@{importAccountsList[account][1].permission}
                                                       </PermissionLink>
@@ -267,7 +267,7 @@ const Permissionlist = (props) => {
                                                     onClick={() => getKeysData(importAccountsList[account][0].account, list)}
                                                     block
                                                     >
-                                                    Edit
+                                                    Import Keys
                                                   </ButtonPrimary>
                                             </EditButtonCell>
                                           </tr>

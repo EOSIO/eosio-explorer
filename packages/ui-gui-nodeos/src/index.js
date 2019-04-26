@@ -30,8 +30,8 @@ const AppBundle = (
     <PersistGate loading={null} persistor={persistor}>
       <ConnectedRouter history={history}>
         <App/>
-        <div id="modal"></div>
       </ConnectedRouter>
+      <div id="modal"></div>
     </PersistGate>
   </Provider>
 );

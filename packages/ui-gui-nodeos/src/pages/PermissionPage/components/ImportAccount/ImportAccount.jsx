@@ -7,9 +7,10 @@ import {
 import { connect } from 'react-redux';
 
 import { accountAdd } from 'reducers/permission';
+import { panelSelect } from 'pages/PermissionPage/PermissionPageReducer';
 import validate from './ImportAccountValidatorEngine/ImportAccountValidatorEngine';
 import useForm from 'helpers/useForm';
-import { CardStyled, CardHeaderStyled, ButtonPrimary, InputStyled, InfoDivStyled } from 'styled';
+import { CardStyled, CardHeaderStyled, ButtonPrimary, ButtonSecondary, InputStyled, InfoDivStyled, ButtonGroupSeperated } from 'styled';
 
 
 const ImportAccount = (props) => {
@@ -23,7 +24,8 @@ const ImportAccount = (props) => {
         importSuccess
       }
     },
-    accountAdd
+    accountAdd,
+    panelSelect
   } = props;
 
   function importAccount() {
@@ -190,11 +192,17 @@ const ImportAccount = (props) => {
 
                   </Col>
                   <Col sm={4} clearfix="true">
-                    <ButtonPrimary className="float-right"
-                      disabled={!(values.activePrivate && values.ownerPrivate)}
-                      block>
-                      Submit
-                    </ButtonPrimary>
+                    <ButtonGroupSeperated className="float-right" >
+                      <ButtonSecondary onClick={()=>{panelSelect("permission-list")}}
+                        >
+                        Back
+                      </ButtonSecondary>
+                      <ButtonPrimary className="float-right"
+                        disabled={!(values.activePrivate && values.ownerPrivate)}
+                        block>
+                        Submit
+                      </ButtonPrimary>
+                    </ButtonGroupSeperated>
                   </Col>
                 </FormGroup>
               </Form>
@@ -212,6 +220,7 @@ export default connect(
     permission
   }),
   {
-    accountAdd
+    accountAdd,
+    panelSelect
   }
 )(ImportAccount);
