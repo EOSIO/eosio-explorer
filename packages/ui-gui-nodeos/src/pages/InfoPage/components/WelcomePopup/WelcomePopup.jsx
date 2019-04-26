@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { 
-  CardStyled, PageTitleDivStyled, ButtonPrimary, 
-  CheckBoxDivStyled } from 'styled';
+import { CardStyled, ButtonPrimary, PageTitleDivStyled, CheckBoxDivStyled } from 'styled';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 
@@ -28,7 +26,6 @@ const Background = styled.div`
   left: 0;
   background: #443f54;
   opacity: 0.9;
-  z-index: 2
 `
 
 const WelcomeModalCard = styled(CardStyled)`
@@ -46,32 +43,32 @@ const CloseButton = styled.button`
   border: none;
   background: transparent;
   padding: 10px;
-  z-index: 3;
   &:hover {
     cursor: pointer;
   }
 `
 
 const InfoPortal = ({ children }) => {
-  const modalRoot = document.getElementById('infoMod');
+  const modalRoot = document.getElementById('modal');
   const el = document.createElement('div');
-
-  console.log(document);
-
+  
   useEffect(() => {
     modalRoot.appendChild(el);
-  }, []);
+  });
+
+  useEffect(() => {
+    return () => modalRoot.removeChild(el);
+  })
 
   return createPortal(children, el);
 }
 
-const WelcomePopup = (props) => {
-
-  let { toggle, open, toggleShowAgain } = props;
+const WelcomePopup = ({ toggle, open, toggleShowAgain }) => {
 
   const closeModal = () => {
-    const shouldShowAgain = document.getElementById('toggleCheck').checked;
-    toggleShowAgain(shouldShowAgain);
+    const doNotShowAgain = document.getElementById('toggleCheck').checked;
+    console.log("clicked");
+    toggleShowAgain(doNotShowAgain);
     toggle();
   }
 
@@ -81,7 +78,7 @@ const WelcomePopup = (props) => {
         open && (
           <InfoModalWrapper>
             <WelcomeModalCard>
-              <CloseButton onClick={()=>closeModal()}>
+              <CloseButton onClick={() => closeModal()}>
                 <img src="https://icon.now.sh/x/8ba5bf" alt="close" />
               </CloseButton>
               <PageTitleDivStyled>
@@ -105,7 +102,7 @@ const WelcomePopup = (props) => {
                 </label>
               </CheckBoxDivStyled>
               <ButtonPrimary 
-                onClick={()=>closeModal()}
+                onClick={() => closeModal()}
                 style={{
                   position: 'absolute',
                   bottom: '21px',
