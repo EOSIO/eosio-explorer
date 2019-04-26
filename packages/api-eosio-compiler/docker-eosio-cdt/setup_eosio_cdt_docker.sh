@@ -28,7 +28,7 @@ if [ ! "$(docker ps -q -f name=$CDT_CONTAINER_NAME)" ]; then
 fi
 
 # copying smart contract in docker
-docker cp "$(pwd)"/contracts $CDT_CONTAINER_NAME:/opt/eosio/bin/contracts/$CONTRACTNAME 
+docker cp "$(pwd)"/contracts $CDT_CONTAINER_NAME:/opt/eosio/bin
 
 # clean out the previous compiled contracts
 rm -rf compiled_contracts
