@@ -38,6 +38,22 @@ To get quickly set up and running with this tool, please perform the following s
 2. Navigate to the scripts folder of the ui-gui-nodeos package (`/packages/ui-gui-nodeos/scripts`) of the cloned repository and run `./first_time_setup.sh` to install and build all the necessary dependencies
 3. Run `./quick_start.sh`, which will automatically start the tool in your browser at `http://localhost:3000` after creating the necessary containers and services
 
+### Command line
+
+You may choose to start the tool with command line by `eosio-explorer` command in a terminal.
+
+Examples:
+
+* `eosio-explorer first_time_setup`
+* `eosio-explorer quick_start`
+* `eosio-explorer start_gui`
+* `eosio-explorer pause_dockers`
+* `eosio-explorer remove_dockers`
+
+If you are cloning the whole eosio-toppings repository, please add `yarn` before above commands and run it in any place inside eosio-toppings folder.
+
+Example: `yarn eosio-explorer first_time_setup`
+
 ## Config
 Configurable settings ( e.g. docker container name and ports of the services ) are defined in `./init_config.file.`
 
