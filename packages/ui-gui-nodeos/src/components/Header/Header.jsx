@@ -42,22 +42,66 @@ const NavWrapper = styled.div`
   }
   :nth-child(2){
     flex: 5 0 0;
+    .last-item{
+      padding-right: 0 !important;
+      flex: none;            
+    }  
+    @media screen and (max-width: 1280px){
+      flex: 4 0 0;
+    }
+    @media screen and (max-width: 1120px){
+      .last-item{
+        flex: 0 1 0;
+      }  
+    }
+         
   }
   :nth-child(3){
-    flex: 0.25 1 0; 
+    flex: 0.4 1 0; 
     padding: 0;
+    @media screen and (max-width: 1280px){
+      flex: 0.1 1 0;
+    }
   }
   :nth-child(4){
-    flex: 3 0 0;
+    flex: 3 0 0;     
+    .px-3{
+      flex: none;
+      padding-right: 0 !important; 
+    }  
+    @media screen and (max-width: 1280px){
+      flex: 2.7 0 0;
+      .px-3{
+        padding-right: 0 !important;  
+      } 
+    }   
+    @media screen and (max-width: 1120px){
+      flex: 2 0 0;
+      .px-3{
+        flex: 0 1 0;
+      }  
+    }
+         
   }
   :nth-child(5){
     flex: 0.3 0 0;
-    @media screen and (max-width: 1200px){
+    @media screen and (max-width: 1280px){
       padding: 0;
     }
   }
   :nth-child(6){
     flex: 0.6 0 0;
+    padding: 0;
+    .px-3{
+      padding-right: 0 !important;
+    }       
+    @media screen and (max-width: 1120px){
+      padding-right: 10px;
+      .px-3{
+        padding-right: 1rem !important;
+      }
+    }
+    
   }
 `
 
@@ -161,7 +205,7 @@ const Header = (props) => {
             <NavItem className="px-3">
               <Link to={`/deploy`} className={`nav-link ${pathname === `/deploy` ? `active` : ``}`}>DEPLOY CONTRACTS</Link>
             </NavItem>
-            <NavItem className="px-3 last-item">
+            <NavItem className="px-3">
               <Link to={`/push-action`} className={`nav-link ${pathname === `/push-action` ? `active` : ``}`}>PUSH ACTIONS</Link>
             </NavItem>
           </Nav>
@@ -171,7 +215,7 @@ const Header = (props) => {
         </NavWrapperRow>     
         <NavWrapperRow>          
           <Nav className="nav-items d-md-down-none" navbar>              
-            <NavItem className="px-3 connectionInd">
+            <NavItem className="px-3">
               <ConnectionIndicator/>
             </NavItem>
           </Nav>

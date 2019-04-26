@@ -32,16 +32,5 @@
     padding-left: 0 !important;
     min-width: auto;
   }
-  .last-item{
-    padding-right: 0 !important;       
-    @media screen and (max-width: 1200px){
-      flex: 0 1 0;
-    }
-  }
-  .connectionInd{
-    padding-right: 0 !important;
-    @media screen and (max-width: 1200px){
-      padding-right: 1rem !important;
-    }
-  }
+   
 }
