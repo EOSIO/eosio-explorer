@@ -9,9 +9,10 @@ import { connect } from 'react-redux';
 
 import { fetchStart } from './CreateAccountReducer';
 import { createStart } from 'reducers/permission';
+import { panelSelect } from 'pages/PermissionPage/PermissionPageReducer';
 import useForm from 'helpers/useForm';
 import validate from './CreateAccountValidatorEngine/CreateAccountValidatorEngine';
-import { CardStyled, OverlayStyled, CardHeaderStyled, ButtonPrimary, InputStyled} from 'styled';
+import { CardStyled, OverlayStyled, CardHeaderStyled, ButtonPrimary, ButtonSecondary, InputStyled, ButtonGroupSeperated } from 'styled';
 
 const CreateAccount = (props) => {
 
@@ -23,7 +24,7 @@ const CreateAccount = (props) => {
 
   let { 
     createAccount: { isFetching, data, }, 
-    permission
+    permission, panelSelect
   } = props;
   let { payload, error } = data;
   let { 
@@ -183,12 +184,18 @@ const CreateAccount = (props) => {
                       <Col sm={8}>
                       </Col>
                       <Col sm={4} clearfix="true">
-                        <ButtonPrimary className="float-right" 
-                          disabled={!values.accountName || isSubmitting || creationSuccess}
-                          block
-                          >
-                          Submit
-                        </ButtonPrimary>
+                        <ButtonGroupSeperated className="float-right" >
+                          <ButtonSecondary onClick={()=>{panelSelect("permission-list")}}
+                            >
+                            Back
+                          </ButtonSecondary>
+                          <ButtonPrimary
+                            disabled={!values.accountName || isSubmitting || creationSuccess}
+                            block
+                            >
+                            Submit
+                          </ButtonPrimary>
+                        </ButtonGroupSeperated>
                       </Col>
                     </FormGroup>
                   </Form>
@@ -210,7 +217,8 @@ export default connect(
   }),
   {
     fetchStart,
-    createStart
+    createStart,
+    panelSelect
   }
 
 )(CreateAccount);
