@@ -13,6 +13,7 @@ const InfoModalWrapper = styled.div`
   transform: translate(-50%, -50%);
   width: 100%;
   height: 100%;
+  z-index: 1021;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -22,6 +23,7 @@ const Background = styled.div`
   position: absolute;
   width: 100%;
   height: 100%;
+  z-index: 1030;
   top: 0;
   left: 0;
   background: #443f54;
@@ -30,7 +32,7 @@ const Background = styled.div`
 
 const WelcomeModalCard = styled(CardStyled)`
   position: relative;
-  z-index: 10;
+  z-index: 1050;
   padding: 18px 24px;
   max-width: 745px;
   min-height: 367px;

@@ -16,7 +16,7 @@ const Portal = ({ children }) => {
 
 // Wrapper replacement for Model 'reactstrap'
 const BasicModal = ({ children, header, toggle, open, handleConfirm }) => (
-  <Portal>
+  <Portal style={{zIndex: '1021'}}>
     <Modal isOpen={open} toggle={toggle} backdrop={true}>
       <ModalHeader>{header}</ModalHeader>
       <ModalBody>
