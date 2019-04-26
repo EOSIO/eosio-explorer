@@ -10,6 +10,7 @@ GREEN='\033[0;32m'
 SCRIPTPATH="$( pwd -P )/../.."
 EOSDOCKER="$SCRIPTPATH/docker-eosio-nodeos"
 MONGODOCKER="$SCRIPTPATH/docker-mongodb"
+COMPILER="$SCRIPTPATH/api-eosio-compiler/docker-eosio-cdt"
 
 # remove existing dockers
 echo " "
@@ -23,3 +24,9 @@ echo "=============================="
 echo "CLEANING EXISTING MONGODB DOCKER"
 echo "=============================="
 (cd $MONGODOCKER && ./remove_mongodb_docker.sh && printf "${GREEN}done${NC}")
+
+echo " "
+echo "=============================="
+echo "CLEANING EXISTING CDT DOCKER"
+echo "=============================="
+(cd $COMPILER && ./remove_eosio_cdt_docker.sh && printf "${GREEN}done${NC}")

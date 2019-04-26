@@ -5,3 +5,6 @@ RUN wget https://github.com/EOSIO/eosio.cdt/releases/download/v1.5.0/eosio.cdt_1
 RUN apt-get update && sudo apt install -y ./eosio.cdt_1.5.0-1_amd64.deb
 
 WORKDIR /opt/eosio/bin/
+
+COPY ./scripts /opt/eosio/bin/scripts
+COPY ./contracts /opt/eosio/bin/contracts

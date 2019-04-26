@@ -18,6 +18,4 @@ echo "starting docker container from the $CDT_IMAGE_NAME image"
 # --mount: Mount filesystem from host to container.
 # -w: Enforce working directory inside the container.
 docker run -i --name $CDT_CONTAINER_NAME -d \
--v /"$(pwd)"/contracts:/opt/eosio/bin/contracts \
--v /"$(pwd)"/scripts:/opt/eosio/bin/scripts \
 $CDT_IMAGE_NAME
