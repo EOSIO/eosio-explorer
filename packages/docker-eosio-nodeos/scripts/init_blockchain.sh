@@ -14,6 +14,7 @@ if [ -f "./scripts/config.file.local" ]; then
   source ./scripts/config.file.local
 fi
 
+# set contracts path
 CONTRACTSPATH="$( pwd -P )/contracts"
 
 set -m
@@ -35,7 +36,7 @@ nodeos -e -p eosio -d /mnt/dev/data \
   --verbose-http-errors \
   --genesis-json "./scripts/genesis.json" &
 
-
+# wait for blockchain to start
 sleep 1s
 until curl localhost:8888/v1/chain/get_info
 do
@@ -47,6 +48,7 @@ echo "create wallet: eosio"
 cleos wallet create -n eosio --to-console | tail -1 | sed -e 's/^"//' -e 's/"$//' > eosio_wallet_password.txt
 cleos wallet import -n eosio --private-key 5Jr65kdYmn33C3UabzhmWDm2PuqbRfPuDStts3ZFNSBLM7TqaiL
 
+# deploy bios contract, this is required in getABI for system contracts 
 echo "deploying bios contract"
 deploy_contract.sh eosio.bios eosio eosio $(cat eosio_wallet_password.txt) true
 
@@ -58,12 +60,10 @@ cleos wallet import -n hellowal --private-key 5JrDP7knfwybgxbVbmWVqmNtexindWpAeV
 # # Active key for hellowal wallet
 cleos wallet import -n hellowal --private-key 5JEb8Qzy6ZTfs9mGdKKSZL1GB4Lxbj3uPnWFbm652GS9RQQHmHa
 
-# # * Replace "hellowal" by your own wallet name when you start your own project
-
 # # create account for helloacc with above wallet's public keys
- cleos create account eosio helloacc EOS8mQ4RVYYsNXfpPCiJew4FxEo3viBTEaTgPtdHXKceMdNvqmTzK EOS71ndY36kez1mWzTX4XRf7FK4TpPYKmN9Q1BPW9LBGR9LyKSTb1
+cleos create account eosio helloacc EOS8mQ4RVYYsNXfpPCiJew4FxEo3viBTEaTgPtdHXKceMdNvqmTzK EOS71ndY36kez1mWzTX4XRf7FK4TpPYKmN9Q1BPW9LBGR9LyKSTb1
 
- echo "creating wallet: notewal"
+echo "creating wallet: notewal"
 ## key for eosio account and export the generated password to a file for unlocking wallet later
 cleos wallet create -n notewal --to-console | tail -1 | sed -e 's/^"//' -e 's/"$//' > note_wallet_password.txt
 ## Owner key for notewal wallet
@@ -71,10 +71,8 @@ cleos wallet import -n notewal --private-key 5HprNJsGzQajAMGiEzyHmy8rW8M4TMM3to1
 # # Active key for notewal wallet
 cleos wallet import -n notewal --private-key 5HpYaJpP16dJLDgDEeY5n5GFaDjL1TwTVo6KrdWQWSjQpK1a4AT
 
-# # * Replace "notewal" by your own wallet name when you start your own project
-
 # # create account for noteacc with above wallet's public keys
- cleos create account eosio noteacc EOS57cp4Joru7pnUzLg8RtHLWYWwjgBza9jPncE3ovbMSGN2MyZGa EOS6pwXEFGVYnX6zmozNAo9MRgkJrfP24x46Pek8dHjpAFGWS7had
+cleos create account eosio noteacc EOS57cp4Joru7pnUzLg8RtHLWYWwjgBza9jPncE3ovbMSGN2MyZGa EOS6pwXEFGVYnX6zmozNAo9MRgkJrfP24x46Pek8dHjpAFGWS7had
 
 
 echo "deploying smart contract"
@@ -87,16 +85,17 @@ deploy_contract.sh helloworld helloacc hellowal $(cat hello_wallet_password.txt)
 deploy_contract.sh testnote noteacc notewal $(cat note_wallet_password.txt) true
 
 echo "creating user accounts"
-# script for create data into blockchain
+# script to create test accounts into blockchain
 create_accounts.sh
 
 echo "deploying smart contract"
+# deploy test contracts
 deploy_contract.sh hiworld useraaaaaaaa notewal $(cat note_wallet_password.txt) false
 deploy_contract.sh byeworld useraaaaaaab notewal $(cat note_wallet_password.txt) false
 deploy_contract.sh tataworld useraaaaaaac notewal $(cat note_wallet_password.txt) false
 
 echo "sending test transactions"
-# script to create data into blockchain
+# script to create test transactions into blockchain
 cleos push action helloacc sendmsg '["msg1"]' -p helloacc@active
 sleep 10
 cleos push action helloacc sendmsg '["msg2"]' -p helloacc@active
@@ -105,9 +104,9 @@ sleep 10
 cleos push action helloacc sendmsg '["msg4"]' -p helloacc@active
 cleos push action helloacc sendmsg '["msg5"]' -p helloacc@active
 cleos push action helloacc sendmsg '["msg6"]' -p helloacc@active
-# * Replace the script with different form of data that you would pushed into the blockchain when you start your own project
 
 echo "sending test transactions with multi index table"
+# script to create some more test transactions into blockchain
 cleos push action noteacc update '["noteacc", "this is test note"]' -p noteacc@active
 cleos push action noteacc update '["useraaaaaaaa", "this is from useraaaaaaaa note"]' -p useraaaaaaaa@active
 cleos push action noteacc update '["useraaaaaaab", "this is from useraaaaaaab note"]' -p useraaaaaaab@active

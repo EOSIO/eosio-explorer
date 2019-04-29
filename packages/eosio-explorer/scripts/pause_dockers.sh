@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -o errexit
 
 # cd into current directory
 cd $( dirname "$0" )
@@ -15,7 +16,7 @@ echo " "
 echo "=============================="
 echo "PAUSING EOSIO DOCKER"
 echo "=============================="
-# Checks if the Docker container is already running. If it is, then compile the contract as normal.
+# Check if the Docker container is running
 if [ "$(docker ps -q -f name=$NODEOS_CONTAINER_NAME)" ]; then
     if [ "$(docker ps -aq -f status=running -f name=$NODEOS_CONTAINER_NAME)" ]; then
         docker pause $NODEOS_CONTAINER_NAME
@@ -28,7 +29,7 @@ echo " "
 echo "=============================="
 echo "PAUSING CDT DOCKER"
 echo "=============================="
-# Checks if the Docker container is already running. If it is, then compile the contract as normal.
+# Check if the Docker container is running
 if [ "$(docker ps -aq -f name=$CDT_CONTAINER_NAME)" ]; then
     if [ "$(docker ps -aq -f status=running -f name=$CDT_CONTAINER_NAME)" ]; then
         docker pause $CDT_CONTAINER_NAME
@@ -41,7 +42,7 @@ echo " "
 echo "=============================="
 echo "PAUSING MONGODB DOCKER"
 echo "=============================="
-# Checks if the Docker container is already running. If it is, then compile the contract as normal.
+# Check if the Docker container is running
 if [ "$(docker ps -aq -f name=$MONGODB_CONTAINER_NAME)" ]; then
     if [ "$(docker ps -aq -f status=running -f name=$MONGODB_CONTAINER_NAME)" ]; then
         docker pause $MONGODB_CONTAINER_NAME
