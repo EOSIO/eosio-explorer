@@ -15,10 +15,20 @@ LOCALSERVICE="$SCRIPTPATH/api-eosio-compiler"
 COMPILER="$LOCALSERVICE/docker-eosio-cdt"
 GUI="$SCRIPTPATH/eosio-explorer"
 ISDEV=false
+MAKESAMPLEDATA=false
 
-if [ "$1" == "-dev" -o "$1" == "--develop" ]; then
-  ISDEV=true
-fi
+# check for arguments
+for arg in $@
+do
+    case $arg in
+      -dev|--develop)
+        ISDEV=true
+        ;;
+      --sample-data)
+        MAKESAMPLEDATA=true
+        ;;
+  esac
+done
 
 echo "=============================="
 echo "INITIALISING CONFIG IN PACKAGES"
@@ -67,7 +77,7 @@ echo "=============================="
 ./remove_dockers.sh
 
 # start the dockers and gui
-./quick_start.sh $1 --first-time-setup
+./quick_start.sh $@ --first-time-setup
 
 P1=$!
 
