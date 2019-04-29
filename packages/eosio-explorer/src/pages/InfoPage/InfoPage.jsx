@@ -22,8 +22,14 @@ class InfoPage extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      modalIsOpen: (!this.props.showWelcomePopup) ? this.props.sessionShowWelcomePopup : false
+    if (navigator.userAgent === 'ReactSnap') {
+      this.state = {
+        modalIsOpen: false
+      }
+    } else {
+      this.state = {
+        modalIsOpen: (!this.props.showWelcomePopup) ? this.props.sessionShowWelcomePopup : false
+      }
     }
 
   }
@@ -98,14 +104,14 @@ class InfoPage extends Component {
           </Row>
         </div>
         {
-          this.state.modalIsOpen && (
+          this.state.modalIsOpen ? (
             <WelcomePopup
               toggle={()=>{
                 this.toggleModal();
               }}
               open={this.state.modalIsOpen}
-              />
-          )
+              />)
+              : null
         }
       </StandardTemplate>
     );

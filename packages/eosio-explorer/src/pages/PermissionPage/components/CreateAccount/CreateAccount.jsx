@@ -13,6 +13,11 @@ import { panelSelect } from 'pages/PermissionPage/PermissionPageReducer';
 import useForm from 'helpers/useForm';
 import validate from './CreateAccountValidatorEngine/CreateAccountValidatorEngine';
 import { CardStyled, OverlayStyled, CardHeaderStyled, ButtonPrimary, ButtonSecondary, InputStyled, ButtonGroupSeperated } from 'styled';
+import styled from 'styled-components';
+
+const FirstCardStyled = styled(CardStyled)`
+  border-top: solid 2px #1173a4;
+`
 
 const CreateAccount = (props) => {
 
@@ -56,7 +61,7 @@ const CreateAccount = (props) => {
         { 
           error         ? <Button onClick={props.fetchStart}>Retry Generation</Button>
           : <>
-              <CardStyled>
+              <FirstCardStyled>
                 <OverlayStyled isLoading={isFetching || isSubmitting}></OverlayStyled>
                 {
                     (isSubmitting || isFetching) &&
@@ -90,8 +95,8 @@ const CreateAccount = (props) => {
                     handleSubmit
                   }>
                     <FormGroup row>
-                      <Label htmlFor="accountName" sm={2}>Account Name</Label>
-                      <Col sm={10}>
+                      <Label htmlFor="accountName" sm={1}>Account Name</Label>
+                      <Col sm={11}>
                         <InputStyled type="text"
                           name="accountName"
                           id="accountName"
@@ -116,8 +121,8 @@ const CreateAccount = (props) => {
                     </FormGroup>
                     <div><b>Owner</b></div>
                     <FormGroup row>
-                      <Label htmlFor="ownerPublic" sm={2}>Public Key</Label>
-                      <Col sm={10}>
+                      <Label htmlFor="ownerPublic" sm={1}>Public Key</Label>
+                      <Col sm={11}>
                         <InputStyled type="text"
                           name="ownerPublic"
                           id="ownerPublic"
@@ -132,8 +137,8 @@ const CreateAccount = (props) => {
                       </Col> 
                     </FormGroup>
                     <FormGroup row>
-                      <Label htmlFor="ownerPrivate" sm={2}>Private Key</Label>
-                      <Col sm={10}>
+                      <Label htmlFor="ownerPrivate" sm={1}>Private Key</Label>
+                      <Col sm={11}>
                         <InputStyled type="text"
                             name="ownerPrivate"
                             id="ownerPrivate"
@@ -149,8 +154,8 @@ const CreateAccount = (props) => {
                     </FormGroup>
                     <div><b>Active</b></div>
                     <FormGroup row>
-                      <Label htmlFor="activePublic" sm={2}>Public Key</Label>
-                      <Col sm={10}>
+                      <Label htmlFor="activePublic" sm={1}>Public Key</Label>
+                      <Col sm={11}>
                         <InputStyled type="text"
                           name="activePublic"
                           id="activePublic"
@@ -165,8 +170,8 @@ const CreateAccount = (props) => {
                       </Col> 
                     </FormGroup>
                     <FormGroup row>
-                      <Label htmlFor="activePrivate" sm={2}>Private Key</Label>
-                      <Col sm={10}>
+                      <Label htmlFor="activePrivate" sm={1}>Private Key</Label>
+                      <Col sm={11}>
                         <InputStyled type="text"
                             name="activePrivate"
                             id="activePrivate"
@@ -200,7 +205,7 @@ const CreateAccount = (props) => {
                     </FormGroup>
                   </Form>
                 </CardBody>
-              </CardStyled>
+              </FirstCardStyled>
               
               
             </>

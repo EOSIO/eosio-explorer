@@ -11,7 +11,11 @@ import { panelSelect } from 'pages/PermissionPage/PermissionPageReducer';
 import validate from './ImportAccountValidatorEngine/ImportAccountValidatorEngine';
 import useForm from 'helpers/useForm';
 import { CardStyled, CardHeaderStyled, ButtonPrimary, ButtonSecondary, InputStyled, InfoDivStyled, ButtonGroupSeperated } from 'styled';
+import styled from 'styled-components';
 
+const FirstCardStyled = styled(CardStyled)`
+  border-top: solid 2px #1173a4;
+`
 
 const ImportAccount = (props) => {
 
@@ -56,7 +60,7 @@ const ImportAccount = (props) => {
     <div className="ImportAccount">
       <div>
         <>
-          <CardStyled>
+          <FirstCardStyled>
             <CardHeaderStyled>
               Import/Edit Account
             </CardHeaderStyled>
@@ -89,8 +93,8 @@ const ImportAccount = (props) => {
                 handleSubmit
               }>
                 <FormGroup row>
-                  <Label htmlFor="accountName" sm={2}>Account Name</Label>
-                  <Col sm={10}>
+                  <Label htmlFor="accountName" sm={1}>Account Name</Label>
+                  <Col sm={11}>
                     <InputStyled type="text"
                       name="accountName"
                       id="accountName"
@@ -101,8 +105,8 @@ const ImportAccount = (props) => {
                 </FormGroup>
                 <div><b>Owner</b></div>
                 <FormGroup row>
-                  <Label htmlFor="ownerPublic" sm={2}>Public Key</Label>
-                  <Col sm={10}>
+                  <Label htmlFor="ownerPublic" sm={1}>Public Key</Label>
+                  <Col sm={11}>
                     <InputStyled type="text"
                       name="ownerPublic"
                       id="ownerPublic"
@@ -119,8 +123,8 @@ const ImportAccount = (props) => {
                   </Col>
                 </FormGroup>
                 <FormGroup row>
-                  <Label htmlFor="ownerPrivate" sm={2}>Private Key</Label>
-                  <Col sm={10}>
+                  <Label htmlFor="ownerPrivate" sm={1}>Private Key</Label>
+                  <Col sm={11}>
                     <InputStyled type="text"
                       name="ownerPrivate"
                       id="ownerPrivate"
@@ -145,8 +149,8 @@ const ImportAccount = (props) => {
                 </FormGroup>
                 <div><b>Active</b></div>
                 <FormGroup row>
-                  <Label htmlFor="activePublic" sm={2}>Public Key</Label>
-                  <Col sm={10}>
+                  <Label htmlFor="activePublic" sm={1}>Public Key</Label>
+                  <Col sm={11}>
                     <InputStyled type="text"
                       name="activePublic"
                       id="activePublic"
@@ -163,8 +167,8 @@ const ImportAccount = (props) => {
                   </Col>
                 </FormGroup>
                 <FormGroup row>
-                  <Label htmlFor="activePrivate" sm={2}>Private Key</Label>
-                  <Col sm={10}>
+                  <Label htmlFor="activePrivate" sm={1}>Private Key</Label>
+                  <Col sm={11}>
                     <InputStyled type="text"
                       name="activePrivate"
                       id="activePrivate"
@@ -207,7 +211,7 @@ const ImportAccount = (props) => {
                 </FormGroup>
               </Form>
             </CardBody>
-          </CardStyled>
+          </FirstCardStyled>
         </>
       </div>
     </div>

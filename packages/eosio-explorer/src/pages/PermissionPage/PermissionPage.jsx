@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { 
-  CardBody, Row, Col
+  Row, Col
 } from 'reactstrap';
 import cogoToast from 'cogo-toast';
 
@@ -15,11 +15,8 @@ import ImportAccount from './components/ImportAccount';
 import { panelSelect } from './PermissionPageReducer';
 import { fetchStart, accountClear } from 'reducers/permission';
 import styled from 'styled-components';
-import { PageTitleDivStyled, CardStyled, ButtonGroupSeperated, ButtonPrimary, ButtonSecondary, ToolTipStyled } from 'styled';
+import { PageTitleDivStyled, ButtonGroupSeperated, ButtonPrimary, ButtonSecondary, ToolTipStyled } from 'styled';
 
-const FirstCardStyled = styled(CardStyled)`
-  border-top: solid 2px #1173a4;
-`
 const CustomButton = styled(ButtonSecondary)`
   padding-top: 4px;
   line-height: 15px;
@@ -76,55 +73,42 @@ class PermissionPage extends Component {
       <StandardTemplate>
         <div className="PermissionPage ">          
           <Row>
-            <Col sm="2"></Col>
-            <Col sm="8">
+            <Col sm="12">
               <Row>
                 <Col sm="12">
                   <PageTitleDivStyled>Manage Accounts Page</PageTitleDivStyled>
                 </Col>
               </Row>
               <Row>
-                <Col sm="12">
-                  <FirstCardStyled>                  
-                  <CardBody>
-                      <Row className="clearfix">
-                        <Col sm={12}>
-                          <ButtonGroupSeperated className="float-right"
-                            style={{display: (panel === "permission-list") ? 'block' : 'none'}}>
-                                <ButtonPrimary id="CreateAccountBtn" onClick={()=>{changePanel("create-account")}}>Create Account</ButtonPrimary>
-                                <CustomButton id="ResetPermissionBtn" onClick={()=>this.toggleModal()}>Reset All Permissions</CustomButton>
-                          </ButtonGroupSeperated>
-                          <ToolTipStyled placement="bottom" target="ResetPermissionBtn"
-                            isOpen={this.state.resetTooltip && panel === "permission-list"}
-                            toggle={()=>this.toggleResetTooltip()}
-                            delay={{show: 0, hide: 0}}
-                            trigger="hover"
-                            autohide={true}>
-                            All private keys are stored locally on your machine. Clicking this button will
-                            revert the local storage to its default state. This means all your
-                            currently stored private keys will be cleared!
-                          </ToolTipStyled>
-                        </Col>
-                      </Row>
-                      <br/>
-                      <Row>
-                        <Col sm={12}>
-                          { panel === "permission-list" ? <Permissionlist/>
-                            : panel === "create-account" ? <CreateAccount/>
-                            : <ImportAccount />
-                          }
-                        </Col>
-                      </Row>
-                  </CardBody>
-                </FirstCardStyled>
+                <Col sm={12}>
+                  <ButtonGroupSeperated className="float-right"
+                    style={{display: (panel === "permission-list") ? 'block' : 'none'}}>
+                    <ButtonPrimary id="CreateAccountBtn" onClick={()=>{changePanel("create-account")}}>Create Account</ButtonPrimary>
+                    <CustomButton id="ResetPermissionBtn" onClick={()=>this.toggleModal()}>Reset All Permissions</CustomButton>
+                  </ButtonGroupSeperated>
+                  <ToolTipStyled placement="bottom" target="ResetPermissionBtn"
+                    isOpen={this.state.resetTooltip && panel === "permission-list"}
+                    toggle={()=>this.toggleResetTooltip()}
+                    delay={{show: 0, hide: 0}}
+                    trigger="hover"
+                    autohide={true}>
+                    All private keys are stored locally on your machine. Clicking this button will
+                    revert the local storage to its default state. This means all your
+                    currently stored private keys will be cleared!
+                  </ToolTipStyled>
                 </Col>
-              </Row>            
+              </Row>
+              <br/>
+              <Row>
+                <Col sm={12}>
+                  { panel === "permission-list" ? <Permissionlist/>
+                    : panel === "create-account" ? <CreateAccount/>
+                    : <ImportAccount />
+                  }
+                </Col>
+              </Row>
             </Col>
-            <Col sm="2"></Col>
           </Row>
-          
-          
-          
         </div>
         {
           this.state.modalIsOpen && (

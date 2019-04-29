@@ -44,6 +44,10 @@ const PermissionLink = styled(Link)`
   }
 `
 
+const FirstCardStyled = styled(CardStyled)`
+  border-top: solid 2px #1173a4;
+`
+
 // Each account must have two permissions, so we multiply number of accounts by 2
 // N = 100
 const MAX_ACCOUNTS_TO_SHOW = 100 * 2;
@@ -122,7 +126,7 @@ const Permissionlist = (props) => {
 
       <div>{ isFetching   ? `loading...`
                           : <div>
-                              <CardStyled>
+                              <FirstCardStyled>
                                 <CardHeaderStyled>
                                   Default Signature Account
                                 </CardHeaderStyled>
@@ -149,7 +153,7 @@ const Permissionlist = (props) => {
                                               <AccountTable borderless>
                                                 <tbody>
                                                   <AccountRow>
-                                                    <td className="radio" width="12%">
+                                                    <td className="radio" width="10%">
                                                       <RadioButtonDivStyled>
                                                         <label className="radioContainer">
                                                           <input name={defaultAccountsList[account][0]._id}
@@ -163,14 +167,14 @@ const Permissionlist = (props) => {
                                                         </label>
                                                       </RadioButtonDivStyled>
                                                     </td>
-                                                    <td className="permissionLabel" width="88%">
+                                                    <td className="permissionLabel" width="90%">
                                                       <PermissionLink to={`/account/${defaultAccountsList[account][0].account}`}>
                                                         {defaultAccountsList[account][0].account}@{defaultAccountsList[account][0].permission}
                                                       </PermissionLink>
                                                     </td>
                                                   </AccountRow>
                                                   <AccountRow>
-                                                    <td className="radio" width="12%">
+                                                    <td className="radio" width="10%">
                                                       <RadioButtonDivStyled>
                                                         <label className="radioContainer">
                                                           <input name={defaultAccountsList[account][1]._id}
@@ -184,7 +188,7 @@ const Permissionlist = (props) => {
                                                         </label>
                                                       </RadioButtonDivStyled>
                                                     </td>
-                                                    <td className="permissionLabel" width="88%">
+                                                    <td className="permissionLabel" width="90%">
                                                       <PermissionLink to={`/account/${defaultAccountsList[account][1].account}`}>
                                                         {defaultAccountsList[account][1].account}@{defaultAccountsList[account][1].permission}
                                                       </PermissionLink>
@@ -215,8 +219,8 @@ const Permissionlist = (props) => {
                                     }
                                   </PermissionTable>
                                 </CardBody>
-                              </CardStyled>                              
-                                <CardStyled>
+                              </FirstCardStyled>                              
+                                <FirstCardStyled>
                                   <CardHeaderStyled>Import Account</CardHeaderStyled>
                                   <CardBody>
                                     <InfoDivStyled>
@@ -241,18 +245,18 @@ const Permissionlist = (props) => {
                                               <AccountTable borderless>
                                                 <tbody>
                                                   <AccountRow>
-                                                    <td className="radio" width="5%">
+                                                    <td className="radio" width="3%">
                                                     </td>
-                                                    <td className="permissionLabel" width="95%">
+                                                    <td className="permissionLabel" width="97%">
                                                       <PermissionLink to={`/account/${importAccountsList[account][0].account}`}>
                                                         {importAccountsList[account][0].account}@{importAccountsList[account][0].permission}
                                                       </PermissionLink>
                                                     </td>
                                                   </AccountRow>
                                                   <AccountRow>
-                                                    <td className="radio" width="5%">
+                                                    <td className="radio" width="3%">
                                                     </td>
-                                                    <td className="permissionLabel" width="95%">
+                                                    <td className="permissionLabel" width="97%">
                                                       <PermissionLink to={`/account/${importAccountsList[account][1].account}`}>
                                                         {importAccountsList[account][1].account}@{importAccountsList[account][1].permission}
                                                       </PermissionLink>
@@ -283,7 +287,7 @@ const Permissionlist = (props) => {
                                     }
                                   </PermissionTable>
                                   </CardBody>
-                                </CardStyled>
+                                </FirstCardStyled>
                                 
                               </div>
               }
