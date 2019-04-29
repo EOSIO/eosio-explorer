@@ -42,7 +42,7 @@ do
       --first-time-setup)
         ISFIRSTTIMESETUP=true
         ;;
-      --sample-data)
+      -s|--sample-data)
         MAKESAMPLEDATA=true
         ;;
   esac

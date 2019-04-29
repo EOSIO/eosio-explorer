@@ -24,7 +24,7 @@ do
       -dev|--develop)
         ISDEV=true
         ;;
-      --sample-data)
+      -s|--sample-data)
         MAKESAMPLEDATA=true
         ;;
   esac
