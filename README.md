@@ -62,7 +62,7 @@ Since every packages should be able to run on thier own without higher level con
 To change the default value for all packages at once, you could apply a global config for all packages.
 To use it, just change the values in`./init_config.file.` and run `./init.sh`.
 
-The first time setup script will initialise some local config files ( config.file.local or .env.local ) into different packages hence overriding the original default configs. Noted that all local configs generated will be ignored in git repository.
+The init setup script will initialise some local config files ( config.file.local or .env.local ) into different packages hence overriding the original default configs. Noted that all local configs generated will be ignored in git repository.
 
 The list below contains the **default settings** which you will see throughout the source code / documentation in this monorepo.
 

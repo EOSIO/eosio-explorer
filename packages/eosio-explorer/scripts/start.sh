@@ -24,7 +24,7 @@ COMPILER="$SCRIPTPATH/api-eosio-compiler"
 GUI="$SCRIPTPATH/eosio-explorer"
 ISDEV=false
 ISDELETE=false
-ISFIRSTTIMESETUP=false
+ISINIT=false
 BUILDAPPLICATION=false
 MAKESAMPLEDATA=false
 
@@ -39,8 +39,8 @@ do
       -dev|--develop)
         ISDEV=true
         ;;
-      --first-time-setup)
-        ISFIRSTTIMESETUP=true
+      --init)
+        ISINIT=true
         ;;
       -s|--sample-data)
         MAKESAMPLEDATA=true
@@ -49,12 +49,12 @@ do
 done
 
 # If either of these conditions are true: 
-#   first-time-setup is being run
+#   init is being run
 #   user has not added -dev flag but:
 #     has added -d flag
 #     the build folder does not exist
 # Then build with a new timestamp.
-if ( $ISFIRSTTIMESETUP || (!($ISDEV) && ($ISDELETE || [ ! -e $BUILDPATH"/build" ])) ); then
+if ( $ISINIT || (!($ISDEV) && ($ISDELETE || [ ! -e $BUILDPATH"/build" ])) ); then
   BUILDAPPLICATION=true
 fi
 
@@ -168,9 +168,9 @@ if ( $BUILDAPPLICATION ); then
 fi
 
 # build and start the application
-# If there is -d or from first time setup, clear the browser storage by adding a new timestamp when start CRA dev.
+# If there is -d or from init setup, clear the browser storage by adding a new timestamp when start CRA dev.
 if $ISDEV; then
-  if ($ISDELETE || $ISFIRSTTIMESETUP); then
+  if ($ISDELETE || $ISINIT); then
     ./start_gui.sh -dev --clear-browser-storage
   else
     ./start_gui.sh -dev
