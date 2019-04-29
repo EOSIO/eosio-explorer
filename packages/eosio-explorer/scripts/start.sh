@@ -150,7 +150,7 @@ do
     ./remove_dockers.sh
     echo " "
     echo "Restarting eosio docker"
-    ./quick_start.sh
+    ./start.sh
     exit 0
   fi
 done
@@ -163,8 +163,8 @@ if ( $BUILDAPPLICATION ); then
   echo "BUILDING APPLICATION"
   echo "=============================="
 
-  # Set environment variable "LAST_FIRST_TIME_SETUP_TIMESTAMP" at build time to create a new timestamp while serving the app.
-  (cd $GUI && REACT_APP_LAST_FIRST_TIME_SETUP_TIMESTAMP=$(date +%s) yarn build && printf "${GREEN}done${NC}")
+  # Set environment variable "REACT_APP_LAST_INIT_TIMESTAMP" at build time to create a new timestamp while serving the app.
+  (cd $GUI && REACT_APP_LAST_INIT_TIMESTAMP=$(date +%s) yarn build && printf "${GREEN}done${NC}")
 fi
 
 # build and start the application

@@ -38,7 +38,7 @@ The code comes pre-bundled with a package.json and yarn.lock files that contain 
 
 To install the dependencies, run this in the application folder from the command-line:
 ```sh
-./first_time_setup.sh
+./scripts/init.sh
 ```
 This command does a few things:
 
@@ -54,7 +54,7 @@ This command does a few things:
 Run your application using this:
 
 ```bash
-$ ./quick_start.sh
+$ ./scripts/start.sh
 ```
 
 Your application should run on port 3000 with the *development* environment configuration, so in your browser just go to [http://localhost:3000](http://localhost:3000)
