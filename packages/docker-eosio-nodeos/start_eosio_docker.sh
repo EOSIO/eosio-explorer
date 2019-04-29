@@ -20,9 +20,9 @@ fi
 # check if blockchain has been already been initialized/started previously
 if [ -e "data/initialized" ]
 then
-    script="./scripts/continue_blockchain.sh"
+  script="./scripts/continue_blockchain.sh"
 else
-    script="./scripts/init_blockchain.sh"
+  script="./scripts/init_blockchain.sh"
 fi
 
 # check if container does not already exists
@@ -47,6 +47,13 @@ if [ ! "$(docker ps -q -f name=^$NODEOS_CONTAINER_NAME$)" ]; then
   -v $NODEOS_VOLUME_NAME:/mnt/dev/data \
   $NODEOS_IMAGE_NAME \
   "$script"
+
+  if [ "$2" == "--sample-data" ]
+  then
+    echo "waiting to ensure sample data can be created safely..."
+    sleep 10s
+    docker exec -i $NODEOS_CONTAINER_NAME ./scripts/create_sample_data.sh
+  fi
 
   # check if we have follow log
   if [ "$1" != "--nolog" ]

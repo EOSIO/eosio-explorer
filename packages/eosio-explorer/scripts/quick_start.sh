@@ -26,6 +26,7 @@ ISDEV=false
 ISDELETE=false
 ISFIRSTTIMESETUP=false
 BUILDAPPLICATION=false
+MAKESAMPLEDATA=false
 
 # check for arguments
 for arg in $@
@@ -40,6 +41,9 @@ do
         ;;
       --first-time-setup)
         ISFIRSTTIMESETUP=true
+        ;;
+      -s|--sample-data)
+        MAKESAMPLEDATA=true
         ;;
   esac
 done
@@ -98,7 +102,11 @@ else
     fi
   fi
   # start the docker
-  (cd $EOSDOCKER && ./start_eosio_docker.sh --nolog && printf "${GREEN}done${NC}")
+  if ($MAKESAMPLEDATA); then
+    (cd $EOSDOCKER && ./start_eosio_docker.sh --nolog --sample-data && printf "${GREEN}done${NC}")
+  else
+    (cd $EOSDOCKER && ./start_eosio_docker.sh --nolog && printf "${GREEN}done${NC}")
+  fi
 fi
 
 echo " "
