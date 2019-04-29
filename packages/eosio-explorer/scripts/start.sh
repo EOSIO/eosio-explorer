@@ -41,9 +41,12 @@ do
         ;;
       --init)
         ISINIT=true
+<<<<<<< HEAD:packages/eosio-explorer/scripts/start.sh
         ;;
       -s|--sample-data)
         MAKESAMPLEDATA=true
+=======
+>>>>>>> c9dc81a9a7665447bd1ee27633e76ba0303855f0:packages/eosio-explorer/scripts/start.sh
         ;;
   esac
 done
