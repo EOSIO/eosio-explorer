@@ -29,16 +29,16 @@
         align-items: center;
         i{
           font-size: 22px;
-          margin-right: 5px;
-          &.fa-times-circle{
-            color: red;
-          }
-          &.fa-arrow-circle-up{
-            color: green;
-          }
-          &.fa-arrow-circle-down{
-            color: goldenrod;
-          }
+          margin-right: 10px;         
+          color: #667d9a;
+          
+        }
+        .fa-window-minimize{
+          font-size: 19px;
+          margin-top: -10px;
+        }
+        .fa-window-maximize{
+          font-size: 19px;
         }
         span{
           padding-left:5px;
@@ -50,7 +50,7 @@
         font-size: 12px;
         height: 18px;
         border-radius: 9px;
-        background: red;
+        background: #ff6679;
         color: white;
       }
     }
