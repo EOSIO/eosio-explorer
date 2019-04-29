@@ -28,12 +28,12 @@ cd $( dirname "$SYMLINKEDFILE" )
 for arg in $@
 do
   case $arg in
-    first_time_setup)
-    ./scripts/first_time_setup.sh ${@:2}
+    init)
+    ./scripts/init.sh ${@:2}
     ;;
 
-    quick_start)
-    ./scripts/quick_start.sh ${@:2}
+    start)
+    ./scripts/start.sh ${@:2}
     ;;
 
     start_gui)

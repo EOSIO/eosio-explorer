@@ -24,8 +24,9 @@ COMPILER="$SCRIPTPATH/api-eosio-compiler"
 GUI="$SCRIPTPATH/eosio-explorer"
 ISDEV=false
 ISDELETE=false
-ISFIRSTTIMESETUP=false
+ISINIT=false
 BUILDAPPLICATION=false
+MAKESAMPLEDATA=false
 
 # check for arguments
 for arg in $@
@@ -38,19 +39,22 @@ do
       -dev|--develop)
         ISDEV=true
         ;;
-      --first-time-setup)
-        ISFIRSTTIMESETUP=true
+      --init)
+        ISINIT=true
+        ;;
+      -s|--sample-data)
+        MAKESAMPLEDATA=true
         ;;
   esac
 done
 
 # If either of these conditions are true: 
-#   first-time-setup is being run
+#   init is being run
 #   user has not added -dev flag but:
 #     has added -d flag
 #     the build folder does not exist
 # Then build with a new timestamp.
-if ( $ISFIRSTTIMESETUP || (!($ISDEV) && ($ISDELETE || [ ! -e $BUILDPATH"/build" ])) ); then
+if ( $ISINIT || (!($ISDEV) && ($ISDELETE || [ ! -e $BUILDPATH"/build" ])) ); then
   BUILDAPPLICATION=true
 fi
 
@@ -98,7 +102,11 @@ else
     fi
   fi
   # start the docker
-  (cd $EOSDOCKER && ./start_eosio_docker.sh --nolog && printf "${GREEN}done${NC}")
+  if ($MAKESAMPLEDATA); then
+    (cd $EOSDOCKER && ./start_eosio_docker.sh --nolog --sample-data && printf "${GREEN}done${NC}")
+  else
+    (cd $EOSDOCKER && ./start_eosio_docker.sh --nolog && printf "${GREEN}done${NC}")
+  fi
 fi
 
 echo " "
@@ -142,7 +150,7 @@ do
     ./remove_dockers.sh
     echo " "
     echo "Restarting eosio docker"
-    ./quick_start.sh
+    ./start.sh
     exit 0
   fi
 done
@@ -155,14 +163,14 @@ if ( $BUILDAPPLICATION ); then
   echo "BUILDING APPLICATION"
   echo "=============================="
 
-  # Set environment variable "LAST_FIRST_TIME_SETUP_TIMESTAMP" at build time to create a new timestamp while serving the app.
-  (cd $GUI && REACT_APP_LAST_FIRST_TIME_SETUP_TIMESTAMP=$(date +%s) yarn build && printf "${GREEN}done${NC}")
+  # Set environment variable "REACT_APP_LAST_INIT_TIMESTAMP" at build time to create a new timestamp while serving the app.
+  (cd $GUI && REACT_APP_LAST_INIT_TIMESTAMP=$(date +%s) yarn build && printf "${GREEN}done${NC}")
 fi
 
 # build and start the application
-# If there is -d or from first time setup, clear the browser storage by adding a new timestamp when start CRA dev.
+# If there is -d or from init setup, clear the browser storage by adding a new timestamp when start CRA dev.
 if $ISDEV; then
-  if ($ISDELETE || $ISFIRSTTIMESETUP); then
+  if ($ISDELETE || $ISINIT); then
     ./start_gui.sh -dev --clear-browser-storage
   else
     ./start_gui.sh -dev
