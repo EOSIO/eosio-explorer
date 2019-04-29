@@ -16,6 +16,7 @@ RED='\033[0;31m'
 NC='\033[0m' # No Color
 GREEN='\033[0;32m'
 
+BUILDPATH="$( pwd -P )/.."
 SCRIPTPATH="$( pwd -P )/../.."
 EOSDOCKER="$SCRIPTPATH/docker-eosio-nodeos"
 MONGODOCKER="$SCRIPTPATH/docker-mongodb"
@@ -24,6 +25,7 @@ GUI="$SCRIPTPATH/eosio-explorer"
 ISDEV=false
 ISDELETE=false
 ISFIRSTTIMESETUP=false
+BUILDAPPLICATION=false
 
 # check for arguments
 for arg in $@
@@ -41,6 +43,16 @@ do
         ;;
   esac
 done
+
+# If either of these conditions are true: 
+#   first-time-setup is being run
+#   user has not added -dev flag but:
+#     has added -d flag
+#     the build folder does not exist
+# Then build with a new timestamp.
+if ( $ISFIRSTTIMESETUP || (!($ISDEV) && ($ISDELETE || [ ! -e $BUILDPATH"/build" ])) ); then
+  BUILDAPPLICATION=true
+fi
 
 echo " "
 echo "=============================="
@@ -135,8 +147,8 @@ do
   fi
 done
 
-# If it is first-time-setup or it is not -dev and -d, build with a new timestamp.
-if ( $ISFIRSTTIMESETUP || (!($ISDEV) && $ISDELETE )); then
+# If the production version of the application needs to be built
+if ( $BUILDAPPLICATION ); then
   # create a static build of application for production
   echo " "
   echo "=============================="
