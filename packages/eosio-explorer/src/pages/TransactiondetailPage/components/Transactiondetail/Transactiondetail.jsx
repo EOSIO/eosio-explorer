@@ -7,6 +7,7 @@ import pathNameConsumer from 'helpers/pathname-consumer';
 import { CardBody, Col, Row, Form, FormGroup} from 'reactstrap';
 import styled from 'styled-components';
 import { CodeViewer } from 'components';
+import { Link } from 'react-router-dom';
 import { CardStyled, CardHeaderStyled, TableStyled, ButtonSecondary,ErrorDivStyled, ButtonPrimary } from 'styled';
 
 const FirstCardStyled = styled(CardStyled)`
@@ -66,7 +67,7 @@ const Transactiondetail = (props) => {
                                 <FormGroup row>
                                   <Col sm={2}>Block Number:</Col>
                                   <Col sm={10} className="hashText">
-                                    {payload[0].block_num}
+                                    <Link to={`/block/${payload[0].block_num}`}>{payload[0].block_num}</Link>
                                   </Col>
                                 </FormGroup>
                                 <FormGroup row>
