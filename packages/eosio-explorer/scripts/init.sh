@@ -77,7 +77,7 @@ echo "=============================="
 ./remove_dockers.sh
 
 # start the dockers and gui
-./start.sh $1 --init
+./start.sh $@ --init
 
 P1=$!
 
