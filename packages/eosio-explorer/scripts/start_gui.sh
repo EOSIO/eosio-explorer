@@ -46,5 +46,9 @@ if $ISDEV; then
     (cd $GUI && PORT=$APP_DEV_PORT yarn start)
   fi
 else
-  (cd $GUI && yarn serve)
+  if [ "$(netstat -nat | grep $APP_SERVE_PORT | grep LISTEN)" ]; then
+    echo "port $APP_SERVE_PORT is already open, you should try browsing http://localhost:$APP_SERVE_PORT if it doesnt work you may have to change the port in config file or release the port $APP_SERVE_PORT"
+  else
+    (cd $GUI && yarn serve)
+  fi
 fi
