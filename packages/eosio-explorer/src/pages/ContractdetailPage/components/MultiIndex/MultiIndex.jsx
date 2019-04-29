@@ -9,7 +9,7 @@ import { push } from 'connected-react-router'
 import { CardBody, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap';
 import styled from 'styled-components';
 import { CodeViewer } from 'components';
-import { DropdownStyled, CardStyled, CardHeaderStyled } from 'styled';
+import { DropdownStyled, CardStyled, CardHeaderStyled, ErrorDivStyled } from 'styled';
 
 const SelectLabel = styled.label`
   padding-right: 10px;
@@ -19,6 +19,9 @@ const DivFlexStyled = styled.div`
   display: flex;
   justify-content: flex-end;
   padding: 0 15px 25px 15px;
+`
+const CustomErrorDiv = styled(ErrorDivStyled)`
+  padding: 0;
 `
 
 const MultiIndex = (props) => {
@@ -57,7 +60,7 @@ const MultiIndex = (props) => {
           ? `loading...`
           : showDetailsSection
             ? payload.length === 0
-              ? `No data in Multi-Index table ${params.table_name}`
+              ? <CustomErrorDiv>No data in Multi-Index table {params.table_name}</CustomErrorDiv>
               : <div>
                   <CardStyled>
                     <CardHeaderStyled>Multi-Index Table Raw Data</CardHeaderStyled>
