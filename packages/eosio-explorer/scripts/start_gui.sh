@@ -40,8 +40,8 @@ echo "STARTING APP"
 echo "=============================="
 if $ISDEV; then
   if $CLEARBROWSERSTORAGE; then
-    # Set environment variable "LAST_FIRST_TIME_SETUP_TIMESTAMP" at dev build to create a new timestamp in CRA development
-    (cd $GUI && REACT_APP_LAST_FIRST_TIME_SETUP_TIMESTAMP=$(date +%s) PORT=$APP_DEV_PORT yarn start)
+    # Set environment variable "REACT_APP_LAST_INIT_TIMESTAMP" at dev build to create a new timestamp in CRA development
+    (cd $GUI && REACT_APP_LAST_INIT_TIMESTAMP=$(date +%s) PORT=$APP_DEV_PORT yarn start)
   else
     (cd $GUI && PORT=$APP_DEV_PORT yarn start)
   fi

@@ -35,8 +35,8 @@ Please refer to this app folder for below sections.
 
 To get quickly set up and running with this tool, please perform the following steps:
 1. Directly clone this monorepo (using `git clone`)
-2. Navigate to the scripts folder of the eosio-explorer package (`/packages/eosio-explorer/scripts`) of the cloned repository and run `./first_time_setup.sh` to install and build all the necessary dependencies
-3. Run `./quick_start.sh`, which will automatically start the tool in your browser at `http://localhost:3000` after creating the necessary containers and services
+2. Navigate to the scripts folder of the eosio-explorer package (`/packages/eosio-explorer/scripts`) of the cloned repository and run `./init.sh` to install and build all the necessary dependencies
+3. Run `./start.sh`, which will automatically start the tool in your browser at `http://localhost:3000` after creating the necessary containers and services
 
 ### Command line
 
@@ -44,15 +44,15 @@ You may choose to start the tool with command line by `eosio-explorer` command i
 
 Examples:
 
-* `eosio-explorer first_time_setup`
-* `eosio-explorer quick_start`
+* `eosio-explorer init`
+* `eosio-explorer start`
 * `eosio-explorer start_gui`
 * `eosio-explorer pause_dockers`
 * `eosio-explorer remove_dockers`
 
 If you are cloning the whole eosio-toppings repository, please add `yarn` before above commands and run it in any place inside eosio-toppings folder.
 
-Example: `yarn eosio-explorer first_time_setup`
+Example: `yarn eosio-explorer init`
 
 ## Config
 Configurable settings ( e.g. docker container name and ports of the services ) are defined in `./init_config.file.`
@@ -60,7 +60,7 @@ Configurable settings ( e.g. docker container name and ports of the services ) a
 Since every packages should be able to run on thier own without higher level configuration, each package is having their own default config file ( config.file or .env ).
 
 To change the default value for all packages at once, you could apply a global config for all packages.
-To use it, just change the values in`./init_config.file.` and run `./first_time_setup.sh`.
+To use it, just change the values in`./init_config.file.` and run `./init.sh`.
 
 The first time setup script will initialise some local config files ( config.file.local or .env.local ) into different packages hence overriding the original default configs. Noted that all local configs generated will be ignored in git repository.
 
@@ -111,7 +111,7 @@ The following ports need to be opened in your local machine by default:
 * `9876` [ Nodeos Net Plugin service ] ( not configurable in config file )
 * `27788` [ MongoDB Api service ]
 
-Remember, you can always change the settings by updating config in `./init_config.file.` and running `./first_time_setup.sh`.
+Remember, you can always change the settings by updating config in `./init_config.file.` and running `./init.sh`.
 For the settings that is not configurable in config file, you could search those values and replace them by yourself.
 
 ## License
