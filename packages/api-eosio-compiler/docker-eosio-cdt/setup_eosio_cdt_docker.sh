@@ -16,8 +16,8 @@ fi
 
 # If the Docker container is not running, then spin it up and compile.
 # We can leave it running and destroy it later on.
-if [ ! "$(docker ps -q -f name=$CDT_CONTAINER_NAME)" ]; then
-    if [ "$(docker ps -aq -f status=exited -f name=$CDT_CONTAINER_NAME)" ]; then
+if [ ! "$(docker ps -q -f name=^$CDT_CONTAINER_NAME$)" ]; then
+    if [ "$(docker ps -aq -f status=exited -f name=^$CDT_CONTAINER_NAME$)" ]; then
         # Guard against exited container that somehow still exists in docker ps listing.
         # Cleanup.
         docker rm -fv $CDT_CONTAINER_NAME

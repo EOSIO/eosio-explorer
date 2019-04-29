@@ -13,14 +13,14 @@ if [ -f "./config.file.local" ]; then
 fi
 
 # docker did not stop properly
-if [ "$(docker ps -q -f status=exited -f name=$MONGODB_CONTAINER_NAME)" ]; then
+if [ "$(docker ps -q -f status=exited -f name=^$MONGODB_CONTAINER_NAME$)" ]; then
   docker rm $MONGODB_CONTAINER_NAME
 fi
 
 # check if mongodb container is running
-if [ ! "$(docker ps -q -f name=$MONGODB_CONTAINER_NAME)" ]; then
+if [ ! "$(docker ps -q -f name=^$MONGODB_CONTAINER_NAME$)" ]; then
   # check if the volume exists 
-  if [ "$(docker volume ls --format '{{.Name}}' -f name=$MONGODB_VOLUME_NAME)" ]; then
+  if [ "$(docker volume ls --format '{{.Name}}' -f name=^$MONGODB_VOLUME_NAME$)" ]; then
     echo "mongodb docker is not running, but mongodb volume exists"
     echo "cleaning mongodb volume"
     # remove the volume because docker is not running but the volume exists

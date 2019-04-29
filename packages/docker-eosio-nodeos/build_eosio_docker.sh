@@ -39,13 +39,13 @@ fi
 # create a clean data folder in eosio_docker to preserve block data
 echo "cleaning up data remnants"
 echo "remove the volume if the container doesn't exists"
-if [ "$(docker ps -q -f name=$NODEOS_CONTAINER_NAME)" ]; then
-    if [ "$(docker ps -aq -f status=running -f name=$NODEOS_CONTAINER_NAME)" ]; then
+if [ "$(docker ps -q -f name=^$NODEOS_CONTAINER_NAME$)" ]; then
+    if [ "$(docker ps -aq -f status=running -f name=^$NODEOS_CONTAINER_NAME$)" ]; then
         echo "Previous container is running, stopping"
         docker rm --force $NODEOS_CONTAINER_NAME
     fi
 fi
-if [ ! "$(docker ps -q -f name=$NODEOS_CONTAINER_NAME)" ]; then
+if [ ! "$(docker ps -q -f name=^$NODEOS_CONTAINER_NAME$)" ]; then
   echo "No container running"
 fi
 echo "Re-initializing block log folder"
