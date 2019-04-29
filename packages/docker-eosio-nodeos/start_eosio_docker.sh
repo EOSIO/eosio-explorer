@@ -13,7 +13,7 @@ if [ -f "./config.file.local" ]; then
 fi
 
 # docker did not stop properly
-if [ "$(docker ps -q -f status=exited -f name=$NODEOS_CONTAINER_NAME)" ]; then
+if [ "$(docker ps -q -f status=exited -f name=^$NODEOS_CONTAINER_NAME$)" ]; then
   docker rm $NODEOS_CONTAINER_NAME
 fi
 
@@ -26,9 +26,9 @@ else
 fi
 
 # check if container does not already exists
-if [ ! "$(docker ps -q -f name=$NODEOS_CONTAINER_NAME)" ]; then
+if [ ! "$(docker ps -q -f name=^$NODEOS_CONTAINER_NAME$)" ]; then
   # check if blockchain volume exists and remove it 
-  if [ "$(docker volume ls --format '{{.Name}}' -f name=$NODEOS_VOLUME_NAME)" ]; then
+  if [ "$(docker volume ls --format '{{.Name}}' -f name=^$NODEOS_VOLUME_NAME$)" ]; then
     echo "eosio docker is not running, but eosio volume exists"
     echo "cleaning data now"
     # remove the volume because docker is not running but the volume exists

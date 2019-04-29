@@ -16,6 +16,7 @@ RED='\033[0;31m'
 NC='\033[0m' # No Color
 GREEN='\033[0;32m'
 
+BUILDPATH="$( pwd -P )/.."
 SCRIPTPATH="$( pwd -P )/../.."
 EOSDOCKER="$SCRIPTPATH/docker-eosio-nodeos"
 MONGODOCKER="$SCRIPTPATH/docker-mongodb"
@@ -24,6 +25,7 @@ GUI="$SCRIPTPATH/eosio-explorer"
 ISDEV=false
 ISDELETE=false
 ISFIRSTTIMESETUP=false
+BUILDAPPLICATION=false
 
 # check for arguments
 for arg in $@
@@ -42,19 +44,29 @@ do
   esac
 done
 
+# If either of these conditions are true: 
+#   first-time-setup is being run
+#   user has not added -dev flag but:
+#     has added -d flag
+#     the build folder does not exist
+# Then build with a new timestamp.
+if ( $ISFIRSTTIMESETUP || (!($ISDEV) && ($ISDELETE || [ ! -e $BUILDPATH"/build" ])) ); then
+  BUILDAPPLICATION=true
+fi
+
 echo " "
 echo "=============================="
 echo "STARTING MONGODB DOCKER"
 echo "=============================="
 # check if container is paused
-if [ "$(docker ps -q -f status=paused -f name=$MONGODB_CONTAINER_NAME)" ]; then
+if [ "$(docker ps -q -f status=paused -f name=^$MONGODB_CONTAINER_NAME$)" ]; then
   echo 'resuming mongodb docker'
   docker unpause $MONGODB_CONTAINER_NAME
 else
   # check if container exists
-  if [ ! "$(docker ps -q -f name=$MONGODB_CONTAINER_NAME)" ]; then
+  if [ ! "$(docker ps -q -f name=^$MONGODB_CONTAINER_NAME$)" ]; then
     # check if volume exists
-    if [ "$(docker volume ls --format '{{.Name}}' -f name=$MONGODB_VOLUME_NAME)" ]; then
+    if [ "$(docker volume ls --format '{{.Name}}' -f name=^$MONGODB_VOLUME_NAME$)" ]; then
         echo "mongodb docker is not running, but mongo volume exists"
         echo "removing volume"
         # remove volume if container doesnt exists
@@ -70,14 +82,14 @@ echo " "
 echo "=============================="
 echo "STARTING EOSIO DOCKER"
 echo "=============================="
-if [ "$(docker ps -q -f status=paused -f name=$NODEOS_CONTAINER_NAME)" ]; then
+if [ "$(docker ps -q -f status=paused -f name=^$NODEOS_CONTAINER_NAME$)" ]; then
   echo 'resuming eosio docker'
   docker unpause $NODEOS_CONTAINER_NAME
 else
   # check if container exists
-  if [ ! "$(docker ps -q -f name=$NODEOS_CONTAINER_NAME)" ]; then
+  if [ ! "$(docker ps -q -f name=^$NODEOS_CONTAINER_NAME$)" ]; then
     # check if volume exists
-    if [ "$(docker volume ls --format '{{.Name}}' -f name=$NODEOS_VOLUME_NAME)" ]; then
+    if [ "$(docker volume ls --format '{{.Name}}' -f name=^$NODEOS_VOLUME_NAME$)" ]; then
       echo "eosio docker is not running, but eosio volume exists"
       echo "cleaning data now"
       # remove volume if container doesnt exists
@@ -94,7 +106,7 @@ echo "=============================="
 echo "STARTING CDT DOCKER"
 echo "=============================="
 # check if container is paused
-if [ "$(docker ps -q -f status=paused -f name=$CDT_CONTAINER_NAME)" ]; then
+if [ "$(docker ps -q -f status=paused -f name=^$CDT_CONTAINER_NAME$)" ]; then
   echo 'resuming cdt docker'
   docker unpause $CDT_CONTAINER_NAME
 else
@@ -135,8 +147,8 @@ do
   fi
 done
 
-# If it is first-time-setup or it is not -dev and -d, build with a new timestamp.
-if ( $ISFIRSTTIMESETUP || (!($ISDEV) && $ISDELETE )); then
+# If the production version of the application needs to be built
+if ( $BUILDAPPLICATION ); then
   # create a static build of application for production
   echo " "
   echo "=============================="

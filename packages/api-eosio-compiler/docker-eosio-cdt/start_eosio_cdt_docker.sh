@@ -12,7 +12,7 @@ if [ -f "./config.file.local" ]; then
   source ./config.file.local
 fi
 
-if [ ! "$(docker ps -q -f name=$CDT_CONTAINER_NAME)" ]; then
+if [ ! "$(docker ps -q -f name=^$CDT_CONTAINER_NAME$)" ]; then
   echo "starting docker container from the $CDT_IMAGE_NAME image"
   # -d: Detach docker container, let it run in background
   # --name: Assign name to the container
