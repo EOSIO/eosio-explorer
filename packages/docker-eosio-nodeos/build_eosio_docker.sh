@@ -32,13 +32,13 @@ if [[ "$(docker images -q $NODEOS_IMAGE_NAME)" == "" ]]; then
   echo "Build docker image $NODEOS_IMAGE_PREFIX version $NODEOS_VERSION, this may take some time"
   docker build -t $NODEOS_IMAGE_NAME . --no-cache
 else
-  echo "Docker image already exists, skip building"
+  echo "docker image already exists, skip building"
 fi
 
 # force remove the perivous container if any
 # create a clean data folder in eosio_docker to preserve block data
-echo "clean up data remnants"
-echo "Checking if previous container is running"
+echo "cleaning up data remnants"
+echo "remove the volume if the container doesn't exists"
 if [ "$(docker ps -q -f name=$NODEOS_CONTAINER_NAME)" ]; then
     if [ "$(docker ps -aq -f status=running -f name=$NODEOS_CONTAINER_NAME)" ]; then
         echo "Previous container is running, stopping"

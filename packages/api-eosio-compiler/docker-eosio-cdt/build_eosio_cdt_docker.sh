@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-echo "=== start of eosio-cdt docker setup ==="
+echo "starting eosio-cdt docker setup"
 
 # change to script's directory
 cd "$(dirname "$0")"
