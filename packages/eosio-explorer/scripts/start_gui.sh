@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -o errexit
 
 # cd into current directory
 cd $( dirname "$0" )
@@ -20,6 +21,7 @@ if [ -f "../config.file.local" ]; then
   source ../config.file.local
 fi
 
+# check for arguments
 for arg in $@
 do
     case $arg in
@@ -31,8 +33,6 @@ do
         ;;
   esac
 done
-
-echo 'in start ' + $ISDEV
 
 echo " "
 echo "=============================="
