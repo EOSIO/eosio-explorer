@@ -15,7 +15,7 @@ if ( currentLastTimestamp ){
 
   const storedLastTimestamp = localStorage.getItem('lastTimestamp');
 
-  // If the current last timestamp from process.env does not match the stored one, it means user has run initi
+  // If the current last timestamp from process.env does not match the stored one, it means user has run init
   // Hence, clear the whole persisted store.
   if ( currentLastTimestamp !== storedLastTimestamp ){
     persistor.purge();
