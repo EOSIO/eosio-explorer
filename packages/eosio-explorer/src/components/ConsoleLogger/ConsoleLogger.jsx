@@ -62,8 +62,8 @@ class ConsoleLogger extends Component {
               <i className="fa fa-times-circle" onClick={(e)=>{e.stopPropagation(); this.props.panelSet("CLOSE")}}></i>
               {
                 status === "OPEN"
-                  ? <i className="fa fa-arrow-circle-down"></i>
-                  : <i className="fa fa-arrow-circle-up"></i>
+                  ? <i className="fa fa-window-minimize"></i>
+                  : <i className="fa fa-window-maximize"></i>
               }
               <span>Errors</span>
             </div>
