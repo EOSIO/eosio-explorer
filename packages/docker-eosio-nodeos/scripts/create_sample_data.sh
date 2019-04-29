@@ -41,13 +41,7 @@ echo "4. creating user accounts"
 # script to create test accounts into blockchain
 create_accounts.sh
 
-echo "5. deploying smart contract"
-# deploy test contracts
-deploy_contract.sh hiworld useraaaaaaaa notewal $(cat note_wallet_password.txt) false
-deploy_contract.sh byeworld useraaaaaaab notewal $(cat note_wallet_password.txt) false
-deploy_contract.sh tataworld useraaaaaaac notewal $(cat note_wallet_password.txt) false
-
-echo "6. sending test transactions"
+echo "5. sending test transactions"
 # script to create test transactions into blockchain
 cleos push action helloacc sendmsg '["msg1"]' -p helloacc@active
 sleep 10
@@ -58,7 +52,7 @@ cleos push action helloacc sendmsg '["msg4"]' -p helloacc@active
 cleos push action helloacc sendmsg '["msg5"]' -p helloacc@active
 cleos push action helloacc sendmsg '["msg6"]' -p helloacc@active
 
-echo "7. sending test transactions with multi index table"
+echo "6. sending test transactions with multi index table"
 # script to create some more test transactions into blockchain
 cleos push action noteacc update '["noteacc", "this is test note"]' -p noteacc@active
 cleos push action noteacc update '["useraaaaaaaa", "this is from useraaaaaaaa note"]' -p useraaaaaaaa@active
