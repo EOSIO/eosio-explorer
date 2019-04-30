@@ -1,17 +1,21 @@
-# EOSIO Toppings
+<p align="center">
+  <img width="200" height="200" src="./public/eos_spinning_logo.gif" alt="EOSIO Logo">
+</p>
+
+<h1 align="center">EOSIO Toppings</h1>
 
 This is a monorepo composed of the various packages which work together to create a web-based development tool to help users create applications on the EOSIO blockchain. Users will be able to perform various actions related to smart contract and application development using this tool.
 
 ## Package Index
 
-* [EOSIO Explorer Web UI](./packages/eosio-explorer): React-based Web Application making use of all the services in this repo
+* [EOSIO Explorer Web UI <img alt="NPM Version" src="https://img.shields.io/npm/v/eosio-explorer.svg">](./packages/eosio-explorer): React-based Web Application making use of all the services in this repo 
 * API Services:
-    * [EOSIO Compiler / Deployment Service](./packages/api-eosio-compiler): Node.JS/Express API server for compiling and deploying smart contracts to a `nodeos` instance. Spins up a Docker container under the hood for contract compilation.
-    * [MongoDB Plugin API](./packages/api-mongodb-plugin): TypeScript API service for interacting with the blockchain MongoDB (`nodeos` run with the MongoDB plugin)
-    * [RPC API](./packages/api-rpc): TypeScript API service wrapper around the EOSIO RPC API
+    * [EOSIO Compiler / Deployment Service <img alt="NPM Version" src="https://img.shields.io/npm/v/EOSIO/api-eosio-compiler.svg">](./packages/api-eosio-compiler): Node.JS/Express API server for compiling and deploying smart contracts to a `nodeos` instance. Spins up a Docker container under the hood for contract compilation. 
+    * [MongoDB Plugin API <img alt="NPM Version" src="https://img.shields.io/npm/v/EOSIO/api-mongodb-plugin.svg">](./packages/api-mongodb-plugin): TypeScript API service for interacting with the blockchain MongoDB (`nodeos` run with the MongoDB plugin)
+    * [RPC API <img alt="NPM Version" src="https://img.shields.io/npm/v/EOSIO/api-rpc.svg">](./packages/api-rpc): TypeScript API service wrapper around the EOSIO RPC API
 * Docker-based Services:
-    * [EOSIO nodeos Docker Container](./packages/docker-eosio-nodeos): Dockerfile and build scripts for the Docker container running a local `nodeos` instance
-    * [MongoDB Docker Container](./packages/docker-mongodb): Dockerfile and build scripts for the Docker container running a local MongoDB service
+    * [EOSIO nodeos Docker Container <img alt="NPM Version" src="https://img.shields.io/npm/v/EOSIO/docker-eosio-nodeos.svg">](./packages/docker-eosio-nodeos): Dockerfile and build scripts for the Docker container running a local `nodeos` instance
+    * [MongoDB Docker Container <img alt="NPM Version" src="https://img.shields.io/npm/v/EOSIO/docker-mongodb.svg">](./packages/docker-mongodb): Dockerfile and build scripts for the Docker container running a local MongoDB service
 
 ## Directory Layout
 

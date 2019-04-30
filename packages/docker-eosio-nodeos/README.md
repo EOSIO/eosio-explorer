@@ -1,4 +1,4 @@
-# docker-eosio-nodeos
+# docker-eosio-nodeos <img alt="NPM Version" src="https://img.shields.io/npm/v/EOSIO/docker-eosio-nodeos.svg">
 `docker-eosio-nodeos` is responsible for creating a Docker container that runs a local instance of `nodeos`, which will continuously create blocks and gives users an endpoint to deploy contracts and push actions to.
 
 ## Manual Usage

@@ -1,4 +1,4 @@
-# api-eosio-compiler
+# api-eosio-compiler <img alt="NPM Version" src="https://img.shields.io/npm/v/EOSIO/api-eosio-compiler.svg">
 Self-contained Node.JS server that can perform the following functions:
 * Compile a smart contract to generate an `.abi` file
 * Compile and deploy a smart contract to the blockchain in a single step

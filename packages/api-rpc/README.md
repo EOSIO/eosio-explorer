@@ -1,4 +1,4 @@
-# api-rpc
+# api-rpc <img alt="NPM Version" src="https://img.shields.io/npm/v/EOSIO/api-rpc.svg">
 RESTful API service making use of the nodeos RPC API wrapper `eosjs` to obtain data from the blockchain that can not be fetched using `api-mongodb-plugin`.
 
 ## Manual Usage

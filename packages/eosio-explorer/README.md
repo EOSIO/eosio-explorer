@@ -1,4 +1,4 @@
-# eosio-explorer
+# eosio-explorer <img alt="NPM Version" src="https://img.shields.io/npm/v/eosio-explorer.svg">
 The code for the full web application, built using React.
 
 ## Quick Start
