@@ -78,11 +78,11 @@ export const combinedEpic = combineEpics(
   resetEpic,
 );
 
-
 //Reducer
-export const pathInitState = {
-  nodeos: `http://localhost:8888`,
-  mongodb: `mongodb://localhost:${process.env.REACT_APP_MONGODB_PORT}/${process.env.REACT_APP_MONGODB_DB_NAME}`,
+let hostname = window.location.hostname;
+export const pathInitState = {  
+  nodeos: `http://${hostname}:8888`,
+  mongodb: `mongodb://${hostname}:${process.env.REACT_APP_MONGODB_PORT}/${process.env.REACT_APP_MONGODB_DB_NAME}`,
 }
 
 const pathReducer = (state=pathInitState, action) => {
