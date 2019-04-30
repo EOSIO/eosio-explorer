@@ -109,26 +109,6 @@ else
   fi
 fi
 
-echo " "
-echo "=============================="
-echo "STARTING CDT DOCKER"
-echo "=============================="
-# check if container is paused
-if [ "$(docker ps -q -f status=paused -f name=^$CDT_CONTAINER_NAME$)" ]; then
-  echo 'resuming cdt docker'
-  docker unpause $CDT_CONTAINER_NAME
-else
-  # start the docker
-  (cd $COMPILER/docker-eosio-cdt && ./start_eosio_cdt_docker.sh && printf "${GREEN}done${NC}")
-fi
-
-
-# start compiler service in background
-echo " "
-echo "=============================="
-echo "STARTING COMPILER SERVICE"
-echo "=============================="
-(cd $COMPILER && yarn start > compiler.log &)
 
 # wait until eosio blockchain is started
 waitcounter=0
