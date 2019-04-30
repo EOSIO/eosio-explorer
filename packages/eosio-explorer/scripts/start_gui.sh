@@ -10,6 +10,7 @@ GREEN='\033[0;32m'
 
 SCRIPTPATH="$( pwd -P )/../.."
 GUI="$SCRIPTPATH/eosio-explorer"
+COMPILER="$SCRIPTPATH/api-eosio-compiler"
 ISDEV=false
 CLEARBROWSERSTORAGE=false
 
@@ -36,8 +37,30 @@ done
 
 echo " "
 echo "=============================="
+echo "STARTING CDT DOCKER"
+echo "=============================="
+# check if container is paused
+if [ "$(docker ps -q -f status=paused -f name=^$CDT_CONTAINER_NAME$)" ]; then
+  echo 'resuming cdt docker'
+  docker unpause $CDT_CONTAINER_NAME
+else
+  # start the docker
+  (cd $COMPILER/docker-eosio-cdt && ./start_eosio_cdt_docker.sh && printf "${GREEN}done${NC}")
+fi
+
+
+# start compiler service in background
+echo " "
+echo "=============================="
+echo "STARTING COMPILER SERVICE"
+echo "=============================="
+(cd $COMPILER && yarn start > compiler.log &)
+
+echo " "
+echo "=============================="
 echo "STARTING APP"
 echo "=============================="
+
 if $ISDEV; then
   if $CLEARBROWSERSTORAGE; then
     # Set environment variable "REACT_APP_LAST_INIT_TIMESTAMP" at dev build to create a new timestamp in CRA development
