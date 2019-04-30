@@ -20,7 +20,6 @@ BUILDPATH="$( pwd -P )/.."
 SCRIPTPATH="$( pwd -P )/../.."
 EOSDOCKER="$SCRIPTPATH/docker-eosio-nodeos"
 MONGODOCKER="$SCRIPTPATH/docker-mongodb"
-COMPILER="$SCRIPTPATH/api-eosio-compiler"
 GUI="$SCRIPTPATH/eosio-explorer"
 ISDEV=false
 ISDELETE=false
