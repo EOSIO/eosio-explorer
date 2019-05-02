@@ -1,6 +1,9 @@
 import ActionsModel from '../models/actions';
 
-export default async (query:any) => {
+const get_actions = async (query: {
+  account_name: string,
+  records_count: string
+}) => {
   try{
     let { account_name, records_count } = query;
     let result: object;
@@ -35,3 +38,5 @@ export default async (query:any) => {
     throw err;
   }
 }
+
+export default get_actions;

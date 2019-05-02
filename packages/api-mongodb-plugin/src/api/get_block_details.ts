@@ -1,9 +1,9 @@
 import BlockModel from '../models/block';
 
-export default async (query:any) => {
+const get_block_details = async (query: { id_or_num: string }) => {
   try{
     let { id_or_num = "" } = query;
-    let result: Object;
+    let result: object;
 
     let query_gen = BlockModel
       .find({});
@@ -25,3 +25,5 @@ export default async (query:any) => {
     console.log(err);
   }
 }
+
+export default get_block_details;

@@ -1,17 +1,21 @@
 import BlockModel from '../models/block';
 
-export default async (query:any) => {
+const get_blocks = async (query: {
+  show_empty: string,
+  id_or_num: string,
+  records_count: string
+}) => {
   try{
     let { show_empty, id_or_num, records_count } = query;
     let result: Object;
 
-    let query_gen = BlockModel.find({},
+    let query_gen = (records_count !== "1") ? BlockModel.find({},
           {
             "block_id": 1,
             "block_num": 1,
             "createdAt": 1,
             "block.transactions.trx.id": 1
-          });
+          }) : BlockModel.find({});
 
     (show_empty === undefined || show_empty !== 'true')?
       query_gen.exists("block.transactions.status"): "";
@@ -33,3 +37,5 @@ export default async (query:any) => {
     throw(err);
   }
 }
+
+export default get_blocks;

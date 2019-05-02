@@ -118,7 +118,6 @@ eosio-toppings # project directory
 │   │   │   │   ├── get_actions.ts
 │   │   │   │   ├── get_all_permissions.ts
 │   │   │   │   ├── get_block_details.ts
-│   │   │   │   ├── get_block_latest.ts
 │   │   │   │   ├── get_blocks.ts
 │   │   │   │   ├── get_transaction_details.ts
 │   │   │   │   ├── get_transactions.ts

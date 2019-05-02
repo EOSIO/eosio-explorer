@@ -40,7 +40,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
 var block_1 = __importDefault(require("../models/block"));
-exports.default = (function (query) { return __awaiter(_this, void 0, void 0, function () {
+var get_blocks = function (query) { return __awaiter(_this, void 0, void 0, function () {
     var show_empty, id_or_num, records_count, result, query_gen, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -48,12 +48,12 @@ exports.default = (function (query) { return __awaiter(_this, void 0, void 0, fu
                 _a.trys.push([0, 2, , 3]);
                 show_empty = query.show_empty, id_or_num = query.id_or_num, records_count = query.records_count;
                 result = void 0;
-                query_gen = block_1.default.find({}, {
+                query_gen = (records_count !== "1") ? block_1.default.find({}, {
                     "block_id": 1,
                     "block_num": 1,
                     "createdAt": 1,
                     "block.transactions.trx.id": 1
-                });
+                }) : block_1.default.find({});
                 (show_empty === undefined || show_empty !== 'true') ?
                     query_gen.exists("block.transactions.status") : "";
                 // check if id is passed
@@ -74,4 +74,5 @@ exports.default = (function (query) { return __awaiter(_this, void 0, void 0, fu
             case 3: return [2 /*return*/];
         }
     });
-}); });
+}); };
+exports.default = get_blocks;

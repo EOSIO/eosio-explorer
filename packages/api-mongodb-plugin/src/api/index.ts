@@ -1,6 +1,5 @@
 
 import get_account_details from './get_account_details';
-import get_block_latest from './get_block_latest';
 import get_blocks from './get_blocks';
 import get_block_details from './get_block_details';
 import get_transactions from './get_transactions';
@@ -13,7 +12,6 @@ import get_smart_contracts from './get_smart_contracts';
 
 export default {
   get_account_details,
-  get_block_latest,
   get_blocks,
   get_block_details,
   get_transactions,

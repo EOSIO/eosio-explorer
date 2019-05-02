@@ -12,6 +12,7 @@ import { combineEpics, ofType } from 'redux-observable';
 
 import apiMongodb from 'services/api-mongodb';
 import { errorLog } from 'helpers/error-logger';
+import paramsToQuery from 'helpers/params-to-query';
 
 // IMPORTANT
 // Must modify action prefix since action types must be unique in the whole app
@@ -41,15 +42,16 @@ const fetchEpic = action$ => action$.pipe(
   ofType(POLLING_START),
   mergeMap(action =>
     interval(500).pipe(
-      mergeMap(action =>
-        apiMongodb(`get_block_latest`).pipe(
+      mergeMap(action => {
+        let query = paramsToQuery({ records_count: "1", show_empty: "true" });
+        return apiMongodb(`get_blocks${query}`).pipe(
           map(res => fetchFulfilled(res.response)),
           catchError(error => {
             errorLog(error);
             return of(fetchRejected(error.response, { status: error.status }))
           })
         )
-      ),
+      }),
       takeUntil(action$.pipe(
         ofType(POLLING_STOP, POLLING_START, FETCH_REJECTED)
       ))

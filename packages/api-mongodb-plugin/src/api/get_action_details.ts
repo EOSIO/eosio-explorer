@@ -1,29 +1,51 @@
 import ActionsModel from '../models/actions';
-import mongoose from 'mongoose';
 
-export default async (query:any) => {
+function sanitizeInput(value: string | number) {
+	if (typeof value === 'string') {
+		return value.trim();
+	} 
+	if (typeof value === 'number') {
+		return value;
+	}
+	return value;
+}
+
+function parseInput(value: string | number) {
+	if (typeof value === 'string') {
+		return parseInt(value);
+	}
+	if (typeof value === 'number') {
+		return value;
+	}
+	return value;
+}
+
+const get_action_details = async (query: {
+	block_num: string | number,
+	global_sequence: string | number
+}) => {
   try{
-	let { block_num, global_sequence } = query;
+	let { block_num = "", global_sequence = "" } = query;
 	let result: object;
 	const max_int32_value = 2147483647;
 
 	let query_gen = ActionsModel
 		.find({});
 
-  if(block_num === undefined || block_num.trim() === ""){
+  if (sanitizeInput(block_num) === "") {
     throw("invalid block number");
 	}
-	else if(global_sequence === undefined || global_sequence.trim() === ""){
+	else if(sanitizeInput(global_sequence) === ""){
     throw("invalid sequence number");
   }
   else {
 		//Check if the number is greater than max int32 value. 
 		//After this value mongodb converts int32 type to string
-		block_num = (parseInt(block_num) > max_int32_value) ? 
-			block_num : parseInt(block_num);
+		block_num = (parseInput(block_num) > max_int32_value) ? 
+			block_num : parseInput(block_num);
 		
-		global_sequence = (parseInt(global_sequence) > max_int32_value) ? 
-			global_sequence : parseInt(global_sequence);
+		global_sequence = (parseInput(global_sequence) > max_int32_value) ? 
+			global_sequence : parseInput(global_sequence);
 
 		query_gen.and([
 			{"block_num": block_num},
@@ -38,3 +60,5 @@ export default async (query:any) => {
 		throw err;
   }
 }
+
+export default get_action_details;

@@ -1,6 +1,9 @@
 import AccountModel from '../models/account';
 
-export default async (query:any) => {
+const get_abi = async (query: { 
+  account_name: string,
+  records_count: string
+}) => {
   try{
     let { account_name, records_count } = query;
 
@@ -32,3 +35,5 @@ export default async (query:any) => {
     console.log(err);
   }
 }
+
+export default get_abi;

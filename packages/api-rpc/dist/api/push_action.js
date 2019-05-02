@@ -42,7 +42,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var eosjs_1 = require("eosjs");
 var eosjs_jssig_1 = __importDefault(require("eosjs/dist/eosjs-jssig"));
 var text_encoding_1 = require("text-encoding");
-exports.default = (function (query) { return __awaiter(_this, void 0, void 0, function () {
+var push_action = function (query) { return __awaiter(_this, void 0, void 0, function () {
     var endpoint, account_name, private_key, actor, permission, action_name, payload, rpc, signatureProvider, api, buffer, abi, abiDefinition, result, e_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -62,8 +62,8 @@ exports.default = (function (query) { return __awaiter(_this, void 0, void 0, fu
                     // need to make sure abi has every field in abiDefinition.fields
                     // otherwise serialize throws error
                     abi = abiDefinition.fields.reduce(function (acc, _a) {
-                        var fieldName = _a.name;
                         var _b;
+                        var fieldName = _a.name;
                         return Object.assign(acc, (_b = {}, _b[fieldName] = acc[fieldName] || [], _b));
                     }, abi);
                     abiDefinition.serialize(buffer, abi);
@@ -94,4 +94,5 @@ exports.default = (function (query) { return __awaiter(_this, void 0, void 0, fu
             case 3: return [2 /*return*/];
         }
     });
-}); });
+}); };
+exports.default = push_action;

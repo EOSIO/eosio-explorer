@@ -37,7 +37,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
 var eosjs_1 = require("eosjs");
-exports.default = (function (query) { return __awaiter(_this, void 0, void 0, function () {
+var get_account_details = function (query) { return __awaiter(_this, void 0, void 0, function () {
     var endpoint, account_name, rpc, result, e_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -56,4 +56,5 @@ exports.default = (function (query) { return __awaiter(_this, void 0, void 0, fu
             case 3: return [2 /*return*/];
         }
     });
-}); });
+}); };
+exports.default = get_account_details;

@@ -42,7 +42,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var eosjs_1 = require("eosjs");
 var eosjs_jssig_1 = __importDefault(require("eosjs/dist/eosjs-jssig"));
 var text_encoding_1 = require("text-encoding");
-exports.default = (function (query) { return __awaiter(_this, void 0, void 0, function () {
+var create_account = function (query) { return __awaiter(_this, void 0, void 0, function () {
     var endpoint, creator_private_key, creator_account_name, creator_account_permission, new_account_name, new_account_owner_key, new_account_active_key, rpc, signatureProvider, api, result, e_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -97,4 +97,5 @@ exports.default = (function (query) { return __awaiter(_this, void 0, void 0, fu
             case 3: return [2 /*return*/];
         }
     });
-}); });
+}); };
+exports.default = create_account;
