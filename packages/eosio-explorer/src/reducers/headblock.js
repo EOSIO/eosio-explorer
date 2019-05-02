@@ -42,7 +42,7 @@ const fetchEpic = action$ => action$.pipe(
   mergeMap(action =>
     interval(500).pipe(
       mergeMap(action =>
-        apiMongodb(`get_block_latest`).pipe(
+        apiMongodb(`get_blocks`).pipe(
           map(res => fetchFulfilled(res.response)),
           catchError(error => {
             errorLog(error);

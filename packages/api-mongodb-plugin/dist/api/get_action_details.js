@@ -40,30 +40,48 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
 var actions_1 = __importDefault(require("../models/actions"));
+function sanitizeInput(value) {
+    if (typeof value === 'string') {
+        return value.trim();
+    }
+    if (typeof value === 'number') {
+        return value;
+    }
+    return value;
+}
+function parseInput(value) {
+    if (typeof value === 'string') {
+        return parseInt(value);
+    }
+    if (typeof value === 'number') {
+        return value;
+    }
+    return value;
+}
 exports.default = (function (query) { return __awaiter(_this, void 0, void 0, function () {
-    var block_num, global_sequence, result, max_int32_value, query_gen, err_1;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
+    var _a, block_num, _b, global_sequence, result, max_int32_value, query_gen, err_1;
+    return __generator(this, function (_c) {
+        switch (_c.label) {
             case 0:
-                _a.trys.push([0, 2, , 3]);
-                block_num = query.block_num, global_sequence = query.global_sequence;
+                _c.trys.push([0, 2, , 3]);
+                _a = query.block_num, block_num = _a === void 0 ? "" : _a, _b = query.global_sequence, global_sequence = _b === void 0 ? "" : _b;
                 result = void 0;
                 max_int32_value = 2147483647;
                 query_gen = actions_1.default
                     .find({});
-                if (block_num === undefined || block_num.trim() === "") {
+                if (sanitizeInput(block_num) === "") {
                     throw ("invalid block number");
                 }
-                else if (global_sequence === undefined || global_sequence.trim() === "") {
+                else if (sanitizeInput(global_sequence) === "") {
                     throw ("invalid sequence number");
                 }
                 else {
                     //Check if the number is greater than max int32 value. 
                     //After this value mongodb converts int32 type to string
-                    block_num = (parseInt(block_num) > max_int32_value) ?
-                        block_num : parseInt(block_num);
-                    global_sequence = (parseInt(global_sequence) > max_int32_value) ?
-                        global_sequence : parseInt(global_sequence);
+                    block_num = (parseInput(block_num) > max_int32_value) ?
+                        block_num : parseInput(block_num);
+                    global_sequence = (parseInput(global_sequence) > max_int32_value) ?
+                        global_sequence : parseInput(global_sequence);
                     query_gen.and([
                         { "block_num": block_num },
                         { "receipt.global_sequence": global_sequence }
@@ -71,10 +89,10 @@ exports.default = (function (query) { return __awaiter(_this, void 0, void 0, fu
                 }
                 return [4 /*yield*/, query_gen.exec()];
             case 1:
-                result = _a.sent();
+                result = _c.sent();
                 return [2 /*return*/, result];
             case 2:
-                err_1 = _a.sent();
+                err_1 = _c.sent();
                 console.log(err_1);
                 throw err_1;
             case 3: return [2 /*return*/];

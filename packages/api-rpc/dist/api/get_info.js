@@ -38,12 +38,12 @@ var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
 var eosjs_1 = require("eosjs");
 exports.default = (function (query) { return __awaiter(_this, void 0, void 0, function () {
-    var endpoint, privateKey, rpc, response, e_1;
+    var endpoint, rpc, response, e_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                endpoint = query.endpoint, privateKey = query.privateKey;
+                endpoint = query.endpoint;
                 rpc = new eosjs_1.JsonRpc(endpoint);
                 return [4 /*yield*/, rpc.get_info()];
             case 1:
@@ -52,7 +52,7 @@ exports.default = (function (query) { return __awaiter(_this, void 0, void 0, fu
             case 2:
                 e_1 = _a.sent();
                 console.log('Caught exception: ' + e_1);
-                return [3 /*break*/, 3];
+                throw (e_1);
             case 3: return [2 /*return*/];
         }
     });

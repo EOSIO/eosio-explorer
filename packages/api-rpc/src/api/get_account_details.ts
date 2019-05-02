@@ -1,6 +1,9 @@
 import { JsonRpc } from 'eosjs';
 
-export default async (query:any) => {
+export default async (query: {
+  endpoint: string,
+  account_name: string
+}) => {
   try{
     let { endpoint, account_name } = query;
     

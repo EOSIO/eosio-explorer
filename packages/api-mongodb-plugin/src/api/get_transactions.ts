@@ -1,6 +1,9 @@
 import TransactionsModel from '../models/transactions';
 
-export default async (query:any) => {
+export default async (query: {
+  id: string,
+  records_count: string
+}) => {
   try{
     let { id, records_count } = query;
 

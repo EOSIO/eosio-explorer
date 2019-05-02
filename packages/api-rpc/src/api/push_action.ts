@@ -2,7 +2,15 @@ import { Api, JsonRpc, Serialize } from 'eosjs';
 import JsSignatureProvider from 'eosjs/dist/eosjs-jssig';
 import { TextDecoder, TextEncoder } from 'text-encoding';
 
-export default async (query:any) => {
+export default async (query: {
+  endpoint: string,
+  account_name: string,
+  private_key: string,
+  actor: string,
+  permission: string,
+  action_name: string,
+  payload: any
+}) => {
   try{
     let { endpoint, account_name, private_key, actor, permission, action_name, payload } = query;
 

@@ -1,10 +1,8 @@
-import { Api, JsonRpc, RpcError } from 'eosjs';
-import JsSignatureProvider from 'eosjs/dist/eosjs-jssig'
-import { TextDecoder, TextEncoder } from 'text-encoding';
+import { JsonRpc } from 'eosjs';
 
-export default async (query:any) => {
+export default async (query: { endpoint: string }) => {
   try{
-    let { endpoint, privateKey } = query;
+    let { endpoint } = query;
     
     const rpc = new JsonRpc(endpoint);
     let response = await rpc.get_info();

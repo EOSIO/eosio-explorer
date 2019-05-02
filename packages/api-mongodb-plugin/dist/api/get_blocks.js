@@ -41,12 +41,12 @@ var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
 var block_1 = __importDefault(require("../models/block"));
 exports.default = (function (query) { return __awaiter(_this, void 0, void 0, function () {
-    var show_empty, id_or_num, records_count, result, query_gen, err_1;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
+    var show_empty, id_or_num, _a, records_count, result, query_gen, err_1;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
             case 0:
-                _a.trys.push([0, 2, , 3]);
-                show_empty = query.show_empty, id_or_num = query.id_or_num, records_count = query.records_count;
+                _b.trys.push([0, 2, , 3]);
+                show_empty = query.show_empty, id_or_num = query.id_or_num, _a = query.records_count, records_count = _a === void 0 ? "1" : _a;
                 result = void 0;
                 query_gen = block_1.default.find({}, {
                     "block_id": 1,
@@ -65,10 +65,10 @@ exports.default = (function (query) { return __awaiter(_this, void 0, void 0, fu
                 query_gen.sort({ block_num: -1 });
                 return [4 /*yield*/, query_gen.exec()];
             case 1:
-                result = _a.sent();
+                result = _b.sent();
                 return [2 /*return*/, result];
             case 2:
-                err_1 = _a.sent();
+                err_1 = _b.sent();
                 console.log(err_1);
                 throw (err_1);
             case 3: return [2 /*return*/];

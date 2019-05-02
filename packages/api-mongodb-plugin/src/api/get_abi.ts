@@ -1,6 +1,9 @@
 import AccountModel from '../models/account';
 
-export default async (query:any) => {
+export default async (query: { 
+  account_name: string,
+  records_count: string
+}) => {
   try{
     let { account_name, records_count } = query;
 

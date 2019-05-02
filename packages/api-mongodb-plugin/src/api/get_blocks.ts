@@ -1,8 +1,12 @@
 import BlockModel from '../models/block';
 
-export default async (query:any) => {
+export default async (query: {
+  show_empty: string,
+  id_or_num: string,
+  records_count: string
+}) => {
   try{
-    let { show_empty, id_or_num, records_count } = query;
+    let { show_empty, id_or_num, records_count = "1" } = query;
     let result: Object;
 
     let query_gen = BlockModel.find({},

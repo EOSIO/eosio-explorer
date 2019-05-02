@@ -1,9 +1,9 @@
 import BlockModel from '../models/block';
 
-export default async (query:any) => {
+export default async (query: { id_or_num: string }) => {
   try{
     let { id_or_num = "" } = query;
-    let result: Object;
+    let result: object;
 
     let query_gen = BlockModel
       .find({});

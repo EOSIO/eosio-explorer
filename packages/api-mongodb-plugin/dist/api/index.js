@@ -4,7 +4,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var get_account_details_1 = __importDefault(require("./get_account_details"));
-var get_block_latest_1 = __importDefault(require("./get_block_latest"));
 var get_blocks_1 = __importDefault(require("./get_blocks"));
 var get_block_details_1 = __importDefault(require("./get_block_details"));
 var get_transactions_1 = __importDefault(require("./get_transactions"));
@@ -16,7 +15,6 @@ var get_abi_1 = __importDefault(require("./get_abi"));
 var get_smart_contracts_1 = __importDefault(require("./get_smart_contracts"));
 exports.default = {
     get_account_details: get_account_details_1.default,
-    get_block_latest: get_block_latest_1.default,
     get_blocks: get_blocks_1.default,
     get_block_details: get_block_details_1.default,
     get_transactions: get_transactions_1.default,

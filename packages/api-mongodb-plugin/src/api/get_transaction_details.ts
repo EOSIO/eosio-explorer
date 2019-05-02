@@ -1,6 +1,6 @@
 import TransactionTracesModel from '../models/transaction_traces';
 
-export default async (query:any) => {
+export default async (query: { id: string }) => {
   try{
     let { id } = query;
 

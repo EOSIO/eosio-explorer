@@ -1,6 +1,6 @@
 import AccountDetailsModel from '../models/account_details';
 
-export default async (query:any) => {
+export default async (query: { account_name: string }) => {
   try{
     let { account_name } = query;
     let result: object;
