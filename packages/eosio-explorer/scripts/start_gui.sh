@@ -35,6 +35,10 @@ do
   esac
 done
 
+# kill cdt service when you stop application
+trap "exit" INT TERM ERR 
+trap "kill 0" EXIT
+
 echo " "
 echo "=============================="
 echo "STARTING CDT DOCKER"
