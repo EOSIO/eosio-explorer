@@ -20,7 +20,7 @@ function parseInput(value: string | number) {
 	return value;
 }
 
-export default async (query: {
+const get_action_details = async (query: {
 	block_num: string | number,
 	global_sequence: string | number
 }) => {
@@ -60,3 +60,5 @@ export default async (query: {
 		throw err;
   }
 }
+
+export default get_action_details;

@@ -1,6 +1,6 @@
 import BlockModel from '../models/block';
 
-export default async (query: {
+const get_blocks = async (query: {
   show_empty: string,
   id_or_num: string,
   records_count: string
@@ -37,3 +37,5 @@ export default async (query: {
     throw(err);
   }
 }
+
+export default get_blocks;

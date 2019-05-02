@@ -1,6 +1,6 @@
 import TransactionsModel from '../models/transactions';
 
-export default async (query: {
+const get_transactions = async (query: {
   id: string,
   records_count: string
 }) => {
@@ -31,3 +31,5 @@ export default async (query: {
     console.log(err);
   }
 }
+
+export default get_transactions;

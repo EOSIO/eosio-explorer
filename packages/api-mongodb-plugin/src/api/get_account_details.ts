@@ -1,6 +1,6 @@
 import AccountDetailsModel from '../models/account_details';
 
-export default async (query: { account_name: string }) => {
+const get_account_details = async (query: { account_name: string }) => {
   try{
     let { account_name } = query;
     let result: object;
@@ -27,3 +27,5 @@ export default async (query: { account_name: string }) => {
     console.log(err);
   }
 }
+
+export default get_account_details;

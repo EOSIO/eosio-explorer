@@ -40,7 +40,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
 var block_1 = __importDefault(require("../models/block"));
-exports.default = (function (query) { return __awaiter(_this, void 0, void 0, function () {
+var get_block_details = function (query) { return __awaiter(_this, void 0, void 0, function () {
     var _a, id_or_num, result, query_gen, err_1;
     return __generator(this, function (_b) {
         switch (_b.label) {
@@ -71,4 +71,5 @@ exports.default = (function (query) { return __awaiter(_this, void 0, void 0, fu
             case 3: return [2 /*return*/];
         }
     });
-}); });
+}); };
+exports.default = get_block_details;

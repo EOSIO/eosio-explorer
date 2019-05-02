@@ -40,7 +40,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
 var transaction_traces_1 = __importDefault(require("../models/transaction_traces"));
-exports.default = (function (query) { return __awaiter(_this, void 0, void 0, function () {
+var get_transaction_details = function (query) { return __awaiter(_this, void 0, void 0, function () {
     var id, result, query_gen, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -67,4 +67,5 @@ exports.default = (function (query) { return __awaiter(_this, void 0, void 0, fu
             case 3: return [2 /*return*/];
         }
     });
-}); });
+}); };
+exports.default = get_transaction_details;

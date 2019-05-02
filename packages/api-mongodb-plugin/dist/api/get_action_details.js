@@ -58,7 +58,7 @@ function parseInput(value) {
     }
     return value;
 }
-exports.default = (function (query) { return __awaiter(_this, void 0, void 0, function () {
+var get_action_details = function (query) { return __awaiter(_this, void 0, void 0, function () {
     var _a, block_num, _b, global_sequence, result, max_int32_value, query_gen, err_1;
     return __generator(this, function (_c) {
         switch (_c.label) {
@@ -98,4 +98,5 @@ exports.default = (function (query) { return __awaiter(_this, void 0, void 0, fu
             case 3: return [2 /*return*/];
         }
     });
-}); });
+}); };
+exports.default = get_action_details;

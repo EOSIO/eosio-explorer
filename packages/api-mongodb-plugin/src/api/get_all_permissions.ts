@@ -1,6 +1,6 @@
 import PermissionsModel from '../models/permissions';
 
-export default async (query: { records_count: string }) => {
+const get_all_permissions = async (query: { records_count: string }) => {
   try{
     let { records_count } = query;
     let result: object;
@@ -25,3 +25,5 @@ export default async (query: { records_count: string }) => {
     throw err;
   }
 }
+
+export default get_all_permissions;

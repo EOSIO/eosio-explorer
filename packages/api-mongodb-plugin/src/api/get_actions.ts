@@ -1,6 +1,6 @@
 import ActionsModel from '../models/actions';
 
-export default async (query: {
+const get_actions = async (query: {
   account_name: string,
   records_count: string
 }) => {
@@ -38,3 +38,5 @@ export default async (query: {
     throw err;
   }
 }
+
+export default get_actions;

@@ -1,6 +1,6 @@
 import AccountsModel from '../models/account';
 
-export default async (query: { records_count: string }) => {
+const get_smart_contracts = async (query: { records_count: string }) => {
   try{
     let { records_count } = query;
     let result: object;
@@ -20,3 +20,5 @@ export default async (query: { records_count: string }) => {
     console.log(err);
   }
 }
+
+export default get_smart_contracts;
