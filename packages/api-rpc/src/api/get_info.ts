@@ -1,6 +1,6 @@
 import { JsonRpc } from 'eosjs';
 
-export default async (query: { endpoint: string }) => {
+const get_info = async (query: { endpoint: string }) => {
   try{
     let { endpoint } = query;
     
@@ -13,3 +13,5 @@ export default async (query: { endpoint: string }) => {
     throw(e);
   }
 }
+
+export default get_info;

@@ -2,7 +2,7 @@ import { Api, JsonRpc, Serialize } from 'eosjs';
 import JsSignatureProvider from 'eosjs/dist/eosjs-jssig';
 import { TextDecoder, TextEncoder } from 'text-encoding';
 
-export default async (query: {
+const push_action = async (query: {
   endpoint: string,
   account_name: string,
   private_key: string,
@@ -60,3 +60,5 @@ export default async (query: {
     throw(e);
   }
 }
+
+export default push_action;

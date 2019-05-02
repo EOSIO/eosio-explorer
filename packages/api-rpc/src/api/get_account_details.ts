@@ -1,6 +1,6 @@
 import { JsonRpc } from 'eosjs';
 
-export default async (query: {
+const get_account_details = async (query: {
   endpoint: string,
   account_name: string
 }) => {
@@ -15,3 +15,5 @@ export default async (query: {
     throw(e);
   }
 }
+
+export default get_account_details;

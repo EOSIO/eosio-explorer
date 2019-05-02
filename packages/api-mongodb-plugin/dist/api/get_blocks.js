@@ -41,19 +41,19 @@ var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
 var block_1 = __importDefault(require("../models/block"));
 exports.default = (function (query) { return __awaiter(_this, void 0, void 0, function () {
-    var show_empty, id_or_num, _a, records_count, result, query_gen, err_1;
-    return __generator(this, function (_b) {
-        switch (_b.label) {
+    var show_empty, id_or_num, records_count, result, query_gen, err_1;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
             case 0:
-                _b.trys.push([0, 2, , 3]);
-                show_empty = query.show_empty, id_or_num = query.id_or_num, _a = query.records_count, records_count = _a === void 0 ? "1" : _a;
+                _a.trys.push([0, 2, , 3]);
+                show_empty = query.show_empty, id_or_num = query.id_or_num, records_count = query.records_count;
                 result = void 0;
-                query_gen = block_1.default.find({}, {
+                query_gen = (records_count !== "1") ? block_1.default.find({}, {
                     "block_id": 1,
                     "block_num": 1,
                     "createdAt": 1,
                     "block.transactions.trx.id": 1
-                });
+                }) : block_1.default.find({});
                 (show_empty === undefined || show_empty !== 'true') ?
                     query_gen.exists("block.transactions.status") : "";
                 // check if id is passed
@@ -65,10 +65,10 @@ exports.default = (function (query) { return __awaiter(_this, void 0, void 0, fu
                 query_gen.sort({ block_num: -1 });
                 return [4 /*yield*/, query_gen.exec()];
             case 1:
-                result = _b.sent();
+                result = _a.sent();
                 return [2 /*return*/, result];
             case 2:
-                err_1 = _b.sent();
+                err_1 = _a.sent();
                 console.log(err_1);
                 throw (err_1);
             case 3: return [2 /*return*/];

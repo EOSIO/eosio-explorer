@@ -2,7 +2,7 @@ import { Api, JsonRpc } from 'eosjs';
 import JsSignatureProvider from 'eosjs/dist/eosjs-jssig'
 import { TextDecoder, TextEncoder } from 'text-encoding';
 
-export default async (query: {
+const create_account = async (query: {
   endpoint: string,
   private_key: string,
   actor: string,
@@ -61,3 +61,5 @@ export default async (query: {
     throw(e);
   }
 }
+
+export default create_account;

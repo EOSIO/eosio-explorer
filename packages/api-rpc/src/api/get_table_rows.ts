@@ -1,6 +1,6 @@
 import { JsonRpc } from 'eosjs';
 
-export default async (query: {
+const get_table_rows = async (query: {
   endpoint: string,
   contract_name: string,
   table_name: string
@@ -21,3 +21,5 @@ export default async (query: {
     throw(e);
   }
 }
+
+export default get_table_rows;
