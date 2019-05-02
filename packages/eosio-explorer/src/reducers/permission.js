@@ -69,7 +69,7 @@ const fetchEpic = ( action$, state$ ) => action$.pipe(
         originalDefault: defaultId
       })),
       catchError(error => {
-        errorLog(error);
+        errorLog("Manage accounts page/ get all permissions error",error);
         return of(fetchRejected(error.response, { status: error.status }))
       })
     )

@@ -52,7 +52,7 @@ const importEpic = (action$) => action$.pipe(
         })
       }),
       catchError(err => {
-        errorLog(err);
+        errorLog("Deploy Contract page/ import abi error",err);
         return of(processFail(err, err.errors))
       })
     )
@@ -81,7 +81,7 @@ const compileEpic = (action$) => action$.pipe(
         })
       }),
       catchError(err => {
-        errorLog(err);
+        errorLog("Deploy Contract page/ contract compile error ",err);
         return of(processFail(err, err.errors))
       })
     )
@@ -124,7 +124,7 @@ const deployEpic = (action$) => action$.pipe(
       }),
 
       catchError(err => {
-        errorLog(err);
+        errorLog("Deploy Contract page/ contract deployment error",err);
         return of(processFail(err, err.errors))
       })
     )

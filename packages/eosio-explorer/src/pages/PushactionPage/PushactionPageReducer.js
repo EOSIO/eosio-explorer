@@ -79,7 +79,7 @@ const fetchEpic = (action$, state$) => action$.pipe(
                 prefillActionToPush(actionResponse.response)
               ]),
               catchError(error => {
-                errorLog(error);
+                errorLog("Push Action page/ get action details error", error);
                 return of(
                   fetchFulfilled(actionsListResponse.response),
                   fetchRejected(error.response, { status: error.status })
@@ -88,7 +88,7 @@ const fetchEpic = (action$, state$) => action$.pipe(
             );
         }),
         catchError(error => {
-          errorLog(error);
+          errorLog("Push Action page/ get action list error", error);
           return of(fetchRejected(error.response, { status: error.status }))
         })
       )
@@ -98,7 +98,7 @@ const fetchEpic = (action$, state$) => action$.pipe(
         // Send it to the data reducer
         map(actionsListResponse => fetchFulfilled(actionsListResponse.response)),
         catchError(error => {
-          errorLog(error);
+          errorLog("Push Action page/ get action list error", error);
           return of(fetchRejected(error.response, { status: error.status }))
         })
       )
@@ -113,7 +113,7 @@ const fetchSmartContractsEpic = action$ => action$.pipe(
     return apiMongodb(`get_smart_contracts`).pipe(
       map(smartContractsResponse => fetchFulfilledSmartContract(smartContractsResponse.response)),
       catchError(error => {
-        errorLog(error);
+        errorLog("Push Action page/ get smart contracts error", error);
         return of(fetchRejectedSmartContract(error.response, { status: error.status }))
       })
     )

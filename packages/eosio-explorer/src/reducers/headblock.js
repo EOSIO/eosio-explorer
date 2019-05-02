@@ -47,7 +47,7 @@ const fetchEpic = action$ => action$.pipe(
         return apiMongodb(`get_blocks${query}`).pipe(
           map(res => fetchFulfilled(res.response)),
           catchError(error => {
-            errorLog(error);
+            errorLog("Info page/ get latest block error",error);
             return of(fetchRejected(error.response, { status: error.status }))
           })
         )

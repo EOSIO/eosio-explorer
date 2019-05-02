@@ -40,7 +40,7 @@ const fetchEpic = ( action$, state$ ) => action$.pipe(
     return from(apiRpc("get_table_rows", params)).pipe(
       map(res => fetchFulfilled(res)),
       catchError(error => {
-        errorLog(error);
+        errorLog("Smart Contract page/ get multi index table data error",error);
         return of(fetchRejected(error.response, { status: error.status }))
       })
     )
