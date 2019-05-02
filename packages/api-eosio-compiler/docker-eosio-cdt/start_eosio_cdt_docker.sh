@@ -18,7 +18,7 @@ if [ ! "$(docker ps -q -f name=^$CDT_CONTAINER_NAME$)" ]; then
   # --name: Assign name to the container
   # --mount: Mount filesystem from host to container.
   # -w: Enforce working directory inside the container.
-  docker run -i --name $CDT_CONTAINER_NAME -d \
+  docker run --rm -i --name $CDT_CONTAINER_NAME -d \
   $CDT_IMAGE_NAME
 else
   echo "docker is already running"
