@@ -47,7 +47,7 @@ const fetchEpic = action$ => action$.pipe(
         from(apiRpc("get_info", query)).pipe(
           map(res => fetchFulfilled(res)),
           catchError(error => {
-            errorLog(error);
+            errorLog("Info page/ get last irreversible block error",error);
             return of(fetchRejected(error.response, { status: error.status }))
           })
         )

@@ -1,8 +1,5 @@
 export default function validate (values, privateKeyList) {
     let errors = {};    
-    // console.log(JSON.stringify(values));
-    // console.log(JSON.stringify(privateKeyList));
-    console.log(values.permission)
     
     if (!values.smartContractName || values.smartContractName.length === 0) {
         errors.smartContractName = 'Smart Contract name is required';

@@ -89,7 +89,7 @@ const Transactiondetail = (props) => {
                       </Row>
 
                       {(payload[0].action_traces.length) > 0
-                        ? <Row>
+                        && <Row>
                             <Col sm={12}>
                               <CardStyled>
                                 <CardHeaderStyled>Action List</CardHeaderStyled>
@@ -115,7 +115,6 @@ const Transactiondetail = (props) => {
                               </CardStyled>
                             </Col>
                           </Row>
-                        : console.log("No actions")
                       }
 
                       <Row>

@@ -33,7 +33,7 @@ const fetchEpic = ( action$, state$ ) => action$.pipe(
     return apiMongodb(`get_action_details${newParams}`).pipe(
       map(res => fetchFulfilled(res.response)),
       catchError(error => {
-        errorLog(error);
+        errorLog("Action Detail page/ get action details error", error);
         return of(fetchRejected(error.response, { status: error.status }))
       })
     )

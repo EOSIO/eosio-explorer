@@ -41,7 +41,7 @@ const fetchEpic = action$ => action$.pipe(
     from(apiRpc("get_info", query)).pipe(
       map(res => fetchFulfilled(res)),
       catchError(error => {
-        errorLog(error);
+        errorLog("Info page/ get blockchain info error",error);
         return of(fetchRejected(error.response, { status: error.status }))
       })
     )
@@ -54,7 +54,7 @@ const switchCheckEpic = action$ => action$.pipe(
     from(apiRpc("get_info", query)).pipe(
       flatMap(res => ([fetchFulfilled(res), accountClear(res.chain_id)])),
       catchError(error => {
-        errorLog(error);
+        errorLog("Info page/ endpoint change error",error);
         return of(fetchRejected(error.response, { status: error.status }))
       })
     )

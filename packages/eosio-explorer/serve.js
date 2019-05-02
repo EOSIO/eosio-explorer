@@ -3,6 +3,8 @@ const path = require('path');
 const app = express();
 const mongodb = require('./routers/mongodb');
 
+const openBrowser = require('react-dev-utils/openBrowser');
+
 const fs = require('fs');
 const dotenv = require('dotenv');
 dotenv.config();
@@ -34,6 +36,7 @@ app.listen(PORT, ()=>{
   if(`${process.env.MODE}` !== `development`){
     let url = "http://localhost:" + PORT;
     console.log(`Application is ready on "${url}".`);
-    console.log(`Copy above URL and paste it into the browser to start the application.`);
+    console.log(`You can now view @eosio-toppings/eosio-explorer in the browser.`);
+    openBrowser(url);
   }
 });

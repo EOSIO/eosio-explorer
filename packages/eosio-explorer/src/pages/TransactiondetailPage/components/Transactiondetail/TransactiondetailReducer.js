@@ -41,7 +41,7 @@ const fetchEpic = ( action$, state$ ) => action$.pipe(
     return apiMongodb(`get_transaction_details${paramsToQuery(params)}`).pipe(
       map(res => fetchFulfilled(res.response)),
       catchError(error => {
-        errorLog(error);
+        errorLog("Transaction detail page/ get transaction details error",error);
         return of(fetchRejected(error.response, { status: error.status }))
       })
     )
