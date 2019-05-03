@@ -4,12 +4,15 @@ set -o errexit
 # cd into current directory
 cd $( dirname "$0" )
 
+# App root directory is one level upper
+APP=$(dirname "$( pwd -P )")
+
 # sourcing variable from config file
-source ../config.file
+source $APP/config.file
 
 # override config if there are any local config changes
-if [ -f "../config.file.local" ]; then
-  source ../config.file.local
+if [ -f "$APP/config.file.local" ]; then
+  source $APP/config.file.local
 fi
 
 echo " "

@@ -1,16 +1,18 @@
 {
-  "name": "@eosio-toppings/eosio-explorer",
-  "version": "0.2.0",
-  "private": true,
+  "name": "@ptb1/eosio-explorer",
+  "version": "0.2.1",
+  "publishConfig": {
+    "access": "private"
+  },
   "license": "MIT",
   "dependencies": {
     "@coreui/coreui": "^2.1.8",
     "@coreui/react": "^2.1.5",
-    "@eosio-toppings/api-eosio-compiler": "^0.2.0",
-    "@eosio-toppings/api-mongodb-plugin": "^0.2.0",
-    "@eosio-toppings/api-rpc": "^0.2.0",
-    "@eosio-toppings/docker-eosio-nodeos": "^0.2.0",
-    "@eosio-toppings/docker-mongodb": "^0.2.0",
+    "@eosio-toppings/api-eosio-compiler": "^0.2.1",
+    "@eosio-toppings/api-mongodb-plugin": "^0.2.1",
+    "@eosio-toppings/api-rpc": "^0.2.1",
+    "@eosio-toppings/docker-eosio-nodeos": "^0.2.1",
+    "@eosio-toppings/docker-mongodb": "^0.2.1",
     "axios": "^0.18.0",
     "cogo-toast": "^1.0.4",
     "connected-react-router": "^6.3.2",
@@ -55,7 +57,8 @@
     "postbuild": "react-snap",
     "test": "react-app-rewired test --env=jsdom",
     "eject": "react-scripts eject",
-    "serve": "node serve.js"
+    "serve": "node serve.js",
+    "eosio-explorer": "./cli.sh"
   },
   "browserslist": [
     ">0.2%",

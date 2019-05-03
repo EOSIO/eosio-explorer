@@ -4,23 +4,39 @@ set -o errexit
 # cd into current directory
 cd $( dirname "$0" )
 
+# App root directory is one level upper
+APP=$(dirname "$( pwd -P )")
+
 # sourcing variable from config file
-source ../config.file
+source $APP/config.file
 
 # override config if there are any local config changes
-if [ -f "../config.file.local" ]; then
-  source ../config.file.local
+if [ -f "$APP/config.file.local" ]; then
+  source $APP/config.file.local
 fi
 
 RED='\033[0;31m'
 NC='\033[0m' # No Color
 GREEN='\033[0;32m'
 
-BUILDPATH="$( pwd -P )/.."
-SCRIPTPATH="$( pwd -P )/../.."
-EOSDOCKER="$SCRIPTPATH/docker-eosio-nodeos"
-MONGODOCKER="$SCRIPTPATH/docker-mongodb"
-GUI="$SCRIPTPATH/eosio-explorer"
+if [ 'node_modules' == $(basename "$(dirname "$(dirname "$( pwd -P )")")") ]; then
+
+    # yarn added globally, dependencies are installed as siblings directory
+    DEPENDENCIES_ROOT="$(dirname "$(dirname "$( pwd -P )")")/$DEPENDENCIES_SCOPE_NAME"
+
+elif [ '@ptb1' == $(basename "$(dirname "$(dirname "$( pwd -P )")")") ]; then
+
+    # yarn added globally with scope, dependencies are installed as siblings directory of one level upper
+    DEPENDENCIES_ROOT="$(dirname "$(dirname "$(dirname "$( pwd -P )")")")/$DEPENDENCIES_SCOPE_NAME"
+else
+
+    # yarn installed locally, dependencies are installed under current's project directory
+    DEPENDENCIES_ROOT="$(dirname "$( pwd -P )")/node_modules/$DEPENDENCIES_SCOPE_NAME"
+fi
+
+EOSDOCKER="$DEPENDENCIES_ROOT/docker-eosio-nodeos"
+MONGODOCKER="$DEPENDENCIES_ROOT/docker-mongodb"
+
 ISDEV=false
 ISDELETE=false
 ISINIT=false
@@ -47,13 +63,13 @@ do
   esac
 done
 
-# If either of these conditions are true: 
+# If either of these conditions are true:
 #   init is being run
 #   user has not added -dev flag but:
 #     has added -d flag
 #     the build folder does not exist
 # Then build with a new timestamp.
-if ( $ISINIT || (!($ISDEV) && ($ISDELETE || [ ! -e $BUILDPATH"/build" ])) ); then
+if ( $ISINIT || (!($ISDEV) && ($ISDELETE || [ ! -e $APP"/build" ])) ); then
   BUILDAPPLICATION=true
 fi
 
@@ -143,7 +159,7 @@ if ( $BUILDAPPLICATION ); then
   echo "=============================="
 
   # Set environment variable "REACT_APP_LAST_INIT_TIMESTAMP" at build time to create a new timestamp while serving the app.
-  (cd $GUI && REACT_APP_LAST_INIT_TIMESTAMP=$(date +%s) yarn build && printf "${GREEN}done${NC}")
+  (cd $APP && REACT_APP_LAST_INIT_TIMESTAMP=$(date +%s) yarn build && printf "${GREEN}done${NC}")
 fi
 
 # build and start the application

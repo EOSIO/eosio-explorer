@@ -4,23 +4,40 @@ set -o errexit
 # cd into current directory
 cd $( dirname "$0" )
 
+# App root directory is one level upper
+APP=$(dirname "$( pwd -P )")
+
+# sourcing variable from config file
+source $APP/config.file
+
+# override config if there are any local config changes
+if [ -f "$APP/config.file.local" ]; then
+  source $APP/config.file.local
+fi
+
 RED='\033[0;31m'
 NC='\033[0m' # No Color
 GREEN='\033[0;32m'
 
-SCRIPTPATH="$( pwd -P )/../.."
-GUI="$SCRIPTPATH/eosio-explorer"
-COMPILER="$SCRIPTPATH/api-eosio-compiler"
+if [ 'node_modules' == $(basename "$(dirname "$(dirname "$( pwd -P )")")") ]; then
+
+    # yarn added globally, dependencies are installed as siblings directory
+    DEPENDENCIES_ROOT="$(dirname "$(dirname "$( pwd -P )")")/$DEPENDENCIES_SCOPE_NAME"
+
+elif [ '@ptb1' == $(basename "$(dirname "$(dirname "$( pwd -P )")")") ]; then
+
+    # yarn added globally with scope, dependencies are installed as siblings directory of one level upper
+    DEPENDENCIES_ROOT="$(dirname "$(dirname "$(dirname "$( pwd -P )")")")/$DEPENDENCIES_SCOPE_NAME"
+else
+
+    # yarn installed locally, dependencies are installed under current's project directory
+    DEPENDENCIES_ROOT="$(dirname "$( pwd -P )")/node_modules/$DEPENDENCIES_SCOPE_NAME"
+fi
+
+COMPILER="$DEPENDENCIES_ROOT/api-eosio-compiler"
+
 ISDEV=false
 CLEARBROWSERSTORAGE=false
-
-# sourcing variable from config file
-source ../config.file
-
-# override config if there are any local config changes
-if [ -f "../config.file.local" ]; then
-  source ../config.file.local
-fi
 
 # check for arguments
 for arg in $@
@@ -36,7 +53,7 @@ do
 done
 
 # kill cdt service when you stop application
-trap "exit" INT TERM ERR 
+trap "exit" INT TERM ERR
 trap "kill 0" EXIT
 
 echo " "
@@ -68,14 +85,14 @@ echo "=============================="
 if $ISDEV; then
   if $CLEARBROWSERSTORAGE; then
     # Set environment variable "REACT_APP_LAST_INIT_TIMESTAMP" at dev build to create a new timestamp in CRA development
-    (cd $GUI && REACT_APP_LAST_INIT_TIMESTAMP=$(date +%s) PORT=$APP_DEV_PORT yarn start)
+    (cd $APP && REACT_APP_LAST_INIT_TIMESTAMP=$(date +%s) PORT=$APP_DEV_PORT yarn start)
   else
-    (cd $GUI && PORT=$APP_DEV_PORT yarn start)
+    (cd $APP && PORT=$APP_DEV_PORT yarn start)
   fi
 else
   if [ "$(netstat -nat | grep $APP_SERVE_PORT | grep LISTEN)" ]; then
     echo "port $APP_SERVE_PORT is already open, you should try browsing http://localhost:$APP_SERVE_PORT if it doesnt work you may have to change the port in config file or release the port $APP_SERVE_PORT"
   else
-    (cd $GUI && yarn serve)
+    (cd $APP && yarn serve)
   fi
 fi
