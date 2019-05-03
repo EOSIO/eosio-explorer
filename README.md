@@ -8,9 +8,9 @@ This is a monorepo composed of the various packages which work together to creat
 
 ## Package Index
 
-* [EOSIO Explorer Web UI <img alt="NPM Version" src="https://img.shields.io/npm/v/eosio-explorer.svg">](./packages/eosio-explorer): React-based Web Application making use of all the services in this repo 
+* [EOSIO Explorer Web UI <img alt="NPM Version" src="https://img.shields.io/npm/v/eosio-explorer.svg">](./packages/eosio-explorer): React-based Web Application making use of all the services in this repo
 * API Services:
-    * [EOSIO Compiler / Deployment Service <img alt="NPM Version" src="https://img.shields.io/npm/v/EOSIO/api-eosio-compiler.svg">](./packages/api-eosio-compiler): Node.JS/Express API server for compiling and deploying smart contracts to a `nodeos` instance. Spins up a Docker container under the hood for contract compilation. 
+    * [EOSIO Compiler / Deployment Service <img alt="NPM Version" src="https://img.shields.io/npm/v/EOSIO/api-eosio-compiler.svg">](./packages/api-eosio-compiler): Node.JS/Express API server for compiling and deploying smart contracts to a `nodeos` instance. Spins up a Docker container under the hood for contract compilation.
     * [MongoDB Plugin API <img alt="NPM Version" src="https://img.shields.io/npm/v/EOSIO/api-mongodb-plugin.svg">](./packages/api-mongodb-plugin): TypeScript API service for interacting with the blockchain MongoDB (`nodeos` run with the MongoDB plugin)
     * [RPC API <img alt="NPM Version" src="https://img.shields.io/npm/v/EOSIO/api-rpc.svg">](./packages/api-rpc): TypeScript API service wrapper around the EOSIO RPC API
 * Docker-based Services:
@@ -101,7 +101,7 @@ CDT_IMAGE_NAME=$CDT_IMAGE_PREFIX:$CDT_VERSION-$CDT_DOCKERFILE_VERSION
 ### UI APP
 ```
 APP_DEV_PORT=3000
-APP_SERVE_PORT=5000
+APP_SERVE_PORT=5111
 ```
 
 ### Caveats (ports)
@@ -109,7 +109,7 @@ APP_SERVE_PORT=5000
 The following ports need to be opened in your local machine by default:
 
 * `3000` [ UI - Create react app dev service ( only used for development of this tools)]
-* `5000` [ UI - Frontend app service ]
+* `5111` [ UI - Frontend app service ]
 * `8081` [ EOSIO compiler/deployment service ]
 * `8888` [ Nodeos RPC Api service ] ( not configurable in config file )
 * `9876` [ Nodeos Net Plugin service ] ( not configurable in config file )
