@@ -1,6 +1,6 @@
 {
   "name": "@eosio-toppings/api-eosio-compiler",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Local node process to consume smart contract source files and compile to WASM/ABI files",
   "main": "local_service.js",
   "license": "MIT",
