@@ -1,4 +1,0 @@
-MONGODB_CONTAINER_NAME=eosio_mongodb
-MONGODB_PORT=27788
-MONGODB_DB_NAME=eosio_nodeos_mongodb_plugin
-MONGODB_VOLUME_NAME=eosio_mongodb_volume
