@@ -26,7 +26,7 @@ const Actionlist = (props) => {
     props.pollingStart();
     return () => { props.pollingStop() }
   }, [])
-  const [inputValue, setInputValue] = useState("");
+  const [setInputValue] = useState("");
   let { actionlist: { isFetching, data, smartContractName, records } } = props;
   let { payload = [], error } = data;
 

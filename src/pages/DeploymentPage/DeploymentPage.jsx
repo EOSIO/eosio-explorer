@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import {
   CardBody, Row, Col, Spinner,
   Nav, NavLink, NavItem, TabContent, TabPane,
-  Form, FormGroup, Label, Badge, Tooltip,
+  Form, FormGroup, Label, Badge,
   DropdownToggle, DropdownMenu, DropdownItem  
 } from 'reactstrap';
 import { StandardTemplate } from 'templates';
