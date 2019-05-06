@@ -9,7 +9,7 @@ import { push } from 'connected-react-router'
 import { CardBody, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap';
 import styled from 'styled-components';
 import { CodeViewer } from 'components';
-import { DropdownStyled, CardStyled, CardHeaderStyled, ErrorDivStyled } from 'styled';
+import { DropdownStyled, CardStyled, CardHeaderStyled, ErrorDivStyled, ButtonSecondary } from 'styled';
 
 const SelectLabel = styled.label`
   padding-right: 10px;
@@ -22,6 +22,9 @@ const DivFlexStyled = styled.div`
 `
 const CustomErrorDiv = styled(ErrorDivStyled)`
   padding: 0;
+`
+const CustomErrorButton = styled(ButtonSecondary)`
+  width: auto;
 `
 
 const MultiIndex = (props) => {
@@ -55,7 +58,7 @@ const MultiIndex = (props) => {
         </DropdownStyled>               
       </DivFlexStyled>                
       {error
-        ? <button onClick={props.fetchStart}>{JSON.stringify(error)} Click to reload.</button>
+        ? <CustomErrorButton onClick={props.fetchStart}>Connection error, click to reload</CustomErrorButton>
         : isFetching 
           ? `loading...`
           : showDetailsSection
