@@ -57,14 +57,13 @@ const Transactionlist = (props) => {
                       }
                     }
                     onChange={evt=>{setInputValue(evt.target.value)}}/>
-              <ButtonPrimary    
-                    disabled = { inputValue === "" }         
+              <ButtonPrimary         
                     onClick={evt=> {
                       setInputValue("");
                       if(inputValue !== "")
                         props.push('/transaction/'+inputValue)                           
                     }}>
-              Search</ButtonPrimary>
+              SEARCH</ButtonPrimary>
             </DivFlexStyled>
           </CardTitle>
            
