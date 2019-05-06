@@ -2,24 +2,25 @@ import React from 'react';
 
 import { connect } from 'react-redux';
 
-import { Col, Form, FormGroup, Label, Button } from 'reactstrap';
+import { Col, Form, FormGroup, Label } from 'reactstrap';
 
+import isObjectEmpty from 'helpers/is-object-empty';
 import { pollingStart } from 'reducers/lastblockinfo';
 import { LoadingSpinner } from 'components';
-
+import { ErrorButton } from 'styled';
 
 const LastIrreversibleBlockInfo = (props) => {
 
   let { lastblockinfo: { isFetching, data } } = props;
   let { payload = {}, error } = data;
-
+  
   return (
     <>
       { error ?
-        <div className="text-center">
-          <p className="text-danger">{JSON.stringify(error)}</p>
-          <Button color="primary" onClick={props.pollingStart}>Click to Reload</Button>
-        </div>
+        <>
+          {!isObjectEmpty(error) && <p className="text-danger">{JSON.stringify(error)}</p>}
+          <ErrorButton onClick={props.pollingStart}>Connection error, click to reload</ErrorButton>
+        </>
       : isFetching ? (
         <LoadingSpinner />
       ) : (

@@ -5,12 +5,13 @@ import { connect } from 'react-redux';
 import { fetchStart, paramsSet } from './ContractdetailReducer';
 import MultiIndex from '../MultiIndex';
 import pathNameConsumer from 'helpers/pathname-consumer';
+import isObjectEmpty from 'helpers/is-object-empty';
 import { push } from 'connected-react-router'
 
 import { Row, Col, CardBody } from 'reactstrap';
 import styled from 'styled-components';
 import { CodeViewer } from 'components';
-import { CardStyled, CardHeaderStyled, ButtonPrimary, ButtonSecondary, ErrorDivStyled, InputStyled} from 'styled';
+import { CardStyled, CardHeaderStyled, ButtonPrimary, ErrorButton, ErrorDivStyled, InputStyled} from 'styled';
 
 const FirstCardStyled = styled(CardStyled)`
   border-top: solid 2px #1173a4;
@@ -28,9 +29,6 @@ const DivFlexStyled = styled.div`
 const DivMessageStyled = styled.div`
   font-weight: bold;
   padding-bottom: 20px;
-`
-const CustomErrorButton = styled(ButtonSecondary)`
-  width: auto;
 `
 const CustomErrorDiv = styled(ErrorDivStyled)`
   padding: 30px 0 0 0;
@@ -93,7 +91,11 @@ const Contractdetail = (props) => {
       {showDetailsSection && 
         <div>
           {error
-            ? <CustomErrorButton onClick={props.fetchStart}>Connection error, click to reload</CustomErrorButton>
+            ? 
+              <>
+                {!isObjectEmpty(error) && <p className="text-danger">{JSON.stringify(error)}</p>}
+                <ErrorButton onClick={props.fetchStart}>Connection error, click to reload</ErrorButton>
+              </>
             : isFetching
               ? `loading...`
               : !(payload.length !== 0 && payload[0].hasOwnProperty("abi") === true)

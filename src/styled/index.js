@@ -9,6 +9,7 @@ import ButtonSecondary from './ButtonSecondary';
 import TableStyled from './TableStyled';
 import CheckBoxDivStyled from './CheckBoxDivStyled';
 import DropdownStyled from './DropdownStyled';
+import ErrorButton from './ErrorButton';
 import RadioButtonDivStyled from './RadioButtonDivStyled';
 import OverlayStyled from './OverlayStyled';
 import ErrorDivStyled from './ErrorDivStyled';
@@ -29,6 +30,7 @@ export {
   TableStyled,
   CheckBoxDivStyled,
   DropdownStyled,
+  ErrorButton,
   RadioButtonDivStyled,
   OverlayStyled,
   ErrorDivStyled,

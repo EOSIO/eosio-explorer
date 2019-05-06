@@ -5,8 +5,9 @@ import { push } from 'connected-react-router'
 import { pollingStart, pollingStop, recordsUpdate } from './TransactionlistReducer';
 import { Row, Col, CardTitle, CardBody } from 'reactstrap';
 import styled from 'styled-components';
+import isObjectEmpty from 'helpers/is-object-empty';
 import { LimitSelectDropdown, LoadingSpinner } from 'components';
-import { CardStyled, CardHeaderStyled, TableStyled, ButtonPrimary, ButtonSecondary, InputStyled} from 'styled';
+import { CardStyled, CardHeaderStyled, TableStyled, ButtonPrimary, ErrorButton, InputStyled } from 'styled';
 
 
 const FirstCardStyled = styled(CardStyled)`
@@ -21,9 +22,6 @@ const SearchInputStyled = styled(InputStyled)`
   width: 38%;
   margin-right: 10px;
 `
-const CustomErrorButton = styled(ButtonSecondary)`
-  width: auto;
-`
 
 const Transactionlist = (props) => {
 
@@ -36,7 +34,7 @@ const Transactionlist = (props) => {
 
   let { transactionlist: { isFetching, data, records } } = props;
   let { payload = [], error } = data;
-
+  
   return (
     <div className="Transactionlist">
       <FirstCardStyled>
@@ -68,7 +66,11 @@ const Transactionlist = (props) => {
           </CardTitle>
            
           <div>{error
-              ? <CustomErrorButton onClick={props.pollingStart}>Connection error, click to reload</CustomErrorButton>
+              ? 
+                <>
+                  {!isObjectEmpty(error) && <p className="text-danger">{JSON.stringify(error)}</p>}
+                  <ErrorButton onClick={props.pollingStart}>Connection error, click to reload</ErrorButton>
+                </>
                 : 
                   <Row>
                     <Col xs="12">

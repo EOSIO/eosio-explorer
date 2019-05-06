@@ -9,7 +9,8 @@ import { push } from 'connected-react-router'
 import { CardBody, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap';
 import styled from 'styled-components';
 import { CodeViewer } from 'components';
-import { DropdownStyled, CardStyled, CardHeaderStyled, ErrorDivStyled, ButtonSecondary } from 'styled';
+import isObjectEmpty from 'helpers/is-object-empty';
+import { DropdownStyled, CardStyled, CardHeaderStyled, ErrorDivStyled, ErrorButton } from 'styled';
 
 const SelectLabel = styled.label`
   padding-right: 10px;
@@ -23,9 +24,6 @@ const DivFlexStyled = styled.div`
 const CustomErrorDiv = styled(ErrorDivStyled)`
   padding: 0;
 `
-const CustomErrorButton = styled(ButtonSecondary)`
-  width: auto;
-`
 
 const MultiIndex = (props) => {
 
@@ -36,7 +34,7 @@ const MultiIndex = (props) => {
   let { multiIndex: { isFetching, data, params } } = props;
   let { payload, error } = data;
   let { abiData } = props;
-
+  
   return (
     <div className="MultiIndex">
       <DivFlexStyled>
@@ -58,7 +56,11 @@ const MultiIndex = (props) => {
         </DropdownStyled>               
       </DivFlexStyled>                
       {error
-        ? <CustomErrorButton onClick={props.fetchStart}>Connection error, click to reload</CustomErrorButton>
+        ? 
+          <>
+            {!isObjectEmpty(error) && <p className="text-danger">{JSON.stringify(error)}</p>}
+            <ErrorButton onClick={props.fetchStart}>Connection error, click to reload</ErrorButton>
+          </>
         : isFetching 
           ? `loading...`
           : showDetailsSection

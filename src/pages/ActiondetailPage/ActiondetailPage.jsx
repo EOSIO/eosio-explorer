@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { CardBody, Button, Row, Col } from 'reactstrap';
+import { CardBody, Row, Col } from 'reactstrap';
 import { connect } from 'react-redux';
 
 import { LoadingSpinner } from 'components';
@@ -8,7 +8,8 @@ import { fetchStart, paramsSet } from './ActiondetailPageReducer';
 import Actiondetail from './components/Actiondetail';
 import Actionjson from './components/Actionjson';
 import styled from 'styled-components';
-import { PageTitleDivStyled, CardStyled, CardHeaderStyled } from 'styled';
+import isObjectEmpty from 'helpers/is-object-empty';
+import { PageTitleDivStyled, CardStyled, CardHeaderStyled, ErrorButton } from 'styled';
 
 const FirstCardStyled = styled(CardStyled)`
   border-top: solid 2px #1173a4;
@@ -24,9 +25,9 @@ const ActiondetailPage = (props) => {
     props.fetchStart();
   }, [])
 
-   let { actiondetailPage: { data, isFetching } } = props;
-   let { error } = data;
-
+  let { actiondetailPage: { data, isFetching } } = props;
+  let { error } = data;
+  
   return (
     <StandardTemplate>
       <div className="ActiondetailPage">
@@ -43,10 +44,10 @@ const ActiondetailPage = (props) => {
               </CardHeaderStyled>
               <CardBody>
                 { error ?
-                  <div className="text-center">
-                    <p className="text-danger">{JSON.stringify(error)}</p>
-                    <Button color="primary" onClick={props.fetchStart}>Click to Reload</Button>
-                  </div>
+                  <>
+                    {!isObjectEmpty(error) && <p className="text-danger">{JSON.stringify(error)}</p>}
+                    <ErrorButton onClick={props.fetchStart}>Connection error, click to reload</ErrorButton>
+                  </>
                 : isFetching ? (
                   <LoadingSpinner />
                 ) : (

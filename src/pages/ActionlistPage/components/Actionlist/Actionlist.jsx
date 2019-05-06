@@ -6,7 +6,8 @@ import styled from 'styled-components';
 import { push } from 'connected-react-router'
 import { pollingStart, pollingStop, smartContractNameSearch, recordsUpdate } from './ActionlistReducer';
 import { LoadingSpinner, LimitSelectDropdown } from 'components';
-import { TableStyled, ButtonPrimary, ButtonSecondary, InputStyled } from 'styled';
+import isObjectEmpty from 'helpers/is-object-empty';
+import { TableStyled, ButtonPrimary, InputStyled, ErrorButton } from 'styled';
 
 const FormStyled = styled(Form)`
   display: flex;
@@ -15,9 +16,6 @@ const FormStyled = styled(Form)`
 const FilterInputStyled = styled(InputStyled)`
   width: 38%;
   margin-right: 10px;
-`
-const CustomErrorButton = styled(ButtonSecondary)`
-  width: auto;
 `
 
 const Actionlist = (props) => {
@@ -29,7 +27,7 @@ const Actionlist = (props) => {
   const [setInputValue] = useState("");
   let { actionlist: { isFetching, data, smartContractName, records } } = props;
   let { payload = [], error } = data;
-
+  
   return (
     <div className="Actionlist">
       <Row>
@@ -63,7 +61,10 @@ const Actionlist = (props) => {
       <Row>
         <Col xs="12">
         { error ? 
-          <CustomErrorButton onClick={props.pollingStart}>Connection error, click to reload</CustomErrorButton>
+          <>
+            {!isObjectEmpty(error) && <p className="text-danger">{JSON.stringify(error)}</p>}
+            <ErrorButton onClick={props.pollingStart}>Connection error, click to reload</ErrorButton>
+          </>
         : isFetching ? (
           <LoadingSpinner />
         ) : (
