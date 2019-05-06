@@ -37,7 +37,7 @@ const MultiIndex = (props) => {
   return (
     <div className="MultiIndex">
       <DivFlexStyled>
-        <SelectLabel>Select Table to Display multi-Index Table:</SelectLabel>
+        <SelectLabel>Select multi-index table to display data:</SelectLabel>
         <DropdownStyled isOpen={isOpenDropDown} toggle={()=>{toggleDropDown(!isOpenDropDown)}}>
           <DropdownToggle caret>{dropDownSelctedValue}</DropdownToggle>
           <DropdownMenu right>
