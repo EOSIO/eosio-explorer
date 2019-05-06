@@ -58,6 +58,7 @@ const FirstCardStyled = styled(CardStyled)`
 const LogCardStyled = styled(CardStyled)`
   border: none;
   margin-right: -1.3em;
+  margin-left: -1em;
 `
 
 const LogCardHeaderStyled = styled(CardHeaderStyled)`
@@ -82,6 +83,7 @@ const DivFlexStyled = styled.div`
   justify-content: space-between;
   margin-top: 1.5em;
 `
+
 /**
  * Define constants to match the action state
  * The UI's useEffect relies on this state to determine what kind of toast to show
@@ -271,10 +273,10 @@ const DeploymentPage = (props) => {
                 </CardHeaderStyled>
               <CardBody>
                 <Row>
-                  <Col xs="6">
+                  <Col xs="6" sm="6" md="6" lg="6" xl="5">
                     <InputInstructions />
                   </Col>
-                  <Col xs="6">
+                  <Col xs="6" sm="6" md="6" lg="6" xl="7">
                     <DragDropCodeViewer
                       readOnly={true}
                       setCurrentFile={setCurrentFile}
@@ -302,8 +304,8 @@ const DeploymentPage = (props) => {
           </Col>
         </Row>
         <Row>
-          <Col xs="6">
-            <CardStyled>
+          <Col xs="6" sm="6" md="6" lg="6" xl="5">
+            <CardStyled style={{marginRight: '-0.5em'}}>
               <CardHeaderStyled>
                 Step 2 - ABI File (Optional)
               </CardHeaderStyled>
@@ -365,18 +367,18 @@ const DeploymentPage = (props) => {
                 </ToolTipUncontrolledStyled>
               </CardBody>
             </CardStyled>
-            <CardStyled>
+            <CardStyled style={{marginRight: '-0.5em'}}>
               <CardHeaderStyled>
                 Step 3 - Deploy {imported && <Badge color="primary" pill>Imported ABI</Badge>}
               </CardHeaderStyled>
-              <CardBody className="clearfix">
+              <CardBody>
                 <Form>
                   <FormGroup row>
-                    <Label for="permissionSelect" xs={4}>
+                    <Label for="permissionSelect" style={{margin: 'auto 0', fontSize: '13px'}} xs="4" sm="4">
                       With the following permission:
                     </Label>
-                    <Col xs={6}>
-                      <DropdownStyled className="float-right" 
+                    <Col xs="4" sm="6">
+                      <DropdownStyled
                         isOpen={isOpenDropDown} 
                         toggle={() => { toggleDropDown(!isOpenDropDown) }}
                         style={{width: "100%"}}>
@@ -409,7 +411,7 @@ const DeploymentPage = (props) => {
                         }
                       </DropdownStyled>
                     </Col>
-                    <Col xs={2}>
+                    <Col xs="4" sm="2">
                       <ButtonPrimaryResponsive
                         id="DeployContract"
                         className="btn float-right"
@@ -434,7 +436,7 @@ const DeploymentPage = (props) => {
               </CardBody>
             </CardStyled>
           </Col>
-          <Col xs="6">
+          <Col xs="6" sm="6" md="6" lg="6" xl="7">
             <LogCardStyled>
               <LogCardHeaderStyled className="clearfix">
                 <span style={{ fontSize: "14px" }}>
