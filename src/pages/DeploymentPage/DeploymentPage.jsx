@@ -80,7 +80,7 @@ const DivFlexStyled = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin-top: 1.7em;
+  margin-top: 1.5em;
 `
 /**
  * Define constants to match the action state
@@ -271,14 +271,14 @@ const DeploymentPage = (props) => {
                 </CardHeaderStyled>
               <CardBody>
                 <Row>
-                  <Col xs="4">
+                  <Col xs="6">
                     <InputInstructions />
                   </Col>
-                  <Col xs="8">
+                  <Col xs="6">
                     <DragDropCodeViewer
                       readOnly={true}
                       setCurrentFile={setCurrentFile}
-                    /> <br /> 
+                    /> 
                     <DivFlexStyled>
                       <LabelStyled> Root&nbsp;Folder&nbsp;Path: </LabelStyled>&nbsp;&nbsp;
                       <LabelStyled id="rootFolder"><ToolTipSVG /></LabelStyled>&nbsp;&nbsp;
