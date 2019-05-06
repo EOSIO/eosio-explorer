@@ -17,7 +17,8 @@ const monacoOptions = {
   renderLineHighlight: "none",
   scrollBeyondLastLine: false,
   dragAndDrop: true,
-  formatOnPaste: true
+  formatOnPaste: true,
+  automaticLayout: true
 };
 
 const monacoOptionsReadOnly = {
@@ -32,11 +33,11 @@ const monacoOptionsReadOnly = {
   overviewRulerBorder: true,
   overviewRulerLanes: 1,
   renderLineHighlight: "none",
-  scrollBeyondLastLine: false
+  scrollBeyondLastLine: false,
+  automaticLayout: true
 };
 
 const defaults = {
-  height: 300,
   width: "100%",
   theme: "vs",
   language: "json"

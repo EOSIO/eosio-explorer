@@ -514,7 +514,7 @@ const DeploymentPage = (props) => {
                 <br />
                 {
                   !deployed
-                    ? <p>No successful deployment</p>
+                    ? null
                     : output
                       ? <div>
                         <h5>Successfully deployed the {currentFile.split('.')[0]} smart contract:</h5>
