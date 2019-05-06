@@ -71,7 +71,6 @@ const Blocklist = (props) => {
                       }
                       onChange={evt=>{setInputValue(evt.target.value)}}/>
                 <ButtonPrimary
-                      disabled = { inputValue === "" }
                       onClick={evt=> {
                         setInputValue("");
                         if(inputValue !== "") 
@@ -92,7 +91,7 @@ const Blocklist = (props) => {
                           <tr>
                             <th width="20%">Block Number</th>
                             <th width="35%">Block ID</th>
-                            <th width="25%" className="text-center">Number of Transactions</th>
+                            <th width="25%" className="text-center">No. of Transactions</th>
                             <th width="20%">Timestamp</th>
                           </tr>
                         </thead>
