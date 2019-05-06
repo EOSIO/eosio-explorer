@@ -3,12 +3,13 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { push } from 'connected-react-router'
 import { fetchStart, paramsSet } from './TransactiondetailReducer';
+import isObjectEmpty from 'helpers/is-object-empty';
 import pathNameConsumer from 'helpers/pathname-consumer';
 import { CardBody, Col, Row, Form, FormGroup} from 'reactstrap';
 import styled from 'styled-components';
 import { CodeViewer } from 'components';
 import { Link } from 'react-router-dom';
-import { CardStyled, CardHeaderStyled, TableStyled, ButtonSecondary,ErrorDivStyled, ButtonPrimary } from 'styled';
+import { CardStyled, CardHeaderStyled, TableStyled, ErrorButton, ErrorDivStyled, ButtonPrimary } from 'styled';
 
 const FirstCardStyled = styled(CardStyled)`
   border-top: solid 2px #1173a4;
@@ -19,10 +20,7 @@ const CustomTable = styled(TableStyled)`
     background-color: #ffffff;
   }
 `
-const CustomErrorButton = styled(ButtonSecondary)`
-  width: auto;
-`
-
+                                                       
 const Transactiondetail = (props) => {
 
   useEffect(()=>{
@@ -33,11 +31,15 @@ const Transactiondetail = (props) => {
 
   let { transactiondetail: { isFetching, data, params } } = props;
   let { payload, error } = data;
-
+  
   return (
     <div className="Transactiondetail">
       <div>{ error
-              ? <CustomErrorButton onClick={props.fetchStart}>Connection error, click to reload</CustomErrorButton>               
+              ? 
+                <>
+                  {!isObjectEmpty(error) && <p className="text-danger">{JSON.stringify(error)}</p>}
+                  <ErrorButton onClick={props.fetchStart}>Connection error, click to reload</ErrorButton>
+                </>
               : isFetching           
                 ? `loading...`
                 : payload.length === 0 

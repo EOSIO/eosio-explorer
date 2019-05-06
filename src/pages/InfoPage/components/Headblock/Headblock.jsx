@@ -4,13 +4,11 @@ import { connect } from 'react-redux';
 
 import { Col, Form, FormGroup, Label } from 'reactstrap';
 
+import isObjectEmpty from 'helpers/is-object-empty';
 import { pollingStart } from 'reducers/headblock';
 import { LoadingSpinner } from 'components';
-import styled from 'styled-components';
-import { ButtonSecondary} from 'styled';
-const CustomErrorButton = styled(ButtonSecondary)`
-  width: auto;
-`
+import { ErrorButton } from 'styled';
+
 const Headblock = (props) => {
 
   // useEffect(()=>{
@@ -19,11 +17,14 @@ const Headblock = (props) => {
 
   let { headblock: { isFetching, data }} = props;
   let { payload : [{block_num, block_id, block}={}]= [], error } = data;
-
+  
   return (
     <>
       { error ?
-        <CustomErrorButton onClick={props.pollingStart}>Connection error, click to reload</CustomErrorButton>
+        <>
+          {!isObjectEmpty(error) && <p className="text-danger">{JSON.stringify(error)}</p>}
+          <ErrorButton onClick={props.pollingStart}>Connection error, click to reload</ErrorButton>
+        </>
       : isFetching ? (
         <LoadingSpinner />
       ) : (

@@ -3,8 +3,9 @@ import { CardBody, Col, Row } from 'reactstrap';
 import { connect } from 'react-redux';
 import { push } from 'connected-react-router'
 import styled from 'styled-components';
+import isObjectEmpty from 'helpers/is-object-empty';
 import { LoadingSpinner, LimitSelectDropdown } from 'components';
-import { CardStyled,CardHeaderStyled, TableStyled, ButtonPrimary, ButtonSecondary, CheckBoxDivStyled, InputStyled} from 'styled';
+import { CardStyled,CardHeaderStyled, TableStyled, ButtonPrimary, ErrorButton, CheckBoxDivStyled, InputStyled } from 'styled';
 
 import { pollingStart, pollingStop, filterToggle, recordsUpdate } from './BlocklistReducer';
 
@@ -20,9 +21,6 @@ const DivFlexStyled = styled.div`
   justify-content: flex-end;
   padding-bottom: 20px;
 `
-const CustomErrorButton = styled(ButtonSecondary)`
-  width: auto;
-`
 
 const Blocklist = (props) => {
 
@@ -35,7 +33,7 @@ const Blocklist = (props) => {
 
   let { blocklist: { isFetching, data, filter, records } } = props;
   let { payload = [], error } = data;
-
+  
   return (
     <div className="Blocklist">
       <FirstCardStyled>
@@ -83,7 +81,11 @@ const Blocklist = (props) => {
           </Row>
           <div>
             { error
-              ? <CustomErrorButton onClick={props.pollingStart}>Connection error, click to reload</CustomErrorButton>
+              ? 
+                <>
+                  {!isObjectEmpty(error) && <p className="text-danger">{JSON.stringify(error)}</p>}
+                  <ErrorButton onClick={props.pollingStart}>Connection error, click to reload</ErrorButton>
+                </>
               : 
                 <Row>
                   <Col xs="12">

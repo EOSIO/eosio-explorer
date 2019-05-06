@@ -4,10 +4,11 @@ import { connect } from 'react-redux';
 import { push } from 'connected-react-router'
 import { fetchStart, paramsSet } from './BlockdetailReducer';
 import pathNameConsumer from 'helpers/pathname-consumer';
+import isObjectEmpty from 'helpers/is-object-empty';
 import { CardBody, Col, Row, Form, FormGroup} from 'reactstrap';
 import styled from 'styled-components';
 import { CodeViewer } from 'components';
-import { CardStyled, CardHeaderStyled, TableStyled, ErrorDivStyled, ButtonPrimary } from 'styled';
+import { CardStyled, CardHeaderStyled, TableStyled, ErrorDivStyled, ButtonPrimary, ErrorButton} from 'styled';
 
 
 const FirstCardStyled = styled(CardStyled)`
@@ -28,11 +29,14 @@ const Blockdetail = (props) => {
 
   let { blockdetail: { isFetching, data, params } } = props;
   let { payload, error } = data;
-
+  
   return (
     <div className="Blockdetail">
-      <div>{ error
-              ? <button onClick={props.fetchStart}>{JSON.stringify(error)} Click to Reload.</button>
+      <div>{ error ? 
+                <>
+                  {!isObjectEmpty(error) && <p className="text-danger">{JSON.stringify(error)}</p>}
+                  <ErrorButton onClick={props.fetchStart}>Connection error, click to reload</ErrorButton>
+                </>
               : isFetching 
                 ? `loading...`
                 : payload.length === 0 

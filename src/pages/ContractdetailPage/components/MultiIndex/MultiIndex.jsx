@@ -9,7 +9,8 @@ import { push } from 'connected-react-router'
 import { CardBody, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap';
 import styled from 'styled-components';
 import { CodeViewer } from 'components';
-import { DropdownStyled, CardStyled, CardHeaderStyled, ErrorDivStyled } from 'styled';
+import isObjectEmpty from 'helpers/is-object-empty';
+import { DropdownStyled, CardStyled, CardHeaderStyled, ErrorDivStyled, ErrorButton } from 'styled';
 
 const SelectLabel = styled.label`
   padding-right: 10px;
@@ -33,7 +34,7 @@ const MultiIndex = (props) => {
   let { multiIndex: { isFetching, data, params } } = props;
   let { payload, error } = data;
   let { abiData } = props;
-
+  
   return (
     <div className="MultiIndex">
       <DivFlexStyled>
@@ -55,7 +56,11 @@ const MultiIndex = (props) => {
         </DropdownStyled>               
       </DivFlexStyled>                
       {error
-        ? <button onClick={props.fetchStart}>{JSON.stringify(error)} Click to reload.</button>
+        ? 
+          <>
+            {!isObjectEmpty(error) && <p className="text-danger">{JSON.stringify(error)}</p>}
+            <ErrorButton onClick={props.fetchStart}>Connection error, click to reload</ErrorButton>
+          </>
         : isFetching 
           ? `loading...`
           : showDetailsSection
