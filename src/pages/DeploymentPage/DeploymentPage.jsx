@@ -13,7 +13,7 @@ import InputInstructions from './components/InputInstructions';
 import { DragDropCodeViewer, CodeViewer } from 'components';
 import {
   CardStyled, CardHeaderStyled, PageTitleDivStyled,
-  InputStyled, ButtonPrimary, ToolTipUncontrolledStyled, 
+  InputStyled, ButtonPrimary, ToolTipUncontrolledStyled, ToolTipStyled,
   DropdownStyled, OverlayStyled, ButtonGroupSeperated
 } from 'styled';
 import cogoToast from 'cogo-toast';
@@ -347,7 +347,7 @@ const DeploymentPage = (props) => {
                     </Col>
                   </FormGroup>
                 </Form>
-                <Tooltip placement="top" target="GenerateAbi"
+                <ToolTipStyled placement="top" target="GenerateAbi"
                   isOpen={compileTooltip}
                   toggle={()=>toggleCompileTooltip(!compileTooltip)}
                   delay={{ show: 0, hide: 0 }}
@@ -355,7 +355,7 @@ const DeploymentPage = (props) => {
                 >
                   Click this button to compile the smart contract and view the resulting ABI
                   file in the viewer below.
-                </Tooltip>
+                </ToolTipStyled>
                 <ToolTipUncontrolledStyled placement="top" target="ImportAbi"
                   delay={{ show: 0, hide: 0 }}
                   trigger="hover"
@@ -423,14 +423,14 @@ const DeploymentPage = (props) => {
                     </Col>
                   </FormGroup>
                 </Form>
-                <Tooltip placement="top" target="DeployContract"
+                <ToolTipStyled placement="top" target="DeployContract"
                   isOpen={deployTooltip}
                   toggle={()=>toggleDeployTooltip(!deployTooltip)}
                   delay={{ show: 0, hide: 0 }}
                   autohide={true}
                 >
                   Compiles and deploys the smart contract at once.
-                </Tooltip>
+                </ToolTipStyled>
               </CardBody>
             </CardStyled>
           </Col>
