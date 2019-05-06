@@ -114,8 +114,8 @@ const CreateAccount = (props) => {
                           </FormFeedback>
                         }
                         <FormText>
-                          The account name must start with a letter, must be 12 characters, and can only contain the characters:
-                          . (period) [a-z] [1-5]
+                          <strong>An EOSIO account name cannot start with a capital letter and cannot contain capital letters.
+                          It also cannot contain the numbers 6, 7, 8 or 9.</strong>
                         </FormText>
                       </Col>
                     </FormGroup>
