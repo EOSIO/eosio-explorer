@@ -83,11 +83,6 @@ const DivFlexStyled = styled.div`
   justify-content: space-between;
   margin-top: 1.5em;
 `
-const FormGroupStyled = styled(FormGroup)`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-`
 
 /**
  * Define constants to match the action state
