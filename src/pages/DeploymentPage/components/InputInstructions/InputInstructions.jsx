@@ -56,6 +56,7 @@ class InputInstructions extends Component {
             </li>
           </OrderedList>
         </CardBody>
+        <br />
       </CardStyledNoBorder>
     )
   }

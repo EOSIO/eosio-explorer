@@ -69,11 +69,6 @@ class DragDropCodeViewer extends Component {
     this.editor = editor;
     this.monaco = monaco;
 
-    editor.layout({
-      height: this.props.height || 500,
-      width: this.props.width || 1190
-    })
-
     setTimeout(
       function() {
         this.editor.trigger('any', 'editor.action.formatDocument');

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import {
   CardBody, Row, Col, Spinner,
   Nav, NavLink, NavItem, TabContent, TabPane,
-  Form, FormGroup, Label, Badge, Tooltip,
+  Form, FormGroup, Label, Badge,
   DropdownToggle, DropdownMenu, DropdownItem  
 } from 'reactstrap';
 import { StandardTemplate } from 'templates';
@@ -13,7 +13,7 @@ import InputInstructions from './components/InputInstructions';
 import { DragDropCodeViewer, CodeViewer } from 'components';
 import {
   CardStyled, CardHeaderStyled, PageTitleDivStyled,
-  InputStyled, ButtonPrimary, ToolTipUncontrolledStyled, 
+  InputStyled, ButtonPrimary, ToolTipUncontrolledStyled, ToolTipStyled,
   DropdownStyled, OverlayStyled, ButtonGroupSeperated
 } from 'styled';
 import cogoToast from 'cogo-toast';
@@ -40,12 +40,12 @@ const ActionButton = styled(ButtonPrimary)`
 `
 
 const tabPane = {
-  maxHeight: "200px",
+  height: "200px",
   overflowY: "auto"
 }
 
 const outputPane = {
-  height: "400px",
+  height: "325px",
   padding: "1.5em",
   overflowY: "auto",
   backgroundColor: "#f8f9fa"
@@ -57,6 +57,7 @@ const FirstCardStyled = styled(CardStyled)`
 
 const LogCardStyled = styled(CardStyled)`
   border: none;
+  margin-right: -1.3em;
 `
 
 const LogCardHeaderStyled = styled(CardHeaderStyled)`
@@ -79,6 +80,7 @@ const DivFlexStyled = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  margin-top: 1.5em;
 `
 /**
  * Define constants to match the action state
@@ -87,6 +89,26 @@ const DivFlexStyled = styled.div`
  */
 const COMPILE_STATE = 1;
 const DEPLOY_STATE = 2;
+
+/**
+ * Need to write a helper function to sanitize and clean the path
+ * Sometimes the string looks the same but has isolates mixed into it
+ * So we regenerate the string if it contains byte code equal or less than
+ * the standard 128
+ * 
+ * @param {string} Filepath 
+ */
+
+const sanitizeFilepath = filepath => {
+  let codeString = [];
+  for (let i = 0; i < filepath.length; i++) {
+    let code = filepath.charCodeAt(i);
+    if (code <= 128) {
+      codeString.push(code);
+    }
+  }
+  return String.fromCharCode(...codeString);
+}
 
 const DeploymentPage = (props) => {
 
@@ -159,7 +181,8 @@ const DeploymentPage = (props) => {
 
   function generateAbi(ev) {
     ev.preventDefault();
-    let actualRootPath = (path.endsWith("/")) ? path : path + "/";
+    let cleanPath = sanitizeFilepath(path);
+    let actualRootPath = (cleanPath.endsWith("/")) ? cleanPath : cleanPath + "/";
     let fullPath = {
       source: actualRootPath + currentFile
     }
@@ -169,7 +192,8 @@ const DeploymentPage = (props) => {
 
   function deployContract(ev) {
     ev.preventDefault();
-    let actualRootPath = (path.endsWith("/")) ? path : path + "/";
+    let cleanPath = sanitizeFilepath(path);
+    let actualRootPath = (cleanPath.endsWith("/")) ? cleanPath.toString() : cleanPath.toString() + "/";
     let currentPermission = list.find(account => account._id === currentId);
     let msg = `Cannot deploy contract under owner of the system contract`;
     let fullPath = {
@@ -247,13 +271,14 @@ const DeploymentPage = (props) => {
                 </CardHeaderStyled>
               <CardBody>
                 <Row>
-                  <Col xs="4">
+                  <Col xs="6">
                     <InputInstructions />
                   </Col>
-                  <Col xs="8">
+                  <Col xs="6">
                     <DragDropCodeViewer
+                      readOnly={true}
                       setCurrentFile={setCurrentFile}
-                    /> <br />
+                    /> 
                     <DivFlexStyled>
                       <LabelStyled> Root&nbsp;Folder&nbsp;Path: </LabelStyled>&nbsp;&nbsp;
                       <LabelStyled id="rootFolder"><ToolTipSVG /></LabelStyled>&nbsp;&nbsp;
@@ -281,7 +306,7 @@ const DeploymentPage = (props) => {
             <CardStyled>
               <CardHeaderStyled>
                 Step 2 - ABI File (Optional)
-                  </CardHeaderStyled>
+              </CardHeaderStyled>
               <CardBody className="clearfix">
                 <Row>
                   <Col sm={12}>
@@ -296,7 +321,7 @@ const DeploymentPage = (props) => {
                 <Form>
                   <FormGroup row >
                     <Col sm={12}>
-                      <ButtonGroupSeperated className="float-right" style={{marginRight: '1.35em'}}>
+                      <ButtonGroupSeperated className="float-right">
                         <ActionButton
                           id="GenerateAbi"
                           onClick={(ev) => generateAbi(ev)}
@@ -322,7 +347,7 @@ const DeploymentPage = (props) => {
                     </Col>
                   </FormGroup>
                 </Form>
-                <Tooltip placement="top" target="GenerateAbi"
+                <ToolTipStyled placement="top" target="GenerateAbi"
                   isOpen={compileTooltip}
                   toggle={()=>toggleCompileTooltip(!compileTooltip)}
                   delay={{ show: 0, hide: 0 }}
@@ -330,7 +355,7 @@ const DeploymentPage = (props) => {
                 >
                   Click this button to compile the smart contract and view the resulting ABI
                   file in the viewer below.
-                </Tooltip>
+                </ToolTipStyled>
                 <ToolTipUncontrolledStyled placement="top" target="ImportAbi"
                   delay={{ show: 0, hide: 0 }}
                   trigger="hover"
@@ -347,7 +372,7 @@ const DeploymentPage = (props) => {
               <CardBody className="clearfix">
                 <Form>
                   <FormGroup row>
-                    <Label className="text-center" for="permissionSelect" xs={4}>
+                    <Label for="permissionSelect" xs={4}>
                       With the following permission:
                     </Label>
                     <Col xs={6}>
@@ -398,14 +423,14 @@ const DeploymentPage = (props) => {
                     </Col>
                   </FormGroup>
                 </Form>
-                <Tooltip placement="top" target="DeployContract"
+                <ToolTipStyled placement="top" target="DeployContract"
                   isOpen={deployTooltip}
                   toggle={()=>toggleDeployTooltip(!deployTooltip)}
                   delay={{ show: 0, hide: 0 }}
                   autohide={true}
                 >
                   Compiles and deploys the smart contract at once.
-                </Tooltip>
+                </ToolTipStyled>
               </CardBody>
             </CardStyled>
           </Col>
@@ -514,7 +539,7 @@ const DeploymentPage = (props) => {
                 <br />
                 {
                   !deployed
-                    ? <p>No successful deployment</p>
+                    ? null
                     : output
                       ? <div>
                         <h5>Successfully deployed the {currentFile.split('.')[0]} smart contract:</h5>

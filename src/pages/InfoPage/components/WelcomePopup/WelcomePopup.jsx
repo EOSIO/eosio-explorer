@@ -96,7 +96,7 @@ const WelcomePopup = ({ toggle, open, toggleShowAgain }) => {
               <p>If you have any feedback or you&apos;d like to contribute to the source code of EOSIO Explorer - 
                 please follow our GitHub repository: <a href="https://github.com/EOSIO/eos-toppings" target="_blank" rel="noopener noreferrer">https://github.com/EOSIO/eosio-toppings</a>
               </p>
-              <CheckBoxDivStyled style={{marginTop: '29px'}}>
+              <CheckBoxDivStyled style={{marginTop: '31px'}}>
                 <label className="checkboxContainer">
                   Don't show this message again
                   <input id="toggleCheck" type="checkbox"/>
