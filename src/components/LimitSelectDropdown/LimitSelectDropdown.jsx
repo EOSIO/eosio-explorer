@@ -10,6 +10,9 @@ const CutomDropDown = styled(DropdownStyled)`
   .dropdown-menu{
     min-width: 100px;
   }  
+  .dropdown-toggle, dropdown-toggle:focus{
+    background-color: #fff;
+  }
 `
 const LimitSelectDropdown = (props) => {
 

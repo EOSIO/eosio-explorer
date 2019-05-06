@@ -38,13 +38,15 @@ const Actionlist = (props) => {
             <FormStyled onSubmit={(e) => {
                 e.preventDefault();
                 let val = e.target.smartContractNameSearch.value;
-                if(smartContractName) {
-                  props.smartContractNameSearch("");
-                  setInputValue("");
-                  e.target.smartContractNameSearch.value = "";
-                } else {
-                  props.smartContractNameSearch(val);
-                  setInputValue(val);
+                if(val !=="") {
+                  if(smartContractName) {
+                    props.smartContractNameSearch("");
+                    setInputValue("");
+                    e.target.smartContractNameSearch.value = "";
+                  } else {
+                    props.smartContractNameSearch(val);
+                    setInputValue(val);
+                  }
                 }
               }}>
               <FilterInputStyled
@@ -53,7 +55,7 @@ const Actionlist = (props) => {
                   placeholder="Smart Contract Name..." 
                   defaultValue={smartContractName} 
                   onChange={evt=>{setInputValue(evt.target.value)}}/>
-              <ButtonPrimary color="primary" disabled = { inputValue  === "" }>{smartContractName ? "Clear" : "Filter"}</ButtonPrimary>
+              <ButtonPrimary color="primary">{smartContractName ? "CLEAR" : "FILTER"}</ButtonPrimary>
             </FormStyled>
           </CardTitle>
         </Col>
