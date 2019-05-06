@@ -21,7 +21,7 @@ const FirstCardStyled = styled(CardStyled)`
 
 const CreateAccount = (props) => {
 
-  const { values, handleChange, handleSubmit, errors } = useForm(createAccount, validate);
+  const { values, handleChange, handleSubmit, errors } = useForm(createAccount, function () { return true; });
 
   useEffect(()=>{
     props.fetchStart();
@@ -115,7 +115,7 @@ const CreateAccount = (props) => {
                         }
                         <FormText>
                           <strong>An EOSIO account name cannot start with a capital letter and cannot contain capital letters.
-                          It also cannot contain the numbers 6, 7, 8 or 9.</strong>
+                          It also cannot contain the numbers 6, 7, 8 or 9. The only special character you can use is '.'</strong>
                         </FormText>
                       </Col>
                     </FormGroup>
