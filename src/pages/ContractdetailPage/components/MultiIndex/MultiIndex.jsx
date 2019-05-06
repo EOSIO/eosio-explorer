@@ -34,7 +34,7 @@ const MultiIndex = (props) => {
   let { multiIndex: { isFetching, data, params } } = props;
   let { payload, error } = data;
   let { abiData } = props;
-  error="fdgfd";
+  
   return (
     <div className="MultiIndex">
       <DivFlexStyled>

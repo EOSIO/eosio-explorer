@@ -12,6 +12,7 @@ import { combineEpics, ofType } from 'redux-observable';
 
 import apiRpc from 'services/api-rpc';
 import { errorLog } from 'helpers/error-logger';
+import isObjectEmpty from 'helpers/is-object-empty';
 
 // IMPORTANT
 // Must modify action prefix since action types must be unique in the whole app
@@ -36,14 +37,19 @@ const fetchEpic = ( action$, state$ ) => action$.pipe(
   mergeMap(action =>{
 
     let { value: { contractdetailPage: { multiIndex: { params } }}} = state$;
-
-    return from(apiRpc("get_table_rows", params)).pipe(
-      map(res => fetchFulfilled(res)),
-      catchError(error => {
-        errorLog("Smart Contract page/ get multi index table data error",error);
-        return of(fetchRejected(error.response, { status: error.status }))
-      })
-    )
+    
+    if(isObjectEmpty(params)) {
+      return of(fetchRejected([], "Please select a multi-index table"));
+    }
+    else {
+      return from(apiRpc("get_table_rows", params)).pipe(
+        map(res => fetchFulfilled(res)),
+        catchError(error => {
+          errorLog("Smart Contract page/ get multi index table data error",error);
+          return of(fetchRejected(error.response, { status: error.status }))
+        })
+      )
+    }
   })
 );
 
