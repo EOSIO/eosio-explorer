@@ -16,7 +16,6 @@ export default styled(Button)`
 
   :disabled{
     background-color: #a4a4a4;
-    cursor: not-allowed;
     color: #ffffff;
   }
   :disabled:hover{
