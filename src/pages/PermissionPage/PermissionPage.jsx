@@ -17,7 +17,12 @@ import { fetchStart, accountClear } from 'reducers/permission';
 import styled from 'styled-components';
 import { PageTitleDivStyled, ButtonGroupSeperated, ButtonPrimary, ButtonSecondary, ToolTipStyled } from 'styled';
 
-const CustomButton = styled(ButtonSecondary)`
+const CustomButtonPrimary = styled(ButtonPrimary)`
+  padding-top: 4px;
+  line-height: 15px;
+`
+
+const CustomButtonSecondary = styled(ButtonSecondary)`
   padding-top: 4px;
   line-height: 15px;
 `
@@ -83,8 +88,8 @@ class PermissionPage extends Component {
                 <Col sm={12}>
                   <ButtonGroupSeperated className="float-right"
                     style={{display: (panel === "permission-list") ? 'block' : 'none'}}>
-                    <ButtonPrimary id="CreateAccountBtn" onClick={()=>{changePanel("create-account")}}>Create Account</ButtonPrimary>
-                    <CustomButton id="ResetPermissionBtn" onClick={()=>this.toggleModal()}>Reset All Permissions</CustomButton>
+                    <CustomButtonPrimary id="CreateAccountBtn" onClick={()=>{changePanel("create-account")}}>Create Account</CustomButtonPrimary>
+                    <CustomButtonSecondary id="ResetPermissionBtn" onClick={()=>this.toggleModal()}>Reset All Permissions</CustomButtonSecondary>
                   </ButtonGroupSeperated>
                   <ToolTipStyled placement="bottom" target="ResetPermissionBtn"
                     isOpen={this.state.resetTooltip && panel === "permission-list"}

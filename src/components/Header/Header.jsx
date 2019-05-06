@@ -166,7 +166,7 @@ const Header = (props) => {
               <LogoWrapper>
                 <StyledEosioLogoSmallSVG/>
                 <AppName>
-                  eosio explorer
+                  EOSIO Explorer
                 </AppName>
               </LogoWrapper>              
             </Nav>

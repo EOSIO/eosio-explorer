@@ -10,8 +10,6 @@ import { recordsUpdate } from '../PushactionPageReducer';
 
 const CustomButton = styled(ButtonPrimary)`
   margin: 0 auto;
-  padding-top: 4px;
-  height: 32px;
 `
 
 const TableStyledNoPointer = styled(TableStyled)`
@@ -20,7 +18,7 @@ const TableStyledNoPointer = styled(TableStyled)`
   }
 `
 const TdStyled = styled.td`
-  padding-top: 17px !important;
+  padding-top: 19px !important;
   font-family: monospace, monospace;
 `
 const ColStyled = styled(Col)`

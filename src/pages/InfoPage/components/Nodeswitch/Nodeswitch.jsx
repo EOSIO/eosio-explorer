@@ -65,7 +65,7 @@ const Nodeswitch = (props) => {
               }
           </Col>
           <Col xs="2" style={{marginTop: "10px"}}>
-            <CenteredLabel htmlFor="mongodb">Connected MongoDB</CenteredLabel>
+            <CenteredLabel htmlFor="mongodb">Connected MongoDB:</CenteredLabel>
           </Col>
           <Col xs="10" style={{marginTop: "10px"}}>
             <InputStyled

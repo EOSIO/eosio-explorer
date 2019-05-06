@@ -34,11 +34,11 @@ const MultiIndex = (props) => {
   let { multiIndex: { isFetching, data, params } } = props;
   let { payload, error } = data;
   let { abiData } = props;
-  
+  error="fdgfd";
   return (
     <div className="MultiIndex">
       <DivFlexStyled>
-        <SelectLabel>Select Table to Display multi-Index Table:</SelectLabel>
+        <SelectLabel>Select multi-index table to display data:</SelectLabel>
         <DropdownStyled isOpen={isOpenDropDown} toggle={()=>{toggleDropDown(!isOpenDropDown)}}>
           <DropdownToggle caret>{dropDownSelctedValue}</DropdownToggle>
           <DropdownMenu right>

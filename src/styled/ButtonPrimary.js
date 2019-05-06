@@ -12,10 +12,10 @@ export default styled(Button)`
   font-weight: 500;
   border: 0;
   padding: 8px 8px 10px 8px;
+  text-transform: uppercase;
 
   :disabled{
     background-color: #a4a4a4;
-    cursor: not-allowed;
     color: #ffffff;
   }
   :disabled:hover{
