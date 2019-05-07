@@ -82,6 +82,19 @@ yarn install
 
 See: [Development](./docs/development.md)
 
+### OS Platform Specific 
+
+#### CentOS 7
+
+The tool requires starting a sandbox, which can get complicated when attempting to run the tool on instances that use a headless version of Chrome.
+
+In CentOS specifically, `SELinux` impedes this process ([original issue](https://github.com/GoogleChrome/puppeteer/issues/2857#issuecomment-446983425)).
+
+You will need to create an exception within SELinux. Setting the following boolean will fix this particular issue:
+```bash
+setsebool -P unconfined_chrome_sandbox_transition 0
+```
+
 ## Usage
 
 After installation of the application, depending on how you have installed the tool, can be run in different ways.

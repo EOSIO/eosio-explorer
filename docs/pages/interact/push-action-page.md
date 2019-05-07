@@ -24,7 +24,7 @@ Permission: Greeter@active
 Payload:
 {
   "user": "user",
-  "memo": "Hello
+  "memo": "Hello"
 }
 ```
 
