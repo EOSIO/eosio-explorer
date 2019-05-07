@@ -220,7 +220,8 @@ const Permissionlist = (props) => {
                                   </PermissionTable>
                                 </CardBody>
                               </FirstCardStyled>                              
-                                <FirstCardStyled>
+                              { (importAccountsList && numberOfImportAccounts > 0) 
+                                ? <FirstCardStyled>
                                   <CardHeaderStyled>Import Account</CardHeaderStyled>
                                   <CardBody>
                                     <InfoDivStyled>
@@ -232,8 +233,7 @@ const Permissionlist = (props) => {
                                     </InfoDivStyled>
                                     <PermissionTable borderless>
                                     {
-                                      (importAccountsList && numberOfImportAccounts > 0) 
-                                      ? Object.keys(importAccountsList).map((account) => (
+                                        Object.keys(importAccountsList).map((account) => (
                                         (importAccountsList[account] &&
                                           importAccountsList[account].length === 2 && 
                                           !importAccountsList[account][0].private_key &&
@@ -277,18 +277,12 @@ const Permissionlist = (props) => {
                                           </tr>
                                         </tbody>
                                       ))
-                                      : <tbody>
-                                        <tr>
-                                          <td width="100%" style={{textAlign:"center"}}>
-                                            <strong>No accounts available</strong>
-                                          </td>
-                                        </tr>
-                                      </tbody>
                                     }
                                   </PermissionTable>
                                   </CardBody>
                                 </FirstCardStyled>
-                                
+                                : null
+                              }
                               </div>
               }
       </div>
