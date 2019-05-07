@@ -21,6 +21,7 @@ import DeploymentPage from 'pages/DeploymentPage';
 import PushactionPage from 'pages/PushactionPage';
 import PrivacyPolicyPage from 'pages/PrivacyPolicyPage';
 import TermsOfUsePage from 'pages/TermsOfUsePage';
+import NotFound404Page from 'pages/NotFound404Page';
 
 import { WillRoute } from 'hocs';
 import { connectStart } from 'reducers/endpoint';
@@ -49,7 +50,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Switch>
+        <Switch>          
           <WillRoute exact path="/" component={ InfoPage }/>
           <WillRoute exact path="/block-list" component={ BlocklistPage }/>
           <WillRoute exact path="/block/:id" component={ BlockdetailPage }/>
@@ -66,7 +67,8 @@ class App extends Component {
           <WillRoute exact path="/push-action" component={ PushactionPage }/>
           <WillRoute exact path="/privacy-policy" component={ PrivacyPolicyPage }/>
           <WillRoute exact path="/terms-of-use" component={ TermsOfUsePage }/>
-          
+          <WillRoute exact path="/page-not-found" component={ NotFound404Page }/>          
+
           <Redirect to="/" />
         </Switch>
       </div>

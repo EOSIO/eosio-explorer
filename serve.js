@@ -25,6 +25,10 @@ if ( process.env.MODE !== 'development'){
 
 app.use("/api/mongodb", mongodb);
 
+app.get('/*', (req, res) => {
+  res.sendFile(__dirname + '/build/page-not-found/index.html');
+})
+
 app.on('error', function (e) {
   // do your thing
   console.log(e);

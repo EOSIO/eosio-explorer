@@ -224,6 +224,9 @@ const Header = (props) => {
             </NavItem>
           </Nav>
         </NavWrapperRow>
+        <div style={{display:"none"}}>
+          <Link to={`/page-not-found`} ></Link>
+        </div>
     </div>
   )
 }
