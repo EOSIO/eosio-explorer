@@ -25,6 +25,7 @@ if ( process.env.MODE !== 'development'){
 
 app.use("/api/mongodb", mongodb);
 
+// catch-all route to /page-not-found/index.html defined last to handle page not found error
 app.get('/*', (req, res) => {
   res.sendFile(__dirname + '/build/page-not-found/index.html');
 })
