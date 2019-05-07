@@ -87,9 +87,9 @@ const Blocklist = (props) => {
                     <TableStyled borderless>
                         <thead>
                           <tr>
-                            <th width="20%">Block Number</th>
-                            <th width="35%">Block ID</th>
-                            <th width="25%" className="text-center">No. of Transactions</th>
+                            <th width="15%">Block Number</th>
+                            <th width="45%">Block ID</th>
+                            <th width="20%">No. of Transactions</th>
                             <th width="20%">Timestamp</th>
                           </tr>
                         </thead>
@@ -100,7 +100,7 @@ const Blocklist = (props) => {
                             <tr onClick={evt=>props.push(`/block/${eachBlock.block_id}`)} key={eachBlock.block_id}>
                               <td>{eachBlock.block_num}</td>
                               <td>{eachBlock.block_id}</td>
-                              <td className="text-center">{eachBlock.block.transactions.length}</td>
+                              <td>{eachBlock.block.transactions.length}</td>
                               <td>{eachBlock.createdAt}</td>
                             </tr>)}
                         </tbody>

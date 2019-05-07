@@ -113,6 +113,7 @@ const NavWrapperRow = styled(NavWrapper)`
 const NavHead = styled.div`
   font-size: 9px;
   color: #bcbcbc;
+  padding-top: 1px;
 `
 
 const VerticalLine = styled.div`
@@ -144,6 +145,9 @@ const WrappedLink = styled(Link)`
     color: inherit;
   }
 `
+const NavStyled = styled(Nav)`
+  padding-top: 14px;
+`
 
 const matchPath = (pathname, path) => {  
   let splitArr = pathname.split("/");
@@ -174,7 +178,7 @@ const Header = (props) => {
         </NavWrapper>
         <NavWrapper>
           <NavHead>INSPECT</NavHead>
-          <Nav className="nav-items d-md-down-none" navbar>
+          <NavStyled className="nav-items d-md-down-none" navbar>
             <NavItem className="px-3">
               <Link to={`/`} className={`nav-link ${pathname === `/` ? `active` : ``}`}>INFO</Link>
             </NavItem>
@@ -193,12 +197,12 @@ const Header = (props) => {
             <NavItem className="px-3 last-item">
               <Link to={`/contract`} className={`nav-link ${pathname === `/contract` || matchPath(pathname, 'contract') ? `active` : ``}`}>SMART CONTRACT</Link>
             </NavItem>
-          </Nav>
+          </NavStyled>
         </NavWrapper>
         <NavWrapper></NavWrapper>
         <NavWrapper>
           <NavHead>INTERACT</NavHead>
-          <Nav className="nav-items d-md-down-none" navbar>
+          <NavStyled className="nav-items d-md-down-none" navbar>
             <NavItem className="px-3">
               <Link onClick={()=>panelSelect("permission-list")} to={`/permission`} className={`nav-link ${pathname === `/permission` ? `active` : ``}`}>MANAGE ACCOUNTS</Link>
             </NavItem>
@@ -208,7 +212,7 @@ const Header = (props) => {
             <NavItem className="px-3">
               <Link to={`/push-action`} className={`nav-link ${pathname === `/push-action` ? `active` : ``}`}>PUSH ACTIONS</Link>
             </NavItem>
-          </Nav>
+          </NavStyled>
         </NavWrapper>   
         <NavWrapperRow>
           <VerticalLine>&nbsp;</VerticalLine>

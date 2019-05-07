@@ -197,7 +197,7 @@ const CreateAccount = (props) => {
                             disabled={!values.accountName || isSubmitting || creationSuccess}
                             block
                             >
-                            Submit
+                            Create
                           </ButtonPrimary>
                         </ButtonGroupSeperated>
                       </Col>
