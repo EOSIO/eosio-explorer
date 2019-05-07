@@ -24,6 +24,9 @@ export default styled(Button)`
     color: #ffffff;
     opacity: 1;
   }
+  :focus{
+    box-shadow: none;
+  }
   :not(:disabled):not(.disabled):active{
     background-color: #667d9a;
     opacity: 1;
