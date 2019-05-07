@@ -57,9 +57,9 @@ The EOSIO Explorer is designed specifically to be a tool for local development. 
 
 ### Required Tools
 
-* [Yarn](https://yarnpkg.com/lang/en/) with support at ^1.15.2 (latest stable)
-* [Docker](https://www.docker.com/) with support at Docker Engine 18.09.2 (latest stable)
-* [Node.JS](https://nodejs.org/en/) with support at ^10.15.3 LTS (latest stable)
+* [Yarn](https://yarnpkg.com/lang/en/) with support at `^1.15.2` (latest stable)
+* [Docker](https://www.docker.com/) with support at Docker Engine `18.09.2` (latest stable)
+* [Node.JS](https://nodejs.org/en/) with support at `^10.15.3` LTS (latest stable)
 
 ## Installation
 
@@ -93,16 +93,20 @@ Installed via cloning the repository: yarn eosio-explorer <command>
 Run the tool with the specified command
 
 Commands:
-  init              Initialize the tool by installing all dependencies, setting up all Docker containers, etc.
+  init              Initialize the tool by installing all dependencies, setting up 
+                    all Docker containers, etc.
                     Available flags:
                     -dev / --develop - Starts the tool in development mode
-                    -s / --sample-data - Starts the tool with pre-existing sample accounts and smart contracts
+                    -s / --sample-data - Starts the tool with pre-existing sample accounts 
+                                         and smart contracts
   start             Start the tool, assumes the dependencies and Docker images are already prepared
                     Available flags:
                     -dev / --develop - Starts the tool in development mode
                     -d / --delete - Removes existing Docker containers
-                    --init - Builds a production-ready version of the web tool, and opens the tool with cleared local storage
-                    -s / --sample-data - Starts the tool with pre-existing sample accounts and smart contracts
+                    --init - Builds a production-ready version of the web tool, 
+                             and opens the tool with cleared local storage
+                    -s / --sample-data - Starts the tool with pre-existing 
+                                         sample accounts and smart contracts
   start_gui         Starts the web tool locally without touching the nodeos and MongoDB containers.
                     Available flags:
                     -dev / --develop - Starts the tool in development mode
