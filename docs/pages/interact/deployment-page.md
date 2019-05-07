@@ -23,6 +23,10 @@ In this panel you can view the instructions necessary to compile or deploy your 
 
 You can drag and drop your file into the grey dropzone or click "Browse" to get your entry point file. In the field labeled "Root Folder Path," you type the full folder path in absolute format where it will persist for future development sessions. An example of a root folder path would be `/Users/syzygy/contracts/mycontract`. In this example, all files in the `/Users/syzygy/contracts/mycontract/` folder will be used for compilation. It is also assumed that the entry point file is also in this folder. 
 
+:warning: Disclaimer :warning: 
+1. The folder in the "Root Folder Path" field will be selected as the target, thus the application will attempt to search for ALL files and subdirectories of this folder for the necessary files. Please be careful not to accidentally put the wrong folder in here.
+2. Please be sure that your `.cpp` and `.hpp` files are organized correctly in the correct folder structure, or the compilation may go wrong due to dependencies when using the `#include` directive.
+
 ## Step 2 - ABI File (Optional)
 
 In this panel, there are two buttons available and a code viewer which should be empty.
