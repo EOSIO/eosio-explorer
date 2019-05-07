@@ -1,7 +1,8 @@
-# Docs
-This folder contains the documentation on how to use and navigate the application.
+# EOSIO Explorer Documentation
 
-## Contents
+You can view documentation on everything related to the EOSIO Explorer web tool here.
+
+## Documentation for Users
 
 * Inspect Pages
     * [Info Page](./pages/info-page.md)
@@ -16,5 +17,9 @@ This folder contains the documentation on how to use and navigate the applicatio
 * Interact Pages
     * [Manage Accounts Page](./pages/interact/manage-accounts-page.md)
     * [Smart Contract Deployment Page](./pages/interact/deployment-page.md)
+    * [Push Action Page](./pages/interact/push-action-page.md)
+
+## Documentation for Contributors and Developers
+
 * [Development](development.md)
 * [Contributing to the Project](../../../CONTRIBUTING.md)

@@ -2,9 +2,9 @@
 
 If you want to develop on this application ( etc. adding a new feature, bug fixing... ), please follow these steps to setup your local development environment.
 
-Make sure `node.js`, `yarn`, `docker` are installed properly and we assume you are using macOS Mojave or more to do the development.
+Make sure `node.js`, `yarn`, `docker` are installed properly and we assume you are using macOS Mojave or higher to do the development.
 
-## Steps:
+## Steps
 
 ### eosio-toppings
 
