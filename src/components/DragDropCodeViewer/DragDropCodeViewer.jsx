@@ -45,6 +45,30 @@ const DivFlexStyled = styled.div`
   button{
     margin-top: -7px;
   }
+  > :nth-child(1) {
+    flex: 0.05 0 0;
+  }
+  > :nth-child(2) {
+    flex: 0.7 0 0;
+    margin-top: 2px;
+  }
+  > :nth-child(3) {
+    flex: 0.2 0 0;
+    max-width: 156px;
+  }
+  @media screen and (max-width: 1240px) {
+    > :nth-child(1) {
+      flex: 0.075 0 0;
+    }
+    > :nth-child(2) {
+      flex: 0.625 0 0;
+    }
+  }
+  @media screen and (max-width: 1200px) {
+    > :nth-child(2) {
+      margin-top: -7px;
+    }
+  }
 `
 const DragDropSVGStyled = styled(DragDropSVG)`
   width: 20px;
@@ -123,10 +147,8 @@ class DragDropCodeViewer extends Component {
                       {
                         this.state.value && this.state.value !== "" 
                         ? <DivFlexStyled>
-                            <div className="text-center">
-                              <DragDropSVGStyled />&nbsp;&nbsp;
-                              <label>Drag & Drop files here or click browse to choose a file.</label>
-                            </div>                           
+                            <DragDropSVGStyled />
+                            <label>Drag &amp; Drop files here or click browse to choose a file.</label>
                             <ButtonPrimary onClick={(e) => e.preventDefault()} >BROWSE</ButtonPrimary>
                           </DivFlexStyled>
                         : <div>
@@ -134,7 +156,7 @@ class DragDropCodeViewer extends Component {
                               <DragDropSVG />
                             </ImageDiv>   
                             <br />                   
-                            <p id="ddLabel" className="lead text-center">Drag & Drop files here or<br/> click browse to choose a file.</p>
+                            <p id="ddLabel" className="lead text-center">Drag &amp; Drop files here or<br/> click browse to choose a file.</p>
                             <br />
                             <p className="lead text-center browseButton">
                               <ButtonPrimary onClick={(e) => e.preventDefault()} >BROWSE</ButtonPrimary>
