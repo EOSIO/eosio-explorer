@@ -16,6 +16,7 @@
 * [Installation](#installation)
    * [For Users](#for-users)
    * [For Contributors](#for-contributors)
+   * [OS Platform Specific](#os-platform-specific)
 * [Usage](#usage)
 * [Links to Documentation](#links-to-documentation)
 * [Contributing](#contributing)
