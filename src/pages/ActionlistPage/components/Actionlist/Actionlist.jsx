@@ -24,7 +24,8 @@ const Actionlist = (props) => {
     props.pollingStart();
     return () => { props.pollingStop() }
   }, [])
-  const [setInputValue] = useState("");
+
+  const [inputValue, setInputValue] = useState("");
   let { actionlist: { isFetching, data, smartContractName, records } } = props;
   let { payload = [], error } = data;
   
@@ -35,16 +36,13 @@ const Actionlist = (props) => {
           <CardTitle>            
             <FormStyled onSubmit={(e) => {
                 e.preventDefault();
-                let val = e.target.smartContractNameSearch.value;
-                if(val !=="") {
-                  if(smartContractName) {
-                    props.smartContractNameSearch("");
-                    setInputValue("");
-                    e.target.smartContractNameSearch.value = "";
-                  } else {
-                    props.smartContractNameSearch(val);
-                    setInputValue(val);
-                  }
+                if(smartContractName) {
+                  props.smartContractNameSearch("");
+                  setInputValue("");
+                  e.target.smartContractNameSearch.value = "";
+                } else {
+                  props.smartContractNameSearch(inputValue);
+                  setInputValue(inputValue);
                 }
               }}>
               <FilterInputStyled
