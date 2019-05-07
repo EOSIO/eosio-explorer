@@ -25,6 +25,9 @@ const DivFlexStyled = styled.div`
   display: flex;
   justify-content: flex-end;
 `
+const DivHeaderStyled = styled.div`
+  padding-bottom: 20px;
+`
 
 const DivMessageStyled = styled.div`
   font-weight: bold;
@@ -106,6 +109,7 @@ const Contractdetail = (props) => {
                         <CardStyled>
                           <CardHeaderStyled>Smart Contract Detail</CardHeaderStyled>
                           <CardBody>
+                            <DivHeaderStyled>Smart Contract Name:&nbsp;{params.account_name}</DivHeaderStyled>
                             <CodeViewer 
                               language="json"
                               value={JSON.stringify(payload[0].abi, null, 2)}
