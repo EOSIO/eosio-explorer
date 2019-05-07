@@ -21,7 +21,6 @@ import DeploymentPage from 'pages/DeploymentPage';
 import PushactionPage from 'pages/PushactionPage';
 import PrivacyPolicyPage from 'pages/PrivacyPolicyPage';
 import TermsOfUsePage from 'pages/TermsOfUsePage';
-import TestRPCPage from 'pages/TestRPCPage';
 
 import { WillRoute } from 'hocs';
 import { connectStart } from 'reducers/endpoint';
@@ -67,7 +66,6 @@ class App extends Component {
           <WillRoute exact path="/push-action" component={ PushactionPage }/>
           <WillRoute exact path="/privacy-policy" component={ PrivacyPolicyPage }/>
           <WillRoute exact path="/terms-of-use" component={ TermsOfUsePage }/>
-          <WillRoute exact path="/rpc" component={ TestRPCPage }/>
           
           <Redirect to="/" />
         </Switch>
