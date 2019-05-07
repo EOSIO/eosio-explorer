@@ -43,11 +43,7 @@ const Blocklist = (props) => {
             <Col sm="5">
               <CheckBoxDivStyled>
                 <label className="checkboxContainer">No empty blocks
-
-                  {filter
-                  ? <input onChange={props.filterToggle} type="checkbox" checked/>
-                  : <input onChange={props.filterToggle} type="checkbox"/>}
-
+                  <input onChange={props.filterToggle} type="checkbox" checked={filter} />
                   <span className="checkmark"></span>
                 </label>
               </CheckBoxDivStyled>
