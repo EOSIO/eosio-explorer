@@ -4,7 +4,7 @@
 </p>
 
 <p align="center">
-  <img alt="EOSIO Labs badge Version" src="https://img.shields.io/badge/EOSIO-Labs-5cb3ff.svg">
+  <img alt="EOSIO Labs badge" src="https://img.shields.io/badge/EOSIO-Labs-5cb3ff.svg">
   <img alt="NPM Version" src="https://img.shields.io/npm/v/eosio-explorer.svg">
 </p>
 
