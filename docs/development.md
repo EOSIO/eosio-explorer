@@ -28,13 +28,14 @@ Make sure `node.js`, `yarn`, `docker` are installed properly and we assume you a
     - `yarn link @eosio-toppings/api-eosio-compiler`
     - `yarn link @eosio-toppings/api-mongodb-plugin`
     - `yarn link @eosio-toppings/api-rpc`
-    - `yarn link @eosio-toppings/docker-e osio-nodeos`
+    - `yarn link @eosio-toppings/docker-eosio-nodeos`
     - `yarn link @eosio-toppings/docker-mongodb`
 4. Run `yarn install`
 5. Run `yarn eosio-explorer init` to initialize and start the app.
-6. Stop the app by `Ctrl + C`. Run `yarn eosio-explorer start -dev` to start the app in development mode.
+6. (Optional) - If your tool is already running, stop the app by `Ctrl + C`. 
+7. Run `yarn eosio-explorer start -dev` to start the app in development mode.
 
-The setup development environment is finished. You can now start modifying the sources code in both repositories for the development at your local.
+The setup development environment is finished. You can now start modifying the sources code in both repositories for the development in your local machine.
 
 # Topics
 

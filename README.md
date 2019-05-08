@@ -85,6 +85,12 @@ See: [Development](./docs/development.md)
 
 ### OS Platform Specific 
 
+#### Amazon Linux 2 (AMI)
+
+Out of the box, Amazon Linux will use an outdated version of Docker which this application currently does not support.
+
+In order to install the tool properly, you will need to manually install the latest stable version of Docker using binaries.
+
 #### CentOS 7
 
 The tool requires starting a sandbox, which can get complicated when attempting to run the tool on instances that use a headless version of Chrome.
@@ -95,6 +101,8 @@ You will need to create an exception within SELinux. Setting the following boole
 ```bash
 setsebool -P unconfined_chrome_sandbox_transition 0
 ```
+
+Alternatively, though not necessarily recommended, you can disable `SELinux` entirely. 
 
 ## Usage
 
