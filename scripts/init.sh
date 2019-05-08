@@ -35,7 +35,6 @@ LOCALSERVICE="$DEPENDENCIES_ROOT/api-eosio-compiler"
 COMPILER="$LOCALSERVICE/docker-eosio-cdt"
 ISDEV=false
 MAKESAMPLEDATA=false
-SERVERMODE=false
 
 USAGE="Usage: $(basename "$0") [-dev] [-s] [--server-mode] (program to initialize eosio-explorer)
 
@@ -108,7 +107,6 @@ echo "=============================="
 echo "BUILDING EOSIO_CDT DOCKER USED BY COMPILER SERVICE"
 echo "=============================="
 (cd $COMPILER && ./build_eosio_cdt_docker.sh && printf "${GREEN}done${NC}")
-
 
 # remove existing dockers
 ./remove_dockers.sh
