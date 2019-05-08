@@ -4,6 +4,7 @@
 </p>
 
 <p align="center">
+  <img alt="EOSIO Labs badge Version" src="https://img.shields.io/badge/EOSIO-Labs-5cb3ff.svg">
   <img alt="NPM Version" src="https://img.shields.io/npm/v/eosio-explorer.svg">
 </p>
 
@@ -30,6 +31,10 @@ The EOSIO Explorer is a full web application that allows developers to bootstrap
 The application provides developers the ability to review changes and updates that occur within the blockchain based on their own work, and has the capacity to allow teams of developers to work on the same instance of the blockchain. This is to add an extra layer of ease for application development especially as a way to allow both smart contract developers and front-end developers to work together more closely. For example, front-end developers can test by connecting their applications to the blockchain instantiated by this tool, and perform tests which smart contract developers can review instantly on the tool to determine if behavior is expected or not. 
 
 The goal of this application is to enhance the user experience when developing EOSIO-based blockchain applications while at the same time lowering the barrier to entry for newcomers to EOSIO-based blockchain development.
+
+### About EOSIO Labs
+
+EOSIO Labs repositories are experimental.  Developers in the community are encouraged to use EOSIO Labs repositories as the basis for code and concepts to incorporate into their applications. Community members are also welcome to contribute and further develop these repositories. Since these repositories are not supported by Block.one, we may not provide responses to issue reports, pull requests, updates to functionality, or other requests from the community, and we encourage the community to take responsibility for these.
 
 ### :warning: Disclaimer :warning:
 
