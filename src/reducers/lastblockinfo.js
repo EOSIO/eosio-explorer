@@ -6,7 +6,7 @@
 
 import { combineReducers } from 'redux';
 import { interval, of, from } from 'rxjs';
-import { mergeMap, mapTo, map, takeUntil, catchError, delay } from 'rxjs/operators';
+import { mergeMap, mapTo, map, takeUntil, catchError, delay, startWith } from 'rxjs/operators';
 
 import { combineEpics, ofType } from 'redux-observable';
 
@@ -43,6 +43,7 @@ const fetchEpic = action$ => action$.pipe(
   ofType(POLLING_START),
   mergeMap(action =>
     interval(500).pipe(
+      startWith(0),
       mergeMap(action =>
         from(apiRpc("get_info", query)).pipe(
           map(res => fetchFulfilled(res)),
