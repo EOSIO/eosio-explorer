@@ -33,6 +33,7 @@ const FETCH_SMART_CONTRACTS = actionPrefix + `FETCH_SMART_CONTRACTS`;
 const FETCH_SMART_CONTRACTS_FULFILLED = actionPrefix + `FETCH_SMART_CONTRACTS_FULFILLED`;
 const FETCH_SMART_CONTRACTS_REJECTED = actionPrefix + `FETCH_SMART_CONTRACTS_REJECTED`;
 const RECORDS_UPDATE = actionPrefix + `RECORDS_UPDATE`;
+const FILTER_UPDATE = actionPrefix + `FILTER_UPDATE`;
 
 //Action Creator
 export const fetchStart = () => ({ type: FETCH_START });
@@ -48,18 +49,23 @@ export const fetchSmartContracts = () => ({ type: FETCH_SMART_CONTRACTS });
 export const fetchFulfilledSmartContract = (payload) => ({ type: FETCH_SMART_CONTRACTS_FULFILLED, payload });
 export const fetchRejectedSmartContract = (payload, error) => ({ type: FETCH_SMART_CONTRACTS_REJECTED, payload, error });
 export const recordsUpdate = (count) => ({ type: RECORDS_UPDATE, recordsCount: count });
+export const filterUpdate = (filter) => ({ type: FILTER_UPDATE, filter });
 
 //Epic
 const fetchEpic = (action$, state$) => action$.pipe(
   ofType(FETCH_START),
   mergeMap(action => {
-    let { value: { pushactionPage: { actionId, records } } } = state$;
+    let { value: { pushactionPage: { actionId, records, filter } } } = state$;
     let actionHistoryParams = { records_count: records };
     let getActionParams = { };
     // Check that we have block number and global sequence. Global sequence can be equal to 0 so we have to account for that here as well
     if(actionId.block_num && (actionId.global_sequence === 0 || actionId.global_sequence)) {
       getActionParams.block_num = actionId.block_num;
       getActionParams.global_sequence = actionId.global_sequence;
+    }
+    // Check for user selected filters and apply them if they exist
+    if(filter.smartContractName) {
+      actionHistoryParams.account_name = filter.smartContractName;
     }
 
     let actionHistoryQuery = paramsToQuery(actionHistoryParams);
@@ -140,6 +146,11 @@ const recordsUpdateEpic = action$ => action$.pipe(
   mapTo(fetchStart()),
 );
 
+const filterUpdateEpic = action$ => action$.pipe(
+  ofType(FILTER_UPDATE),
+  mapTo(fetchStart()),
+);
+
 const actionPushEpic = action$ => action$.pipe(
   ofType(ACTION_PUSH),
   mergeMap(action => {
@@ -169,7 +180,8 @@ export const combinedEpic = combineEpics(
   endpointConnectEpic,
   actionPushFulfilledEpic,
   fetchSmartContractsEpic,
-  recordsUpdateEpic
+  recordsUpdateEpic,
+  filterUpdateEpic
 );
 
 const getActionInitState = () =>{
@@ -189,6 +201,9 @@ const getActionInitState = () =>{
 const dataInitState = {
   actionsList: [],
   error: undefined
+}
+const filterInitState = {
+  smartContractName: ""
 }
 
 // Mapping function to map an action object retrieved from the API to our action object in the push action form
@@ -373,6 +388,17 @@ const recordsReducer = (state = 100, action) => {
   }
 };
 
+// Filters the results shown in the action history viewer
+const filterReducer = (state = filterInitState, action) => {
+  switch (action.type) {
+    case FILTER_UPDATE:
+      return action.filter;
+
+    default:
+      return state;
+  }
+};
+
 export const combinedReducer = combineReducers({
   data: dataReducer,
   isFetching: isFetchingReducer,
@@ -381,5 +407,6 @@ export const combinedReducer = combineReducers({
   isPushingAction: isPushingActionReducer,
   smartContracts: smartContractsReducer,
   isFetchingSmartContract: isFetchingSmartContractReducer,
-  records: recordsReducer
+  records: recordsReducer,
+  filter: filterReducer
 })

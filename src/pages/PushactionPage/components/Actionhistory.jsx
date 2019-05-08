@@ -1,17 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { connect } from 'react-redux';
-import { Row, Col } from 'reactstrap';
+import { Row, Col, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
 import { LoadingSpinner, LimitSelectDropdown } from 'components';
 import styled from 'styled-components';
-import { TableStyled, ButtonPrimary} from 'styled';
-import { recordsUpdate } from '../PushactionPageReducer';
+import { TableStyled, ButtonPrimary, DropdownStyled, ButtonSecondary } from 'styled';
+import { recordsUpdate, filterUpdate } from '../PushactionPageReducer';
 
 const CustomButton = styled(ButtonPrimary)`
   margin: 0 auto;
 `
-
 const TableStyledNoPointer = styled(TableStyled)`
   tbody tr:hover{
     cursor: initial;
@@ -23,11 +22,41 @@ const TdStyled = styled.td`
 `
 const ColStyled = styled(Col)`
   margin-bottom: 20px;
+  padding-right: 10px;
 `
+const CustomDropdown = styled(DropdownStyled)`
+  .btn-secondary {
+    width: 100%;
+  }
+  .dropdown-menu {
+    width: 100%;
+  }  
+  [disabled] {
+    pointer-events: none;
+  }
+`
+
+const dropdownMaxHeight = {
+  setMaxHeight: {
+    enabled: true,
+    fn: (data) => {
+      return {
+        ...data,
+        styles: {
+          ...data.styles,
+          overflow: 'auto',
+          maxHeight: 300,
+        },
+      };
+    },
+  }
+}
 
 const Actionhistory = (props) => {
 
-  let { pushactionPage: { isFetching, data: { actionsList = [] }, records } } = props;
+  let { pushactionPage: { isFetching, data: { actionsList = [] }, records, filter, smartContracts: { smartContractsList = [] } } } = props;
+
+  const [isOpenDropDownSmartContract, toggleDropDownSmartContract] = useState(false);
 
   return (
     <div className="Actionhistory">
@@ -38,10 +67,29 @@ const Actionhistory = (props) => {
         ) : (
           <Row>
             {actionsList.length > 0 &&
-              <ColStyled xs="12" className="text-right">
-                <LimitSelectDropdown limit={records} onChange={(limit) => { props.recordsUpdate(limit) }} />
-              </ColStyled>
+              <>
+                <ColStyled xs="3">
+                  <CustomDropdown id="SmartContractFilterDropdown" isOpen={isOpenDropDownSmartContract} toggle={() => { toggleDropDownSmartContract(!isOpenDropDownSmartContract) }}>
+                    <DropdownToggle caret>{filter.smartContractName || "Filter by Smart Contract"}</DropdownToggle>
+                    <DropdownMenu modifiers={dropdownMaxHeight}>
+                      {smartContractsList &&
+                        (smartContractsList).map((smartContract) =>
+                          <DropdownItem key={smartContract._id} onClick={(e) => { props.filterUpdate({ smartContractName: smartContract.name }); }}>
+                            {smartContract.name}
+                          </DropdownItem>)}
+                    </DropdownMenu>
+                  </CustomDropdown>
+                </ColStyled>
+                <ColStyled xs="6" className="text-left pl-0">
+                  <ButtonSecondary block size="sm" onClick={(e) => { props.filterUpdate({ smartContractName: "" }); }}>Clear</ButtonSecondary>
+                </ColStyled>
+
+                <ColStyled xs="3" className="text-right">
+                  <LimitSelectDropdown limit={records} onChange={(limit) => { props.recordsUpdate(limit) }} />
+                </ColStyled>
+              </>
             }
+
             <Col xs="12">
               <TableStyledNoPointer borderless>
                 <thead>
@@ -85,6 +133,7 @@ export default connect(
     router
   }),
   {
-    recordsUpdate
+    recordsUpdate,
+    filterUpdate
   }
 )(Actionhistory);
