@@ -15,6 +15,24 @@ if [ -f "$APP/config.file.local" ]; then
   source $APP/config.file.local
 fi
 
+USAGE="Usage: $(basename "$0") (Pause any currently running Docker containers)"
+
+# check for arguments
+for arg in $@
+do
+  case $arg in
+    -h|--help)
+      echo "$USAGE"
+      exit
+      ;;
+    *) 
+      printf "illegal option: %s\n" "$arg" >&2
+      echo "$USAGE" >&2
+      exit 1
+      ;;
+  esac
+done
+
 echo " "
 echo "=============================="
 echo "PAUSING EOSIO DOCKER"

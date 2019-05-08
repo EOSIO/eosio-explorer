@@ -38,6 +38,25 @@ EOSDOCKER="$DEPENDENCIES_ROOT/docker-eosio-nodeos"
 MONGODOCKER="$DEPENDENCIES_ROOT/docker-mongodb"
 COMPILER="$DEPENDENCIES_ROOT/api-eosio-compiler/docker-eosio-cdt"
 
+USAGE="Usage: $(basename "$0") (Remove any currently present Docker containers)"
+
+# check for arguments
+for arg in $@
+do
+  case $arg in
+    -h|--help)
+      echo "$USAGE"
+      exit
+      ;;
+    *) 
+      printf "illegal option: %s\n" "$arg" >&2
+      echo "$USAGE" >&2
+      exit 1
+      ;;
+  esac
+done
+
+
 # remove existing dockers
 echo " "
 echo "=============================="
