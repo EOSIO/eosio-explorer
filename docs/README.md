@@ -19,7 +19,7 @@ You can view documentation on everything related to the EOSIO Explorer web tool 
     * [Smart Contract Deployment Page](./pages/interact/deployment-page.md)
     * [Push Action Page](./pages/interact/push-action-page.md)
 * Guides
-    * [Managing Connections](./guides/connect)
+    * [Managing Connections](./guides/connection)
         * [Making a New Connection](./guides/connect/new-connections.md)
         * [Resetting the Current Connection](./guides/connt/reset-connections.md)
     * Managing Accounts
