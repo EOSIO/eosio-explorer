@@ -22,13 +22,13 @@ const actionPrefix = `ContractdetailPage/MultiIndex/`;
 const FETCH_START = actionPrefix + `FETCH_START`;
 const FETCH_FULFILLED = actionPrefix + `FETCH_FULFILLED`;
 const FETCH_REJECTED = actionPrefix + `FETCH_REJECTED`;
-const PARMAS_SET = actionPrefix + `PARMAS_SET`;
+const PARAMS_SET = actionPrefix + `PARAMS_SET`;
 
 //Action Creator
 export const fetchStart = () => ({ type: FETCH_START });
 export const fetchFulfilled = payload => ({ type: FETCH_FULFILLED, payload });
 export const fetchRejected = ( payload, error ) => ({ type: FETCH_REJECTED, payload, error });
-export const paramsSet = (params) => ({ type: PARMAS_SET, params });
+export const paramsSet = (params) => ({ type: PARAMS_SET, params });
 
 //Epic
 
@@ -103,7 +103,7 @@ const isFetchingReducer = (state = false, action) => {
 
 const paramsReducer = (state = {}, action) => {
   switch (action.type) {
-    case PARMAS_SET:
+    case PARAMS_SET:
       return {
         ...state,
         ...action.params

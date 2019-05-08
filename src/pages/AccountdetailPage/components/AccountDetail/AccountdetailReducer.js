@@ -22,7 +22,7 @@ const actionPrefix = `AccountdetailPage/Accountdetail/`;
 const FETCH_START = actionPrefix + `FETCH_START`;
 const FETCH_FULFILLED = actionPrefix + `FETCH_FULFILLED`;
 const FETCH_REJECTED = actionPrefix + `FETCH_REJECTED`;
-const PARMAS_SET = actionPrefix + `PARMAS_SET`;
+const PARAMS_SET = actionPrefix + `PARAMS_SET`;
 const FETCH_CONTRACT_START = actionPrefix + `FETCH_CONTRACT_START`;
 const FETCH_CONTRACT_FULFILLED = actionPrefix + `FETCH_CONTRACT_FULFILLED`;
 const FETCH_CONTRACT_REJECTED = actionPrefix + `FETCH_CONTRACT_REJECTED`;
@@ -31,7 +31,7 @@ const FETCH_CONTRACT_REJECTED = actionPrefix + `FETCH_CONTRACT_REJECTED`;
 export const fetchStart = () => ({ type: FETCH_START });
 export const fetchFulfilled = payload => ({ type: FETCH_FULFILLED, payload });
 export const fetchRejected = ( payload, error ) => ({ type: FETCH_REJECTED, payload, error });
-export const paramsSet = (params) => ({ type: PARMAS_SET, params });
+export const paramsSet = (params) => ({ type: PARAMS_SET, params });
 export const fetchContractStart = () => ({ type: FETCH_CONTRACT_START });
 export const fetchContractFulfilled = contractPayload => ({ type: FETCH_CONTRACT_FULFILLED, contractPayload });
 export const fetchContractRejected = ( contractPayload, contractError ) => ({ type: FETCH_CONTRACT_REJECTED, contractPayload, contractError });
@@ -151,7 +151,7 @@ const dataContractReducer = (state=dataContractInitState, action) => {
 
 const paramsReducer = (state = {}, action) => {
   switch (action.type) {
-    case PARMAS_SET:
+    case PARAMS_SET:
       return {
         ...state,
         ...action.params
