@@ -4,7 +4,7 @@ import styled from 'styled-components';
 export default styled(UncontrolledTooltip)`
   .tooltip-inner{
     background-color: #443f54;
-    font-size: 10px;
+    font-size: 14px;
     font-weight: 500;
     text-align: left;
   }
