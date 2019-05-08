@@ -4,6 +4,10 @@
 
 The smart contract page will allow you to search for smart contract associated with accounts currently available on the blockchain. Users need to search for the account they wish to view the smart contract for, since accounts have a one-to-one correspondence with a smart contract. However, be aware that newly created accounts are likely to not yet have smart contracts associated with them.
 
+:warning: Disclaimer :warning:
+
+When a smart contract is deployed under an account, the name of the smart contract takes the name of the account which deployed it. Keep this in mind when searching for smart contracts.
+
 ## Search Smart Contract
 
 In this panel, on the right hand side is a search bar allowing you to look up a specific smart contract name. The smart contract name should be the same name as an account on the blockchain. You can use the [Account Detail Page](account-detail-page.md) as a reference. If no smart contract exists with the name you typed in, the page will inform you that no such smart contract with that name exists. Otherwise, one will appear: Smart Contract Detail. If the smart contract contains multi-index tables, a dropdown menu containing the list of tables associated with the smart contract will appear below the newly displayed panel. 
