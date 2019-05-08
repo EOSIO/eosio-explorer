@@ -18,6 +18,7 @@ const Wrapper = styled.div`
   }
   ul {
     list-style: none;
+    padding-left: 0;
   }
   a {
     margin: 0;

@@ -6,7 +6,7 @@
 
 import { combineReducers } from 'redux';
 import { interval, of } from 'rxjs';
-import { mergeMap, mapTo, map, takeUntil, catchError, delay } from 'rxjs/operators';
+import { mergeMap, mapTo, map, takeUntil, catchError, delay, startWith } from 'rxjs/operators';
 
 import { combineEpics, ofType } from 'redux-observable';
 
@@ -48,13 +48,13 @@ const fetchEpic = ( action$, state$ ) => action$.pipe(
   ofType(POLLING_START),
   mergeMap(action =>
     interval(500).pipe(
+      startWith(0),
       mergeMap(action => {
           let { value: { blocklistPage: { blocklist: { filter, records } } }} = state$;
           // let { value: { actionlistPage: { actionlist: { smartContractName, records } }} } = state$;
           let params = { records_count: records, show_empty: !filter };
           let query = paramsToQuery(params);
 
-          // return apiMongodb(`get_blocks?show_empty=${filter?`false`:`true`}`).pipe(
           return apiMongodb(`get_blocks${query}`).pipe(
             map(res => fetchFulfilled(res.response)),
             catchError(error => {
