@@ -22,6 +22,10 @@ You can view documentation on everything related to the EOSIO Explorer web tool 
     * Managing Accounts
         * [Create Account](./guides/permissions/create_account.md)
         * [Importing Keys](./guides/permissions/import_account.md)
+    * [Deploying a Smart Contract](./guides/deployment)
+        * [Step 1: Select File Entry Point](./guides/deployment/step-one.md)
+        * [Step 2: ABI File (Optional)](./guides/deployment/step-two.md)
+        * [Step 3: Deploy](./guides/deployment/step-three.md)
 
 ## Documentation for Contributors and Developers
 
