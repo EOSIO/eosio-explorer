@@ -18,6 +18,10 @@ You can view documentation on everything related to the EOSIO Explorer web tool 
     * [Manage Accounts Page](./pages/interact/manage-accounts-page.md)
     * [Smart Contract Deployment Page](./pages/interact/deployment-page.md)
     * [Push Action Page](./pages/interact/push-action-page.md)
+* Guides
+    * Managing Accounts
+        * [Create Account](./guides/permissions/create_account.md)
+        * [Importing Keys](./guides/permissions/import_account.md)
 
 ## Documentation for Contributors and Developers
 

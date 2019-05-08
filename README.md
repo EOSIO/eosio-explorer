@@ -85,15 +85,21 @@ See: [Development](./docs/development.md)
 
 ### OS Platform Specific 
 
+#### Ubuntu 18.04 / Ubuntu 16.04
+
+If you want to start the tool with the bundled UI, you will need to make sure your machine or server can open headless Chrome in a sandbox. 
+
 #### Amazon Linux 2 (AMI)
 
 Out of the box, Amazon Linux will use an outdated version of Docker which this application currently does not support.
 
 In order to install the tool properly, you will need to manually install the latest stable version of Docker using binaries.
 
+Finally, this requires the instance to be able to run or open headless Chrome in a sandbox.
+
 #### CentOS 7
 
-The tool requires starting a sandbox, which can get complicated when attempting to run the tool on instances that use a headless version of Chrome.
+The tool requires starting a sandbox for headless Chrome, which can get complicated when attempting to run the tool on a variety of instances that don't specifically open a browser.
 
 In CentOS specifically, `SELinux` impedes this process ([original issue](https://github.com/GoogleChrome/puppeteer/issues/2857#issuecomment-446983425)).
 
