@@ -103,13 +103,12 @@ echo "BUILDING EOSIO DOCKER"
 echo "=============================="
 (cd $EOSDOCKER && ./build_eosio_docker.sh && printf "${GREEN}done${NC}")
 
-if ( ! $SERVERMODE ); then
-  echo " "
-  echo "=============================="
-  echo "BUILDING EOSIO_CDT DOCKER USED BY COMPILER SERVICE"
-  echo "=============================="
-  (cd $COMPILER && ./build_eosio_cdt_docker.sh && printf "${GREEN}done${NC}")
-fi
+echo " "
+echo "=============================="
+echo "BUILDING EOSIO_CDT DOCKER USED BY COMPILER SERVICE"
+echo "=============================="
+(cd $COMPILER && ./build_eosio_cdt_docker.sh && printf "${GREEN}done${NC}")
+
 
 # remove existing dockers
 ./remove_dockers.sh
