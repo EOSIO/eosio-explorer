@@ -127,23 +127,26 @@ export const combinedEpic = combineEpics(
   createEpic
 );
 
+const initData = [
+  {
+    _id: '1',
+    account: 'eosio',
+    permission: 'active',
+    public_key: 'EOS5GnobZ231eekYUJHGTcmy2qve1K23r5jSFQbMfwWTtPB7mFZ1L',
+    private_key: '5Jr65kdYmn33C3UabzhmWDm2PuqbRfPuDStts3ZFNSBLM7TqaiL'
+  },
+  {
+    _id: '2',
+    account: 'eosio',
+    permission: 'owner',
+    public_key: 'EOS5GnobZ231eekYUJHGTcmy2qve1K23r5jSFQbMfwWTtPB7mFZ1L',
+    private_key: '5Jr65kdYmn33C3UabzhmWDm2PuqbRfPuDStts3ZFNSBLM7TqaiL'
+  }
+];
+
 const dataInitState = {
-  list: [
-    {
-      _id: '1',
-      account: 'eosio',
-      permission: 'active',
-      public_key: 'EOS5GnobZ231eekYUJHGTcmy2qve1K23r5jSFQbMfwWTtPB7mFZ1L',
-      private_key: '5Jr65kdYmn33C3UabzhmWDm2PuqbRfPuDStts3ZFNSBLM7TqaiL'
-    },
-    {
-      _id: '2',
-      account: 'eosio',
-      permission: 'owner',
-      public_key: 'EOS5GnobZ231eekYUJHGTcmy2qve1K23r5jSFQbMfwWTtPB7mFZ1L',
-      private_key: '5Jr65kdYmn33C3UabzhmWDm2PuqbRfPuDStts3ZFNSBLM7TqaiL'
-    }
-  ],
+  list: navigator.userAgent !== 'ReactSnap'
+   ? initData : [],
   importSuccess: false,
   importError: null,
   submitError: null,
@@ -158,22 +161,7 @@ const reinitializedState = (
   return {
     list: (
       chainId === LOCAL_CHAIN_ID
-    ) ? [
-      {
-        _id: '1',
-        account: 'eosio',
-        permission: 'active',
-        public_key: 'EOS5GnobZ231eekYUJHGTcmy2qve1K23r5jSFQbMfwWTtPB7mFZ1L',
-        private_key: '5Jr65kdYmn33C3UabzhmWDm2PuqbRfPuDStts3ZFNSBLM7TqaiL'
-      },
-      {
-        _id: '2',
-        account: 'eosio',
-        permission: 'owner',
-        public_key: 'EOS5GnobZ231eekYUJHGTcmy2qve1K23r5jSFQbMfwWTtPB7mFZ1L',
-        private_key: '5Jr65kdYmn33C3UabzhmWDm2PuqbRfPuDStts3ZFNSBLM7TqaiL'
-      }
-    ] : [],
+    ) ? initData : [],
     importSuccess: false,
     importError: null,
     submitError: null,
