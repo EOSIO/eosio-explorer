@@ -72,6 +72,8 @@ yarn global add eosio-explorer
 
 This will create a globally installed instance of the tool which you can run anywhere.
 
+:warning: - `yarn` will install global packages in a directory that may not be in your executable PATH. This may apply to certain OSes such as Ubuntu. In this case, you need to add the output of `yarn global bin` to your PATH such as in `~.bash_profile`. 
+
 If you wish to install the tool without `global`, then you can do the following instead:
 
 ```bash
@@ -79,11 +81,17 @@ git clone https://github.com/EOSIO/eosio-explorer.git
 yarn install
 ```
 
+After installing, you can do `eosio-explorer -v` or `yarn eosio-explorer -v` to check if the installation worked. If it worked, you should get the current version of the tool.
+
 ### For Contributors
 
 See: [Development](./docs/development.md)
 
 ### OS Platform Specific 
+
+:warning: - In summary, for terminal OSes, headless Chrome (`chrome`) must be available, otherwise you cannot start the GUI. 
+
+If you want to start the tool without the GUI to simply create an EOSIO blockchain environment (`nodeos` and MongoDB setup), please pass the `--server-mode` flag to the `start` or `init` commands. This may be useful for users who run terminal OSes and want to supply their development team with a development environment quickly and painlessly.
 
 #### Ubuntu 18.04 / Ubuntu 16.04
 
@@ -93,7 +101,7 @@ If you want to start the tool with the bundled UI, you will need to make sure yo
 
 Out of the box, Amazon Linux will use an outdated version of Docker which this application currently does not support.
 
-In order to install the tool properly, you will need to manually install the latest stable version of Docker using binaries.
+In order to install the tool properly, you will need to manually install the latest stable version of Docker using binaries. You can find the relevant binaries [here](https://docs.docker.com/install/linux/docker-ce/binaries/).
 
 Finally, this requires the instance to be able to run or open headless Chrome in a sandbox.
 
@@ -121,14 +129,20 @@ Installed via cloning the repository: yarn eosio-explorer <command>
 Run the tool with the specified command
 
 Commands:
+  -v                Prints out the current version of the tool
+  -h or --help      Prints out the current list of available commands
   init              Initialize the tool by installing all dependencies, setting up 
                     all Docker containers, etc.
                     Available flags:
+                    --server-mode - Starts the blockchain environment for the tool without 
+                                    opening the web application
                     -dev / --develop - Starts the tool in development mode
                     -s / --sample-data - Starts the tool with pre-existing sample accounts 
                                          and smart contracts
   start             Start the tool, assumes the dependencies and Docker images are already prepared
                     Available flags:
+                    --server-mode - Starts the blockchain environment for the tool without 
+                                    opening the web application
                     -dev / --develop - Starts the tool in development mode
                     -d / --delete - Removes existing Docker containers
                     --init - Builds a production-ready version of the web tool, 
