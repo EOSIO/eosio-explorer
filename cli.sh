@@ -25,6 +25,21 @@ done
 # cd into this directory and we could start the shell scripts.
 cd $( dirname "$SYMLINKEDFILE" )
 
+USAGE="Usage: eosio-explorer [command]
+
+where [command]:
+    init            Initialize the tool by installing all dependencies, setting up 
+                    all Docker containers, etc.
+
+    start           Start the tool, assumes the dependencies and Docker images are already prepared
+                    
+    start_gui       Starts the web tool locally without touching the nodeos and MongoDB containers
+
+    pause_dockers   Pause any currently running Docker containers
+
+    remove_dockers  Remove any currently present Docker containers"
+
+
 for arg in $@
 do
   case $arg in
@@ -48,5 +63,19 @@ do
     ./scripts/remove_dockers.sh ${@:2}
     ;;
 
+    -v|--version)
+    echo $(cat package.json | grep version | awk -F: '{ print $2 }' | sed 's/[",]//g') 
+    ;;
+
+    -h|--help)
+      echo "$USAGE"
+      exit
+    ;;
+
+    *) 
+      printf "invalid option: %s\n" "$arg" >&2
+      echo "$USAGE" >&2
+      exit 1
+      ;;
   esac
 done
