@@ -19,6 +19,9 @@ You can view documentation on everything related to the EOSIO Explorer web tool 
     * [Smart Contract Deployment Page](./pages/interact/deployment-page.md)
     * [Push Action Page](./pages/interact/push-action-page.md)
 * Guides
+    * [Managing Connections](./guides/connect)
+        * [Making a New Connection](./guides/connect/new-connections.md)
+        * [Resetting the Current Connection](./guides/connt/reset-connections.md)
     * Managing Accounts
         * [Create Account](./guides/permissions/create_account.md)
         * [Importing Keys](./guides/permissions/import_account.md)
@@ -26,6 +29,7 @@ You can view documentation on everything related to the EOSIO Explorer web tool 
         * [Step 1: Select File Entry Point](./guides/deployment/step-one.md)
         * [Step 2: ABI File (Optional)](./guides/deployment/step-two.md)
         * [Step 3: Deploy](./guides/deployment/step-three.md)
+    * [Pushing an Action](./guides/push-action)
 
 ## Documentation for Contributors and Developers
 
