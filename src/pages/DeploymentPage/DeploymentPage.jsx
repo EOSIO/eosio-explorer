@@ -363,7 +363,7 @@ const DeploymentPage = (props) => {
                   trigger="hover"
                   autohide={true}
                 >
-                  Click this button to import a pre-made ABI file and review it in the viewer below
+                  Click this button to import a pre-made ABI file and review it in the viewer above
                 </ToolTipUncontrolledStyled>
               </CardBody>
             </CardStyled>

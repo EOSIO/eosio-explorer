@@ -14,7 +14,7 @@ import { InputStyled, ButtonGroupSeperated, ButtonPrimary, ButtonSecondary, Tool
 import { accountClear } from 'reducers/permission';
 
 const CenteredLabel = styled(Label)`
-  margin-top: 6px;
+  margin-top: 10px;
 `
 
 const Nodeswitch = (props) => {
