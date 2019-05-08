@@ -21,7 +21,7 @@ You can view documentation on everything related to the EOSIO Explorer web tool 
 * Guides
     * [Managing Connections](./guides/connection)
         * [Making a New Connection](./guides/connect/new-connections.md)
-        * [Resetting the Current Connection](./guides/connt/reset-connections.md)
+        * [Resetting the Current Connection](./guides/connect/reset-connections.md)
     * Managing Accounts
         * [Create Account](./guides/permissions/create_account.md)
         * [Importing Keys](./guides/permissions/import_account.md)
