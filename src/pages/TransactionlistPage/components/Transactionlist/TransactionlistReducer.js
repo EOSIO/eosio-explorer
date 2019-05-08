@@ -6,7 +6,7 @@
 
 import { combineReducers } from 'redux';
 import { interval, of } from 'rxjs';
-import { mergeMap, mapTo, map, takeUntil, catchError, delay } from 'rxjs/operators';
+import { mergeMap, mapTo, map, takeUntil, catchError, delay, startWith } from 'rxjs/operators';
 
 import { combineEpics, ofType } from 'redux-observable';
 
@@ -44,6 +44,7 @@ const fetchEpic = (action$, state$) => action$.pipe(
   ofType(POLLING_START),
   mergeMap(action =>
     interval(500).pipe(
+      startWith(0),
       mergeMap(action => {
         let { value: { transactionlistPage: { transactionlist: { records } }} } = state$;
         let params = { records_count: records };
