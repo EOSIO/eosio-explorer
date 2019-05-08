@@ -38,17 +38,32 @@ COMPILER="$DEPENDENCIES_ROOT/api-eosio-compiler"
 
 ISDEV=false
 CLEARBROWSERSTORAGE=false
+USAGE="Usage: $(basename "$0") [-dev] [--clear-browser-storage] (program to start eosio-explorer gui)
+
+where:
+    -dev, --develop           Starts the tool in development mode
+    --clear-browser-storage   Clears the local storage"
+
 
 # check for arguments
 for arg in $@
 do
-    case $arg in
-      -dev|--develop)
-        ISDEV=true
-        ;;
-      --clear-browser-storage)
-        CLEARBROWSERSTORAGE=true
-        ;;
+  case $arg in
+    -dev|--develop)
+      ISDEV=true
+      ;;
+    --clear-browser-storage)
+      CLEARBROWSERSTORAGE=true
+      ;;
+    -h|--help)
+      echo "$USAGE"
+      exit
+      ;;
+    *) 
+      printf "illegal option: %s\n" "$arg" >&2
+      echo "$USAGE" >&2
+      exit 1
+      ;;
   esac
 done
 

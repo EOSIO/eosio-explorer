@@ -42,24 +42,52 @@ ISDELETE=false
 ISINIT=false
 BUILDAPPLICATION=false
 MAKESAMPLEDATA=false
+SERVERMODE=false
+
+USAGE="Usage: $(basename "$0") [-dev] [-d] [-b] [-s] [--init] [--server-mode] (program to start eosio-explorer)
+
+where:
+    -dev, --develop     Starts the tool in development mode
+    -d, --delete        Removes existing Docker containers
+    -b, --build         Re-build gui 
+    -s, --sample-data   Starts the tool with pre-existing sample accounts and smart contracts
+    --init              Builds a production-ready version of the web tool, 
+                          and opens the tool with cleared local storage
+    --server-mode       Starts the tool in server-mode, it will start the dockers but not the gui"
+
 
 # check for arguments
 for arg in $@
 do
-    case $arg in
-      -d|--delete)
-        ./remove_dockers.sh
-        ISDELETE=true
-        ;;
-      -dev|--develop)
-        ISDEV=true
-        ;;
-      --init)
-        ISINIT=true
-        ;;
-      -s|--sample-data)
-        MAKESAMPLEDATA=true
-        ;;
+  case $arg in
+    -d|--delete)
+      ./remove_dockers.sh
+      ISDELETE=true
+      ;;
+    -dev|--develop)
+      ISDEV=true
+      ;;
+    --init)
+      ISINIT=true
+      ;;
+    -s|--sample-data)
+      MAKESAMPLEDATA=true
+      ;;
+    -b|--build)
+      BUILDAPPLICATION=true
+      ;;
+    --server-mode)
+      SERVERMODE=true
+      ;;
+    -h|--help)
+      echo "$USAGE"
+      exit
+      ;;
+    *) 
+      printf "illegal option: %s\n" "$arg" >&2
+      echo "$USAGE" >&2
+      exit 1
+      ;;
   esac
 done
 
@@ -145,33 +173,38 @@ do
     ./remove_dockers.sh
     echo " "
     echo "Restarting eosio docker"
-    ./start.sh
+    ./start.sh $@
     exit 0
   fi
 done
 
-# If the production version of the application needs to be built
-if ( $BUILDAPPLICATION ); then
-  # create a static build of application for production
-  echo " "
-  echo "=============================="
-  echo "BUILDING APPLICATION"
-  echo "=============================="
+if ( ! $SERVERMODE ); then
+  # If the production version of the application needs to be built
+  if ( $BUILDAPPLICATION ); then
+    # create a static build of application for production
+    echo " "
+    echo "=============================="
+    echo "BUILDING APPLICATION"
+    echo "=============================="
 
-  # Set environment variable "REACT_APP_LAST_INIT_TIMESTAMP" at build time to create a new timestamp while serving the app.
-  (cd $APP && REACT_APP_LAST_INIT_TIMESTAMP=$(date +%s) yarn build && printf "${GREEN}done${NC}")
-fi
+    # Set environment variable "REACT_APP_LAST_INIT_TIMESTAMP" at build time to create a new timestamp while serving the app.
+    (cd $APP && REACT_APP_LAST_INIT_TIMESTAMP=$(date +%s) yarn build && printf "${GREEN}done${NC}")
+  fi
 
-# build and start the application
-# If there is -d or from init setup, clear the browser storage by adding a new timestamp when start CRA dev.
-if $ISDEV; then
-  if ($ISDELETE || $ISINIT); then
-    ./start_gui.sh -dev --clear-browser-storage
+  # build and start the application
+  # If there is -d or from init setup, clear the browser storage by adding a new timestamp when start CRA dev.
+  if $ISDEV; then
+    if ($ISDELETE || $ISINIT); then
+      ./start_gui.sh -dev --clear-browser-storage
+    else
+      ./start_gui.sh -dev
+    fi
   else
-    ./start_gui.sh -dev
+    ./start_gui.sh
   fi
 else
-  ./start_gui.sh
+  echo ""
+  echo "dockers have been started, you can now connect to this server"
 fi
 
 P1=$!

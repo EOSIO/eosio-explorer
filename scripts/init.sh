@@ -36,16 +36,35 @@ COMPILER="$LOCALSERVICE/docker-eosio-cdt"
 ISDEV=false
 MAKESAMPLEDATA=false
 
+USAGE="Usage: $(basename "$0") [-dev] [-s] [--server-mode] (program to initialize eosio-explorer)
+
+where:
+    -dev, --develop     Starts the tool in development mode
+    -s, --sample-data   Starts the tool with pre-existing sample accounts and smart contracts
+    --server-mode       Starts the tool in server-mode, it will start the dockers but not the gui"
+
 # check for arguments
 for arg in $@
 do
-    case $arg in
-      -dev|--develop)
-        ISDEV=true
-        ;;
-      -s|--sample-data)
-        MAKESAMPLEDATA=true
-        ;;
+  case $arg in
+    -dev|--develop)
+      ISDEV=true
+      ;;
+    -s|--sample-data)
+      MAKESAMPLEDATA=true
+      ;;
+    --server-mode)
+      echo "Running the tool in server mode"
+      ;;
+    -h|--help)
+      echo "$USAGE"
+      exit
+      ;;
+    *) 
+      printf "illegal option: %s\n" "$arg" >&2
+      echo "$USAGE" >&2
+      exit 1
+      ;;
   esac
 done
 
