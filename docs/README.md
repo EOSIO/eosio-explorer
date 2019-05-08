@@ -4,6 +4,7 @@ You can view documentation on everything related to the EOSIO Explorer web tool 
 
 ## Documentation for Users
 
+* [Configuration](configuration.md)
 * Inspect Pages
     * [Info Page](./pages/info-page.md)
     * [Block List Page](./pages/block-list-page.md)
@@ -34,4 +35,4 @@ You can view documentation on everything related to the EOSIO Explorer web tool 
 ## Documentation for Contributors and Developers
 
 * [Development](development.md)
-* [Contributing to the Project](../../../CONTRIBUTING.md)
+* [Contributing to the Project](../CONTRIBUTING.md)
