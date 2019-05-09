@@ -11,6 +11,7 @@ import { fetchStart } from './CreateAccountReducer';
 import { createStart } from 'reducers/permission';
 import { panelSelect } from 'pages/PermissionPage/PermissionPageReducer';
 import useForm from 'helpers/useForm';
+import validate from './CreateAccountValidatorEngine/CreateAccountValidatorEngine';
 import { CardStyled, OverlayStyled, CardHeaderStyled, ButtonPrimary, ButtonSecondary, InputStyled, ButtonGroupSeperated } from 'styled';
 import styled from 'styled-components';
 
@@ -20,7 +21,7 @@ const FirstCardStyled = styled(CardStyled)`
 
 const CreateAccount = (props) => {
 
-  const { values, handleChange, handleSubmit, errors } = useForm(createAccount, function () { return true; });
+  const { values, handleChange, handleSubmit, errors } = useForm(createAccount, validate);
 
   useEffect(()=>{
     props.fetchStart();
