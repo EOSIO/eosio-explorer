@@ -161,7 +161,7 @@ const reinitializedState = (
   return {
     list: (
       chainId === LOCAL_CHAIN_ID
-    ) ? initData : [],
+    ) ? [...initData] : [],
     importSuccess: false,
     importError: null,
     submitError: null,

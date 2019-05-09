@@ -57,7 +57,8 @@ class PermissionPage extends Component {
 
   render() {
 
-    const { panelSelect, panel, accountClear, fetchStart, payload: { chain_id } } = this.props;
+    const { panelSelect, panel, accountClear, fetchStart, payload } = this.props;
+    const { chain_id } = payload || { chain_id: '32b303dbe6bc3cf9a0d28fbdc95ea3cd18310923ac20f11fab3ca5ab4f18f135' };
 
     // Initialize local redux store state, then re-fetch MongoDB permissions
     function reInitialize () {
