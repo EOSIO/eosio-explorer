@@ -15,7 +15,7 @@ import ImportAccount from './components/ImportAccount';
 import { panelSelect } from './PermissionPageReducer';
 import { fetchStart, accountClear } from 'reducers/permission';
 import styled from 'styled-components';
-import { PageTitleDivStyled, ButtonGroupSeperated, ButtonPrimary, ButtonSecondary, ToolTipStyled } from 'styled';
+import { PageTitleDivStyled, ButtonGroupSeperated, ButtonPrimary, ButtonSecondary, ToolTipStyled, ErrorDivStyled } from 'styled';
 
 const CustomButtonPrimary = styled(ButtonPrimary)`
   padding-top: 4px;
@@ -25,6 +25,10 @@ const CustomButtonPrimary = styled(ButtonPrimary)`
 const CustomButtonSecondary = styled(ButtonSecondary)`
   padding-top: 4px;
   line-height: 15px;
+`
+
+const CustomErrorDiv = styled(ErrorDivStyled)`
+  padding: 30px 0 0 0;
 `
 
 class PermissionPage extends Component {
@@ -57,7 +61,8 @@ class PermissionPage extends Component {
 
   render() {
 
-    const { panelSelect, panel, accountClear, fetchStart, payload: { chain_id } } = this.props;
+    const { panelSelect, panel, accountClear, fetchStart, payload } = this.props;
+    const { chain_id } = payload || { chain_id: "NONE" };
 
     // Initialize local redux store state, then re-fetch MongoDB permissions
     function reInitialize () {
@@ -85,32 +90,42 @@ class PermissionPage extends Component {
                 </Col>
               </Row>
               <Row>
-                <Col sm={12}>
-                  <ButtonGroupSeperated className="float-right"
-                    style={{display: (panel === "permission-list") ? 'block' : 'none'}}>
-                    <CustomButtonPrimary id="CreateAccountBtn" onClick={()=>{changePanel("create-account")}}>Create Account</CustomButtonPrimary>
-                    <CustomButtonSecondary id="ResetPermissionBtn" onClick={()=>this.toggleModal()}>Reset All Permissions</CustomButtonSecondary>
-                  </ButtonGroupSeperated>
-                  <ToolTipStyled placement="bottom" target="ResetPermissionBtn"
-                    isOpen={this.state.resetTooltip && panel === "permission-list"}
-                    toggle={()=>this.toggleResetTooltip()}
-                    delay={{show: 0, hide: 0}}
-                    trigger="hover"
-                    autohide={true}>
-                    All private keys are stored locally on your machine. Clicking this button will
-                    revert the local storage to its default state. This means all your
-                    currently stored private keys will be cleared!
-                  </ToolTipStyled>
-                </Col>
+                {
+                  (chain_id !== 'NONE' )
+                  ? (<Col sm={12}>
+                    <ButtonGroupSeperated className="float-right"
+                      style={{display: (panel === "permission-list") ? 'block' : 'none'}}>
+                      <CustomButtonPrimary id="CreateAccountBtn" onClick={()=>{changePanel("create-account")}}>Create Account</CustomButtonPrimary>
+                      <CustomButtonSecondary id="ResetPermissionBtn" onClick={()=>this.toggleModal()}>Reset All Permissions</CustomButtonSecondary>
+                    </ButtonGroupSeperated>
+                    <ToolTipStyled placement="bottom" target="ResetPermissionBtn"
+                      isOpen={this.state.resetTooltip && panel === "permission-list"}
+                      toggle={()=>this.toggleResetTooltip()}
+                      delay={{show: 0, hide: 0}}
+                      trigger="hover"
+                      autohide={true}>
+                      All private keys are stored locally on your machine. Clicking this button will
+                      revert the local storage to its default state. This means all your
+                      currently stored private keys will be cleared!
+                    </ToolTipStyled>
+                  </Col>)
+                  : null
+                }
               </Row>
               <br/>
               <Row>
-                <Col sm={12}>
-                  { panel === "permission-list" ? <Permissionlist/>
-                    : panel === "create-account" ? <CreateAccount/>
-                    : <ImportAccount />
-                  }
-                </Col>
+                {
+                  (chain_id !== 'NONE') 
+                  ? (<Col sm={12}>
+                    { panel === "permission-list" ? <Permissionlist/>
+                      : panel === "create-account" ? <CreateAccount/>
+                      : <ImportAccount />
+                    }
+                    </Col>)
+                  : (<Col sm={12}>
+                    <CustomErrorDiv>Currently not connected to any blockchain, unable to display accounts</CustomErrorDiv>
+                  </Col>)
+                }
               </Row>
             </Col>
           </Row>
