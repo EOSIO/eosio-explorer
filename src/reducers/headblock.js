@@ -41,7 +41,7 @@ const startEpic = action$ => action$.pipe(
 const fetchEpic = action$ => action$.pipe(
   ofType(POLLING_START),
   mergeMap(action =>
-    interval(500).pipe(
+    interval(process.env.REACT_APP_POLLING_INTERVAL_TIME).pipe(
       startWith(0),
       mergeMap(action => {
         let query = paramsToQuery({ records_count: "1", show_empty: "true" });

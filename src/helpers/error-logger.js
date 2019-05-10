@@ -3,5 +3,5 @@ import { logStart } from 'reducers/errorlog';
 
 export const errorLog = (...obj) => {
   store.dispatch(logStart());
-  console.log(obj);
+  console.log([...obj, new Date()]);
 }
