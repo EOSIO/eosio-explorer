@@ -14,4 +14,4 @@ Possible Actions:
 * [Importing Private Keys to an Existing Account](import_account.md)
 * Reset all Permissions - Click the button labeled "Reset all Permissions" to reset the list of accounts to its initial state. 
 
-:lightbulb: - If you are connected to a `nodeos` instance created using this tool, you will see the default `eosio` system contracts account that ships with that blockchain. Otherwise, you will not see any accounts that are selectable for use. **You will also lose all private keys kept in your local storage** so please back them up before doing this!
+:zap: - If you are connected to a `nodeos` instance created using this tool, you will see the default `eosio` system contracts account that ships with that blockchain. Otherwise, you will not see any accounts that are selectable for use. **You will also lose all private keys kept in your local storage** so please back them up before doing this!

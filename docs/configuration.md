@@ -63,6 +63,6 @@ Try not to change the following environment variables:
 :no_good: Under no circumstances should you change the following variables :no_good:
 
 * `NODE_PATH`
-* `SASS_PATH`
+* `SASS_PATH` (exception: [adding custom mixins and variables to the existing CSS](development.md#custom-mixins-and-variables))
 
 They are critical for the web application to run.
