@@ -44,7 +44,8 @@
     "redux-thunk": "^2.3.0",
     "rxjs": "^6.4.0",
     "simple-line-icons": "^2.4.1",
-    "terminal-in-react": "^4.3.1"
+    "terminal-in-react": "^4.3.1",
+    "pm2": "^3.5.0"
   },
   "bin": {
     "eosio-explorer": "./cli.sh"
@@ -57,7 +58,7 @@
     "postbuild": "react-snap",
     "test": "react-app-rewired test --env=jsdom",
     "eject": "react-scripts eject",
-    "serve": "node serve.js",
+    "serve": "node pm2.js",
     "eosio-explorer": "./cli.sh"
   },
   "browserslist": [
