@@ -22,3 +22,9 @@ If you went to Step Two:
 * If you imported an ABI file, the compiler will use the provided ABI file instead of the generated `.abi` file, but will still use the generated `.wasm` file. If generation of the `.wasm` file is successful, deployment moves on as normal.
 
 If you skipped Step Two, the compiler will simply just create the `.abi` and `.wasm` files and deploy if successful. You should only do this if you are sure your smart contract produces a valid `.abi` file.
+
+A successful deployment should show the following in the 'Deployment Result' section:
+
+![Successful Deployment](../../images/deployment/deployment.png)
+
+Sometimes, your smart contract will deploy successfully despite warnings from the compiler service. You can still review these warnings and update your smart contract accordingly.
