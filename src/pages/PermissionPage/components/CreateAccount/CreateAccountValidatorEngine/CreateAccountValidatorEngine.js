@@ -3,15 +3,9 @@ export default function validate(values) {
 
   if (!values.accountName || values.accountName.length === 0) {
     errors.accountName = 'Account name is required';
-  } else if (!/^([a-z][a-z1-5.]+)$/.test(values.accountName)) {
+  } else if (!/^([a-z1-5][a-z1-5.]+)$/.test(values.accountName)) {
     let errorString = "Invalid EOSIO account name: ";
     let reasons = [];
-
-    if (parseInt(values.accountName[0]))
-      reasons.push("name can't start with a number");
-
-    if (/[A-Z]/.test(values.accountName[0]))
-      reasons.push("name can't start with a capital letter");
 
     if (/[A-Z]/.test(values.accountName)) {
       reasons.push("name contains capital letters");
