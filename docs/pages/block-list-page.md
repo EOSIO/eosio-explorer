@@ -4,6 +4,8 @@
 
 The block list page contains a visualization of the blocks being produced by the currently running `nodeos` instance. It will show up to a maximum of the latest **100** produced blocks. 
 
+Optionally, you can choose to change the number of blocks to display on this list to 10, 20 or 50 blocks at the bottom of this page.
+
 ## Block List
 
 A panel containing a dynamic table which continuously updates by polling the MongoDB instance for blocks produced by the currently running `nodeos` instance. Each row on this list contains the following information:
@@ -17,7 +19,7 @@ of the block. You can also choose to filter out the empty blocks in the list, an
 
 ### Filter by Empty or Non-empty Blocks
 
-By clicking the checkbox labeled "No empty blocks," you can choose to display only the blocks which contain transactions in them. The default behavior is to display all blocks, including empty ones (unchecked filter). The list will refresh to match the filter and will persist in future sessions.
+By clicking the checkbox labeled "No empty blocks," you can choose to display only the blocks which contain transactions. The default behavior is to display all blocks, including empty ones (unchecked filter). The list will refresh to match the filter and will persist in future sessions.
 
 ### Block Search
 
