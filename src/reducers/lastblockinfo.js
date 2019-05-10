@@ -42,7 +42,7 @@ const startEpic = action$ => action$.pipe(
 const fetchEpic = action$ => action$.pipe(
   ofType(POLLING_START),
   mergeMap(action =>
-    interval(1000).pipe(
+    interval(process.env.REACT_APP_POLLING_INTERVAL_TIME).pipe(
       startWith(0),
       mergeMap(action =>
         from(apiRpc("get_info", query)).pipe(

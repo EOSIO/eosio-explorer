@@ -47,14 +47,14 @@ const startEpic = action$ => action$.pipe(
 const fetchEpic = ( action$, state$ ) => action$.pipe(
   ofType(POLLING_START),
   mergeMap(action =>
-    interval(1000).pipe(
+    interval(process.env.REACT_APP_POLLING_INTERVAL_TIME).pipe(
       startWith(0),
       mergeMap(action => {
           let { value: { blocklistPage: { blocklist: { filter, records } } }} = state$;
           // let { value: { actionlistPage: { actionlist: { smartContractName, records } }} } = state$;
           let params = { records_count: records, show_empty: !filter };
           let query = paramsToQuery(params);
-
+          
           return apiMongodb(`get_blocks${query}`).pipe(
             map(res => fetchFulfilled(res.response)),
             catchError(error => {
