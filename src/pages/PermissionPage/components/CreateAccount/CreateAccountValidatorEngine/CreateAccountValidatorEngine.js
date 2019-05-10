@@ -3,7 +3,7 @@ export default function validate(values) {
 
   if (!values.accountName || values.accountName.length === 0) {
     errors.accountName = 'Account name is required';
-  } else if (!/^([a-z1-5][a-z1-5.]+)$/.test(values.accountName)) {
+  } else if (!/^([a-z][a-z1-5.]+)$/.test(values.accountName)) {
     let errorString = "Invalid EOSIO account name: ";
     let reasons = [];
 
