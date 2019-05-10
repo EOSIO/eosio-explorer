@@ -33,7 +33,7 @@ For example, if the answers to the questions above were as follows:
 
 Then the form would be filled as follows.
 
-![Push Action Type](](../../images/push-action/push-action-type.png)
+![Push Action Type](../../images/push-action/push-action-type.png)
 
 Then, you can click the "Push" button to push the action. If you change your mind, you can click "Clear" to reset all fields. If you leave the page by mistake, you can return to this page without losing any of the data you put into the fields.
 
@@ -41,7 +41,7 @@ Then, you can click the "Push" button to push the action. If you change your min
 
 Upon successfully pushing an action, you will see the following message:
 
-![Push Action Type](](../../images/push-action/push-action-success.png)
+![Push Action Type](../../images/push-action/push-action-success.png)
 
 You can view the [Action List Page](../../pages/action-list-page.md) to check that the action was pushed.
 
@@ -49,12 +49,12 @@ You can view the [Action List Page](../../pages/action-list-page.md) to check th
 
 Sometimes, you want to continuously repeat an action, and just slightly adjust the parameters or change the permission used to authorize the transaction. Other times, you just don't want to keep filling in the form manually. You can accomplish pre-filling the Push Action form by looking at the Action History Viewer, which is directly below the Push Action panel. It looks like this:
 
-![Action History Viewer](](../../images/push-action/action-history-viewer.png)
+![Action History Viewer](../../images/push-action/action-history-viewer.png)
 
 Circled in red is the 'Prefill' button, which lets you automatically fill the Push Action form with the exact same information used to push the action indicated in the Action History Viewer. This gives you a convenient summary of previous actions. You can also control how many actions you show at once by changing the 'Show rows' dropdown from 100 to another value. Possible alternatives are: `25, 50, 75`. It is `100` by default.
 
 After clicking Prefill, you will automatically see the prefilled form as follows:
 
-![Prefilled Action](](../../images/push-action/prefill-action.png)
+![Prefilled Action](../../images/push-action/prefill-action.png)
 
 You can proceed to edit the form at your leisure or push the action again to test its behavior.

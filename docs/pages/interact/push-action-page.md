@@ -10,7 +10,7 @@ The page will attempt to search for all available smart contracts, then allowing
 
 In this panel, you can fully specify the manner in which you wish to push an action. There are four required things to specify in this panel:
 
-1. The smart contract containing the action you wish to pull
+1. The smart contract containing the action you wish to push
 2. The specific action from the smart contract
 3. The permission/actor who will sign the action
 4. The payload containing arguments corresponding to the parameters of the action
@@ -29,6 +29,8 @@ Payload:
 ```
 
 If the action has been pushed successfully, a brief success message will be displayed. You can check if the action has been pushed by checking the [Action List Page](../action-list-page.md). 
+
+You can learn how to actually push an action by reading [the guide on how to push an action](../../guides/push-action).
 
 ## Action History Viewer
 

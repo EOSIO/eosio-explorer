@@ -2,7 +2,9 @@
 
 # Action List Page
 
-The action list page contains a full list of all actions that have been performed on the currently connected blockchain. You also have the ability to filter actions by the name of the smart contract which contains the action. It is also possible to inspect a single action from this page.
+The action list page contains a list of actions that have been performed on the currently connected blockchain, up to a maximum of the latest **100** actions. You also have the ability to filter actions by the name of the smart contract which contains the action. It is also possible to inspect a single action from this page.
+
+Optionally, you can change the number of actions to show on this list to 10, 20 or 50 actions at the bottom of this page.
 
 ## Action List
 
