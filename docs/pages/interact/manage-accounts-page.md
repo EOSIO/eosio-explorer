@@ -8,6 +8,8 @@ In this page, you are able to get a listing of all the currently available accou
 
 Above the two main panels in this page are buttons that allow you to perform various actions regarding account management.
 
+To learn more about these panels, you can check the guide on managing accounts [here](../../guides/permissions).
+
 ### Create Account
 
 Takes you to a new panel that allows you to create an account. Owner and active public and private key pairs will be generated for you in `base58 WIF` compliant format thanks to `eosjs-ecc`, allowing you to simply enter an account name that must follow the following rules:
