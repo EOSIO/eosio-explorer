@@ -43,7 +43,7 @@ const startEpic = action$ => action$.pipe(
 const fetchEpic = (action$, state$) => action$.pipe(
   ofType(POLLING_START),
   mergeMap(action =>
-    interval(500).pipe(
+    interval(1000).pipe(
       startWith(0),
       mergeMap(action => {
         let { value: { transactionlistPage: { transactionlist: { records } }} } = state$;
