@@ -19,6 +19,7 @@
    * [For Contributors](#for-contributors)
    * [OS Platform Specific](#os-platform-specific)
 * [Usage](#usage)
+    * [Modes](#modes)
 * [Links to Documentation](#links-to-documentation)
 * [Contributing](#contributing)
 * [License](#license)
@@ -161,6 +162,17 @@ Commands:
   pause_dockers     Pause any currently running Docker containers
   remove_dockers    Remove any currently present Docker containers
 ```
+
+You can also add the `-h` flag to any of the commands listed above to view the available flags for each command within the terminal.
+
+### Modes
+
+* Development mode sacrifices some performance but enables hot code reloading, allowing you to work on contributing to the project without rebuilding
+* Production mode serves a pre-rendered, pre-loaded version of the tool for speed and performance, and is for users of the tool.
+
+:warning: - The tool, in production mode, will run persistently in the background, meaning that you can choose to keep it running indefinitely. If you want to close the tool, you will need to kill the process which is listening on the port you specified in the configuration. By default, the production mode port is `5111`. You can use utilities like `netstat` and `lsof` to check this.
+
+If you want, you can globally install `pm2` to make managing this process easier, so you can run commands like `pm2 status` to check.
 
 ## Links to Documentation
 
