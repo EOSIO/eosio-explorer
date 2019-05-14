@@ -7,9 +7,7 @@ pm2.connect(function(err) {
   }
   
   pm2.start({
-    script    : 'serve.js',         // Script to be run
-    exec_mode : 'cluster',        // Allows your app to be clustered
-    instances : 4                // Optional: Scales your app by 4
+    script    : 'serve.js'         // Script to be run
   }, function(err, apps) {
     pm2.disconnect();   // Disconnects from PM2
     if (err) throw err
