@@ -5,14 +5,16 @@
 */
 
 import { combineReducers } from 'redux';
-import { interval, of } from 'rxjs';
-import { mergeMap, mapTo, map, takeUntil, catchError, delay, startWith } from 'rxjs/operators';
+import { interval, of, empty } from 'rxjs';
+import { switchMap, mergeMap, mapTo, map, takeUntil, catchError, delay, startWith, finalize, endWith } from 'rxjs/operators';
 
 import { combineEpics, ofType } from 'redux-observable';
 
 import apiMongodb from 'services/api-mongodb';
 import { errorLog } from 'helpers/error-logger';
 import paramsToQuery from 'helpers/params-to-query';
+
+import store from 'store';
 
 // IMPORTANT
 // Must modify action prefix since action types must be unique in the whole app
@@ -22,6 +24,7 @@ const actionPrefix = `BlocklistPage/Blocklist/`;
 const FETCH_START = actionPrefix + `FETCH_START`;
 const FETCH_FULFILLED = actionPrefix + `FETCH_FULFILLED`;
 const FETCH_REJECTED = actionPrefix + `FETCH_REJECTED`;
+const FETCH_END = actionPrefix + `FETCH_END`;
 const POLLING_START = actionPrefix + `POLLING_START`;
 const POLLING_STOP = actionPrefix + `POLLING_STOP`;
 const FILTER_SET = actionPrefix + `FILTER_SET`;
@@ -30,33 +33,31 @@ const RECORDS_UPDATE = actionPrefix + `RECORDS_UPDATE`;
 
 //Action Creator
 export const fetchStart = () => ({ type: FETCH_START });
-export const fetchFulfilled = payload => ({ type: FETCH_FULFILLED, payload });
+export const fetchFulfilled = (payload) => ({ type: FETCH_FULFILLED, payload });
 export const fetchRejected = ( payload, error ) => ({ type: FETCH_REJECTED, payload, error });
-export const pollingStart = () => ({ type: POLLING_START });
+export const fetchEnd = ( ) => ({ type: FETCH_END });
+export const pollingStart = ( autoReload ) => ({ type: POLLING_START, autoReload });
 export const pollingStop = () => ({ type: POLLING_STOP });
 export const filterSet = (enabled) => ({ type: FILTER_SET, enabled});
 export const filterToggle = () => ({ type: FILTER_TOGGLE });
 export const recordsUpdate = (count) => ({ type: RECORDS_UPDATE, recordsCount: count });
 
 //Epic
-const startEpic = action$ => action$.pipe(
-  ofType(POLLING_START),
-  mapTo(fetchStart()),
-);
 
-const fetchEpic = ( action$, state$ ) => action$.pipe(
+const pollingEpic = ( action$, state$ ) => action$.pipe(
   ofType(POLLING_START),
-  mergeMap(action =>
+  switchMap(action =>
     interval(process.env.REACT_APP_POLLING_INTERVAL_TIME).pipe(
-      startWith(0),
-      mergeMap(action => {
-          let { value: { blocklistPage: { blocklist: { filter, records } } }} = state$;
+      startWith(-1),
+      mergeMap(index => {
+          let { value: { blocklistPage: { blocklist: { isFetching, filter, records } } }} = state$;
           // let { value: { actionlistPage: { actionlist: { smartContractName, records } }} } = state$;
           let params = { records_count: records, show_empty: !filter };
           let query = paramsToQuery(params);
-          
-          return apiMongodb(`get_blocks${query}`).pipe(
-            map(res => fetchFulfilled(res.response)),
+
+          return isFetching ? empty() : apiMongodb(`get_blocks${query}`).pipe(
+            startWith("fetchStart"),
+            map(res => { return res === "fetchStart" ? fetchStart() : fetchFulfilled(res.response)}),
             catchError(error => {
               errorLog("Blocks page/ get block list error",error);
               return of(fetchRejected(error.response, { status: error.status }))
@@ -64,16 +65,20 @@ const fetchEpic = ( action$, state$ ) => action$.pipe(
           )
         }),
       takeUntil(action$.pipe(
-        ofType(POLLING_STOP, POLLING_START, FETCH_REJECTED)
-      ))
+        ofType(POLLING_STOP, POLLING_START, FETCH_REJECTED),
+      )),
+
+      finalize(() => {
+        store.dispatch(fetchEnd());
+      })
     )
   ),
 );
 
-const repollEpic = action$ => action$.pipe(
+const autoReloadEpic = action$ => action$.pipe(
   ofType(FETCH_REJECTED),
   delay(10000),
-  mapTo(pollingStart()),
+  mapTo(pollingStart(true)),
 );
 
 const filterToggleEpic = action$ => action$.pipe(
@@ -88,9 +93,8 @@ const recordsUpdateEpic = action$ => action$.pipe(
 
 
 export const combinedEpic = combineEpics(
-  startEpic,
-  fetchEpic,
-  repollEpic,
+  pollingEpic,
+  autoReloadEpic,
   filterToggleEpic,
   recordsUpdateEpic
 );
@@ -104,8 +108,10 @@ const dataInitState = {
 
 const dataReducer = (state=dataInitState, action) => {
   switch (action.type) {
-    case FETCH_START:
-        return dataInitState;
+    case POLLING_START:
+
+        //If this is a polling started from the auto reload, do not reinit the state.
+        return !action.autoReload ? dataInitState : state;
 
     case FETCH_FULFILLED:
       return {
@@ -117,8 +123,9 @@ const dataReducer = (state=dataInitState, action) => {
     case FETCH_REJECTED:
       return {
         ...state,
-        payload: action.payload,
-        error: action.error
+
+        //If current payload is having previous data, do not show the error
+        error: state.payload.length > 0 ? undefined : action.error
       };
 
     case RECORDS_UPDATE:
@@ -135,6 +142,23 @@ const isFetchingReducer = (state = false, action) => {
   switch (action.type) {
     case FETCH_START:
       return true;
+
+    case FETCH_FULFILLED:
+    case FETCH_REJECTED:
+    case FETCH_END:
+      return false;
+
+    default:
+      return state;
+  }
+};
+
+const isPollingReducer = (state = false, action) => {
+  switch (action.type) {
+    case POLLING_START:
+
+      //If this is a polling started from the auto reload, keep the flag false.
+      return !action.autoReload;
 
     case FETCH_FULFILLED:
     case FETCH_REJECTED:
@@ -171,6 +195,7 @@ const recordsReducer = (state = 100, action) => {
 export const combinedReducer = combineReducers({
   data: dataReducer,
   isFetching: isFetchingReducer,
+  isPolling: isPollingReducer,
   filter: filterReducer,
   records: recordsReducer
 })
