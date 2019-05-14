@@ -5,7 +5,7 @@
 */
 
 import { combineReducers } from 'redux';
-import { interval, of, from, empty } from 'rxjs';
+import { interval, of, empty } from 'rxjs';
 import { switchMap, mergeMap, mapTo, map, takeUntil, catchError, delay, startWith, finalize, timeout } from 'rxjs/operators';
 import { combineEpics, ofType } from 'redux-observable';
 import store from 'store';
@@ -43,8 +43,7 @@ const pollingEpic = ( action$, state$ ) => action$.pipe(
       mergeMap(index => {
         let { value: { lastblockinfo: { isFetching } }} = state$;
 
-        return isFetching ? empty() : from(apiRpc("get_info")).pipe(
-          timeout(2500),
+        return isFetching ? empty() : apiRpc("get_info").pipe(
           startWith("fetchStart"),
           map(res => { return res === "fetchStart" ? fetchStart() : fetchFulfilled(res)}),
           catchError(error => {

@@ -5,8 +5,8 @@
 */
 
 import { combineReducers } from 'redux';
-import { of, from } from 'rxjs';
-import { mergeMap, map, flatMap, catchError, mapTo } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { mergeMap, map, flatMap, catchError } from 'rxjs/operators';
 
 import { combineEpics, ofType } from 'redux-observable';
 
@@ -32,12 +32,10 @@ export const fetchRejected = ( payload, error ) => ({ type: FETCH_REJECTED, payl
 
 //Epic
 
-const query = {"privateKey": "5Jr65kdYmn33C3UabzhmWDm2PuqbRfPuDStts3ZFNSBLM7TqaiL"};
-
 const fetchEpic = action$ => action$.pipe(
   ofType(FETCH_START),
   mergeMap(action =>
-    from(apiRpc("get_info", query)).pipe(
+    apiRpc("get_info").pipe(
       map(res => fetchFulfilled(res)),
       catchError(error => {
         errorLog("Info page/ get blockchain info error",error);
@@ -50,7 +48,7 @@ const fetchEpic = action$ => action$.pipe(
 const switchCheckEpic = action$ => action$.pipe(
   ofType(SWITCH_CHECK),
   mergeMap(action =>
-    from(apiRpc("get_info", query)).pipe(
+    apiRpc("get_info").pipe(
       flatMap(res => ([fetchFulfilled(res), accountClear(res.chain_id)])),
       catchError(error => {
         errorLog("Info page/ endpoint change error",error);

@@ -42,9 +42,9 @@ const fetchEpic = ( action$, state$ ) => action$.pipe(
       params.account_name = smartContractName.toLowerCase();
 
     let query = paramsToQuery(params);
-    console.log(123);
+    
     return apiMongodb(`get_actions${query}`).pipe(
-      map(res => { console.log(1233); return fetchFulfilled(res.response)}),
+      map(res => fetchFulfilled(res.response)),
       catchError(error => {
         errorLog("Action page/ get action list error",error);
         return of(fetchRejected(error.response, { status: error.status }))
