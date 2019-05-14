@@ -39,7 +39,7 @@ const apiRpcCall = async ( apiPath, query={} ) => {
 }
 
 export default ( apiPath, query={} ) => navigator.userAgent !== "ReactSnap" ?
-    from(apiRpcCall(apiPath, query)).pipe(timeout(250))
+    from(apiRpcCall(apiPath, query)).pipe(timeout(process.env.REACT_APP_API_TIMEOUT_TIME))
   :
     //If we are prerendering using react snap, return a promise that resolved with a repsonse with { repsonse: undefined }
     from(new Promise((resolve, reject)=>{

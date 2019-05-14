@@ -67,7 +67,7 @@ const pollingEpic = ( action$, state$ ) => action$.pipe(
 
 const autoReloadEpic = action$ => action$.pipe(
   ofType(FETCH_REJECTED),
-  delay(10000),
+  delay(process.env.REACT_APP_AUTO_RELOAD_INTERVAL_TIME),
   mapTo(pollingStart()),
 );
 
