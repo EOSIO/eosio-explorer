@@ -74,7 +74,7 @@ const Permissionlist = (props) => {
     return result;
   }, Object.create({})) : null;
   let defaultAccountsList = (Object.keys(baseDefaultAccountsList || {}).length > 0) ? 
-    Object.keys(baseDefaultAccountsList).sort().map(key => baseDefaultAccountsList[key]) : {};
+    Object.keys(baseDefaultAccountsList).sort().filter(key => baseDefaultAccountsList[key].length > 1).map(key => baseDefaultAccountsList[key]) : {};
   let numberOfDefaultAccounts = Object.keys(defaultAccountsList || {}).length;
   
   let baseImportAccountsList = (clonedList.length > 0) ? clonedList.reduce((result, permission, idx) => {
@@ -84,6 +84,18 @@ const Permissionlist = (props) => {
     }
     return result;
   }, Object.create({})) : null;
+  Object.keys(baseImportAccountsList).forEach(key => {
+    if (baseImportAccountsList[key].length === 1) {
+      let permission = baseImportAccountsList[key][0].permission;
+      if (permission === 'active') {
+        let missingPermission = clonedList.filter(item => item.permission === 'owner' && item.account === baseImportAccountsList[key][0].account)[0];
+        baseImportAccountsList[key].push(missingPermission);
+      } else {
+        let missingPermission = clonedList.filter(item => item.permission === 'active' && item.account === baseImportAccountsList[key][0].account)[0];
+        baseImportAccountsList[key].push(missingPermission);
+      }
+    }
+  })
   let importAccountsList = (Object.keys(baseImportAccountsList || {}).length > 0) ?
      Object.keys(baseImportAccountsList).sort().map(key => baseImportAccountsList[key]) : {};
   let numberOfImportAccounts = Object.keys(importAccountsList || {}).length;
@@ -92,10 +104,10 @@ const Permissionlist = (props) => {
     props.fetchStart();
   }, [])
 
-  function getKeysData (accName, list) {
+  function getKeysData (accName, list, panel) {
     const keysData = list.filter(acct => acct["account"] === accName);
     props.accountImport(keysData);
-    panelSelect("import-account");
+    panelSelect("import-account-"+panel);
   }
 
   function setAsDefault (id, accName, permission) {
@@ -136,7 +148,7 @@ const Permissionlist = (props) => {
                                     used for signing transactions and pushing actions. 
                                     The <b>eosio</b> account owns the system contract responsible for numerous important functions, so please
                                     be aware that you can not deploy new contracts locally under that permission. 
-                                    Click the "Edit" button to change an account's private key. Click the radio button to set the default account for authorizing actions.
+                                    Click the "View" button to check your keys for the account. Click the radio button to set the default account for authorizing actions.
                                   </InfoDivStyled>
                                   <PermissionTable borderless>
                                     {
@@ -200,10 +212,10 @@ const Permissionlist = (props) => {
                                             <EditButtonCell width="40%">
                                               <ButtonPrimary 
                                                     style={{float:'right', marginRight:'5%'}}
-                                                    onClick={() => getKeysData(defaultAccountsList[account][0].account, list)}
+                                                    onClick={() => getKeysData(defaultAccountsList[account][0].account, list, "view")}
                                                     block
                                                     >
-                                                    Edit
+                                                    View
                                                   </ButtonPrimary>
                                             </EditButtonCell>
                                           </tr>
@@ -268,7 +280,7 @@ const Permissionlist = (props) => {
                                             <EditButtonCell width="40%">
                                               <ButtonPrimary 
                                                     style={{float:'right', marginRight:'5%'}}
-                                                    onClick={() => getKeysData(importAccountsList[account][0].account, list)}
+                                                    onClick={() => getKeysData(importAccountsList[account][0].account, list, "importer")}
                                                     block
                                                     >
                                                     Import Keys

@@ -28,6 +28,7 @@ const ImportAccount = (props) => {
         importSuccess
       }
     },
+    panel,
     accountAdd,
     panelSelect
   } = props;
@@ -62,7 +63,9 @@ const ImportAccount = (props) => {
         <>
           <FirstCardStyled>
             <CardHeaderStyled>
-              Import/Edit Account
+              {
+                panel === 'import-account-view' ? "View Account Details" : "Import Account Keys"
+              }
             </CardHeaderStyled>
             <CardBody>
               {
@@ -72,16 +75,19 @@ const ImportAccount = (props) => {
                 </UncontrolledAlert>
               }
               <InfoDivStyled>
-                <p className="infoHeader">Before you update your private keys...</p>
-                <p>
-                  Ensure that the private keys you use are <code>base58 WIF</code> compliant. <b>WIF</b> stands for
-                  "Wallet Import Format" and is a convenience specification for copying and pasting private keys.
-                  The form will notify you if any of your keys are invalid upon submission. Please also ensure
-                                    the private keys you import <b>properly match</b> the public keys listed here. Otherwise,
-                  you will not be able to authorize any actions with this account since the blockchain will not
-                  have the correct signatures for the declared authorization.
-                </p>
-                <hr />
+                {
+                  panel === 'import-account-importer' ?
+                  (<><p className="infoHeader">Before you update your private keys...</p>
+                  <p>
+                    Ensure that the private keys you use are <code>base58 WIF</code> compliant. <b>WIF</b> stands for
+                    "Wallet Import Format" and is a convenience specification for copying and pasting private keys.
+                    The form will notify you if any of your keys are invalid upon submission. Please also ensure
+                    the private keys you import <b>properly match</b> the public keys listed here. Otherwise,
+                    you will not be able to authorize any actions with this account since the blockchain will not
+                    have the correct signatures for the declared authorization.
+                  </p>
+                  <hr /></> ) : null
+                }
                 <p className="mb-0">
                   Your private keys will be saved locally in your browser. However, please be sure NEVER to share
                   your private key to anybody. If someone asks you for your private key, please do not give it
@@ -138,6 +144,7 @@ const ImportAccount = (props) => {
                       onChange={handleChange}
                       invalid={!!errors.ownerPrivate}
                       required
+                      readOnly={panel === 'import-account-view'}
                     />
                     {
                       errors.ownerPrivate &&
@@ -182,6 +189,7 @@ const ImportAccount = (props) => {
                       onChange={handleChange}
                       invalid={!!errors.activePrivate}
                       required
+                      readOnly={panel === 'import-account-view'}
                     />
                     {
                       errors.activePrivate &&
@@ -201,11 +209,14 @@ const ImportAccount = (props) => {
                         >
                         Back
                       </ButtonSecondary>
-                      <ButtonPrimary className="float-right"
+                      {
+                        panel === 'import-account-importer' ?
+                        (<ButtonPrimary className="float-right"
                         disabled={!(values.activePrivate && values.ownerPrivate)}
                         block>
                         Submit
-                      </ButtonPrimary>
+                        </ButtonPrimary>) : null
+                      }
                     </ButtonGroupSeperated>
                   </Col>
                 </FormGroup>
@@ -220,8 +231,8 @@ const ImportAccount = (props) => {
 }
 
 export default connect(
-  ({ permission, permissionPage: { importAccount } }) => ({
-    permission
+  ({ permission, permissionPage: { panel } }) => ({
+    permission, panel
   }),
   {
     accountAdd,
