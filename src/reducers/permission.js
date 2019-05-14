@@ -76,7 +76,7 @@ const fetchEpic = ( action$, state$ ) => action$.pipe(
   })
 );
 
-const createAccountPromise = (
+const createAccountObservable = (
   query, owner_private_key, active_private_key, accountName
 ) =>
   apiRpc("create_account", query).pipe(
@@ -99,7 +99,7 @@ const createEpic = action$ => action$.pipe(
         new_account_owner_key: ownerPublicKey,
         new_account_active_key: activePublicKey
       };
-      return createAccountPromise(query, ownerPrivateKey, activePrivateKey, accountName)
+      return createAccountObservable(query, ownerPrivateKey, activePrivateKey, accountName)
         .pipe(
           mergeMap(response => {
           return apiMongodb(`get_account_details${paramsToQuery({account_name: accountName})}`)
