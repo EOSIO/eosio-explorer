@@ -11,7 +11,6 @@ import { mergeMap, map, flatMap, catchError, mapTo } from 'rxjs/operators';
 import { combineEpics, ofType } from 'redux-observable';
 
 import apiRpc from 'services/api-rpc';
-import { CONNECT_START } from 'reducers/endpoint';
 import { errorLog } from 'helpers/error-logger';
 import { accountClear } from 'reducers/permission';
 
@@ -61,16 +60,9 @@ const switchCheckEpic = action$ => action$.pipe(
   ),
 )
 
-const endpointConnectEpic = action$ => action$.pipe(
-  ofType(CONNECT_START),
-  mapTo(fetchStart())
-);
-
-
 export const combinedEpic = combineEpics(
   fetchEpic,
-  switchCheckEpic,
-  endpointConnectEpic
+  switchCheckEpic
 );
 
 
@@ -83,7 +75,7 @@ const dataInitState = {
 const dataReducer = (state=dataInitState, action) => {
   switch (action.type) {
     case FETCH_START:
-    case SWITCH_CHECK: 
+    case SWITCH_CHECK:
         return dataInitState;
 
     case FETCH_FULFILLED:
