@@ -1,7 +1,7 @@
 import apiRpc from '@eosio-toppings/api-rpc';
 import store from "store";
 
-export default async ( apiPath, query ) => {
+export default async ( apiPath, query={} ) => {
 
   if ( navigator.userAgent !== "ReactSnap" ){
     try{
