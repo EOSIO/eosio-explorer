@@ -6,15 +6,14 @@
 
 import { combineReducers } from 'redux';
 import { interval, of, empty } from 'rxjs';
-import { switchMap, mergeMap, mapTo, map, takeUntil, catchError, delay, startWith, finalize, endWith } from 'rxjs/operators';
-
+import { switchMap, mergeMap, mapTo, map, takeUntil, catchError, delay, startWith, finalize } from 'rxjs/operators';
 import { combineEpics, ofType } from 'redux-observable';
+import store from 'store';
 
 import apiMongodb from 'services/api-mongodb';
 import { errorLog } from 'helpers/error-logger';
 import paramsToQuery from 'helpers/params-to-query';
 
-import store from 'store';
 
 // IMPORTANT
 // Must modify action prefix since action types must be unique in the whole app
@@ -36,7 +35,7 @@ export const fetchStart = () => ({ type: FETCH_START });
 export const fetchFulfilled = (payload) => ({ type: FETCH_FULFILLED, payload });
 export const fetchRejected = ( payload, error ) => ({ type: FETCH_REJECTED, payload, error });
 export const fetchEnd = ( ) => ({ type: FETCH_END });
-export const pollingStart = ( autoReload ) => ({ type: POLLING_START, autoReload });
+export const pollingStart = (autoReload) => ({ type: POLLING_START, autoReload });
 export const pollingStop = () => ({ type: POLLING_STOP });
 export const filterSet = (enabled) => ({ type: FILTER_SET, enabled});
 export const filterToggle = () => ({ type: FILTER_TOGGLE });

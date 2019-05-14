@@ -32,17 +32,17 @@ const Transactionlist = (props) => {
 
   const [inputValue, setInputValue] = useState("");
 
-  let { transactionlist: { isFetching, data, records } } = props;
+  let { transactionlist: { isPolling, data, records } } = props;
   let { payload = [], error } = data;
-  
+
   return (
     <div className="Transactionlist">
       <FirstCardStyled>
         <CardHeaderStyled>Transaction List</CardHeaderStyled>
-        <CardBody>         
+        <CardBody>
           <CardTitle>
             <DivFlexStyled>
-              <SearchInputStyled 
+              <SearchInputStyled
                     placeholder="Transaction ID"
                     value={inputValue}
                     onKeyDown={
@@ -50,28 +50,28 @@ const Transactionlist = (props) => {
                         if (evt.key === 'Enter') {
                           setInputValue("");
                           if(inputValue !== "")
-                            props.push('/transaction/'+inputValue) 
+                            props.push('/transaction/'+inputValue)
                         }
                       }
                     }
                     onChange={evt=>{setInputValue(evt.target.value)}}/>
-              <ButtonPrimary         
+              <ButtonPrimary
                     onClick={evt=> {
                       setInputValue("");
                       if(inputValue !== "")
-                        props.push('/transaction/'+inputValue)                           
+                        props.push('/transaction/'+inputValue)
                     }}>
               SEARCH</ButtonPrimary>
             </DivFlexStyled>
           </CardTitle>
-           
+
           <div>{error
-              ? 
+              ?
                 <>
                   {!isObjectEmpty(error) && <p className="text-danger">{JSON.stringify(error)}</p>}
                   <ErrorButton onClick={props.pollingStart}>Connection error, click to reload</ErrorButton>
                 </>
-                : 
+                :
                   <Row>
                     <Col xs="12">
                       <TableStyled borderless>
@@ -83,7 +83,7 @@ const Transactionlist = (props) => {
                           </tr>
                         </thead>
                         <tbody className="hashText">
-                          {(isFetching || payload.length <= 0) ? (
+                          {(isPolling || payload.length <= 0) ? (
                             <tr><td colSpan="3" className="text-center"><LoadingSpinner /></td></tr>
                           ) : payload.map(eachTransaction=>
                             <tr onClick={evt=>props.push(`/transaction/${eachTransaction.trx_id}`)} key={eachTransaction.trx_id}>
@@ -100,10 +100,10 @@ const Transactionlist = (props) => {
                       </Col>
                     }
                   </Row>
-                }                  
-          </div>              
+                }
+          </div>
         </CardBody>
-      </FirstCardStyled>      
+      </FirstCardStyled>
     </div>
   );
 }

@@ -21,8 +21,6 @@ const actionPrefix = `ActionlistPage/Actionlist/`;
 const FETCH_START = actionPrefix + `FETCH_START`;
 const FETCH_FULFILLED = actionPrefix + `FETCH_FULFILLED`;
 const FETCH_REJECTED = actionPrefix + `FETCH_REJECTED`;
-const POLLING_START = actionPrefix + `POLLING_START`;
-const POLLING_STOP = actionPrefix + `POLLING_STOP`;
 const SMART_CONTRACT_NAME_UPDATE = actionPrefix + `SMART_CONTRACT_NAME_UPDATE`;
 const RECORDS_UPDATE = actionPrefix + `RECORDS_UPDATE`;
 
@@ -30,17 +28,10 @@ const RECORDS_UPDATE = actionPrefix + `RECORDS_UPDATE`;
 export const fetchStart = () => ({ type: FETCH_START });
 export const fetchFulfilled = payload => ({ type: FETCH_FULFILLED, payload });
 export const fetchRejected = ( payload, error ) => ({ type: FETCH_REJECTED, payload, error });
-export const pollingStart = () => ({ type: POLLING_START });
-export const pollingStop = () => ({ type: POLLING_STOP });
 export const smartContractNameSearch = (name) => ({ type: SMART_CONTRACT_NAME_UPDATE , smartContractName: name});
 export const recordsUpdate = (count) => ({ type: RECORDS_UPDATE, recordsCount: count });
 
 //Epic
-const startEpic = action$ => action$.pipe(
-  ofType(POLLING_START),
-  mapTo(fetchStart()),
-);
-
 const fetchEpic = ( action$, state$ ) => action$.pipe(
   ofType(FETCH_START),
   mergeMap(action => {
@@ -51,9 +42,9 @@ const fetchEpic = ( action$, state$ ) => action$.pipe(
       params.account_name = smartContractName.toLowerCase();
 
     let query = paramsToQuery(params);
-    
+    console.log(123);
     return apiMongodb(`get_actions${query}`).pipe(
-      map(res => fetchFulfilled(res.response)),
+      map(res => { console.log(1233); return fetchFulfilled(res.response)}),
       catchError(error => {
         errorLog("Action page/ get action list error",error);
         return of(fetchRejected(error.response, { status: error.status }))
@@ -64,16 +55,15 @@ const fetchEpic = ( action$, state$ ) => action$.pipe(
 
 const smartContractNameToggleEpic = action$ => action$.pipe(
   ofType(SMART_CONTRACT_NAME_UPDATE),
-  mapTo(pollingStart()),
+  mapTo(fetchStart()),
 );
 
 const recordsUpdateEpic = action$ => action$.pipe(
   ofType(RECORDS_UPDATE),
-  mapTo(pollingStart()),
+  mapTo(fetchStart()),
 );
 
 export const combinedEpic = combineEpics(
-  startEpic,
   fetchEpic,
   smartContractNameToggleEpic,
   recordsUpdateEpic
