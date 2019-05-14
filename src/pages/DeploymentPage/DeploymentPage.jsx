@@ -197,7 +197,7 @@ const DeploymentPage = (props) => {
     let cleanPath = sanitizeFilepath(path);
     let actualRootPath = (cleanPath.endsWith("/")) ? cleanPath.toString() : cleanPath.toString() + "/";
     let currentPermission = list.find(account => account._id === currentId);
-    let msg = `Cannot deploy contract under owner of the system contract`;
+    let msg = `Cannot deploy contract under the owner of the system contract`;
     let fullPath = {
       source: actualRootPath + currentFile
     }
