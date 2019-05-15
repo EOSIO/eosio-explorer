@@ -84,19 +84,10 @@ else
   (cd $COMPILER/docker-eosio-cdt && ./start_eosio_cdt_docker.sh && printf "${GREEN}done${NC}")
 fi
 
-
-# start compiler service in background
 echo " "
 echo "=============================="
-echo "STARTING COMPILER SERVICE"
+echo "STARTING APP AND COMPILER SERVICE"
 echo "=============================="
-(cd $COMPILER && yarn start > compiler.log &)
-
-echo " "
-echo "=============================="
-echo "STARTING APP"
-echo "=============================="
-
 if $ISDEV; then
   if $CLEARBROWSERSTORAGE; then
     # Set environment variable "REACT_APP_LAST_INIT_TIMESTAMP" at dev build to create a new timestamp in CRA development
@@ -105,9 +96,5 @@ if $ISDEV; then
     (cd $APP && PORT=$APP_DEV_PORT yarn start)
   fi
 else
-  if [ "$(netstat -nat | grep $APP_SERVE_PORT | grep LISTEN)" ]; then
-    echo "port $APP_SERVE_PORT is already open, you should try browsing http://localhost:$APP_SERVE_PORT if it doesnt work you may have to change the port in config file or release the port $APP_SERVE_PORT"
-  else
-    (cd $APP && yarn serve)
-  fi
+    (cd $APP && yarn serve $COMPILER)
 fi
