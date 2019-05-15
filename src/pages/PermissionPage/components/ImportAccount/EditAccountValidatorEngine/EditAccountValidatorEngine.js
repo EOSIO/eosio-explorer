@@ -20,7 +20,7 @@ export default function editValidate(values) {
   if (!values.activePublic || values.activePublic.length === 0) {
     errors.activePublic = 'Active public key is required';
   } else if (!ecc.isValidPublic(values.activePublic)) {
-    errors.activePublic = 'Active public key is not valid EOSKey'
+    errors.activePublic = 'Active public key is not valid EOSKey';
   }
 
   if (!values.activePrivate || values.activePrivate.length === 0) {
