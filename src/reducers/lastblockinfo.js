@@ -6,7 +6,7 @@
 
 import { combineReducers } from 'redux';
 import { interval, of, empty } from 'rxjs';
-import { switchMap, mergeMap, mapTo, map, takeUntil, catchError, delay, startWith, finalize, timeout } from 'rxjs/operators';
+import { switchMap, mergeMap, mapTo, map, takeUntil, catchError, delay, startWith, finalize } from 'rxjs/operators';
 import { combineEpics, ofType } from 'redux-observable';
 import store from 'store';
 
