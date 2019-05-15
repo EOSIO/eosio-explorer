@@ -1,4 +1,5 @@
-var pm2 = require('pm2');
+const pm2 = require('pm2');
+const fs = require('fs');
 
 pm2.connect(function(err) {
   if (err) {
@@ -6,14 +7,18 @@ pm2.connect(function(err) {
     process.exit(2);
   }
 
-  pm2.start({
-    name      : "eosio compiler",
-    script    : 'yarn start',
-    cwd: process.argv.slice(2)[0]
-  }, function(err, apps) {
-    pm2.disconnect();   // Disconnects from PM2
-    if (err) throw err
-  });
+  if (fs.existsSync(process.argv.slice(2)[0])) {
+    pm2.start({
+      name      : "eosio compiler",
+      script    : 'yarn start',
+      cwd: process.argv.slice(2)[0]
+    }, function(err, apps) {
+      pm2.disconnect();   // Disconnects from PM2
+      if (err) throw err
+    });
+  }
+  else
+    console.log ("\x1b[31merror finding compiler path\x1b[0m");
 
   pm2.start({
     name      : "eosio explorer",
@@ -32,7 +37,7 @@ pm2.connect(function(err) {
         if (app.pm2_env.status === "online")
           console.log("\x1b[34m" + app.name + "\x1b[0m ---- \x1b[32m" + app.pm2_env.status + "\x1b[0m");
         else 
-        console.log("\x1b[34m" + app.name + "\x1b[0m ---- \x1b[31m" + app.pm2_env.status + "\x1b[0m");
+          console.log("\x1b[34m" + app.name + "\x1b[0m ---- \x1b[31m" + app.pm2_env.status + "\x1b[0m");
       })
     }
   });
