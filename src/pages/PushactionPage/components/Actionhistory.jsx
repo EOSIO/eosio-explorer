@@ -99,7 +99,7 @@ const Actionhistory = (props) => {
                 </thead>
                 <tbody>
                   {actionsList.length < 1 ?
-                    <tr><td colSpan="5" className="text-center">No actions could be found{filter.smartContractName && ` for ${filter.smartContractName}` }</td></tr>
+                    <tr><td colSpan="5" className="text-center">No actions found{filter.smartContractName && ` with Smart Contract name ${filter.smartContractName}` }</td></tr>
                   : actionsList.map((action, index)=>
                     <tr key={index} data-globalsequence={action.receipt.global_sequence}>
                       <TdStyled>{action.act.account}</TdStyled>
