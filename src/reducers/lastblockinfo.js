@@ -5,10 +5,10 @@
 */
 
 import { combineReducers } from 'redux';
-import { interval, of, from } from 'rxjs';
-import { mergeMap, mapTo, map, takeUntil, catchError, delay, startWith } from 'rxjs/operators';
-
+import { interval, of, empty } from 'rxjs';
+import { switchMap, mergeMap, mapTo, map, takeUntil, catchError, delay, startWith, finalize } from 'rxjs/operators';
 import { combineEpics, ofType } from 'redux-observable';
+import store from 'store';
 
 import apiRpc from 'services/api-rpc';
 import { errorLog } from 'helpers/error-logger';
@@ -21,6 +21,7 @@ const actionPrefix = `lastblockinfo/`;
 const FETCH_START = actionPrefix + `FETCH_START`;
 export const FETCH_FULFILLED = actionPrefix + `FETCH_FULFILLED`;
 const FETCH_REJECTED = actionPrefix + `FETCH_REJECTED`;
+const FETCH_END = actionPrefix + `FETCH_END`;
 const POLLING_START = actionPrefix + `POLLING_START`;
 const POLLING_STOP = actionPrefix + `POLLING_STOP`;
 
@@ -28,48 +29,49 @@ const POLLING_STOP = actionPrefix + `POLLING_STOP`;
 export const fetchStart = () => ({ type: FETCH_START });
 export const fetchFulfilled = payload => ({ type: FETCH_FULFILLED, payload });
 export const fetchRejected = ( payload, error ) => ({ type: FETCH_REJECTED, payload, error });
+export const fetchEnd = () => ({ type: FETCH_END });
 export const pollingStart = () => ({ type: POLLING_START });
 export const pollingStop = () => ({ type: POLLING_STOP });
 
-const query = { "privateKey": "5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3"};
-
 //Epic
-const startEpic = action$ => action$.pipe(
-  ofType(POLLING_START),
-  mapTo(fetchStart()),
-);
 
-const fetchEpic = action$ => action$.pipe(
+const pollingEpic = ( action$, state$ ) => action$.pipe(
   ofType(POLLING_START),
-  mergeMap(action =>
+  switchMap(action =>
     interval(process.env.REACT_APP_POLLING_INTERVAL_TIME).pipe(
-      startWith(0),
-      mergeMap(action =>
-        from(apiRpc("get_info", query)).pipe(
-          map(res => fetchFulfilled(res)),
+      startWith(-1),
+      mergeMap(index => {
+        let { value: { lastblockinfo: { isFetching } }} = state$;
+
+        return isFetching ? empty() : apiRpc("get_info").pipe(
+          startWith("fetchStart"),
+          map(res => { return res === "fetchStart" ? fetchStart() : fetchFulfilled(res)}),
           catchError(error => {
             errorLog("Info page/ get last irreversible block error",error);
             return of(fetchRejected(error.response, { status: error.status }))
           })
         )
-      ),
+      }),
       takeUntil(action$.pipe(
-        ofType(POLLING_STOP, POLLING_START, FETCH_REJECTED)
-      ))
+        ofType(POLLING_STOP, POLLING_START, FETCH_REJECTED),
+      )),
+
+      finalize(() => {
+        store.dispatch(fetchEnd());
+      })
     )
   ),
 );
 
-const repollEpic = action$ => action$.pipe(
+const autoReloadEpic = action$ => action$.pipe(
   ofType(FETCH_REJECTED),
-  delay(10000),
+  delay(process.env.REACT_APP_AUTO_RELOAD_INTERVAL_TIME),
   mapTo(pollingStart()),
 );
 
 export const combinedEpic = combineEpics(
-  startEpic,
-  fetchEpic,
-  repollEpic
+  pollingEpic,
+  autoReloadEpic
 );
 
 
@@ -81,7 +83,7 @@ const dataInitState = {
 
 const dataReducer = (state=dataInitState, action) => {
   switch (action.type) {
-    case FETCH_START:
+    case POLLING_START:
         return dataInitState;
 
     case FETCH_FULFILLED:
@@ -93,7 +95,7 @@ const dataReducer = (state=dataInitState, action) => {
     case FETCH_REJECTED:
       return {
         ...state,
-        payload: action.payload,
+        payload: {},
         error: action.error
       };
     default:
@@ -108,6 +110,21 @@ const isFetchingReducer = (state = false, action) => {
 
     case FETCH_FULFILLED:
     case FETCH_REJECTED:
+    case FETCH_END:
+      return false;
+
+    default:
+      return state;
+  }
+};
+
+const isPollingReducer = (state = false, action) => {
+  switch (action.type) {
+    case POLLING_START:
+      return true;
+
+    case FETCH_FULFILLED:
+    case FETCH_REJECTED:
       return false;
 
     default:
@@ -117,5 +134,6 @@ const isFetchingReducer = (state = false, action) => {
 
 export const combinedReducer = combineReducers({
   data: dataReducer,
-  isFetching: isFetchingReducer
+  isFetching: isFetchingReducer,
+  isPolling: isPollingReducer
 })

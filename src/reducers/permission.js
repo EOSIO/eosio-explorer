@@ -5,7 +5,7 @@
 */
 
 import { combineReducers } from 'redux';
-import { of, from } from 'rxjs';
+import { throwError, of } from 'rxjs';
 import { mergeMap, map, catchError } from 'rxjs/operators';
 
 import { combineEpics, ofType } from 'redux-observable';
@@ -76,19 +76,18 @@ const fetchEpic = ( action$, state$ ) => action$.pipe(
   })
 );
 
-const createAccountPromise = (
+const createAccountObservable = (
   query, owner_private_key, active_private_key, accountName
-) => new Promise(
-  (resolve, reject) => {
-    apiRpc("create_account", query)
-      .then(res => resolve({
-        ownerPrivateKey: owner_private_key,
-        activePrivateKey: active_private_key,
-        accountName: accountName
-      }))
-      .catch(err => reject(err));
-  }
-);
+) =>
+  apiRpc("create_account", query).pipe(
+    map(res => ({
+      ownerPrivateKey: owner_private_key,
+      activePrivateKey: active_private_key,
+      accountName: accountName
+    })),
+    catchError( err => throwError(err))
+  )
+
 
 const createEpic = action$ => action$.pipe(
   ofType(CREATE_START),
@@ -100,7 +99,7 @@ const createEpic = action$ => action$.pipe(
         new_account_owner_key: ownerPublicKey,
         new_account_active_key: activePublicKey
       };
-      return from(createAccountPromise(query, ownerPrivateKey, activePrivateKey, accountName))
+      return createAccountObservable(query, ownerPrivateKey, activePrivateKey, accountName)
         .pipe(
           mergeMap(response => {
           return apiMongodb(`get_account_details${paramsToQuery({account_name: accountName})}`)

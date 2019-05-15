@@ -5,7 +5,7 @@
 */
 
 import { combineReducers } from 'redux';
-import { of, from } from 'rxjs';
+import { of } from 'rxjs';
 import { mergeMap, mapTo, map, catchError } from 'rxjs/operators';
 import { combineEpics, ofType } from 'redux-observable';
 
@@ -148,7 +148,7 @@ const actionPushEpic = action$ => action$.pipe(
     };
 
     // Push the user created action to the RPC API
-    return from(apiRpc("push_action", query)).pipe(
+    return apiRpc("push_action", query).pipe(
       map(result => actionPushFulfilled(result)),
       catchError(error => of(actionPushRejected(error.json, { error: error.message })))
     )

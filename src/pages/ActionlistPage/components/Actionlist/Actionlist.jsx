@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Row, Col, CardTitle, Form } from 'reactstrap';
 import styled from 'styled-components';
 import { push } from 'connected-react-router'
-import { pollingStart, pollingStop, smartContractNameSearch, recordsUpdate } from './ActionlistReducer';
+import { fetchStart, smartContractNameSearch, recordsUpdate } from './ActionlistReducer';
 import { LoadingSpinner, LimitSelectDropdown } from 'components';
 import isObjectEmpty from 'helpers/is-object-empty';
 import { TableStyled, ButtonPrimary, InputStyled, ErrorButton } from 'styled';
@@ -21,19 +21,19 @@ const FilterInputStyled = styled(InputStyled)`
 const Actionlist = (props) => {
 
   useEffect(()=>{
-    props.pollingStart();
-    return () => { props.pollingStop() }
+    props.fetchStart();
+    return () => { }
   }, [])
 
   const [inputValue, setInputValue] = useState("");
   let { actionlist: { isFetching, data, smartContractName, records } } = props;
   let { payload = [], error } = data;
-  
+
   return (
     <div className="Actionlist">
       <Row>
         <Col xs="12" className="text-right">
-          <CardTitle>            
+          <CardTitle>
             <FormStyled onSubmit={(e) => {
                 e.preventDefault();
                 if(smartContractName) {
@@ -46,10 +46,10 @@ const Actionlist = (props) => {
                 }
               }}>
               <FilterInputStyled
-                  disabled={!!smartContractName} 
-                  name="smartContractNameSearch" 
-                  placeholder="Smart Contract Name..." 
-                  defaultValue={smartContractName} 
+                  disabled={!!smartContractName}
+                  name="smartContractNameSearch"
+                  placeholder="Smart Contract Name..."
+                  defaultValue={smartContractName}
                   onChange={evt=>{setInputValue(evt.target.value)}}/>
               <ButtonPrimary color="primary">{smartContractName ? "CLEAR" : "FILTER"}</ButtonPrimary>
             </FormStyled>
@@ -58,10 +58,10 @@ const Actionlist = (props) => {
       </Row>
       <Row>
         <Col xs="12">
-        { error ? 
+        { error ?
           <>
             {!isObjectEmpty(error) && <p className="text-danger">{JSON.stringify(error)}</p>}
-            <ErrorButton onClick={props.pollingStart}>Connection error, click to reload</ErrorButton>
+            <ErrorButton onClick={props.fetchStart}>Connection error, click to reload</ErrorButton>
           </>
         : isFetching ? (
           <LoadingSpinner />
@@ -77,7 +77,7 @@ const Actionlist = (props) => {
                   </tr>
                 </thead>
                 <tbody className="hashText">
-                  {payload.length < 1 
+                  {payload.length < 1
                     ? <tr><td colSpan="3" className="text-center">No actions found for the Smart Contract Name</td></tr>
                     : payload.map((action, index)=>
                       <tr onClick={evt=>props.push(`/action/${action.block_num}/${action.receipt.global_sequence}`)} key={index}>
@@ -106,8 +106,7 @@ export default connect(
     actionlist
   }),
   {
-    pollingStart,
-    pollingStop,
+    fetchStart,
     smartContractNameSearch,
     recordsUpdate,
     push

@@ -5,10 +5,10 @@
 */
 
 import { combineReducers } from 'redux';
-import { interval, of } from 'rxjs';
-import { mergeMap, mapTo, map, takeUntil, catchError, delay, startWith } from 'rxjs/operators';
-
+import { interval, of, empty } from 'rxjs';
+import { switchMap, mergeMap, mapTo, map, takeUntil, catchError, delay, startWith, finalize } from 'rxjs/operators';
 import { combineEpics, ofType } from 'redux-observable';
+import store from 'store';
 
 import apiMongodb from 'services/api-mongodb';
 import { errorLog } from 'helpers/error-logger';
@@ -22,6 +22,7 @@ const actionPrefix = `headblock/`;
 const FETCH_START = actionPrefix + `FETCH_START`;
 export const FETCH_FULFILLED = actionPrefix + `FETCH_FULFILLED`;
 const FETCH_REJECTED = actionPrefix + `FETCH_REJECTED`;
+const FETCH_END = actionPrefix + `FETCH_END`;
 const POLLING_START = actionPrefix + `POLLING_START`;
 const POLLING_STOP = actionPrefix + `POLLING_STOP`;
 
@@ -29,24 +30,24 @@ const POLLING_STOP = actionPrefix + `POLLING_STOP`;
 export const fetchStart = () => ({ type: FETCH_START });
 export const fetchFulfilled = payload => ({ type: FETCH_FULFILLED, payload });
 export const fetchRejected = ( payload, error ) => ({ type: FETCH_REJECTED, payload, error });
+export const fetchEnd = () => ({ type: FETCH_END });
 export const pollingStart = () => ({ type: POLLING_START });
 export const pollingStop = () => ({ type: POLLING_STOP });
 
 //Epic
-const startEpic = action$ => action$.pipe(
-  ofType(POLLING_START),
-  mapTo(fetchStart()),
-);
 
-const fetchEpic = action$ => action$.pipe(
+const pollingEpic = ( action$, state$ ) => action$.pipe(
   ofType(POLLING_START),
-  mergeMap(action =>
+  switchMap(action =>
     interval(process.env.REACT_APP_POLLING_INTERVAL_TIME).pipe(
-      startWith(0),
-      mergeMap(action => {
+      startWith(-1),
+      mergeMap(index => {
+        let { value: { headblock: { isFetching } }} = state$;
         let query = paramsToQuery({ records_count: "1", show_empty: "true" });
-        return apiMongodb(`get_blocks${query}`).pipe(
-          map(res => fetchFulfilled(res.response)),
+
+        return isFetching ? empty() : apiMongodb(`get_blocks${query}`).pipe(
+          startWith("fetchStart"),
+          map(res => { return res === "fetchStart" ? fetchStart() : fetchFulfilled(res.response)}),
           catchError(error => {
             errorLog("Info page/ get latest block error",error);
             return of(fetchRejected(error.response, { status: error.status }))
@@ -54,22 +55,25 @@ const fetchEpic = action$ => action$.pipe(
         )
       }),
       takeUntil(action$.pipe(
-        ofType(POLLING_STOP, POLLING_START, FETCH_REJECTED)
-      ))
+        ofType(POLLING_STOP, POLLING_START, FETCH_REJECTED),
+      )),
+
+      finalize(() => {
+        store.dispatch(fetchEnd());
+      })
     )
   ),
 );
 
-const repollEpic = action$ => action$.pipe(
+const autoReloadEpic = action$ => action$.pipe(
   ofType(FETCH_REJECTED),
-  delay(10000),
+  delay(process.env.REACT_APP_AUTO_RELOAD_INTERVAL_TIME),
   mapTo(pollingStart()),
 );
 
 export const combinedEpic = combineEpics(
-  startEpic,
-  fetchEpic,
-  repollEpic
+  pollingEpic,
+  autoReloadEpic
 );
 
 
@@ -81,8 +85,8 @@ const dataInitState = {
 
 const dataReducer = (state=dataInitState, action) => {
   switch (action.type) {
-    case FETCH_START:
-        return dataInitState;
+    case POLLING_START:
+    return dataInitState;
 
     case FETCH_FULFILLED:
       return {
@@ -108,6 +112,7 @@ const isFetchingReducer = (state = false, action) => {
 
     case FETCH_FULFILLED:
     case FETCH_REJECTED:
+    case FETCH_END:
       return false;
 
     default:
@@ -115,7 +120,21 @@ const isFetchingReducer = (state = false, action) => {
   }
 };
 
+const isPollingReducer = (state = false, action) => {
+  switch (action.type) {
+    case POLLING_START:
+      return true;
+
+    case FETCH_FULFILLED:
+    case FETCH_REJECTED:
+      return false;
+
+    default:
+      return state;
+  }
+};
 export const combinedReducer = combineReducers({
   data: dataReducer,
-  isFetching: isFetchingReducer
+  isFetching: isFetchingReducer,
+  isPolling: isPollingReducer
 })

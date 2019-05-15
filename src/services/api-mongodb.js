@@ -5,7 +5,7 @@ export default ( apiPath ) => navigator.userAgent !== "ReactSnap"
 ?
   ajax({
     url :`/api/mongodb/${apiPath}`,
-    timeout: 2500,
+    timeout: process.env.REACT_APP_API_TIMEOUT_TIME,
     responseType: "json"
   })
 : //If we are prerendering using react snap, return a promise that resolved with a repsonse with { repsonse: undefined }
