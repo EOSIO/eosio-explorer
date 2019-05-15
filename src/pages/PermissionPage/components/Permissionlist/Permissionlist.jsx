@@ -149,7 +149,8 @@ const Permissionlist = (props) => {
                                     used for signing transactions and pushing actions. 
                                     The <b>eosio</b> account owns the system contract responsible for numerous important functions, so please
                                     be aware that you can not deploy new contracts locally under that permission. 
-                                    Click the "View" button to check your keys for the account. Click the radio button to set the default account for authorizing actions.
+                                    Click the "Edit" button if you want to update or check your keys for these accounts. 
+                                    Click the radio button to set the default account for authorizing actions.
                                   </InfoDivStyled>
                                   <PermissionTable borderless>
                                     {

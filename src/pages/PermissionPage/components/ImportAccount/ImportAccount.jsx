@@ -47,6 +47,7 @@ const ImportAccount = (props) => {
       ownerPrivate: values.ownerPrivate,
       activePrivate: values.activePrivate
     });
+    window.scrollTo(0,0);
   }
 
   function editAccountKeys() {
@@ -90,6 +91,7 @@ const ImportAccount = (props) => {
         accountEdit(accountData);
       }
     }
+    window.scrollTo(0,0);
   }
 
   useEffect(() => {
