@@ -127,7 +127,7 @@ const MultiIndex = (props) => {
           ? `loading...`
           : showDetailsSection
             ? payload.length === 0
-              ? <CustomErrorDiv>No data in Multi-Index table {params.table_name}</CustomErrorDiv>
+              ? <CustomErrorDiv>No data in Multi-Index table "{params.table_name}" for scope "{params.scope_name}"</CustomErrorDiv>
               : <div>
                   <CardStyled>
                     <CardHeaderStyled>Multi-Index Table Raw Data</CardHeaderStyled>
