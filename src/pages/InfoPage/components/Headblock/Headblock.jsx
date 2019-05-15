@@ -15,9 +15,9 @@ const Headblock = (props) => {
   //   return () => { props.pollingStop() }
   // }, [])
 
-  let { headblock: { isFetching, data }} = props;
+  let { headblock: { isPolling, data }} = props;
   let { payload : [{block_num, block_id, block}={}]= [], error } = data;
-  
+
   return (
     <>
       { error ?
@@ -25,7 +25,7 @@ const Headblock = (props) => {
           {!isObjectEmpty(error) && <p className="text-danger">{JSON.stringify(error)}</p>}
           <ErrorButton onClick={props.pollingStart}>Connection error, click to reload</ErrorButton>
         </>
-      : isFetching ? (
+      : isPolling ? (
         <LoadingSpinner />
       ) : (
         <Form className="form-horizontal">

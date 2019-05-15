@@ -31,9 +31,9 @@ const Blocklist = (props) => {
 
   const [inputValue, setInputValue] = useState("");
 
-  let { blocklist: { isFetching, data, filter, records } } = props;
+  let { blocklist: { isPolling, data, filter, records } } = props;
   let { payload = [], error } = data;
-  
+
   return (
     <div className="Blocklist">
       <FirstCardStyled>
@@ -58,8 +58,8 @@ const Blocklist = (props) => {
                         evt => {
                           if (evt.key === 'Enter') {
                             setInputValue("");
-                            if(inputValue !== "") 
-                              props.push('/block/'+inputValue) 
+                            if(inputValue !== "")
+                              props.push('/block/'+inputValue)
                           }
                         }
                       }
@@ -67,7 +67,7 @@ const Blocklist = (props) => {
                 <ButtonPrimary
                       onClick={evt=> {
                         setInputValue("");
-                        if(inputValue !== "") 
+                        if(inputValue !== "")
                           props.push('/block/'+inputValue)
                       }}>
                 SEARCH</ButtonPrimary>
@@ -76,12 +76,12 @@ const Blocklist = (props) => {
           </Row>
           <div>
             { error
-              ? 
+              ?
                 <>
                   {!isObjectEmpty(error) && <p className="text-danger">{JSON.stringify(error)}</p>}
                   <ErrorButton onClick={props.pollingStart}>Connection error, click to reload</ErrorButton>
                 </>
-              : 
+              :
                 <Row>
                   <Col xs="12">
                     <TableStyled borderless>
@@ -94,7 +94,7 @@ const Blocklist = (props) => {
                           </tr>
                         </thead>
                         <tbody className="hashText">
-                          {(isFetching || payload.length <= 0) ? (
+                          {(isPolling || payload.length <= 0) ? (
                             <tr><td colSpan="4" className="text-center"><LoadingSpinner /></td></tr>
                           ) : payload.map(eachBlock=>
                             <tr onClick={evt=>props.push(`/block/${eachBlock.block_id}`)} key={eachBlock.block_id}>

@@ -5,7 +5,7 @@
 */
 
 import { combineReducers } from 'redux';
-import { of, from } from 'rxjs';
+import { throwError, of } from 'rxjs';
 import { mergeMap, map, catchError } from 'rxjs/operators';
 
 import { combineEpics, ofType } from 'redux-observable';
@@ -76,19 +76,18 @@ const fetchEpic = ( action$, state$ ) => action$.pipe(
   })
 );
 
-const createAccountPromise = (
+const createAccountObservable = (
   query, owner_private_key, active_private_key, accountName
-) => new Promise(
-  (resolve, reject) => {
-    apiRpc("create_account", query)
-      .then(res => resolve({
-        ownerPrivateKey: owner_private_key,
-        activePrivateKey: active_private_key,
-        accountName: accountName
-      }))
-      .catch(err => reject(err));
-  }
-);
+) =>
+  apiRpc("create_account", query).pipe(
+    map(res => ({
+      ownerPrivateKey: owner_private_key,
+      activePrivateKey: active_private_key,
+      accountName: accountName
+    })),
+    catchError( err => throwError(err))
+  )
+
 
 const createEpic = action$ => action$.pipe(
   ofType(CREATE_START),
@@ -100,7 +99,7 @@ const createEpic = action$ => action$.pipe(
         new_account_owner_key: ownerPublicKey,
         new_account_active_key: activePublicKey
       };
-      return from(createAccountPromise(query, ownerPrivateKey, activePrivateKey, accountName))
+      return createAccountObservable(query, ownerPrivateKey, activePrivateKey, accountName)
         .pipe(
           mergeMap(response => {
           return apiMongodb(`get_account_details${paramsToQuery({account_name: accountName})}`)
@@ -127,23 +126,26 @@ export const combinedEpic = combineEpics(
   createEpic
 );
 
+const initData = [
+  {
+    _id: '1',
+    account: 'eosio',
+    permission: 'active',
+    public_key: 'EOS5GnobZ231eekYUJHGTcmy2qve1K23r5jSFQbMfwWTtPB7mFZ1L',
+    private_key: '5Jr65kdYmn33C3UabzhmWDm2PuqbRfPuDStts3ZFNSBLM7TqaiL'
+  },
+  {
+    _id: '2',
+    account: 'eosio',
+    permission: 'owner',
+    public_key: 'EOS5GnobZ231eekYUJHGTcmy2qve1K23r5jSFQbMfwWTtPB7mFZ1L',
+    private_key: '5Jr65kdYmn33C3UabzhmWDm2PuqbRfPuDStts3ZFNSBLM7TqaiL'
+  }
+];
+
 const dataInitState = {
-  list: [
-    {
-      _id: '1',
-      account: 'eosio',
-      permission: 'active',
-      public_key: 'EOS5GnobZ231eekYUJHGTcmy2qve1K23r5jSFQbMfwWTtPB7mFZ1L',
-      private_key: '5Jr65kdYmn33C3UabzhmWDm2PuqbRfPuDStts3ZFNSBLM7TqaiL'
-    },
-    {
-      _id: '2',
-      account: 'eosio',
-      permission: 'owner',
-      public_key: 'EOS5GnobZ231eekYUJHGTcmy2qve1K23r5jSFQbMfwWTtPB7mFZ1L',
-      private_key: '5Jr65kdYmn33C3UabzhmWDm2PuqbRfPuDStts3ZFNSBLM7TqaiL'
-    }
-  ],
+  list: navigator.userAgent !== 'ReactSnap'
+   ? initData : [],
   importSuccess: false,
   importError: null,
   submitError: null,
@@ -158,22 +160,7 @@ const reinitializedState = (
   return {
     list: (
       chainId === LOCAL_CHAIN_ID
-    ) ? [
-      {
-        _id: '1',
-        account: 'eosio',
-        permission: 'active',
-        public_key: 'EOS5GnobZ231eekYUJHGTcmy2qve1K23r5jSFQbMfwWTtPB7mFZ1L',
-        private_key: '5Jr65kdYmn33C3UabzhmWDm2PuqbRfPuDStts3ZFNSBLM7TqaiL'
-      },
-      {
-        _id: '2',
-        account: 'eosio',
-        permission: 'owner',
-        public_key: 'EOS5GnobZ231eekYUJHGTcmy2qve1K23r5jSFQbMfwWTtPB7mFZ1L',
-        private_key: '5Jr65kdYmn33C3UabzhmWDm2PuqbRfPuDStts3ZFNSBLM7TqaiL'
-      }
-    ] : [],
+    ) ? [...initData] : [],
     importSuccess: false,
     importError: null,
     submitError: null,

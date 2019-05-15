@@ -5,13 +5,12 @@
 */
 
 import { combineReducers } from 'redux';
-import { of, from } from 'rxjs';
+import { of } from 'rxjs';
 import { mergeMap, mapTo, map, catchError } from 'rxjs/operators';
 import { combineEpics, ofType } from 'redux-observable';
 
 import apiMongodb from 'services/api-mongodb';
 import apiRpc from 'services/api-rpc';
-import { CONNECT_START } from 'reducers/endpoint';
 import { errorLog } from 'helpers/error-logger';
 import paramsToQuery from 'helpers/params-to-query';
 
@@ -70,7 +69,7 @@ const fetchEpic = (action$, state$) => action$.pipe(
 
     let actionHistoryQuery = paramsToQuery(actionHistoryParams);
     let getActionQuery = paramsToQuery(getActionParams);
-    
+
     // If the actionId has been set by a user clicking "Prefill"
     if (getActionQuery) {
       // First, get the action history list
@@ -131,11 +130,6 @@ const actionIdSetEpic = action$ => action$.pipe(
   mapTo(fetchStart()),
 );
 
-const endpointConnectEpic = action$ => action$.pipe(
-  ofType(CONNECT_START),
-  mapTo(fetchStart())
-);
-
 const actionPushFulfilledEpic = action$ => action$.pipe(
   ofType(ACTION_PUSH_FULFILLED),
   mapTo(actionIdSet(""), fetchStart())
@@ -165,7 +159,7 @@ const actionPushEpic = action$ => action$.pipe(
     };
 
     // Push the user created action to the RPC API
-    return from(apiRpc("push_action", query)).pipe(
+    return apiRpc("push_action", query).pipe(
       map(result => actionPushFulfilled(result)),
       catchError(error => of(actionPushRejected(error.json, { error: error.message })))
     )
@@ -177,7 +171,6 @@ export const combinedEpic = combineEpics(
   fetchEpic,
   actionIdSetEpic,
   actionPushEpic,
-  endpointConnectEpic,
   actionPushFulfilledEpic,
   fetchSmartContractsEpic,
   recordsUpdateEpic,
@@ -227,7 +220,7 @@ const mapPrefilledAction = (prefilledAction) => {
 const mapUpdatedAction = (updatedAction) => {
   if (!updatedAction)
     return getActionInitState();
-  
+
   return {
     _id: updatedAction._id,
     act: {

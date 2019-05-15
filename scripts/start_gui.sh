@@ -68,8 +68,8 @@ do
 done
 
 # kill cdt service when you stop application
-trap "exit" INT TERM ERR
-trap "kill 0" EXIT
+# trap "exit" INT TERM ERR
+# trap "kill 0" EXIT
 
 echo " "
 echo "=============================="

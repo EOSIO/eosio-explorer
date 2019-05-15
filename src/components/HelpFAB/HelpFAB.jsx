@@ -6,7 +6,7 @@ import './HelpFAB.scss';
 function HelpFAB() {
   return (
     <div className="HelpFAB">
-      <Link to="//github.com/EOSIO/eosio-toppings/blob/develop/help.md" target="_blank" className="btn btn-pill btn-primary fab">
+      <Link to="//github.com/EOSIO/eosio-explorer/tree/master/docs" target="_blank" className="btn btn-pill btn-primary fab">
         <i className="material-icons md-fab">help</i>
       </Link>
     </div>

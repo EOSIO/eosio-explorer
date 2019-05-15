@@ -11,9 +11,9 @@ import { ErrorButton } from 'styled';
 
 const LastIrreversibleBlockInfo = (props) => {
 
-  let { lastblockinfo: { isFetching, data } } = props;
+  let { lastblockinfo: { isPolling, data } } = props;
   let { payload = {}, error } = data;
-  
+
   return (
     <>
       { error ?
@@ -21,7 +21,7 @@ const LastIrreversibleBlockInfo = (props) => {
           {!isObjectEmpty(error) && <p className="text-danger">{JSON.stringify(error)}</p>}
           <ErrorButton onClick={props.pollingStart}>Connection error, click to reload</ErrorButton>
         </>
-      : isFetching ? (
+      : isPolling ? (
         <LoadingSpinner />
       ) : (
         <Form className="form-horizontal">

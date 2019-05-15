@@ -137,7 +137,7 @@ class DragDropCodeViewer extends Component {
       <>
         <div className={"dragDropCodeViewerContainer " + (this.state.value && this.state.value !== "" ? "hasFileData" : "")} >
           <Dropzone onDrop={([file]) => this.onDrop(file)} 
-            accept={'application/json, .cpp'} 
+            accept={'.cpp'} 
             >
             {({getRootProps, getInputProps}) => (
               <section className="dropzone">

@@ -7,12 +7,6 @@ export default function validate(values) {
     let errorString = "Invalid EOSIO account name: ";
     let reasons = [];
 
-    if (parseInt(values.accountName[0]))
-      reasons.push("name can't start with a number");
-
-    if (/[A-Z]/.test(values.accountName[0]))
-      reasons.push("name can't start with a capital letter");
-
     if (/[A-Z]/.test(values.accountName)) {
       reasons.push("name contains capital letters");
     }
