@@ -1,5 +1,4 @@
 import Header from './Header';
-import Footer from './Footer';
 import CodeViewer from './CodeViewer';
 import DragDropCodeViewer from './DragDropCodeViewer';
 import LimitSelectDropdown from './LimitSelectDropdown';
@@ -9,7 +8,6 @@ import ConsoleLogger from './ConsoleLogger';
 
 export {
   Header,
-  Footer,
   CodeViewer,
   DragDropCodeViewer,
   LimitSelectDropdown,
