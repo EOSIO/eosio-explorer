@@ -3,6 +3,7 @@ import {
   Form, FormGroup, Label, FormFeedback,
   Col, UncontrolledAlert, CardBody, Spinner
 } from 'reactstrap';
+import cogoToast from 'cogo-toast';
 
 import { connect } from 'react-redux';
 
@@ -49,14 +50,46 @@ const ImportAccount = (props) => {
   }
 
   function editAccountKeys() {
-    accountEdit({
+    let accountData = {      
       accountName: (keysData) ? keysData[0].account : "Unknown",
-      accountOwnerPrivateKey: (keysData && keysData[0].permission === 'owner') ? keysData[0].private_key : keysData[1].private_key,
-      ownerPublicKey: values.ownerPublic,
-      ownerPrivate: values.ownerPrivate,
-      activePublicKey: values.activePublic,
-      activePrivate: values.activePrivate
-    })
+      accountOwnerPrivateKey: (keysData && keysData[0].permission === 'owner') ? keysData[0].private_key : keysData[1].private_key
+    };
+    if (keysData) {
+      let ownerDidNotChange = false;
+      let activeDidNotChange = false;
+
+      if (keysData[0].permission === 'owner') {
+        ownerDidNotChange = keysData[0].private_key === values.ownerPrivate && keysData[0].public_key === values.ownerPublic;
+        activeDidNotChange = keysData[1].private_key === values.activePrivate && keysData[1].public_key === values.activePublic;
+      } else {
+        ownerDidNotChange = keysData[1].private_key === values.ownerPrivate && keysData[1].public_key === values.ownerPublic;
+        activeDidNotChange = keysData[0].private_key === values.activePrivate && keysData[0].public_key === values.activePublic;
+      }
+
+      if (ownerDidNotChange && activeDidNotChange) {
+        cogoToast.info("Your keys did not change, canceling the action", {
+          heading: 'Keys Did Not Change',
+          position: 'bottom-center',
+          hideAfter: 2
+        });
+      } else if (!ownerDidNotChange && activeDidNotChange) {
+        accountData["ownerPublicKey"] = values.ownerPublic;
+        accountData["ownerPrivate"] = values.ownerPrivate;
+        accountData["activePrivate"] = values.activePrivate;
+        accountEdit(accountData);
+      } else if (ownerDidNotChange && !activeDidNotChange) {
+        accountData["activePublicKey"] = values.activePublic;
+        accountData["activePrivate"] = values.activePrivate;
+        accountData["ownerPrivate"] = values.ownerPrivate;
+        accountEdit(accountData);
+      } else {
+        accountData["ownerPublicKey"] = values.ownerPublic;
+        accountData["ownerPrivate"] = values.ownerPrivate;
+        accountData["activePublicKey"] = values.activePublic;
+        accountData["activePrivate"] = values.activePrivate;
+        accountEdit(accountData);
+      }
+    }
   }
 
   useEffect(() => {

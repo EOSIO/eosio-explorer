@@ -143,16 +143,18 @@ const updateEpic = action$ => action$.pipe(
   mergeMap(
     action => {
       let { accountData: {
-        accountName, accountOwnerPrivateKey, ownerPublicKey, activePublicKey, ownerPrivate, activePrivate
+        accountName, accountOwnerPrivateKey, ownerPublicKey = "NAN", activePublicKey = "NAN", ownerPrivate, activePrivate
       } } = action;
       let query = {
         actor: accountName,
         permission: 'owner',
         account_name: accountName,
-        private_key: accountOwnerPrivateKey,
-        new_active_key: activePublicKey,
-        new_owner_key: ownerPublicKey
+        private_key: accountOwnerPrivateKey
       };
+
+      if (ownerPublicKey !== "NAN") query["new_owner_key"] = ownerPublicKey;
+      if (activePublicKey !== "NAN") query["new_active_key"] = activePublicKey;
+
       return editAccountObservable(query, ownerPrivate, activePrivate, accountName)
         .pipe(
           mergeMap(response => {
@@ -306,7 +308,7 @@ const updateAccountList = (createResponse, list) => {
   let accountSuccess = true;
   let msg = `Successfully updated the keys for ${accountName}`;
   let updatedList = list.slice(0);
-  let defaultId = "0";
+  let defaultId = "1";
 
   if (queryData && queryData.length > 0) {
     let ownerIndex = updatedList.findIndex(item => item.account === accountName && item.permission === 'owner');
