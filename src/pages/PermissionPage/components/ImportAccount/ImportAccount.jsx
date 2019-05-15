@@ -264,13 +264,13 @@ const ImportAccount = (props) => {
                       readOnly={panel === 'import-account-importer'}
                       required={panel === 'import-account-edit'}
                     />
-                    {
-                      errors.activePublic &&
-                      <FormFeedback invalid="true">
-                        {errors.activePublic}
-                      </FormFeedback>
-                    }
                   </Col>
+                  {
+                    errors.activePublic &&
+                    <FormFeedback invalid="true">
+                      {errors.activePublic}
+                    </FormFeedback>
+                  }
                 </FormGroup>
                 <FormGroup row>
                   <Label htmlFor="activePrivate" sm={1}>Private Key</Label>
