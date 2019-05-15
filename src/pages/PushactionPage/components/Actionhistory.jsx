@@ -66,29 +66,25 @@ const Actionhistory = (props) => {
           <LoadingSpinner />
         ) : (
           <Row>
-            {actionsList.length > 0 &&
-              <>
-                <ColStyled xs="3">
-                  <CustomDropdown id="SmartContractFilterDropdown" isOpen={isOpenDropDownSmartContract} toggle={() => { toggleDropDownSmartContract(!isOpenDropDownSmartContract) }}>
-                    <DropdownToggle caret>{filter.smartContractName || "Filter by Smart Contract"}</DropdownToggle>
-                    <DropdownMenu modifiers={dropdownMaxHeight}>
-                      {smartContractsList &&
-                        (smartContractsList).map((smartContract) =>
-                          <DropdownItem key={smartContract._id} onClick={(e) => { props.filterUpdate({ smartContractName: smartContract.name }); }}>
-                            {smartContract.name}
-                          </DropdownItem>)}
-                    </DropdownMenu>
-                  </CustomDropdown>
-                </ColStyled>
-                <ColStyled xs="6" className="text-left pl-0">
-                  <ButtonSecondary block size="sm" onClick={(e) => { props.filterUpdate({ smartContractName: "" }); }}>Clear</ButtonSecondary>
-                </ColStyled>
+            <ColStyled xs="3">
+              <CustomDropdown id="SmartContractFilterDropdown" isOpen={isOpenDropDownSmartContract} toggle={() => { toggleDropDownSmartContract(!isOpenDropDownSmartContract) }}>
+                <DropdownToggle caret>{filter.smartContractName || "Filter by Smart Contract"}</DropdownToggle>
+                <DropdownMenu modifiers={dropdownMaxHeight}>
+                  {smartContractsList &&
+                    (smartContractsList).map((smartContract) =>
+                      <DropdownItem key={smartContract._id} onClick={(e) => { props.filterUpdate({ smartContractName: smartContract.name }); }}>
+                        {smartContract.name}
+                      </DropdownItem>)}
+                </DropdownMenu>
+              </CustomDropdown>
+            </ColStyled>
+            <ColStyled xs="6" className="text-left pl-0">
+              <ButtonSecondary block size="sm" onClick={(e) => { props.filterUpdate({ smartContractName: "" }); }}>Clear</ButtonSecondary>
+            </ColStyled>
 
-                <ColStyled xs="3" className="text-right">
-                  <LimitSelectDropdown limit={records} onChange={(limit) => { props.recordsUpdate(limit) }} />
-                </ColStyled>
-              </>
-            }
+            <ColStyled xs="3" className="text-right">
+              <LimitSelectDropdown limit={records} onChange={(limit) => { props.recordsUpdate(limit) }} />
+            </ColStyled>
 
             <Col xs="12">
               <TableStyledNoPointer borderless>
@@ -103,7 +99,7 @@ const Actionhistory = (props) => {
                 </thead>
                 <tbody>
                   {actionsList.length < 1 ?
-                    <tr><td colSpan="5" className="text-center">No actions could be found for the given Smart Contract name</td></tr>
+                    <tr><td colSpan="5" className="text-center">No actions could be found{filter.smartContractName && ` for ${filter.smartContractName}` }</td></tr>
                   : actionsList.map((action, index)=>
                     <tr key={index} data-globalsequence={action.receipt.global_sequence}>
                       <TdStyled>{action.act.account}</TdStyled>
