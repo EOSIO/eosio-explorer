@@ -106,7 +106,7 @@ const Transactiondetail = (props) => {
                                   </thead>
                                   <tbody className="hashText">
                                     {(payload[0].action_traces).map((eachAction,index)=>
-                                      <tr key={eachAction.act.name} onClick={evt=> props.push(`/action/${eachAction.block_num}/${eachAction.receipt.global_sequence}`)}>
+                                      <tr key={index} onClick={evt=> props.push(`/action/${eachAction.block_num}/${eachAction.receipt.global_sequence}`)}>
                                         <td>{index+1}</td>
                                         <td>{eachAction.act.name}</td>  
                                         <td>{eachAction.act.account}</td>                                    
