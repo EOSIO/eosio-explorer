@@ -118,7 +118,9 @@ const ImportAccount = (props) => {
                 </UncontrolledAlert>
               }
               <InfoDivStyled>
-                <p className="infoHeader">Before you update your private keys...</p>
+                <p className="infoHeader">
+                  { panel === 'import-account-importer' ? "Before you import your private keys..." : "Before you update your keys..."}
+                </p>
                 <p>
                   Ensure that the private keys you use are <code>base58 WIF</code> compliant. <b>WIF</b> stands for
                   "Wallet Import Format" and is a convenience specification for copying and pasting private keys.
@@ -169,7 +171,7 @@ const ImportAccount = (props) => {
                           : keysData[1].public_key
                           || ""
                       }
-                      placeholder="Public key not found"
+                      placeholder="Enter public key"
                       onChange={handleChange}
                       invalid={!!errors.ownerPublic}
                       readOnly={panel === 'import-account-importer'}
@@ -220,7 +222,7 @@ const ImportAccount = (props) => {
                           : keysData[0].public_key
                           || ""
                       }
-                      placeholder="Public key not found"
+                      placeholder="Enter public key"
                       invalid={!!errors.activePublic}
                       onChange={handleChange}
                       readOnly={panel === 'import-account-importer'}

@@ -306,6 +306,7 @@ const updateAccountList = (createResponse, list) => {
   let accountSuccess = true;
   let msg = `Successfully updated the keys for ${accountName}`;
   let updatedList = list.slice(0);
+  let defaultId = "0";
 
   if (queryData && queryData.length > 0) {
     let ownerIndex = updatedList.findIndex(item => item.account === accountName && item.permission === 'owner');
@@ -320,6 +321,7 @@ const updateAccountList = (createResponse, list) => {
       queryData[0].public_key : queryData[1].public_key;
     updatedList[activeIndex]._id = (queryData[0].permission === 'active') ?
       queryData[0]._id : queryData[1]._id;
+    defaultId = updatedList[ownerIndex]._id;
   } else {
     msg = `Updated the keys for ${accountName} but failed to query the
        account after creation. Please import the keys you just used in the previous
@@ -329,12 +331,11 @@ const updateAccountList = (createResponse, list) => {
 
   updatedList.sort(alphabeticalSort);
 
-  console.log(updatedList);
-
   return {
     updatedList: updatedList,
     updatedMsg: msg,
-    updatedSuccess: accountSuccess
+    updatedSuccess: accountSuccess,
+    defaultId: defaultId
   };
 
 }
@@ -393,9 +394,10 @@ const dataReducer = (state=dataInitState, action) => {
         creationSuccess: success
       };
     case EDIT_SUCCESS:
-      let { updatedList, updatedMsg, updatedSuccess } = updateAccountList(action.payload, state.list);
+      let { updatedList, updatedMsg, updatedSuccess, defaultId } = updateAccountList(action.payload, state.list);
       return {
         ...state,
+        defaultId: defaultId,
         list: updatedList,
         isSubmitting: false,
         submitError: (!updatedSuccess) ? updatedMsg : null,

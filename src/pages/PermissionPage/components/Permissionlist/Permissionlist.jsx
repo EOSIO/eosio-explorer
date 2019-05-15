@@ -84,18 +84,19 @@ const Permissionlist = (props) => {
     }
     return result;
   }, Object.create({})) : null;
-  Object.keys(baseImportAccountsList).forEach(key => {
-    if (baseImportAccountsList[key].length === 1) {
-      let permission = baseImportAccountsList[key][0].permission;
-      if (permission === 'active') {
-        let missingPermission = clonedList.filter(item => item.permission === 'owner' && item.account === baseImportAccountsList[key][0].account)[0];
-        baseImportAccountsList[key].push(missingPermission);
-      } else {
-        let missingPermission = clonedList.filter(item => item.permission === 'active' && item.account === baseImportAccountsList[key][0].account)[0];
-        baseImportAccountsList[key].push(missingPermission);
+  if (Object.keys(baseImportAccountsList || {}).length > 0)
+    Object.keys(baseImportAccountsList).forEach(key => {
+      if (baseImportAccountsList[key].length === 1) {
+        let permission = baseImportAccountsList[key][0].permission;
+        if (permission === 'active') {
+          let missingPermission = clonedList.filter(item => item.permission === 'owner' && item.account === baseImportAccountsList[key][0].account)[0];
+          baseImportAccountsList[key].push(missingPermission);
+        } else {
+          let missingPermission = clonedList.filter(item => item.permission === 'active' && item.account === baseImportAccountsList[key][0].account)[0];
+          baseImportAccountsList[key].push(missingPermission);
+        }
       }
-    }
-  })
+    })
   let importAccountsList = (Object.keys(baseImportAccountsList || {}).length > 0) ?
      Object.keys(baseImportAccountsList).sort().map(key => baseImportAccountsList[key]) : {};
   let numberOfImportAccounts = Object.keys(importAccountsList || {}).length;
