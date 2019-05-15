@@ -81,15 +81,26 @@ const MultiIndex = (props) => {
         <Col sm={6}>
           <ScopeDivStyled>
             <LabelStyled>Scope Name:&nbsp;&nbsp;</LabelStyled>
-            <LabelStyled id="scopeTooltip"> <ToolTipSVG />&nbsp;&nbsp;&nbsp;</LabelStyled>
+            <LabelStyled id="scopeTooltip"> <ToolTipSVG /></LabelStyled>&nbsp;&nbsp;&nbsp;
             <ToolTipUncontrolledStyled placement="top" target="scopeTooltip"
               delay={{ show: 0, hide: 0}}
               trigger="hover focus"
               autohide={true}>
-              Scope name default value is set to Smart Contract name, change it accordingly
+              Default value of Scope name is set to Smart Contract name, change it if you want to fetch from different scope
               </ToolTipUncontrolledStyled>          
             <ScopeInputStyled 
               value={scopeName}
+              onKeyDown={
+                evt => {
+                  if (evt.key === 'Enter') {
+                    if(dropDownSelctedValue !== "Select Table"){
+                      props.paramsSet({contract_name: abiData.name, table_name: dropDownSelctedValue, scope_name: scopeName || abiData.name });
+                      props.fetchStart();
+                      setShowDetailsSection(true);  
+                    }
+                  }
+                }
+              }
               onChange = {evt=> {
                 setScopeName(evt.target.value);
               }} />&nbsp;&nbsp;&nbsp;

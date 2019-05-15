@@ -37,7 +37,7 @@ const fetchEpic = ( action$, state$ ) => action$.pipe(
   mergeMap(action =>{
 
     let { value: { contractdetailPage: { multiIndex: { params } }}} = state$;
-    console.log("params", params);
+    
     if(isObjectEmpty(params)) {
       return of(fetchRejected([], "Please select a multi-index table"));
     }
