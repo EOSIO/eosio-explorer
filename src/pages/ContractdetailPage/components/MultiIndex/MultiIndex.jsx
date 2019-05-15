@@ -35,6 +35,7 @@ const DropdownDiv = styled.div`
 `
 const CustomErrorDiv = styled(ErrorDivStyled)`
   padding: 0;
+  color: red;
 `
 const ScopeDivStyled = styled.div`
   display: flex;
