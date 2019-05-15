@@ -143,7 +143,7 @@ const updateEpic = action$ => action$.pipe(
   mergeMap(
     action => {
       let { accountData: {
-        accountName, accountOwnerPrivateKey, ownerPublicKey = "NAN", activePublicKey = "NAN", ownerPrivate, activePrivate
+        accountName, accountOwnerPrivateKey, ownerPublicKey = "NONE", activePublicKey = "NONE", ownerPrivate, activePrivate
       } } = action;
       let query = {
         actor: accountName,
@@ -152,8 +152,8 @@ const updateEpic = action$ => action$.pipe(
         private_key: accountOwnerPrivateKey
       };
 
-      if (ownerPublicKey !== "NAN") query["new_owner_key"] = ownerPublicKey;
-      if (activePublicKey !== "NAN") query["new_active_key"] = activePublicKey;
+      if (ownerPublicKey !== "NONE") query["new_owner_key"] = ownerPublicKey;
+      if (activePublicKey !== "NONE") query["new_active_key"] = activePublicKey;
 
       return editAccountObservable(query, ownerPrivate, activePrivate, accountName)
         .pipe(
