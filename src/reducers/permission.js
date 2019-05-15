@@ -28,6 +28,9 @@ const DEFAULT_SET = actionPrefix + `DEFAULT_SET`;
 const ACCOUNT_ADD = actionPrefix + `ACCOUNT_ADD`;
 const ACCOUNT_IMPORT = actionPrefix + `ACCOUNT_IMPORT`;
 const ACCOUNT_CLEAR = actionPrefix + `ACCOUNT_CLEAR`;
+const ACCOUNT_EDIT = actionPrefix + `ACCOUNT_EDIT`;
+const EDIT_SUCCESS = actionPrefix + `EDIT_SUCCESS`;
+const EDIT_REJECTED = actionPrefix + `EDIT_REJECTED`;
 const CREATE_START = actionPrefix + `CREATE_START`;
 const CREATE_FULFILLED = actionPrefix + `CREATE_FULFILLED`;
 const CREATE_REJECTED = actionPrefix + `CREATE_REJECTED`;
@@ -40,6 +43,9 @@ export const defaultSet = ( id ) => ({ type: DEFAULT_SET, id });
 export const accountAdd = accountData => ({ type: ACCOUNT_ADD, accountData });
 export const accountImport = accountData => ({ type: ACCOUNT_IMPORT, accountData });
 export const accountClear = chainId => ({ type: ACCOUNT_CLEAR, chainId });
+export const accountEdit = accountData => ({ type: ACCOUNT_EDIT, accountData });
+export const editSuccess = payload => ({ type: EDIT_SUCCESS, payload });
+export const editRejected = ( payload, error ) => ({ type: EDIT_REJECTED, payload, error });
 export const createStart = account => ({ type: CREATE_START, account });
 export const createFulfilled = payload => ({ type: CREATE_FULFILLED, payload });
 export const createRejected = ( payload, error ) => ({ type: CREATE_REJECTED, payload, error });
@@ -85,9 +91,20 @@ const createAccountObservable = (
       activePrivateKey: active_private_key,
       accountName: accountName
     })),
-    catchError( err => throwError(err))
+    catchError(err => throwError(err))
   )
 
+const editAccountObservable = (
+  query, owner_private_key, active_private_key, accountName
+) =>
+  apiRpc("update_auth", query).pipe(
+    map(res => ({
+      ownerPrivateKey: owner_private_key,
+      activePrivateKey: active_private_key,
+      accountName: accountName
+    })),
+    catchError(err => throwError(err))
+  )
 
 const createEpic = action$ => action$.pipe(
   ofType(CREATE_START),
@@ -121,9 +138,47 @@ const createEpic = action$ => action$.pipe(
   )
 );
 
+const updateEpic = action$ => action$.pipe(
+  ofType(ACCOUNT_EDIT),
+  mergeMap(
+    action => {
+      let { accountData: {
+        accountName, accountOwnerPrivateKey, ownerPublicKey, activePublicKey, ownerPrivate, activePrivate
+      } } = action;
+      let query = {
+        actor: accountName,
+        permission: 'owner',
+        account_name: accountName,
+        private_key: accountOwnerPrivateKey,
+        new_active_key: activePublicKey,
+        new_owner_key: ownerPublicKey
+      };
+      return editAccountObservable(query, ownerPrivate, activePrivate, accountName)
+        .pipe(
+          mergeMap(response => {
+            return apiMongodb(`get_account_details${paramsToQuery({account_name: accountName})}`)
+              .pipe(
+                map(res => editSuccess({
+                  baseData: response,
+                  queryData: res.response
+                })),
+                catchError(err => of(editRejected(err.message, { status: err })))
+              );
+          }),
+          catchError(
+            err => {
+              return of(editRejected(err.message, {status: err }))
+            }
+          )
+        );
+    }
+  )
+);
+
 export const combinedEpic = combineEpics(
   fetchEpic,
-  createEpic
+  createEpic,
+  updateEpic
 );
 
 const initData = [
@@ -182,6 +237,13 @@ const alphabeticalSort = (a, b) => {
 }
 
 const composePermissionList = (originalList = [], payloadList = []) => {
+  // Check if any keys were deleted using `updateauth`
+  let clonedList = originalList.slice(0);
+  originalList = clonedList.filter(
+    item => {
+      return item._id === "1" || item._id === "2" || payloadList.findIndex(dbItem => dbItem._id === item._id) > -1;
+    }
+  );
   payloadList.map(function(el) {
     let index = originalList.findIndex(eachItem => el.account === eachItem.account && el.permission === eachItem.permission);
     if (index >= 0) {
@@ -236,6 +298,47 @@ const storeNewAccount = (createResponse, list) => {
 
 }
 
+const updateAccountList = (createResponse, list) => {
+  let {
+    baseData: { ownerPrivateKey, activePrivateKey, accountName },
+    queryData
+  } = createResponse;
+  let accountSuccess = true;
+  let msg = `Successfully updated the keys for ${accountName}`;
+  let updatedList = list.slice(0);
+
+  if (queryData && queryData.length > 0) {
+    let ownerIndex = updatedList.findIndex(item => item.account === accountName && item.permission === 'owner');
+    let activeIndex = updatedList.findIndex(item => item.account === accountName && item.permission === 'active');
+    updatedList[ownerIndex].private_key = ownerPrivateKey;
+    updatedList[ownerIndex].public_key = (queryData[0].permission === 'owner') ?
+      queryData[0].public_key : queryData[1].public_key;
+    updatedList[ownerIndex]._id = (queryData[0].permission === 'owner') ?
+      queryData[0]._id : queryData[1]._id;
+    updatedList[activeIndex].private_key = activePrivateKey;
+    updatedList[activeIndex].public_key = (queryData[0].permission === 'active') ?
+      queryData[0].public_key : queryData[1].public_key;
+    updatedList[activeIndex]._id = (queryData[0].permission === 'active') ?
+      queryData[0]._id : queryData[1]._id;
+  } else {
+    msg = `Updated the keys for ${accountName} but failed to query the
+       account after creation. Please import the keys you just used in the previous
+       panel.`;
+    accountSuccess = false;
+  }
+
+  updatedList.sort(alphabeticalSort);
+
+  console.log(updatedList);
+
+  return {
+    updatedList: updatedList,
+    updatedMsg: msg,
+    updatedSuccess: accountSuccess
+  };
+
+}
+
 const dataReducer = (state=dataInitState, action) => {
   switch (action.type) {
     case FETCH_FULFILLED:
@@ -272,6 +375,7 @@ const dataReducer = (state=dataInitState, action) => {
         submitError: null,
         importSuccess: false
       };
+    case ACCOUNT_EDIT:
     case CREATE_START:
       return {
         ...state,
@@ -288,6 +392,16 @@ const dataReducer = (state=dataInitState, action) => {
         submitError: (!success) ? message : null,
         creationSuccess: success
       };
+    case EDIT_SUCCESS:
+      let { updatedList, updatedMsg, updatedSuccess } = updateAccountList(action.payload, state.list);
+      return {
+        ...state,
+        list: updatedList,
+        isSubmitting: false,
+        submitError: (!updatedSuccess) ? updatedMsg : null,
+        creationSuccess: updatedSuccess
+      };
+    case EDIT_REJECTED:
     case CREATE_REJECTED:
       return {
         ...state,

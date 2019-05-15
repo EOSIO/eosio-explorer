@@ -212,10 +212,10 @@ const Permissionlist = (props) => {
                                             <EditButtonCell width="40%">
                                               <ButtonPrimary 
                                                     style={{float:'right', marginRight:'5%'}}
-                                                    onClick={() => getKeysData(defaultAccountsList[account][0].account, list, "view")}
+                                                    onClick={() => getKeysData(defaultAccountsList[account][0].account, list, "edit")}
                                                     block
                                                     >
-                                                    View
+                                                    Edit
                                                   </ButtonPrimary>
                                             </EditButtonCell>
                                           </tr>
