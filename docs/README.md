@@ -1,6 +1,6 @@
-# EOSIO Explorer Documentation
+# EOSIO Labs™: EOSIO Explorer Documentation
 
-You can view documentation on everything related to the EOSIO Explorer web tool here.
+You can view documentation on everything related to the EOSIO Labs™: EOSIO Explorer web tool here.
 
 ## Documentation for Users
 

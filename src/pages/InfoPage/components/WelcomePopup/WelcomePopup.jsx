@@ -53,7 +53,7 @@ const CloseButton = styled.button`
 const InfoPortal = ({ children }) => {
   const modalRoot = document.getElementById('modal');
   const el = document.createElement('div');
-  
+
   useEffect(() => {
     modalRoot.appendChild(el);
   });
@@ -84,16 +84,16 @@ const WelcomePopup = ({ toggle, open, toggleShowAgain }) => {
                 <img src="https://icon.now.sh/x/8ba5bf" alt="close" />
               </CloseButton>
               <PageTitleDivStyled>
-                Welcome to EOSIO Explorer
+                Welcome to EOSIO Labs™: EOSIO Explorer
               </PageTitleDivStyled>
-              <p>EOSIO Explorer is an open source browser to observe activity of an EOSIO blockchain in a graphical
+              <p>EOSIO Labs™: EOSIO Explorer is an open source browser to observe activity of an EOSIO blockchain in a graphical
                 interface and a set of development tools to speed up EOSIO smart contract and application development.
               </p>
-              <p>Using EOSIO Explorer you can view blocks, transactions and actions on an EOSIO blockchain, manage
+              <p>Using EOSIO Labs™: EOSIO Explorer you can view blocks, transactions and actions on an EOSIO blockchain, manage
                 developer accounts and permissions associated with them, upload and interact with smart contracts
                 and much more.
               </p>
-              <p>If you have any feedback or you&apos;d like to contribute to the source code of EOSIO Explorer - 
+              <p>If you have any feedback or you&apos;d like to contribute to the source code of EOSIO Labs™: EOSIO Explorer -
                 please follow our GitHub repository: <a href="https://github.com/EOSIO/eos-toppings" target="_blank" rel="noopener noreferrer">https://github.com/EOSIO/eosio-toppings</a>
               </p>
               <CheckBoxDivStyled style={{marginTop: '31px'}}>
@@ -103,7 +103,7 @@ const WelcomePopup = ({ toggle, open, toggleShowAgain }) => {
                   <span className="checkmark"></span>
                 </label>
               </CheckBoxDivStyled>
-              <ButtonPrimary 
+              <ButtonPrimary
                 onClick={() => closeModal()}
                 style={{
                   position: 'absolute',
