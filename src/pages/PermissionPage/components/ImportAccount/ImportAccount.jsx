@@ -1,16 +1,19 @@
 import React, { useEffect } from 'react';
 import {
   Form, FormGroup, Label, FormFeedback,
-  Col, UncontrolledAlert, CardBody
+  Col, UncontrolledAlert, CardBody, Spinner
 } from 'reactstrap';
+import cogoToast from 'cogo-toast';
 
 import { connect } from 'react-redux';
 
-import { accountAdd } from 'reducers/permission';
+import { accountAdd, accountEdit } from 'reducers/permission';
 import { panelSelect } from 'pages/PermissionPage/PermissionPageReducer';
-import validate from './ImportAccountValidatorEngine/ImportAccountValidatorEngine';
+import importValidate from './ImportAccountValidatorEngine/ImportAccountValidatorEngine';
+import editValidate from './EditAccountValidatorEngine/EditAccountValidatorEngine';
 import useForm from 'helpers/useForm';
-import { CardStyled, CardHeaderStyled, ButtonPrimary, ButtonSecondary, InputStyled, InfoDivStyled, ButtonGroupSeperated } from 'styled';
+import { CardStyled, CardHeaderStyled, ButtonPrimary, ButtonSecondary, InputStyled, 
+  OverlayStyled, InfoDivStyled, ButtonGroupSeperated } from 'styled';
 import styled from 'styled-components';
 
 const FirstCardStyled = styled(CardStyled)`
@@ -19,19 +22,24 @@ const FirstCardStyled = styled(CardStyled)`
 
 const ImportAccount = (props) => {
 
-  const { values, handleChange, handleSubmit, updateValues, errors } = useForm(importAccount, validate);
-
   let {
     permission: {
       data: {
         keysData = [[], []],
-        importSuccess
+        importSuccess,
+        isSubmitting,
+        creationSuccess,
+        submitError
       }
     },
     panel,
     accountAdd,
+    accountEdit,
     panelSelect
   } = props;
+
+  const { values, handleChange, handleSubmit, updateValues, errors } = (panel === 'import-account-importer')
+    ? useForm(importAccount, importValidate) : useForm(editAccountKeys, editValidate);
 
   function importAccount() {
     accountAdd({
@@ -39,6 +47,51 @@ const ImportAccount = (props) => {
       ownerPrivate: values.ownerPrivate,
       activePrivate: values.activePrivate
     });
+    window.scrollTo(0,0);
+  }
+
+  function editAccountKeys() {
+    let accountData = {      
+      accountName: (keysData) ? keysData[0].account : "Unknown",
+      accountOwnerPrivateKey: (keysData && keysData[0].permission === 'owner') ? keysData[0].private_key : keysData[1].private_key
+    };
+    if (keysData) {
+      let ownerDidNotChange = false;
+      let activeDidNotChange = false;
+
+      if (keysData[0].permission === 'owner') {
+        ownerDidNotChange = keysData[0].private_key === values.ownerPrivate && keysData[0].public_key === values.ownerPublic;
+        activeDidNotChange = keysData[1].private_key === values.activePrivate && keysData[1].public_key === values.activePublic;
+      } else {
+        ownerDidNotChange = keysData[1].private_key === values.ownerPrivate && keysData[1].public_key === values.ownerPublic;
+        activeDidNotChange = keysData[0].private_key === values.activePrivate && keysData[0].public_key === values.activePublic;
+      }
+
+      if (ownerDidNotChange && activeDidNotChange) {
+        cogoToast.info("Your keys did not change, canceling the action", {
+          heading: 'Keys Did Not Change',
+          position: 'bottom-center',
+          hideAfter: 2
+        });
+      } else if (!ownerDidNotChange && activeDidNotChange) {
+        accountData["ownerPublicKey"] = values.ownerPublic;
+        accountData["ownerPrivate"] = values.ownerPrivate;
+        accountData["activePrivate"] = values.activePrivate;
+        accountEdit(accountData);
+      } else if (ownerDidNotChange && !activeDidNotChange) {
+        accountData["activePublicKey"] = values.activePublic;
+        accountData["activePrivate"] = values.activePrivate;
+        accountData["ownerPrivate"] = values.ownerPrivate;
+        accountEdit(accountData);
+      } else {
+        accountData["ownerPublicKey"] = values.ownerPublic;
+        accountData["ownerPrivate"] = values.ownerPrivate;
+        accountData["activePublicKey"] = values.activePublic;
+        accountData["activePrivate"] = values.activePrivate;
+        accountEdit(accountData);
+      }
+    }
+    window.scrollTo(0,0);
   }
 
   useEffect(() => {
@@ -62,32 +115,63 @@ const ImportAccount = (props) => {
       <div>
         <>
           <FirstCardStyled>
+            <OverlayStyled isLoading={isSubmitting}></OverlayStyled>
+            {
+              isSubmitting &&
+                <div style={{position:"fixed",top:"50%",left:"50%", zIndex:"1000"}}>
+                  <Spinner color="primary"
+                      style={{
+                          width: "5rem",
+                          height: "5rem"
+                      }}
+                  />
+                </div>
+            }
             <CardHeaderStyled>
               {
-                panel === 'import-account-view' ? "View Account Details" : "Import Account Keys"
+                panel === 'import-account-edit' ? "Edit Account Details" : "Import Account Keys"
               }
             </CardHeaderStyled>
             <CardBody>
               {
+                creationSuccess &&
+                <UncontrolledAlert color="success">
+                  Keys for {keysData[0].account || "unknown account"} successfully updated
+                </UncontrolledAlert>
+              }
+              {
+                ((!creationSuccess) && submitError) ?
+                  <UncontrolledAlert color="danger"> 
+                    Error updating the account keys: {submitError}
+                  </UncontrolledAlert>
+                : null
+              }
+              {
                 importSuccess &&
                 <UncontrolledAlert color="success">
-                  Private keys for {keysData[0].account || "unknown account"} successfully updated
+                  Private keys for {keysData[0].account || "unknown account"} successfully imported
                 </UncontrolledAlert>
               }
               <InfoDivStyled>
+                <p className="infoHeader">
+                  { panel === 'import-account-importer' ? "Before you import your private keys..." : "Before you update your keys..."}
+                </p>
+                <p>
+                  Ensure that the private keys you use are <code>base58 WIF</code> compliant. <b>WIF</b> stands for
+                  "Wallet Import Format" and is a convenience specification for copying and pasting private keys.
+                  The form will notify you if any of your keys are invalid upon submission. Please also ensure
+                  the private keys you import <b>properly match</b> the public keys listed here. Otherwise,
+                  you will not be able to authorize any actions with this account since the blockchain will not
+                  have the correct signatures for the declared authorization.
+                </p>
                 {
-                  panel === 'import-account-importer' ?
-                  (<><p className="infoHeader">Before you update your private keys...</p>
-                  <p>
-                    Ensure that the private keys you use are <code>base58 WIF</code> compliant. <b>WIF</b> stands for
-                    "Wallet Import Format" and is a convenience specification for copying and pasting private keys.
-                    The form will notify you if any of your keys are invalid upon submission. Please also ensure
-                    the private keys you import <b>properly match</b> the public keys listed here. Otherwise,
-                    you will not be able to authorize any actions with this account since the blockchain will not
-                    have the correct signatures for the declared authorization.
-                  </p>
-                  <hr /></> ) : null
+                  panel === 'import-account-edit' ? (<p>
+                    If you plan to update your public keys, ensure that your new public keys are in valid <code>EOSKey</code> format. 
+                    This is a form of public key which is prefixed with <code>EOS</code>. 
+                    This form will automatically validate your private keys if they match the new public keys.
+                  </p>) : null
                 }
+                <hr />
                 <p className="mb-0">
                   Your private keys will be saved locally in your browser. However, please be sure NEVER to share
                   your private key to anybody. If someone asks you for your private key, please do not give it
@@ -116,16 +200,24 @@ const ImportAccount = (props) => {
                     <InputStyled type="text"
                       name="ownerPublic"
                       id="ownerPublic"
-                      value={
+                      defaultValue={
                         keysData[0].permission === "owner" ?
                           keysData[0].public_key
                           : keysData[1].public_key
                           || ""
                       }
-                      placeholder="Public key not found"
+                      placeholder="Enter public key"
                       onChange={handleChange}
-                      readOnly
+                      invalid={!!errors.ownerPublic}
+                      readOnly={panel === 'import-account-importer'}
+                      required={panel === 'import-account-edit'}
                     />
+                    {
+                      errors.ownerPublic &&
+                      <FormFeedback invalid="true">
+                        {errors.ownerPublic}
+                      </FormFeedback>
+                    }
                   </Col>
                 </FormGroup>
                 <FormGroup row>
@@ -144,7 +236,6 @@ const ImportAccount = (props) => {
                       onChange={handleChange}
                       invalid={!!errors.ownerPrivate}
                       required
-                      readOnly={panel === 'import-account-view'}
                     />
                     {
                       errors.ownerPrivate &&
@@ -161,17 +252,25 @@ const ImportAccount = (props) => {
                     <InputStyled type="text"
                       name="activePublic"
                       id="activePublic"
-                      value={
+                      defaultValue={
                         keysData[1].permission === "active" ?
                           keysData[1].public_key
                           : keysData[0].public_key
                           || ""
                       }
-                      placeholder="Public key not found"
+                      placeholder="Enter public key"
+                      invalid={!!errors.activePublic}
                       onChange={handleChange}
-                      readOnly
+                      readOnly={panel === 'import-account-importer'}
+                      required={panel === 'import-account-edit'}
                     />
                   </Col>
+                  {
+                    errors.activePublic &&
+                    <FormFeedback invalid="true">
+                      {errors.activePublic}
+                    </FormFeedback>
+                  }
                 </FormGroup>
                 <FormGroup row>
                   <Label htmlFor="activePrivate" sm={1}>Private Key</Label>
@@ -189,7 +288,6 @@ const ImportAccount = (props) => {
                       onChange={handleChange}
                       invalid={!!errors.activePrivate}
                       required
-                      readOnly={panel === 'import-account-view'}
                     />
                     {
                       errors.activePrivate &&
@@ -209,14 +307,11 @@ const ImportAccount = (props) => {
                         >
                         Back
                       </ButtonSecondary>
-                      {
-                        panel === 'import-account-importer' ?
-                        (<ButtonPrimary className="float-right"
+                      <ButtonPrimary className="float-right"
                         disabled={!(values.activePrivate && values.ownerPrivate)}
                         block>
                         Submit
-                        </ButtonPrimary>) : null
-                      }
+                      </ButtonPrimary>
                     </ButtonGroupSeperated>
                   </Col>
                 </FormGroup>
@@ -236,6 +331,7 @@ export default connect(
   }),
   {
     accountAdd,
+    accountEdit,
     panelSelect
   }
 )(ImportAccount);

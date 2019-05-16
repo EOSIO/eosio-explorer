@@ -84,18 +84,19 @@ const Permissionlist = (props) => {
     }
     return result;
   }, Object.create({})) : null;
-  Object.keys(baseImportAccountsList).forEach(key => {
-    if (baseImportAccountsList[key].length === 1) {
-      let permission = baseImportAccountsList[key][0].permission;
-      if (permission === 'active') {
-        let missingPermission = clonedList.filter(item => item.permission === 'owner' && item.account === baseImportAccountsList[key][0].account)[0];
-        baseImportAccountsList[key].push(missingPermission);
-      } else {
-        let missingPermission = clonedList.filter(item => item.permission === 'active' && item.account === baseImportAccountsList[key][0].account)[0];
-        baseImportAccountsList[key].push(missingPermission);
+  if (Object.keys(baseImportAccountsList || {}).length > 0)
+    Object.keys(baseImportAccountsList).forEach(key => {
+      if (baseImportAccountsList[key].length === 1) {
+        let permission = baseImportAccountsList[key][0].permission;
+        if (permission === 'active') {
+          let missingPermission = clonedList.filter(item => item.permission === 'owner' && item.account === baseImportAccountsList[key][0].account)[0];
+          baseImportAccountsList[key].push(missingPermission);
+        } else {
+          let missingPermission = clonedList.filter(item => item.permission === 'active' && item.account === baseImportAccountsList[key][0].account)[0];
+          baseImportAccountsList[key].push(missingPermission);
+        }
       }
-    }
-  })
+    })
   let importAccountsList = (Object.keys(baseImportAccountsList || {}).length > 0) ?
      Object.keys(baseImportAccountsList).sort().map(key => baseImportAccountsList[key]) : {};
   let numberOfImportAccounts = Object.keys(importAccountsList || {}).length;
@@ -148,7 +149,8 @@ const Permissionlist = (props) => {
                                     used for signing transactions and pushing actions. 
                                     The <b>eosio</b> account owns the system contract responsible for numerous important functions, so please
                                     be aware that you can not deploy new contracts locally under that permission. 
-                                    Click the "View" button to check your keys for the account. Click the radio button to set the default account for authorizing actions.
+                                    Click the "Edit" button if you want to update or check your keys for these accounts. 
+                                    Click the radio button to set the default account for authorizing actions.
                                   </InfoDivStyled>
                                   <PermissionTable borderless>
                                     {
@@ -212,10 +214,10 @@ const Permissionlist = (props) => {
                                             <EditButtonCell width="40%">
                                               <ButtonPrimary 
                                                     style={{float:'right', marginRight:'5%'}}
-                                                    onClick={() => getKeysData(defaultAccountsList[account][0].account, list, "view")}
+                                                    onClick={() => getKeysData(defaultAccountsList[account][0].account, list, "edit")}
                                                     block
                                                     >
-                                                    View
+                                                    Edit
                                                   </ButtonPrimary>
                                             </EditButtonCell>
                                           </tr>
