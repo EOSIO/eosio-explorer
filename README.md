@@ -1,4 +1,4 @@
-<h1 align="center">EOSIO Explorer</h1>
+<h1 align="center">EOSIO Labs™: EOSIO Explorer</h1>
 <p align="center">
   A full web application to communicate with EOSIO blockchain in a local development environment built using React.
 </p>
@@ -26,9 +26,9 @@
 
 ## Overview
 
-The EOSIO Explorer is a full web application that allows developers to bootstrap their smart contract development by providing them the ability to communicate with the EOSIO blockchain in a local development environment. The goal of this application is to provide app developers for the EOSIO blockchain (consisting of smart contract developers and front-end developers) a quick and easy way to create the local development environment required to make and test such applications on the EOSIO blockchain. 
+The EOSIO Labs™: EOSIO Explorer is a full web application that allows developers to bootstrap their smart contract development by providing them the ability to communicate with the EOSIO blockchain in a local development environment. The goal of this application is to provide app developers for the EOSIO blockchain (consisting of smart contract developers and front-end developers) a quick and easy way to create the local development environment required to make and test such applications on the EOSIO blockchain.
 
-The application provides developers the ability to review changes and updates that occur within the blockchain based on their own work, and has the capacity to allow teams of developers to work on the same instance of the blockchain. This is to add an extra layer of ease for application development especially as a way to allow both smart contract developers and front-end developers to work together more closely. For example, front-end developers can test by connecting their applications to the blockchain instantiated by this tool, and perform tests which smart contract developers can review instantly on the tool to determine if behavior is expected or not. 
+The application provides developers the ability to review changes and updates that occur within the blockchain based on their own work, and has the capacity to allow teams of developers to work on the same instance of the blockchain. This is to add an extra layer of ease for application development especially as a way to allow both smart contract developers and front-end developers to work together more closely. For example, front-end developers can test by connecting their applications to the blockchain instantiated by this tool, and perform tests which smart contract developers can review instantly on the tool to determine if behavior is expected or not.
 
 The goal of this application is to enhance the user experience when developing EOSIO-based blockchain applications while at the same time lowering the barrier to entry for newcomers to EOSIO-based blockchain development.
 
@@ -38,7 +38,7 @@ EOSIO Labs repositories are experimental.  Developers in the community are encou
 
 ### :warning: Disclaimer :warning:
 
-The EOSIO Explorer is designed specifically to be a tool for local development. Therefore, numerous things must be kept in mind:
+The EOSIO Labs™: EOSIO Explorer is designed specifically to be a tool for local development. Therefore, numerous things must be kept in mind:
 
 1. **Wallet keys used for this tool may be compromised** if your machine is not properly secure.
 2. **The tool is not compatible with the EOSIO Mainnet**
@@ -59,7 +59,7 @@ The EOSIO Explorer is designed specifically to be a tool for local development. 
 * CentOS 7
 * Ubuntu 16.04
 * Ubuntu 18.04
-* MacOS 10.14 (Mojave) 
+* MacOS 10.14 (Mojave)
 
 ### Required Tools
 
@@ -88,11 +88,11 @@ yarn install
 
 See: [Development](./docs/development.md)
 
-### OS Platform Specific 
+### OS Platform Specific
 
 #### Ubuntu 18.04 / Ubuntu 16.04
 
-If you want to start the tool with the bundled UI, you will need to make sure your machine or server can open headless Chrome in a sandbox. 
+If you want to start the tool with the bundled UI, you will need to make sure your machine or server can open headless Chrome in a sandbox.
 
 #### Amazon Linux 2 (AMI)
 
@@ -113,7 +113,7 @@ You will need to create an exception within SELinux. Setting the following boole
 setsebool -P unconfined_chrome_sandbox_transition 0
 ```
 
-Alternatively, though not necessarily recommended, you can disable `SELinux` entirely. 
+Alternatively, though not necessarily recommended, you can disable `SELinux` entirely.
 
 ## Usage
 
@@ -126,19 +126,19 @@ Installed via cloning the repository: yarn eosio-explorer <command>
 Run the tool with the specified command
 
 Commands:
-  init              Initialize the tool by installing all dependencies, setting up 
+  init              Initialize the tool by installing all dependencies, setting up
                     all Docker containers, etc.
                     Available flags:
                     -dev / --develop - Starts the tool in development mode
-                    -s / --sample-data - Starts the tool with pre-existing sample accounts 
+                    -s / --sample-data - Starts the tool with pre-existing sample accounts
                                          and smart contracts
   start             Start the tool, assumes the dependencies and Docker images are already prepared
                     Available flags:
                     -dev / --develop - Starts the tool in development mode
                     -d / --delete - Removes existing Docker containers
-                    --init - Builds a production-ready version of the web tool, 
+                    --init - Builds a production-ready version of the web tool,
                              and opens the tool with cleared local storage
-                    -s / --sample-data - Starts the tool with pre-existing 
+                    -s / --sample-data - Starts the tool with pre-existing
                                          sample accounts and smart contracts
   start_gui         Starts the web tool locally without touching the nodeos and MongoDB containers.
                     Available flags:

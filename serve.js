@@ -41,7 +41,7 @@ app.listen(PORT, ()=>{
   if(`${process.env.MODE}` !== `development`){
     let url = "http://localhost:" + PORT;
     console.log(`Application is ready on "${url}".`);
-    console.log(`You can now view EOSIO Explorer in the browser.`);
+    console.log(`You can now view EOSIO Labs™: EOSIO Explorer in the browser.`);
     openBrowser(url);
   }
 });
