@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { CardBody, Table } from 'reactstrap';
 import cogoToast from 'cogo-toast';
-
+import { LoadingSpinner } from 'components';
 import { connect } from 'react-redux';
 import { fetchStart, accountImport, defaultSet } from 'reducers/permission';
 import { panelSelect } from 'pages/PermissionPage/PermissionPageReducer';
@@ -136,7 +136,7 @@ const Permissionlist = (props) => {
   return (
     <div className="Permissionlist">
 
-      <div>{ isFetching   ? `loading...`
+      <div>{ isFetching   ? <LoadingSpinner />
                           : <div>
                               <FirstCardStyled>
                                 <CardHeaderStyled>

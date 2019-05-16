@@ -7,7 +7,7 @@ import isObjectEmpty from 'helpers/is-object-empty';
 import pathNameConsumer from 'helpers/pathname-consumer';
 import { CardBody, Col, Row, Form, FormGroup} from 'reactstrap';
 import styled from 'styled-components';
-import { CodeViewer } from 'components';
+import { CodeViewer, LoadingSpinner } from 'components';
 import { Link } from 'react-router-dom';
 import { CardStyled, CardHeaderStyled, TableStyled, ErrorButton, ErrorDivStyled, ButtonPrimary } from 'styled';
 
@@ -41,7 +41,7 @@ const Transactiondetail = (props) => {
                   <ErrorButton onClick={props.fetchStart}>Connection error, click to reload</ErrorButton>
                 </>
               : isFetching           
-                ? `loading...`
+                ? <LoadingSpinner />
                 : payload.length === 0 
                   ? <CardStyled>
                       <CardHeaderStyled></CardHeaderStyled>
