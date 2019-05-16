@@ -127,8 +127,10 @@ const Permissionlist = (props) => {
     let _permissionTwoCorrect = false;
 
     if (permissionList.length > 0) {
-      _permissionOneCorrect = permissionList[0].permission === 'owner' || permissionList[0].permission === 'active';
-      _permissionTwoCorrect = permissionList[1].permission === 'owner' || permissionList[1].permission === 'active';
+      _permissionOneCorrect = (permissionList[0]) ?
+        (permissionList[0].permission === 'owner' || permissionList[0].permission === 'active') : false;
+      _permissionTwoCorrect = (permissionList[1]) ?
+        (permissionList[1].permission === 'owner' || permissionList[1].permission === 'active') : false;
     }
 
     return _permissionOneCorrect && _permissionTwoCorrect;
