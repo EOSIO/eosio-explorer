@@ -46,7 +46,7 @@ The account will then be listed in the Accounts to Import panel where you will n
 
 If you are able to get the new private key, input as so:
 
-![Import Single Keys Panel Filled](../../images/permissions/import_single_key_before.png)
+![Import Single Keys Panel Filled](../../images/permissions/import_single_key_mid.png)
 
 ### On Success
 

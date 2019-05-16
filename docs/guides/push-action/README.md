@@ -53,7 +53,7 @@ Sometimes, you want to continuously repeat an action, and just slightly adjust t
 
 Circled in red is the 'Prefill' button, which lets you automatically fill the Push Action form with the exact same information used to push the action indicated in the Action History Viewer. This gives you a convenient summary of previous actions. You can also control how many actions you show at once by changing the 'Show rows' dropdown from 100 to another value. Possible alternatives are: `25, 50, 75`. It is `100` by default.
 
-After clicking Prefill, you will automatically see the prefilled form as follows:
+For example, the action specified [previously](#how-to-push-an-action-manually), if we want to prefill the form with this data, we would find that action in the action history viewer and then click "Prefill," which would lead to the following:
 
 ![Prefilled Action](../../images/push-action/prefill-action.png)
 
