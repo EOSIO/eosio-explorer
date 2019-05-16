@@ -201,13 +201,13 @@ const Header = (props) => {
               <Link to={`/`} className={`nav-link ${pathname === `/` ? `active` : ``}`}>INFO</Link>
             </NavItem>
             <NavItem className="px-3">
-              <Link to={`/block-list`} className={`nav-link ${pathname === `/block-list` || matchPath(pathname, 'block') ? `active` : ``}`}>BLOCKS</Link>
+              <Link to={`/block-list`} className={`nav-link ${pathname === `/block-list` || pathname === `/block-list/` || matchPath(pathname, 'block') ? `active` : ``}`}>BLOCKS</Link>
             </NavItem>
             <NavItem className="px-3">
-              <Link to={`/transaction-list`} className={`nav-link ${pathname === `/transaction-list` || matchPath(pathname, 'transaction') ? `active` : ``}`}>TRANSACTIONS</Link>
+              <Link to={`/transaction-list`} className={`nav-link ${pathname === `/transaction-list` || pathname === `/transaction-list/` || matchPath(pathname, 'transaction') ? `active` : ``}`}>TRANSACTIONS</Link>
             </NavItem>
             <NavItem className="px-3">
-              <Link to={`/action-list`} className={`nav-link ${pathname === `/action-list` || matchPath(pathname, 'action') ? `active` : ``}`}>ACTIONS</Link>
+              <Link to={`/action-list`} className={`nav-link ${pathname === `/action-list` || pathname === `/action-list/` || matchPath(pathname, 'action') ? `active` : ``}`}>ACTIONS</Link>
             </NavItem>
             <NavItem className="px-3">
               <Link to={`/account`} className={`nav-link ${pathname === `/account` || matchPath(pathname, 'account') ? `active` : ``}`}>ACCOUNTS</Link>
@@ -222,13 +222,13 @@ const Header = (props) => {
           <NavHead>INTERACT</NavHead>
           <NavStyled className="nav-items d-md-down-none" navbar>
             <NavItem className="px-3">
-              <Link onClick={()=>panelSelect("permission-list")} to={`/permission`} className={`nav-link ${pathname === `/permission` ? `active` : ``}`}>MANAGE ACCOUNTS</Link>
+              <Link onClick={()=>panelSelect("permission-list")} to={`/permission`} className={`nav-link ${pathname === `/permission` || pathname === `/permission/` ? `active` : ``}`}>MANAGE ACCOUNTS</Link>
             </NavItem>
             <NavItem className="px-3">
-              <Link to={`/deploy`} className={`nav-link ${pathname === `/deploy` ? `active` : ``}`}>DEPLOY CONTRACTS</Link>
+              <Link to={`/deploy`} className={`nav-link ${pathname === `/deploy` || pathname === `/deploy/` ? `active` : ``}`}>DEPLOY CONTRACTS</Link>
             </NavItem>
             <NavItem className="px-3">
-              <Link to={`/push-action`} className={`nav-link ${pathname === `/push-action` ? `active` : ``}`}>PUSH ACTIONS</Link>
+              <Link to={`/push-action`} className={`nav-link ${pathname === `/push-action` || pathname === `/push-action/` ? `active` : ``}`}>PUSH ACTIONS</Link>
             </NavItem>
           </NavStyled>
         </NavWrapper>
