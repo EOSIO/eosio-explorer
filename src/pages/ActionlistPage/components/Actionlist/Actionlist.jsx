@@ -58,9 +58,9 @@ const Actionlist = (props) => {
       </Row>
       <Row>
         <Col xs="12">
-        { error ?
+        { (error && error.status.name !== "AjaxTimeoutError") ?
           <>
-            {!isObjectEmpty(error) && <p className="text-danger">{JSON.stringify(error)}</p>}
+            {!isObjectEmpty(error) && <p className="text-danger">{JSON.stringify(error.status.message)}</p>}
             <ErrorButton onClick={props.fetchStart}>Connection error, click to reload</ErrorButton>
           </>
         : isFetching ? (
