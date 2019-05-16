@@ -8,7 +8,7 @@ import { push } from 'connected-react-router'
 
 import { CardBody, DropdownToggle, DropdownMenu, DropdownItem, Row, Col} from 'reactstrap';
 import styled from 'styled-components';
-import { CodeViewer } from 'components';
+import { CodeViewer, LoadingSpinner } from 'components';
 import isObjectEmpty from 'helpers/is-object-empty';
 import { DropdownStyled, CardStyled, CardHeaderStyled, ErrorDivStyled, ErrorButton, InputStyled, ButtonPrimary, ToolTipUncontrolledStyled } from 'styled';
 
@@ -125,7 +125,7 @@ const MultiIndex = (props) => {
             <ErrorButton onClick={props.fetchStart}>Connection error, click to reload</ErrorButton>
           </>
         : isFetching 
-          ? `loading...`
+          ? <LoadingSpinner />
           : showDetailsSection
             ? payload.length === 0
               ? <CustomErrorDiv>No data in Multi-Index table "{params.table_name}" for scope "{params.scope_name}"</CustomErrorDiv>

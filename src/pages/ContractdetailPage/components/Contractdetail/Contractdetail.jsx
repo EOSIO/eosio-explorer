@@ -10,7 +10,7 @@ import { push } from 'connected-react-router'
 
 import { Row, Col, CardBody } from 'reactstrap';
 import styled from 'styled-components';
-import { CodeViewer } from 'components';
+import { CodeViewer, LoadingSpinner } from 'components';
 import { CardStyled, CardHeaderStyled, ButtonPrimary, ErrorButton, ErrorDivStyled, InputStyled} from 'styled';
 
 const FirstCardStyled = styled(CardStyled)`
@@ -100,7 +100,7 @@ const Contractdetail = (props) => {
                 <ErrorButton onClick={props.fetchStart}>Connection error, click to reload</ErrorButton>
               </>
             : isFetching
-              ? `loading...`
+              ? <LoadingSpinner />
               : !(payload.length !== 0 && payload[0].hasOwnProperty("abi") === true)
                 ? <CustomErrorDiv>No Smart Contract found with Smart Contract Name {params.account_name}</CustomErrorDiv>
                 : <div>

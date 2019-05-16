@@ -8,7 +8,7 @@ import { push } from 'connected-react-router'
 
 import { CardBody, Col, Row, Form, FormGroup } from 'reactstrap';
 import styled from 'styled-components';
-import { CodeViewer } from 'components';
+import { CodeViewer, LoadingSpinner } from 'components';
 import { CardStyled, CardHeaderStyled, ButtonPrimary, InputStyled, ErrorDivStyled } from 'styled';
 
 
@@ -85,9 +85,9 @@ const Accountdetail = (props) => {
            {error
             ? <CustomErrorDiv>No Account found with Account Name {params.account_name}</CustomErrorDiv>
             : isFetching
-              ? `loading...`
+              ? <LoadingSpinner />
               : (Object.keys(payload).length === 0 && payload.constructor === Object) 
-                ? `loading...`
+                ? <LoadingSpinner />
                 : <div>
                     <Row>
                       <Col sm="12">
