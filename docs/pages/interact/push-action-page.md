@@ -41,3 +41,5 @@ The Action History Viewer panel is a quick way to survey previously pushed actio
 * Permission (the actor which signed the action)
 
 Each row has a "PREFILL" button which users can click to automatically populate the Push Action panel with the same information used to push the specific action. This makes it easier for users to test the same action if the implementation has changed or for easily changing payload information. 
+
+On the upper left hand of the panel is a dropdown menu which allows you to filter this viewer by specific smart contracts. You can also choose to change the number of actions shown here at once. You can find more details on this in the sub-guide on [how to filter the action history viewer panel by smart contract](../../guides/push-action#the-action-history-viewer-and-filtering-by-smart-contract).

@@ -58,3 +58,15 @@ After clicking Prefill, you will automatically see the prefilled form as follows
 ![Prefilled Action](../../images/push-action/prefill-action.png)
 
 You can proceed to edit the form at your leisure or push the action again to test its behavior.
+
+## The Action History Viewer and Filtering by Smart Contract 
+
+If you are working on a blockchain with many deployed smart contracts, there is a chance that many actions are being processed and authorized simultaneously. In this case, it may be nice to be able to filter the list of past actions for a specific smart contract, normally one you are developing or working with.
+
+In the upper left corner of the panel, you can see a dropdown menu listing the currently available smart contracts with actions:
+
+![Filter Dropdown](../../images/push-action/filter.png)
+
+Here is what you should see if you, for instance, decided to check all actions belonging only to the `dinosaur1311` contract, showing 20 rows at a time:
+
+![Filter Result](../../images/push-action/filter_result.png)
