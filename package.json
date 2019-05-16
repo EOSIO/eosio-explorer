@@ -1,10 +1,20 @@
 {
   "name": "@ptb1/eosio-explorer",
   "version": "0.2.2",
+  "license": "MIT",
+  "author": "block.one",
+  "repository": "https://github.com/EOSIO/eosio-explorer",
+  "contributors": [
+    "Terry Leung",
+    "Jonathan Cardenas",
+    "Varsha Nagaraja",
+    "Matthew Kelly",
+    "Ajay Matharu"
+  ],
+  "description": "A full web application to communicate with EOSIO blockchain in a local development environment",
   "publishConfig": {
     "access": "private"
   },
-  "license": "MIT",
   "dependencies": {
     "@coreui/coreui": "^2.1.8",
     "@coreui/react": "^2.1.5",

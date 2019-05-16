@@ -159,8 +159,6 @@ Interested in contributing? That's awesome! Please view the following links for 
 
 [Contribution Guidelines](./CONTRIBUTING.md)
 
-[Code of Conduct](./CONTRIBUTING.md#conduct)
-
 ## License
 
 [MIT](./LICENSE)
