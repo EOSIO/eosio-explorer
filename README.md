@@ -172,7 +172,7 @@ You can also add the `-h` flag to any of the commands listed above to view the a
 * Development mode sacrifices some performance but enables hot code reloading, allowing you to work on contributing to the project without rebuilding. This will not run as a background process.
 * Production mode serves a pre-rendered, pre-loaded version of the tool for speed and performance, and is for users of the tool.
 
-:warning: - The tool, in production mode, will run persistently in the background, meaning that you can choose to keep it running indefinitely. If you want to close the tool, you will need to kill the process which is listening on the port you specified in the configuration. By default, the production mode port is `5111`. You can use utilities like `netstat` and `lsof` to check this.
+:warning: - The tool, in production mode, will run persistently in the background using `pm2`, meaning that you can choose to keep it running indefinitely. If you want to close the tool, you will need to kill the process which is listening on the port you specified in the configuration. By default, the production mode port is `5111`. You can use utilities like `netstat` and `lsof` to check this.
 
 If you want, you can globally install `pm2` to make managing this process easier, so you can run commands like `pm2 status` to check.
 

@@ -28,6 +28,7 @@ Navigate back to the top [here](../README.md).
     * [Managing Accounts](./guides/permissions)
         * [Create Account](./guides/permissions/create_account.md)
         * [Importing Keys](./guides/permissions/import_account.md)
+        * [Updating Public Keys](./guides/permissions/update_account.md)
     * [Deploying a Smart Contract](./guides/deployment)
         * [Step 1: Select File Entry Point](./guides/deployment/step-one.md)
         * [Step 2: ABI File (Optional)](./guides/deployment/step-two.md)

@@ -16,7 +16,7 @@ After checking which account you want to update, click the "EDIT" button corresp
 
 For instance, let us assume you want to update an account with the name `dragonfruit`. You would click the "EDIT" button corresponding to the `dragonfruit` account, which would take you to this panel:
 
-![Update Keys](../../images/permission/edit_acc_before.png)
+![Update Keys](../../images/permissions/edit_acc_before.png)
 
 :mag_right: 
 
@@ -32,7 +32,7 @@ If you decide to click "SUBMIT" without changing anything, the form will inform 
 
 For purposes of this guide, let's assume you want to change both `active` and `owner` keys like this:
 
-![Filled Keys](../../images/permission/edit_acc_mid.png)
+![Filled Keys](../../images/permissions/edit_acc_mid.png)
 
 :warning: - The form will check if your public and private keys are valid. It will also check if the private keys you supply correctly match the new public key that you have used.
 
@@ -40,6 +40,6 @@ For purposes of this guide, let's assume you want to change both `active` and `o
 
 After pressing "SUBMIT", if the update has succeeded, you will see the success message:
 
-![Updated Keys](../../images/permission/edit_acc_after.png)
+![Updated Keys](../../images/permissions/edit_acc_after.png)
 
 If you want to verify that the action has really gone through, you can either check the [action list page](../../pages/action-list-page.md) for `updateauth` actions or check the latest transactions in the [transaction list page](../../pages/transaction-list-page.md). Transactions that have modified your public keys should contain one `updateauth` action if you have only modified one key and two `updateauth` actions if you have modified both keys. 
