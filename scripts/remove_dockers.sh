@@ -19,15 +19,20 @@ RED='\033[0;31m'
 NC='\033[0m' # No Color
 GREEN='\033[0;32m'
 
-if [ 'node_modules' == $(basename "$(dirname "$(dirname "$( pwd -P )")")") ]; then
+PWD=$(pwd -P)
+YARN_GLOBAL_DIR=$(yarn global dir)
 
-    # yarn added globally, dependencies are installed as siblings directory
-    DEPENDENCIES_ROOT="$(dirname "$(dirname "$( pwd -P )")")/$DEPENDENCIES_SCOPE_NAME"
+# If current folder is localed inside yarn global folder, means it is installed globally
+if [[ $PWD == $YARN_GLOBAL_DIR* ]]; then
+  if [ '@ptb1' == $(basename "$(dirname "$(dirname "$( pwd -P )")")") ]; then
 
-elif [ '@ptb1' == $(basename "$(dirname "$(dirname "$( pwd -P )")")") ]; then
+      # yarn added globally with scope, dependencies are installed as siblings directory of one level upper
+      DEPENDENCIES_ROOT="$(dirname "$(dirname "$(dirname "$( pwd -P )")")")/$DEPENDENCIES_SCOPE_NAME"
+  else
 
-    # yarn added globally with scope, dependencies are installed as siblings directory of one level upper
-    DEPENDENCIES_ROOT="$(dirname "$(dirname "$(dirname "$( pwd -P )")")")/$DEPENDENCIES_SCOPE_NAME"
+      # yarn added globally, dependencies are installed as siblings directory
+      DEPENDENCIES_ROOT="$(dirname "$(dirname "$( pwd -P )")")/$DEPENDENCIES_SCOPE_NAME"
+  fi
 else
 
     # yarn installed locally, dependencies are installed under current's project directory
@@ -48,7 +53,7 @@ do
       echo "$USAGE"
       exit
       ;;
-    *) 
+    *)
       printf "illegal option: %s\n" "$arg" >&2
       echo "$USAGE" >&2
       exit 1
