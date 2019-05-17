@@ -36,52 +36,52 @@ const NavWrapper = styled.div`
   flex-direction: column;
   justify-content: space-between;
   min-height: 40px;
-  padding: 0 10px;
+  padding: 0 0 0 10px;
   :nth-child(1){
-    flex: 1.1 0 0;
+    flex: 1.5 0 0;
   }
   :nth-child(2){
     flex: 5 0 0;
     .last-item{
       padding-right: 0 !important;
-      flex: none;            
-    }  
+      flex: none;
+    }
     @media screen and (max-width: 1280px){
       flex: 4 0 0;
     }
     @media screen and (max-width: 1120px){
       .last-item{
         flex: 0 1 0;
-      }  
+      }
     }
-         
+
   }
   :nth-child(3){
-    flex: 0.4 1 0; 
+    flex: 0.4 1 0;
     padding: 0;
     @media screen and (max-width: 1280px){
       flex: 0.1 1 0;
     }
   }
   :nth-child(4){
-    flex: 3 0 0;     
+    flex: 3 0 0;
     .px-3{
       flex: none;
-      padding-right: 0 !important; 
-    }  
+      padding-right: 0 !important;
+    }
     @media screen and (max-width: 1280px){
       flex: 2.7 0 0;
       .px-3{
-        padding-right: 0 !important;  
-      } 
-    }   
+        padding-right: 0 !important;
+      }
+    }
     @media screen and (max-width: 1120px){
       flex: 2 0 0;
       .px-3{
         flex: 0 1 0;
-      }  
+      }
     }
-         
+
   }
   :nth-child(5){
     flex: 0.3 0 0;
@@ -94,14 +94,14 @@ const NavWrapper = styled.div`
     padding: 0;
     .px-3{
       padding-right: 0 !important;
-    }       
+    }
     @media screen and (max-width: 1120px){
       padding-right: 10px;
       .px-3{
         padding-right: 1rem !important;
       }
     }
-    
+
   }
 `
 
@@ -125,16 +125,33 @@ const VerticalLine = styled.div`
 
 const LogoWrapper = styled.div`
   display: flex;
+  align-items: center;
 `
 
 const AppName = styled.div`
-  width: 75px;
-  margin-left: 10px;
-  margin-top: 4px;
-  font-size: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-left: 4px;
   line-height: 1;
   color:#443f54;
   font-weight: normal;
+  height: 40px;
+  font-weight: 500;
+  text-align: left;
+  >div{
+    &:first-child{
+      font-size: 11px;
+      margin-top: 2.5px;
+      sub{
+        font-size: 25%;
+      }
+    }
+    &:last-child{
+      font-size: 16px;
+      margin-bottom: 1.5px;
+    }
+  }
 `
 
 const WrappedLink = styled(Link)`
@@ -146,16 +163,16 @@ const WrappedLink = styled(Link)`
   }
 `
 const NavStyled = styled(Nav)`
-  padding-top: 14px;
+  padding-top: 10px;
 `
 
-const matchPath = (pathname, path) => {  
+const matchPath = (pathname, path) => {
   let splitArr = pathname.split("/");
   if(splitArr.find(el => el === path)){
     return true;
   }else{
     return false;
-  } 
+  }
 }
 
 const Header = (props) => {
@@ -170,9 +187,10 @@ const Header = (props) => {
               <LogoWrapper>
                 <StyledEosioLogoSmallSVG/>
                 <AppName>
-                  EOSIO Explorer
+                  <div>EOSIO Labs<sub>TM</sub></div>
+                  <div>EOSIO Explorer</div>
                 </AppName>
-              </LogoWrapper>              
+              </LogoWrapper>
             </Nav>
           </WrappedLink>
         </NavWrapper>
@@ -183,13 +201,13 @@ const Header = (props) => {
               <Link to={`/`} className={`nav-link ${pathname === `/` ? `active` : ``}`}>INFO</Link>
             </NavItem>
             <NavItem className="px-3">
-              <Link to={`/block-list`} className={`nav-link ${pathname === `/block-list` || matchPath(pathname, 'block') ? `active` : ``}`}>BLOCKS</Link>
+              <Link to={`/block-list`} className={`nav-link ${pathname === `/block-list` || pathname === `/block-list/` || matchPath(pathname, 'block') ? `active` : ``}`}>BLOCKS</Link>
             </NavItem>
             <NavItem className="px-3">
-              <Link to={`/transaction-list`} className={`nav-link ${pathname === `/transaction-list` || matchPath(pathname, 'transaction') ? `active` : ``}`}>TRANSACTIONS</Link>
+              <Link to={`/transaction-list`} className={`nav-link ${pathname === `/transaction-list` || pathname === `/transaction-list/` || matchPath(pathname, 'transaction') ? `active` : ``}`}>TRANSACTIONS</Link>
             </NavItem>
             <NavItem className="px-3">
-              <Link to={`/action-list`} className={`nav-link ${pathname === `/action-list` || matchPath(pathname, 'action') ? `active` : ``}`}>ACTIONS</Link>
+              <Link to={`/action-list`} className={`nav-link ${pathname === `/action-list` || pathname === `/action-list/` || matchPath(pathname, 'action') ? `active` : ``}`}>ACTIONS</Link>
             </NavItem>
             <NavItem className="px-3">
               <Link to={`/account`} className={`nav-link ${pathname === `/account` || matchPath(pathname, 'account') ? `active` : ``}`}>ACCOUNTS</Link>
@@ -204,21 +222,21 @@ const Header = (props) => {
           <NavHead>INTERACT</NavHead>
           <NavStyled className="nav-items d-md-down-none" navbar>
             <NavItem className="px-3">
-              <Link onClick={()=>panelSelect("permission-list")} to={`/permission`} className={`nav-link ${pathname === `/permission` ? `active` : ``}`}>MANAGE ACCOUNTS</Link>
+              <Link onClick={()=>panelSelect("permission-list")} to={`/permission`} className={`nav-link ${pathname === `/permission` || pathname === `/permission/` ? `active` : ``}`}>MANAGE ACCOUNTS</Link>
             </NavItem>
             <NavItem className="px-3">
-              <Link to={`/deploy`} className={`nav-link ${pathname === `/deploy` ? `active` : ``}`}>DEPLOY CONTRACTS</Link>
+              <Link to={`/deploy`} className={`nav-link ${pathname === `/deploy` || pathname === `/deploy/` ? `active` : ``}`}>DEPLOY CONTRACTS</Link>
             </NavItem>
             <NavItem className="px-3">
-              <Link to={`/push-action`} className={`nav-link ${pathname === `/push-action` ? `active` : ``}`}>PUSH ACTIONS</Link>
+              <Link to={`/push-action`} className={`nav-link ${pathname === `/push-action` || pathname === `/push-action/` ? `active` : ``}`}>PUSH ACTIONS</Link>
             </NavItem>
           </NavStyled>
-        </NavWrapper>   
+        </NavWrapper>
         <NavWrapperRow>
           <VerticalLine>&nbsp;</VerticalLine>
-        </NavWrapperRow>     
-        <NavWrapperRow>          
-          <Nav className="nav-items d-md-down-none" navbar>              
+        </NavWrapperRow>
+        <NavWrapperRow>
+          <Nav className="nav-items d-md-down-none" navbar>
             <NavItem className="px-3">
               <ConnectionIndicator/>
             </NavItem>

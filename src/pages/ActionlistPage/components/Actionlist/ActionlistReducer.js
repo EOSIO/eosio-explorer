@@ -47,7 +47,7 @@ const fetchEpic = ( action$, state$ ) => action$.pipe(
       map(res => fetchFulfilled(res.response)),
       catchError(error => {
         errorLog("Action page/ get action list error",error);
-        return of(fetchRejected(error.response, { status: error.status }))
+        return of(fetchRejected(dataInitState.payload, { status: error }))
       })
     )
   }),

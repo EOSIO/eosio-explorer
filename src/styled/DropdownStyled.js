@@ -38,6 +38,7 @@ export default styled(Dropdown)`
     box-shadow: 0 0 0 1px #e0e7ee;
     border: 0;
     transform: translate3d(0, 40px, 0px);
+    z-index:1;
   }
   .dropdown-item:hover {
     background-color: #e3edf2;
