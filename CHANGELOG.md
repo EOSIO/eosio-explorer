@@ -1,5 +1,16 @@
 # Change Log
 
+## [v0.3.0-alpha.0](https://github.com/EOSIO/eosio-explorer/tree/v0.3.0-alpha.0) (2019-05-17)
+[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.3.0-alpha...v0.3.0-alpha.0)
+
+**Implemented enhancements:**
+
+- Pm2 enhancement [\#68](https://github.com/EOSIO/eosio-explorer/pull/68) ([matharuajay](https://github.com/matharuajay))
+
+**Fixed bugs:**
+
+- Fix: Do not yarn install in init if the app is yarn global installed [\#69](https://github.com/EOSIO/eosio-explorer/pull/69) ([terrylks](https://github.com/terrylks))
+
 ## [v0.3.0-alpha](https://github.com/EOSIO/eosio-explorer/tree/v0.3.0-alpha) (2019-05-17)
 [Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.2.2...v0.3.0-alpha)
 
@@ -11,7 +22,6 @@
 - Fogbugz 3398 - Use same pm2 to start the compiler service [\#53](https://github.com/EOSIO/eosio-explorer/pull/53) ([matharuajay](https://github.com/matharuajay))
 - Performance fix in frontend for slow loading in mongodb [\#49](https://github.com/EOSIO/eosio-explorer/pull/49) ([terrylks](https://github.com/terrylks))
 - Critical UI Fixes for Manage Accounts Page [\#48](https://github.com/EOSIO/eosio-explorer/pull/48) ([jcardenas9x](https://github.com/jcardenas9x))
-- Fogbugz 3358: In react-snap prerendering, remove crawled \(/account/eosio\) [\#38](https://github.com/EOSIO/eosio-explorer/pull/38) ([varshajnagaraja](https://github.com/varshajnagaraja))
 
 **Fixed bugs:**
 
@@ -50,6 +60,7 @@
 
 **Implemented enhancements:**
 
+- Fogbugz 3358: In react-snap prerendering, remove crawled \(/account/eosio\) [\#38](https://github.com/EOSIO/eosio-explorer/pull/38) ([varshajnagaraja](https://github.com/varshajnagaraja))
 - Fogbugz 3370: Polling should start immediately rather after 1st interval [\#36](https://github.com/EOSIO/eosio-explorer/pull/36) ([varshajnagaraja](https://github.com/varshajnagaraja))
 - Fogbugz 3304 - Add help and version to script files [\#35](https://github.com/EOSIO/eosio-explorer/pull/35) ([matharuajay](https://github.com/matharuajay))
 - Modified the 'SUBMIT' button text in Create Account panel to 'CREATE' [\#24](https://github.com/EOSIO/eosio-explorer/pull/24) ([jcardenas9x](https://github.com/jcardenas9x))
