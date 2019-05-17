@@ -34,10 +34,13 @@ pm2.connect(function(err) {
     else {
       console.log("\x1b[36mstarting app and compiler using pm2\x1b[0m");
       apps.forEach(app=>{
-        if (app.pm2_env.status === "online")
+        if (app.pm2_env.status === "online") {
           console.log("\x1b[34m" + app.name + "\x1b[0m ---- \x1b[32m" + app.pm2_env.status + "\x1b[0m");
-        else 
+        }
+        else {
           console.log("\x1b[34m" + app.name + "\x1b[0m ---- \x1b[31m" + app.pm2_env.status + "\x1b[0m");
+          console.log("\x1b[31msomething went wrong please use \"pm2 logs\" to check the logs\x1b[0m")
+        }
       })
     }
   });
