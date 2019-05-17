@@ -33,5 +33,6 @@ The section would look like this:
 2. The root folder path you specify in the input field will be treated as the **root** directory of the smart contract source code.
 3. Be sure to organize your files and folders properly so that they are correctly found.
 4. **If you update the `.cpp` file you're using in this section, you do NOT need to enter the file in this section again**. The compiler will use the latest version of your `.cpp` file
+5. If you want to supply `~` in your folder file path, **make sure** your `HOME` directory is correct. The compiler service is implemented in Node.JS and thus natively does not support `~` (which is a `bash` construct). Therefore, the service will substitute `~` for the value of `process.env.HOME`.
 
 After verifying, move on to either [Step Two](step-two.md) or if you do not need to import an ABI file and do not wish to verify the compiled ABI file, move straight to [Step Three](step-three.md).

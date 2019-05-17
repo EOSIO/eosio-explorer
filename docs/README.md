@@ -2,8 +2,11 @@
 
 You can view documentation on everything related to the EOSIO Labs™: EOSIO Explorer web tool here.
 
+Navigate back to the top [here](../README.md).
+
 ## Documentation for Users
 
+* [Configuration](configuration.md)
 * Inspect Pages
     * [Info Page](./pages/info-page.md)
     * [Block List Page](./pages/block-list-page.md)
@@ -19,15 +22,20 @@ You can view documentation on everything related to the EOSIO Labs™: EOSIO Exp
     * [Smart Contract Deployment Page](./pages/interact/deployment-page.md)
     * [Push Action Page](./pages/interact/push-action-page.md)
 * Guides
-    * Managing Accounts
+    * [Managing Connections](./guides/connection)
+        * [Making a New Connection](./guides/connection/new-connections.md)
+        * [Resetting the Current Connection](./guides/connection/reset-connections.md)
+    * [Managing Accounts](./guides/permissions)
         * [Create Account](./guides/permissions/create_account.md)
         * [Importing Keys](./guides/permissions/import_account.md)
+        * [Updating Public Keys](./guides/permissions/update_account.md)
     * [Deploying a Smart Contract](./guides/deployment)
         * [Step 1: Select File Entry Point](./guides/deployment/step-one.md)
         * [Step 2: ABI File (Optional)](./guides/deployment/step-two.md)
         * [Step 3: Deploy](./guides/deployment/step-three.md)
+    * [Pushing an Action](./guides/push-action)
 
 ## Documentation for Contributors and Developers
 
 * [Development](development.md)
-* [Contributing to the Project](../../../CONTRIBUTING.md)
+* [Contributing to the Project](../CONTRIBUTING.md)

@@ -2,7 +2,9 @@
 
 # Transaction List Page
 
-The transaction list page contains a list of all the currently available transactions performed on the blockchain. It is also possible to search for a particular transaction or check the details of one shown on this list.
+The transaction list page contains a list of transactions performed on the blockchain, up to a maximum of the latest **100** transactions. It is also possible to search for a particular transaction or check the details of one shown on this list.
+
+Optionally, you can decide to change the number of transactions to display on the page to 10, 20 or 50 transactions at the bottom of this page.
 
 ## Transaction List
 

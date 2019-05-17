@@ -10,7 +10,7 @@ The page will attempt to search for all available smart contracts, then allowing
 
 In this panel, you can fully specify the manner in which you wish to push an action. There are four required things to specify in this panel:
 
-1. The smart contract containing the action you wish to pull
+1. The smart contract containing the action you wish to push
 2. The specific action from the smart contract
 3. The permission/actor who will sign the action
 4. The payload containing arguments corresponding to the parameters of the action
@@ -30,6 +30,8 @@ Payload:
 
 If the action has been pushed successfully, a brief success message will be displayed. You can check if the action has been pushed by checking the [Action List Page](../action-list-page.md). 
 
+You can learn how to actually push an action by reading [the guide on how to push an action](../../guides/push-action).
+
 ## Action History Viewer
 
 The Action History Viewer panel is a quick way to survey previously pushed actions to the blockchain. They are displayed in rows of a table and each row consists of the following fields:
@@ -39,3 +41,5 @@ The Action History Viewer panel is a quick way to survey previously pushed actio
 * Permission (the actor which signed the action)
 
 Each row has a "PREFILL" button which users can click to automatically populate the Push Action panel with the same information used to push the specific action. This makes it easier for users to test the same action if the implementation has changed or for easily changing payload information. 
+
+On the upper left hand of the panel is a dropdown menu which allows you to filter this viewer by specific smart contracts. You can also choose to change the number of actions shown here at once. You can find more details on this in the sub-guide on [how to filter the action history viewer panel by smart contract](../../guides/push-action#the-action-history-viewer-and-filtering-by-smart-contract).

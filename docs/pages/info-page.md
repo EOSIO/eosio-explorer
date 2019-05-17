@@ -24,9 +24,10 @@ As a developer, you should be aware of the following things:
 1. **The connected `nodeos` and MongoDB instances should match with each other**. If they do not match, you will encounter account-related issues and certain pages will not behave as expected.
 2. A confirmation message will appear when you either attempt to connect to a new `nodeos` instance or attempt to reset your connection. This is because **all your currently stored private keys will be lost** upon changing connections. 
 
-One major caveat:
+Two major caveats:
 
 1. If you are in a network with other users or wish to develop by connecting to a `nodeos` instance hosted on something like AWS, **you should kindly start your tool locally and connect to the instance using this Connections panel**. Connecting to the IP directly without starting your tool locally would not allow you to deploy contracts as all smart contract compilation is done locally (note: deployment to a remote node is still possible in this situation after compilation). 
+2. Using the same tool to connect to multiple `nodeos` instances simultaneously is **currently unsupported**, whether through multiple tabs or through multiple browsers.
 
 ## Blockchain Information
 

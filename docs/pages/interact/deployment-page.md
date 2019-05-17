@@ -13,6 +13,8 @@ In order to compile smart contracts into the necessary `.abi` and `.wasm` files,
 
 For security reasons, browsers cannot directly access the local filesystem. Therefore, it is up to you to provide the root folder path containing your entry `.cpp` file as well as any dependencies in the same level of this file. The root folder path will be saved in the local state of the tool for future sessions. 
 
+A guide on how to deploy a smart contract can be found [here](../../guides/deployment).
+
 :warning: Disclaimer :warning: - For compilation of the smart contract to work, you must start this tool locally, such as running the tool with `eosio-explorer init` or `eosio-explorer start_gui`. 
 
 ## Step 1 - Select File Entry Point

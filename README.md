@@ -19,6 +19,7 @@
    * [For Contributors](#for-contributors)
    * [OS Platform Specific](#os-platform-specific)
 * [Usage](#usage)
+    * [Modes](#modes)
 * [Links to Documentation](#links-to-documentation)
 * [Contributing](#contributing)
 * [License](#license)
@@ -67,6 +68,8 @@ The EOSIO Labs™: EOSIO Explorer is designed specifically to be a tool for loca
 * [Docker](https://www.docker.com/) with support at Docker Engine `18.09.2` (latest stable)
 * [Node.JS](https://nodejs.org/en/) with support at `^10.15.3` LTS (latest stable)
 
+:warning: - When using Docker for this tool, we require a minimum resource of **4 CPU, 8 GB memory** allocation.
+
 ## Installation
 
 ### For Users
@@ -77,6 +80,8 @@ yarn global add eosio-explorer
 
 This will create a globally installed instance of the tool which you can run anywhere.
 
+:warning: - `yarn` will install global packages in a directory that may not be in your executable PATH. This may apply to certain OSes such as Ubuntu. In this case, you need to add the output of `yarn global bin` to your PATH such as in `~.bash_profile`.  
+
 If you wish to install the tool without `global`, then you can do the following instead:
 
 ```bash
@@ -84,11 +89,17 @@ git clone https://github.com/EOSIO/eosio-explorer.git
 yarn install
 ```
 
+After installing, you can do `eosio-explorer -v` or `yarn eosio-explorer -v` to check if the installation worked. If it worked, you should get the current version of the tool.
+
 ### For Contributors
 
 See: [Development](./docs/development.md)
 
 ### OS Platform Specific
+
+:warning: - In summary, for terminal OSes, headless Chrome (`chrome`) must be available, otherwise you cannot start the GUI. 
+
+If you want to start the tool without the GUI to simply create an EOSIO blockchain environment (`nodeos` and MongoDB setup), please pass the `--server-mode` flag to the `start` or `init` commands. This may be useful for users who run terminal OSes and want to supply their development team with a development environment quickly and painlessly.
 
 #### Ubuntu 18.04 / Ubuntu 16.04
 
@@ -98,7 +109,7 @@ If you want to start the tool with the bundled UI, you will need to make sure yo
 
 Out of the box, Amazon Linux will use an outdated version of Docker which this application currently does not support.
 
-In order to install the tool properly, you will need to manually install the latest stable version of Docker using binaries.
+In order to install the tool properly, you will need to manually install the latest stable version of Docker using binaries. You can find the relevant binaries [here](https://docs.docker.com/install/linux/docker-ce/binaries/).
 
 Finally, this requires the instance to be able to run or open headless Chrome in a sandbox.
 
@@ -113,7 +124,7 @@ You will need to create an exception within SELinux. Setting the following boole
 setsebool -P unconfined_chrome_sandbox_transition 0
 ```
 
-Alternatively, though not necessarily recommended, you can disable `SELinux` entirely.
+Alternatively, though not recommended, you can disable `SELinux` entirely. 
 
 ## Usage
 
@@ -126,14 +137,20 @@ Installed via cloning the repository: yarn eosio-explorer <command>
 Run the tool with the specified command
 
 Commands:
-  init              Initialize the tool by installing all dependencies, setting up
+  -v                Prints out the current version of the tool
+  -h or --help      Prints out the current list of available commands
+  init              Initialize the tool by installing all dependencies, setting up 
                     all Docker containers, etc.
                     Available flags:
+                    --server-mode - Starts the blockchain environment for the tool without 
+                                    opening the web application
                     -dev / --develop - Starts the tool in development mode
                     -s / --sample-data - Starts the tool with pre-existing sample accounts
                                          and smart contracts
   start             Start the tool, assumes the dependencies and Docker images are already prepared
                     Available flags:
+                    --server-mode - Starts the blockchain environment for the tool without 
+                                    opening the web application
                     -dev / --develop - Starts the tool in development mode
                     -d / --delete - Removes existing Docker containers
                     --init - Builds a production-ready version of the web tool,
@@ -147,6 +164,25 @@ Commands:
   pause_dockers     Pause any currently running Docker containers
   remove_dockers    Remove any currently present Docker containers
 ```
+
+You can also add the `-h` flag to any of the commands listed above to view the available flags for each command within the terminal.
+
+### Modes
+
+* Development mode sacrifices some performance but enables hot code reloading, allowing you to work on contributing to the project without rebuilding. This will not run as a background process.
+* Production mode serves a pre-rendered, pre-loaded version of the tool for speed and performance, and is for users of the tool.
+
+:warning: - The tool, in production mode, will run persistently in the background using `pm2`, meaning that you can choose to keep it running indefinitely. If you want to close the tool, you will need to kill the process which is listening on the port you specified in the configuration. By default, the production mode port is `5111`. You can use utilities like `netstat` and `lsof` to check this.
+
+If you want, you can globally install `pm2` to make managing this process easier, so you can run commands like `pm2 status` to check.
+
+#### Using `pm2`
+
+The quickest way to eliminate all processes on pm2 is to use `pm2 kill`. 
+
+Otherwise, you can check the list of processes with `pm2 list`, then use `pm2 delete <id>` to delete the specific processes you want. **You would need to use the process ID of `pm2`, not the process ID of your OS/machine**.
+
+The processes will be called `eosio compiler` for the compiler service and `eosio explorer` for the main tool.
 
 ## Links to Documentation
 
@@ -165,6 +201,4 @@ Interested in contributing? That's awesome! Please view the following links for 
 
 ## Important
 
-See LICENSE for copyright and license terms.  Block.one makes its contribution on a voluntary basis as a member of the EOSIO community and is not responsible for ensuring the overall performance of the software or any related applications.  We make no representation, warranty, guarantee or undertaking in respect of the software or any related documentation, whether expressed or implied, including but not limited to the warranties or merchantability, fitness for a particular purpose and noninfringement. In no event shall we be liable for any claim, damages or other liability, whether in an action of contract, tort or otherwise, arising from, out of or in connection with the software or documentation or the use or other dealings in the software or documentation.  Any test results or performance figures are indicative and will not reflect performance under all conditions.  Any reference to any third party or third-party product, service or other resource is not an endorsement or recommendation by Block.one.  We are not responsible, and disclaim any and all responsibility and liability, for your use of or reliance on any of these resources. Third-party resources may be updated, changed or terminated at any time, so the information here may be out of date or inaccurate.
-
-Wallets and related components are complex software that require the highest levels of security.  If incorrectly built or used, they may compromise users’ private keys and digital assets. Wallet applications and related components should undergo thorough security evaluations before being used.  Only experienced developers should work with this software.
+See LICENSE for copyright and license terms.  Block.one makes its contribution on a voluntary basis as a member of the EOSIO community and is not responsible for ensuring the overall performance of the software or any related applications.  We make no representation, warranty, guarantee or undertaking in respect of the software or any related documentation, whether expressed or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose and noninfringement. In no event shall we be liable for any claim, damages or other liability, whether in an action of contract, tort or otherwise, arising from, out of or in connection with the software or documentation or the use or other dealings in the software or documentation. Any test results or performance figures are indicative and will not reflect performance under all conditions.  Any reference to any third party or third-party product, service or other resource is not an endorsement or recommendation by Block.one.  We are not responsible, and disclaim any and all responsibility and liability, for your use of or reliance on any of these resources. Third-party resources may be updated, changed or terminated at any time, so the information here may be out of date or inaccurate.  Any person using or offering this software in connection with providing software, goods or services to third parties shall advise such third parties of these license terms, disclaimers and exclusions of liability.  Block.one, EOSIO, EOSIO Labs, EOS, the heptahedron and associated logos are trademarks of Block.one.

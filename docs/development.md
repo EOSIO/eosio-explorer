@@ -1,6 +1,6 @@
 # Start Development
 
-If you want to develop on this application ( etc. adding a new feature, bug fixing... ), please follow these steps to setup your local development environment.
+If you want to contribute to the development of this application (adding a new feature, fixing a bug or issue, etc.) please follow the following steps.
 
 Make sure `node.js`, `yarn`, `docker` are installed properly and we assume you are using macOS Mojave or higher to do the development.
 
@@ -11,8 +11,8 @@ Make sure `node.js`, `yarn`, `docker` are installed properly and we assume you a
 `eosio-toppings` is a monorepo with all the dependecies required for this app, you may need to make changes also in these dependecies while your development.
 
 1. git clone https://github.com/EOSIO/eosio-toppings
-2. cd into `eosio-toppings` ( eosio-toppings repository project root)
-3. cd into each of the below packages folder and run `yarn link` in each folder. A "success Registered" message should be shown each time you do `yarn link`
+2. cd into `eosio-toppings` (eosio-toppings repository project root)
+3. cd into each of the below packages folder and run `yarn link` in each folder. A "Success Registered" message should be shown each time you do `yarn link`
     - packages/api-eosio-compiler
     - packages/api-mongodb-plugin
     - packages/api-rpc
@@ -23,7 +23,7 @@ Make sure `node.js`, `yarn`, `docker` are installed properly and we assume you a
 ### eosio-explorer
 
 1. git clone https://github.com/EOSIO/eosio-explorer
-2. cd into `eosio-explorer` ( eosio-explorer repository project root)
+2. cd into `eosio-explorer` (eosio-explorer repository project root)
 3. Make symlinks to above local `eosio-toppings` dependecies. Run below commands. "success Using linked package" messages should be shown.
     - `yarn link @eosio-toppings/api-eosio-compiler`
     - `yarn link @eosio-toppings/api-mongodb-plugin`
@@ -64,7 +64,7 @@ Then, you can add mixins and variables into the `src/scss` folder according to t
 The source, at its core, is composed of three things:
 
 1. Pages - What the user sees when they navigate to a particular URL. A page should be created when you wish to display something at a new URL / route.
-2. Components - The building blocks of the page and the template. Individual parts that will be used throughout the site should be placed here/
+2. Components - The building blocks of the page and the template. Individual parts that will be used throughout the site should be placed here.
 3. Templates - A wrapper by which common components are shown in a particular layout which is used frequently. For example, it is common to have the same header and footer in different pages of the website. The page component should almost always be inside a template component.
 
 Prerendering is done using `react-snap` by crawling all routes and prerendering the pages into `.html` files.
