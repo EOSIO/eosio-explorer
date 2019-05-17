@@ -114,8 +114,12 @@ const PushactionPage = (props) => {
     props.fetchSmartContracts();
     setAdditionalValues(list);
     updateAction("", action, null, props.updateActionToPush);
-    if(action.act.account !== ""){      
-      setActionList(props.pushactionPage.smartContracts.smartContractsList.find(smartContract => smartContract.name === action.act.account).abi.actions); 
+    if(action.act.account !== ""){
+      let smartContract = props.pushactionPage.smartContracts.smartContractsList.find(smartContract => smartContract.name === action.act.account) || {};
+      if (Object.keys(smartContract).length > 0 && smartContract.abi.actions)
+        setActionList(smartContract.abi.actions);
+      else 
+        setActionList([]); 
     }
   }, [])
 
