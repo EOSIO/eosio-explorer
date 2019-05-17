@@ -2,7 +2,6 @@ const pm2 = require('pm2');
 const fs = require('fs');
 
 const displayStatus = (app) => {
-  //apps.forEach(app=>{
     if (app.pm2_env.status === "online") {
       console.log("\x1b[34m" + app.pm2_env.name + "\x1b[0m ---- \x1b[32m" + app.pm2_env.status + "\x1b[0m");
     }
@@ -10,7 +9,6 @@ const displayStatus = (app) => {
       console.log("\x1b[34m" + app.pm2_env.name + "\x1b[0m ---- \x1b[31m" + app.pm2_env.status + "\x1b[0m");
       console.log("\x1b[31msomething went wrong please use \"pm2 logs\" to check the logs\x1b[0m")
     }
-  //});
 }
 
 pm2.connect(function(err) {
@@ -26,8 +24,8 @@ pm2.connect(function(err) {
       script    : 'yarn start',
       cwd: process.argv.slice(2)[0]
     }, function(err, app) {
-      displayStatus(app[0]);
       if (err) throw err
+      displayStatus(app[0]);
     });
   }
   else
@@ -37,7 +35,7 @@ pm2.connect(function(err) {
     name      : "eosio explorer",
     script    : 'serve.js'         // Script to be run
   }, function(err, app) {
-    displayStatus(app[0]);
     if (err) throw err
+    displayStatus(app[0]);
   });
 });
