@@ -18,7 +18,6 @@ Out of the box, this tool requires several ports to be opened and available for 
 * `5111` [ UI - Web Application in Standard Mode ]
 * `8081` [ EOSIO Compiler/Deployment Local Service (Node.JS) ]
 * `8888` [ `nodeos` RPC API Service ] 
-* `9876` [ `nodeos` Net Plugin Service ] 
 * `27788` [ MongoDB API Service ]
 
 Currently, the ports for the `nodeos` RPC API and Net Plugin services **cannot** be modified.
