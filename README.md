@@ -14,6 +14,7 @@
 
 * [Overview](#overview)
    * [Features](#features)
+   * [Main EOSIO Dependencies](#main-eosio-dependencies)
    * [Platform Support](#platform-support)
    * [Required Tools](#required-tools)
 * [Installation](#installation)
@@ -22,6 +23,7 @@
    * [OS Platform Specific](#os-platform-specific)
 * [Usage](#usage)
     * [Modes](#modes)
+    * [Using PM2 with the Tool](#using-pm2)
 * [Links to Documentation](#links-to-documentation)
 * [Contributing](#contributing)
 * [License](#license)
@@ -56,6 +58,13 @@ The EOSIO Labs™: EOSIO Explorer is designed specifically to be a tool for loca
 5. :sunglasses: Search for and review accounts and deployed smart contracts on the connected EOSIO Blockchain
 6. :electric_plug: Simple way to connect to a different `nodeos` instance after opening the tool
 
+### Main EOSIO Dependencies
+
+The tool uses the following:
+
+1. `eosio v1.7.3`
+2. `eosio.cdt v1.6.1`
+
 ### Platform Support
 
 * Amazon Linux 2
@@ -70,7 +79,7 @@ The EOSIO Labs™: EOSIO Explorer is designed specifically to be a tool for loca
 * [Docker](https://www.docker.com/) with support at Docker Engine `18.09.2` (latest stable)
 * [Node.JS](https://nodejs.org/en/) with support at `^10.15.3` LTS (latest stable)
 
-:warning: - When using Docker for this tool, we require a minimum resource of **4 CPU, 8 GB memory** allocation.
+:warning: - When using Docker for this tool, we require a minimum resource of **4 CPU, 8 GB memory allocation**.
 
 ## Installation
 
@@ -181,17 +190,17 @@ sacrifices some performance but enables hot code reloading, allowing you to work
 
 serves a pre-rendered, pre-loaded version of the tool for speed and performance, and is for users of the tool.
 
-:warning: - The tool, in production mode, will run persistently in the background using `pm2`, meaning that you can choose to keep it running indefinitely. If you want to close the tool, you will need to kill the process which is listening on the port you specified in the configuration. By default, the production mode port is `5111`. You can use utilities like `netstat` and `lsof` to check this.
+### Using `pm2`
 
-If you want, you can globally install `pm2` to make managing this process easier, so you can run commands like `pm2 status` to check.
+The tool, in production mode, will run persistently in the background using `pm2`, meaning that you can choose to keep it running indefinitely. If you want to close the tool, you will need to kill the process which is listening on the port you specified in the configuration. By default, the production mode port is `5111`. You can use utilities like `netstat` and `lsof` to check this.
 
-#### Using `pm2`
+If you want, you can globally install `pm2` (`yarn global add pm2` or `npm install -g pm2`) to make managing this process easier, so you can run commands like `pm2 status` to check.
 
 The quickest way to eliminate all processes on pm2 is to use `pm2 kill`.
 
-Otherwise, you can check the list of processes with `pm2 list`, then use `pm2 delete <id>` to delete the specific processes you want. **You would need to use the process ID of `pm2`, not the process ID of your OS/machine**.
+Otherwise, you can check the list of processes with `pm2 list` (for example, you are running other Node processes using `pm2`), then use `pm2 delete <id>` to delete the specific processes you want. **You would need to use the process ID of `pm2`, not the process ID of your OS/machine**.
 
-The processes will be called `eosio compiler` for the compiler service and `eosio explorer` for the main tool.
+The processes will be called `eosio compiler` for the compiler service and `eosio explorer` for the main tool, when being served.
 
 ## Links to Documentation
 
