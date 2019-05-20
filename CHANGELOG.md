@@ -1,5 +1,16 @@
 # Change Log
 
+## [0.3.0-alpha.2](https://github.com/EOSIO/eosio-explorer/tree/0.3.0-alpha.2) (2019-05-20)
+[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.3.0-alpha.1...0.3.0-alpha.2)
+
+**Fixed bugs:**
+
+- Fix problem where changing to mainnet/other connection and then changing back to local node did not update blockchain info [\#75](https://github.com/EOSIO/eosio-explorer/pull/75) ([jcardenas9x](https://github.com/jcardenas9x))
+
+**Merged pull requests:**
+
+- Added missing but required information  [\#76](https://github.com/EOSIO/eosio-explorer/pull/76) ([jcardenas9x](https://github.com/jcardenas9x))
+
 ## [v0.3.0-alpha.1](https://github.com/EOSIO/eosio-explorer/tree/v0.3.0-alpha.1) (2019-05-20)
 [Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.3.0-alpha.0...v0.3.0-alpha.1)
 
