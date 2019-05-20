@@ -5,7 +5,9 @@
 
 <p align="center">
   <img alt="EOSIO Labs badge" src="https://img.shields.io/badge/EOSIO-Labs-5cb3ff.svg">
-  <img alt="NPM Version" src="https://img.shields.io/npm/v/eosio-explorer.svg">
+  <img alt="npm" src="https://img.shields.io/npm/v/eosio-explorer.svg">
+  <img alt="npm" src="https://img.shields.io/npm/dm/eosio-explorer.svg">
+  <img alt="PRs welcome badge" src="https://img.shields.io/badge/PRs-welcome-green.svg">
 </p>
 
 ## Table of Contents
@@ -80,7 +82,7 @@ yarn global add eosio-explorer
 
 This will create a globally installed instance of the tool which you can run anywhere.
 
-:warning: - `yarn` will install global packages in a directory that may not be in your executable PATH. This may apply to certain OSes such as Ubuntu. In this case, you need to add the output of `yarn global bin` to your PATH such as in `~.bash_profile`.  
+:warning: - `yarn` will install global packages in a directory that may not be in your executable PATH. This may apply to certain OSes such as Ubuntu. In this case, you need to add the output of `yarn global bin` to your PATH such as in `~.bash_profile`.
 
 If you wish to install the tool without `global`, then you can do the following instead:
 
@@ -97,7 +99,7 @@ See: [Development](./docs/development.md)
 
 ### OS Platform Specific
 
-:warning: - In summary, for terminal OSes, headless Chrome (`chrome`) must be available, otherwise you cannot start the GUI. 
+:warning: - In summary, for terminal OSes, headless Chrome (`chrome`) must be available, otherwise you cannot start the GUI.
 
 If you want to start the tool without the GUI to simply create an EOSIO blockchain environment (`nodeos` and MongoDB setup), please pass the `--server-mode` flag to the `start` or `init` commands. This may be useful for users who run terminal OSes and want to supply their development team with a development environment quickly and painlessly.
 
@@ -124,7 +126,7 @@ You will need to create an exception within SELinux. Setting the following boole
 setsebool -P unconfined_chrome_sandbox_transition 0
 ```
 
-Alternatively, though not recommended, you can disable `SELinux` entirely. 
+Alternatively, though not recommended, you can disable `SELinux` entirely.
 
 ## Usage
 
@@ -141,17 +143,17 @@ Run the tool with the specified command
 Commands:
   -v                Prints out the current version of the tool
   -h or --help      Prints out the current list of available commands
-  init              Initialize the tool by installing all dependencies, setting up 
+  init              Initialize the tool by installing all dependencies, setting up
                     all Docker containers, etc.
                     Available flags:
-                    --server-mode - Starts the blockchain environment for the tool without 
+                    --server-mode - Starts the blockchain environment for the tool without
                                     opening the web application
                     -dev / --develop - Starts the tool in development mode
                     -s / --sample-data - Starts the tool with pre-existing sample accounts
                                          and smart contracts
   start             Start the tool, assumes the dependencies and Docker images are already prepared
                     Available flags:
-                    --server-mode - Starts the blockchain environment for the tool without 
+                    --server-mode - Starts the blockchain environment for the tool without
                                     opening the web application
                     -dev / --develop - Starts the tool in development mode
                     -d / --delete - Removes existing Docker containers
@@ -185,7 +187,7 @@ If you want, you can globally install `pm2` to make managing this process easier
 
 #### Using `pm2`
 
-The quickest way to eliminate all processes on pm2 is to use `pm2 kill`. 
+The quickest way to eliminate all processes on pm2 is to use `pm2 kill`.
 
 Otherwise, you can check the list of processes with `pm2 list`, then use `pm2 delete <id>` to delete the specific processes you want. **You would need to use the process ID of `pm2`, not the process ID of your OS/machine**.
 
