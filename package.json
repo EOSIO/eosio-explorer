@@ -1,6 +1,6 @@
 {
   "name": "@ptb1/eosio-explorer",
-  "version": "0.3.0-alpha.0",
+  "version": "0.3.0-alpha.1",
   "license": "MIT",
   "author": "block.one",
   "repository": "https://github.com/EOSIO/eosio-explorer",
@@ -21,7 +21,7 @@
     "@eosio-toppings/api-eosio-compiler": "^0.3.0-alpha",
     "@eosio-toppings/api-mongodb-plugin": "^0.3.0-alpha",
     "@eosio-toppings/api-rpc": "^0.3.0-alpha",
-    "@eosio-toppings/docker-eosio-nodeos": "^0.3.0-alpha",
+    "@eosio-toppings/docker-eosio-nodeos": "^0.3.0-alpha.0",
     "@eosio-toppings/docker-mongodb": "^0.3.0-alpha",
     "axios": "^0.18.0",
     "cogo-toast": "^1.0.4",
