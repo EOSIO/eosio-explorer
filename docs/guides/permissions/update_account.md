@@ -12,6 +12,8 @@ In the Default Signature Account panel, you can see the list of accounts with pu
 
 After checking which account you want to update, click the "EDIT" button corresponding to that account.
 
+:warning: - The default `eosio` account created when initializing the blockchain using our tool cannot be edited.
+
 ## Updating Keys
 
 For instance, let us assume you want to update an account with the name `dragonfruit`. You would click the "EDIT" button corresponding to the `dragonfruit` account, which would take you to this panel:

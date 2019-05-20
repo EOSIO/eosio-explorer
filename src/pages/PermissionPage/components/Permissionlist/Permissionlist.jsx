@@ -122,6 +122,19 @@ const Permissionlist = (props) => {
       });
   }
 
+  function isDefaultEosio (permissionList) {
+    let _accountNameOne = (permissionList[0]) ?
+      permissionList[0].account === 'eosio' : false;
+    let _accountNameTwo = (permissionList[1]) ?
+      permissionList[1].account === 'eosio' : false;
+    let _accountOneId = (permissionList[0]) ?
+      (permissionList[0]._id === '1' || permissionList[0]._id === '2') : false;
+    let _accountTwoId = (permissionList[1]) ?
+      (permissionList[1]._id === '1' || permissionList[1]._id === '2') : false;
+
+    return _accountNameOne && _accountNameTwo && _accountOneId && _accountTwoId;
+  }
+
   function containsOnlyActiveOrOwner (permissionList) {
     let _permissionOneCorrect = false;
     let _permissionTwoCorrect = false;
@@ -217,9 +230,13 @@ const Permissionlist = (props) => {
                                               <ButtonPrimary 
                                                     style={{float:'right', marginRight:'5%'}}
                                                     onClick={() => getKeysData(defaultAccountsList[account][0].account, list, "edit")}
+                                                    disabled={isDefaultEosio(defaultAccountsList[account])}
                                                     block
                                                     >
-                                                    Edit
+                                                    {
+                                                      (isDefaultEosio(defaultAccountsList[account])) ? 
+                                                        "Uneditable" : "Edit"
+                                                    }
                                                   </ButtonPrimary>
                                             </EditButtonCell>
                                           </tr>
