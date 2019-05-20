@@ -24,6 +24,8 @@ The GitHub issue tracker is the preferred channel for [bug reports](#bug-reports
 
 * Please **be civil**. Keep the discussion on topic and respect the opinions of others. See also our [Contributor Code of Conduct](#conduct).
 
+Additionally support request can be directed to developers@block.one.
+
 ### Bug Reports
 
 A bug is a _demonstrable problem_ that is caused by the code in the repository. Good bug reports are extremely helpful - thank you!
