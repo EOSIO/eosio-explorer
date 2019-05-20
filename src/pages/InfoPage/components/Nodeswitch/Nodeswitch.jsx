@@ -138,7 +138,6 @@ const Nodeswitch = (props) => {
               props.connectReset();
               setValues(pathInitState);
               setKey(Date.now());
-              props.accountClear();
             }}
             >
             Are you sure you want to restart the Nodeos connection to its initial state? 

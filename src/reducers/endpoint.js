@@ -68,7 +68,7 @@ const swapEpic = ( action$, state$ ) => action$.pipe(
 
 const resetEpic = ( action$, state$ ) => action$.pipe(
   ofType(CONNECT_RESET),
-  mapTo(connectStart(pathInitState.nodeos, pathInitState.mongodb)),
+  mapTo(connectSwitch(pathInitState.nodeos, pathInitState.mongodb)),
 );
 
 
