@@ -97,7 +97,7 @@ const dataReducer = (state=dataInitState, action) => {
     case FETCH_REJECTED:
       return {
         ...state,
-        payload: action.payload !== null ? action.payload : [],
+        payload: [],
         error: action.error
       };
     default:
