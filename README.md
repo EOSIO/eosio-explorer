@@ -133,9 +133,11 @@ After installation of the application, depending on how you have installed the t
 ```bash
 Installed with global:                eosio-explorer <command>
 Installed via cloning the repository: yarn eosio-explorer <command>
+```
 
 Run the tool with the specified command
 
+```bash
 Commands:
   -v                Prints out the current version of the tool
   -h or --help      Prints out the current list of available commands
