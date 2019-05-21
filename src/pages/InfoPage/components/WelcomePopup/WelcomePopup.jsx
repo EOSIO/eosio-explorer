@@ -94,7 +94,7 @@ const WelcomePopup = ({ toggle, open, toggleShowAgain }) => {
                 and much more.
               </p>
               <p>If you have any feedback or you&apos;d like to contribute to the source code of EOSIO Labs™: EOSIO Explorer -
-                please follow our GitHub repository: <a href="https://github.com/EOSIO/eos-toppings" target="_blank" rel="noopener noreferrer">https://github.com/EOSIO/eosio-toppings</a>
+                please follow our GitHub repository: <a href="https://github.com/EOSIO/eosio-explorer" target="_blank" rel="noopener noreferrer">https://github.com/EOSIO/eosio-explorer</a>
               </p>
               <CheckBoxDivStyled style={{marginTop: '31px'}}>
                 <label className="checkboxContainer">
