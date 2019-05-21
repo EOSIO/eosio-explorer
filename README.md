@@ -41,12 +41,12 @@ The goal of this application is to enhance the user experience when developing E
 
 EOSIO Labs repositories are experimental.  Developers in the community are encouraged to use EOSIO Labs repositories as the basis for code and concepts to incorporate into their applications. Community members are also welcome to contribute and further develop these repositories. Since these repositories are not supported by Block.one, we may not provide responses to issue reports, pull requests, updates to functionality, or other requests from the community, and we encourage the community to take responsibility for these.
 
-### :warning: Disclaimer :warning:
+### :warning: Important :warning:
 
 The EOSIO Labs™: EOSIO Explorer is designed specifically to be a tool for local development. Therefore, numerous things must be kept in mind:
 
-1. **Wallet keys used for this tool may be compromised** if your machine is not properly secure.
-2. **The tool is not compatible with the EOSIO Mainnet**
+1. **Wallet keys used for this tool may be compromised** if your machine is not properly secure. **Keys for live wallets should not be used in EOSIO Explorer as the tool does not include appropriate security measures.**
+2. **The tool is not compatible with the EOSIO Mainnet or other public EOSIO-based blockchains**
 3. Tools that do not match the versions listed in [required tools](#required-tools) or OSes not listed in the [platform support list](#platform-support) may cause issues
 
 ### Features
