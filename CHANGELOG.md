@@ -1,5 +1,12 @@
 # Change Log
 
+## [0.3.0-beta.0](https://github.com/EOSIO/eosio-explorer/tree/0.3.0-beta.0) (2019-05-21)
+[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/0.3.0-beta...0.3.0-beta.0)
+
+**Merged pull requests:**
+
+- Internal: SKIP\_PREFLIGHT\_CHECK using create react app [\#85](https://github.com/EOSIO/eosio-explorer/pull/85) ([terrylks](https://github.com/terrylks))
+
 ## [0.3.0-beta](https://github.com/EOSIO/eosio-explorer/tree/0.3.0-beta) (2019-05-21)
 [Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/0.3.0-alpha.2...0.3.0-beta)
 
