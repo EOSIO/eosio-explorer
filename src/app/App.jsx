@@ -28,14 +28,22 @@ import { connectStart } from 'reducers/endpoint';
 import { pollingStart as headblock_pollingStart} from 'reducers/headblock';
 import { pollingStart as lastblockinfo_pollingStart } from 'reducers/lastblockinfo';
 
-const tagManagerArgs = {
-  gtmId: process.env.REACT_APP_GTM_ID
+const prodTagManagerArgs = {
+  gtmId: process.env.REACT_APP_PROD_GTM_ID
+}
+
+const devTagManagerArgs = {
+  gtmId: process.env.REACT_APP_DEV_GTM_ID
 }
 
 class App extends Component {
-
   componentWillMount() {
-    TagManager.initialize(tagManagerArgs);
+    if(process.env.NODE_ENV === "development" ) {
+      TagManager.initialize(devTagManagerArgs);
+    }
+    else {
+      TagManager.initialize(prodTagManagerArgs);
+    }
   }
 
   componentDidMount(){
