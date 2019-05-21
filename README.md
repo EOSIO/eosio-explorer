@@ -180,6 +180,23 @@ Commands:
 
 You can also add the `-h` flag to any of the commands listed above to view the available flags for each command within the terminal.
 
+Note: Below is a short explanation about the different ways to start the tool.
+
+```bash
+eosio-explorer init
+```
+This command will build the different docker images, remove existing data (in MongoDB, local Blockchain and Local Storage) and start the docker containers along with the application.
+
+```bash
+eosio-explorer start
+```
+This command will start/resume the docker containers and the application.
+
+```bash
+eosio-explorer start --init
+```
+This command will rebuild the application and clear the Local Storage.
+
 ### Modes
 
 **Development mode**
