@@ -43,7 +43,7 @@ COMPILER="$DEPENDENCIES_ROOT/api-eosio-compiler"
 
 ISDEV=false
 CLEARBROWSERSTORAGE=false
-USAGE="Usage: $(basename "$0") [-dev] [--clear-browser-storage] (program to start eosio-explorer gui)
+USAGE="Usage: eosio-explorer start_gui [-dev] [--clear-browser-storage] (program to start eosio-explorer gui)
 
 where:
     -dev, --develop           Starts the tool in development mode

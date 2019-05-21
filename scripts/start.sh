@@ -49,7 +49,7 @@ BUILDAPPLICATION=false
 MAKESAMPLEDATA=false
 SERVERMODE=false
 
-USAGE="Usage: $(basename "$0") [-dev] [-d] [-b] [-s] [--init] [--server-mode] (program to start eosio-explorer)
+USAGE="Usage: explorer-eosio start [-dev] [-d] [-b] [-s] [--init] [--server-mode] (program to start eosio-explorer)
 
 where:
     -dev, --develop     Starts the tool in development mode

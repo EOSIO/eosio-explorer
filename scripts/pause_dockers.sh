@@ -15,7 +15,7 @@ if [ -f "$APP/config.file.local" ]; then
   source $APP/config.file.local
 fi
 
-USAGE="Usage: $(basename "$0") (Pause any currently running Docker containers)"
+USAGE="Usage: eosio-explorer pause_dockers (Pause any currently running Docker containers)"
 
 # check for arguments
 for arg in $@

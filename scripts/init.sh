@@ -41,7 +41,7 @@ COMPILER="$LOCALSERVICE/docker-eosio-cdt"
 ISDEV=false
 MAKESAMPLEDATA=false
 
-USAGE="Usage: $(basename "$0") [-dev] [-s] [--server-mode] (program to initialize eosio-explorer)
+USAGE="Usage: eosio-explorer init [-dev] [-s] [--server-mode] (program to initialize eosio-explorer)
 
 where:
     -dev, --develop     Starts the tool in development mode
