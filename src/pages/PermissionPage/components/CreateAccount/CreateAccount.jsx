@@ -115,7 +115,7 @@ const CreateAccount = (props) => {
                         }
                         <FormText>
                           <strong>An EOSIO account name cannot contain capital letters.
-                          It also cannot contain the numbers 6, 7, 8 or 9. The only special character you can use is '.'</strong>
+                          It also cannot contain the numbers 0, 6, 7, 8 or 9. The only special character you can use is '.'</strong>
                         </FormText>
                       </Col>
                     </FormGroup>
