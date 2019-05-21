@@ -43,7 +43,7 @@ EOSDOCKER="$DEPENDENCIES_ROOT/docker-eosio-nodeos"
 MONGODOCKER="$DEPENDENCIES_ROOT/docker-mongodb"
 COMPILER="$DEPENDENCIES_ROOT/api-eosio-compiler/docker-eosio-cdt"
 
-USAGE="Usage: $(basename "$0") (Remove any currently present Docker containers)"
+USAGE="Usage: eosio-explorer remove_dockers (Remove any currently present Docker containers)"
 
 # check for arguments
 for arg in $@
