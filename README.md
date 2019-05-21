@@ -81,6 +81,8 @@ The tool uses the following:
 
 :warning: - When using Docker for this tool, we require a minimum resource of **4 CPU, 8 GB memory allocation**.
 
+:warning: - Currently, the project supports `react-scripts v2.x.x` but **not** `react-scripts v3.x.x` in your global dependency (check `yarn global list`).
+
 ## Installation
 
 ### For Users
