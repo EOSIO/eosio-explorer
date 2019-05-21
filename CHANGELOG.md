@@ -1,18 +1,27 @@
 # Change Log
 
-## [0.3.0-beta.0](https://github.com/EOSIO/eosio-explorer/tree/0.3.0-beta.0) (2019-05-21)
-[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/0.3.0-beta...0.3.0-beta.0)
+## [v0.3.0](https://github.com/EOSIO/eosio-explorer/tree/v0.3.0) (2019-05-21)
+[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.3.0-beta.0...v0.3.0)
+
+**Merged pull requests:**
+
+- Added '0' to list of invalid numbers for account creation [\#86](https://github.com/EOSIO/eosio-explorer/pull/86) ([jcardenas9x](https://github.com/jcardenas9x))
+- Release v0.3.0 and release to public. [\#77](https://github.com/EOSIO/eosio-explorer/pull/77) ([terrylks](https://github.com/terrylks))
+
+## [v0.3.0-beta.0](https://github.com/EOSIO/eosio-explorer/tree/v0.3.0-beta.0) (2019-05-21)
+[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.3.0-beta...v0.3.0-beta.0)
 
 **Merged pull requests:**
 
 - Internal: SKIP\_PREFLIGHT\_CHECK using create react app [\#85](https://github.com/EOSIO/eosio-explorer/pull/85) ([terrylks](https://github.com/terrylks))
 
-## [0.3.0-beta](https://github.com/EOSIO/eosio-explorer/tree/0.3.0-beta) (2019-05-21)
-[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/0.3.0-alpha.2...0.3.0-beta)
+## [v0.3.0-beta](https://github.com/EOSIO/eosio-explorer/tree/v0.3.0-beta) (2019-05-21)
+[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.3.0-alpha.2...v0.3.0-beta)
 
 **Implemented enhancements:**
 
 - Apply different tag manager code based on node env [\#84](https://github.com/EOSIO/eosio-explorer/pull/84) ([matharuajay](https://github.com/matharuajay))
+- Change name "Events" to "Console Log" for the logger panel. [\#82](https://github.com/EOSIO/eosio-explorer/pull/82) ([terrylks](https://github.com/terrylks))
 
 **Fixed bugs:**
 
@@ -21,13 +30,12 @@
 
 **Merged pull requests:**
 
-- Change name "Events" to "Console Log" for the logger panel. [\#82](https://github.com/EOSIO/eosio-explorer/pull/82) ([terrylks](https://github.com/terrylks))
 - Update GTM ID [\#81](https://github.com/EOSIO/eosio-explorer/pull/81) ([matharuajay](https://github.com/matharuajay))
 - Made revisions to README.md for proofing reasons [\#79](https://github.com/EOSIO/eosio-explorer/pull/79) ([jcardenas9x](https://github.com/jcardenas9x))
 - adds wallet related legal rider [\#78](https://github.com/EOSIO/eosio-explorer/pull/78) ([josephjguerra](https://github.com/josephjguerra))
 
-## [0.3.0-alpha.2](https://github.com/EOSIO/eosio-explorer/tree/0.3.0-alpha.2) (2019-05-20)
-[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.3.0-alpha.1...0.3.0-alpha.2)
+## [v0.3.0-alpha.2](https://github.com/EOSIO/eosio-explorer/tree/v0.3.0-alpha.2) (2019-05-20)
+[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.3.0-alpha.1...v0.3.0-alpha.2)
 
 **Fixed bugs:**
 
@@ -71,8 +79,11 @@
 
 - Show message to check log in case of error [\#67](https://github.com/EOSIO/eosio-explorer/pull/67) ([matharuajay](https://github.com/matharuajay))
 - Fogbugz 3408: Replace 'loading...' with spinner [\#58](https://github.com/EOSIO/eosio-explorer/pull/58) ([varshajnagaraja](https://github.com/varshajnagaraja))
+- Allow users to update the public keys for their existing accounts [\#57](https://github.com/EOSIO/eosio-explorer/pull/57) ([jcardenas9x](https://github.com/jcardenas9x))
 - Fogbugz 3391: Remove the whole Footer [\#54](https://github.com/EOSIO/eosio-explorer/pull/54) ([varshajnagaraja](https://github.com/varshajnagaraja))
 - Fogbugz 3398 - Use same pm2 to start the compiler service [\#53](https://github.com/EOSIO/eosio-explorer/pull/53) ([matharuajay](https://github.com/matharuajay))
+- Fogbugz 3346 - Action history filter [\#52](https://github.com/EOSIO/eosio-explorer/pull/52) ([mjk90](https://github.com/mjk90))
+- Added scope name to fetch multi-index table data [\#51](https://github.com/EOSIO/eosio-explorer/pull/51) ([varshajnagaraja](https://github.com/varshajnagaraja))
 - Performance fix in frontend for slow loading in mongodb [\#49](https://github.com/EOSIO/eosio-explorer/pull/49) ([terrylks](https://github.com/terrylks))
 - Critical UI Fixes for Manage Accounts Page [\#48](https://github.com/EOSIO/eosio-explorer/pull/48) ([jcardenas9x](https://github.com/jcardenas9x))
 - Fogbugz 3358: In react-snap prerendering, remove crawled \(/account/eosio\) [\#38](https://github.com/EOSIO/eosio-explorer/pull/38) ([varshajnagaraja](https://github.com/varshajnagaraja))
@@ -80,14 +91,17 @@
 **Fixed bugs:**
 
 - Fix a bug where prefilling an action with missing ABI breaks the push action page when revisiting it [\#66](https://github.com/EOSIO/eosio-explorer/pull/66) ([jcardenas9x](https://github.com/jcardenas9x))
+- Fogbugz 3374 - Actions List timeout fix [\#64](https://github.com/EOSIO/eosio-explorer/pull/64) ([mjk90](https://github.com/mjk90))
 - Fogbugz 3413: handle the url which contains '/' at the end [\#63](https://github.com/EOSIO/eosio-explorer/pull/63) ([varshajnagaraja](https://github.com/varshajnagaraja))
 - Fogbugz 3371: Help button should appear in front of all other buttons [\#61](https://github.com/EOSIO/eosio-explorer/pull/61) ([varshajnagaraja](https://github.com/varshajnagaraja))
 - Fixed issue where permission page breaks when connected to mainnet [\#59](https://github.com/EOSIO/eosio-explorer/pull/59) ([jcardenas9x](https://github.com/jcardenas9x))
+- Fogbugz 3403 - Action history filter fix [\#56](https://github.com/EOSIO/eosio-explorer/pull/56) ([mjk90](https://github.com/mjk90))
 - Performance fix in frontend for slow loading in mongodb [\#49](https://github.com/EOSIO/eosio-explorer/pull/49) ([terrylks](https://github.com/terrylks))
 - Critical UI Fixes for Manage Accounts Page [\#48](https://github.com/EOSIO/eosio-explorer/pull/48) ([jcardenas9x](https://github.com/jcardenas9x))
 - Fix: remove unused endpoint connect epic in push action page and bloc… [\#47](https://github.com/EOSIO/eosio-explorer/pull/47) ([terrylks](https://github.com/terrylks))
 - Fogbugz 3378 - Add pm2 to run the application [\#46](https://github.com/EOSIO/eosio-explorer/pull/46) ([matharuajay](https://github.com/matharuajay))
 - Fix drag and drop code viewer accepting .json files [\#45](https://github.com/EOSIO/eosio-explorer/pull/45) ([jcardenas9x](https://github.com/jcardenas9x))
+- Fogbugz 3381 - Fixed create account validation [\#44](https://github.com/EOSIO/eosio-explorer/pull/44) ([mjk90](https://github.com/mjk90))
 - Changed polling time to a global config, add timestamp to error log [\#43](https://github.com/EOSIO/eosio-explorer/pull/43) ([varshajnagaraja](https://github.com/varshajnagaraja))
 - Fix critical error where permission page breaks if currently not connected to any blockchain [\#42](https://github.com/EOSIO/eosio-explorer/pull/42) ([jcardenas9x](https://github.com/jcardenas9x))
 - Included missing account name validation in create account panel [\#41](https://github.com/EOSIO/eosio-explorer/pull/41) ([jcardenas9x](https://github.com/jcardenas9x))
@@ -96,16 +110,10 @@
 **Merged pull requests:**
 
 - Major documentation update, including main README updates [\#65](https://github.com/EOSIO/eosio-explorer/pull/65) ([jcardenas9x](https://github.com/jcardenas9x))
-- Fogbugz 3374 - Actions List timeout fix [\#64](https://github.com/EOSIO/eosio-explorer/pull/64) ([mjk90](https://github.com/mjk90))
 - Doc: author, contributors, description update. [\#62](https://github.com/EOSIO/eosio-explorer/pull/62) ([terrylks](https://github.com/terrylks))
 - Rename EOSIO Explorer to EOSIO Labs™: EOSIO Explorer [\#60](https://github.com/EOSIO/eosio-explorer/pull/60) ([terrylks](https://github.com/terrylks))
-- Allow users to update the public keys for their existing accounts [\#57](https://github.com/EOSIO/eosio-explorer/pull/57) ([jcardenas9x](https://github.com/jcardenas9x))
-- Fogbugz 3403 - Action history filter fix [\#56](https://github.com/EOSIO/eosio-explorer/pull/56) ([mjk90](https://github.com/mjk90))
 - Remove warning in transaction detail page [\#55](https://github.com/EOSIO/eosio-explorer/pull/55) ([varshajnagaraja](https://github.com/varshajnagaraja))
-- Fogbugz 3346 - Action history filter [\#52](https://github.com/EOSIO/eosio-explorer/pull/52) ([mjk90](https://github.com/mjk90))
-- Added scope name to fetch multi-index table data [\#51](https://github.com/EOSIO/eosio-explorer/pull/51) ([varshajnagaraja](https://github.com/varshajnagaraja))
 - Delete CODE\_OF\_CONDUCT.md [\#50](https://github.com/EOSIO/eosio-explorer/pull/50) ([josephjguerra](https://github.com/josephjguerra))
-- Fogbugz 3381 - Fixed create account validation [\#44](https://github.com/EOSIO/eosio-explorer/pull/44) ([mjk90](https://github.com/mjk90))
 - labs badge and legal rider [\#40](https://github.com/EOSIO/eosio-explorer/pull/40) ([josephjguerra](https://github.com/josephjguerra))
 - v0.2.2 release [\#37](https://github.com/EOSIO/eosio-explorer/pull/37) ([terrylks](https://github.com/terrylks))
 
@@ -116,6 +124,7 @@
 
 - Fogbugz 3370: Polling should start immediately rather after 1st interval [\#36](https://github.com/EOSIO/eosio-explorer/pull/36) ([varshajnagaraja](https://github.com/varshajnagaraja))
 - Fogbugz 3304 - Add help and version to script files [\#35](https://github.com/EOSIO/eosio-explorer/pull/35) ([matharuajay](https://github.com/matharuajay))
+- Update images to latest stable version. nodeos to v1.7.3 cdt to v1.6.1 [\#25](https://github.com/EOSIO/eosio-explorer/pull/25) ([terrylks](https://github.com/terrylks))
 - Modified the 'SUBMIT' button text in Create Account panel to 'CREATE' [\#24](https://github.com/EOSIO/eosio-explorer/pull/24) ([jcardenas9x](https://github.com/jcardenas9x))
 - Left align 'No. of Transactions' column in blocks list page [\#23](https://github.com/EOSIO/eosio-explorer/pull/23) ([varshajnagaraja](https://github.com/varshajnagaraja))
 - FogBugz 3360 - Tidy up Permission Page by hiding Import Account Section if there are no accounts to import [\#22](https://github.com/EOSIO/eosio-explorer/pull/22) ([jcardenas9x](https://github.com/jcardenas9x))
@@ -151,7 +160,6 @@
 **Merged pull requests:**
 
 - Rewrite and update documentation [\#34](https://github.com/EOSIO/eosio-explorer/pull/34) ([jcardenas9x](https://github.com/jcardenas9x))
-- Update images to latest stable version. nodeos to v1.7.3 cdt to v1.6.1 [\#25](https://github.com/EOSIO/eosio-explorer/pull/25) ([terrylks](https://github.com/terrylks))
 - Adding git attr and code of conduct files to sync with eosio-toppings repo.  [\#16](https://github.com/EOSIO/eosio-explorer/pull/16) ([terrylks](https://github.com/terrylks))
 - Doc: readme, license, contrib [\#13](https://github.com/EOSIO/eosio-explorer/pull/13) ([terrylks](https://github.com/terrylks))
 - Doc update [\#6](https://github.com/EOSIO/eosio-explorer/pull/6) ([terrylks](https://github.com/terrylks))
