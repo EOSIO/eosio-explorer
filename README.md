@@ -152,7 +152,7 @@ Run the tool with the specified command
 Commands:
   -v                Prints out the current version of the tool
   -h or --help      Prints out the current list of available commands
-  init              Initialize the tool by installing all dependencies, setting up
+  init              Initialize the tool by copying initial config, setting up
                     all Docker containers, etc.
                     Available flags:
                     --server-mode - Starts the blockchain environment for the tool without
@@ -201,7 +201,7 @@ This command will rebuild the application and clear the Local Storage.
 
 **Development mode**
 
-sacrifices some performance but enables hot code reloading, allowing you to work on contributing to the project without rebuilding. This will not run as a background process. This mode is ONLY to be used for developing the core functionality of EOSIO Explorer not for development of dApps. Unless you don't plan to modify or add new functionality to the tool, the production mode is supposed to be used. 
+sacrifices some performance but enables hot code reloading, allowing you to work on contributing to the project without rebuilding. This will not run as a background process. This mode is ONLY to be used for developing the core functionality of EOSIO Explorer not for development of dApps. Unless you don't plan to modify or add new functionality to the tool, the production mode is supposed to be used.
 
 **Production mode**
 
