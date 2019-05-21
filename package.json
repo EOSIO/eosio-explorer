@@ -1,6 +1,6 @@
 {
-  "name": "@ptb1/eosio-explorer",
-  "version": "0.3.0-beta.0",
+  "name": "eosio-explorer",
+  "version": "0.3.0",
   "license": "MIT",
   "author": "block.one",
   "repository": "https://github.com/EOSIO/eosio-explorer",
@@ -12,17 +12,14 @@
     "Ajay Matharu"
   ],
   "description": "A full web application to communicate with EOSIO blockchain in a local development environment",
-  "publishConfig": {
-    "access": "private"
-  },
   "dependencies": {
     "@coreui/coreui": "^2.1.8",
     "@coreui/react": "^2.1.5",
-    "@eosio-toppings/api-eosio-compiler": "^0.3.0-alpha",
-    "@eosio-toppings/api-mongodb-plugin": "^0.3.0-alpha",
-    "@eosio-toppings/api-rpc": "^0.3.0-alpha",
-    "@eosio-toppings/docker-eosio-nodeos": "^0.3.0-alpha.0",
-    "@eosio-toppings/docker-mongodb": "^0.3.0-alpha",
+    "@eosio-toppings/api-eosio-compiler": "^0.3.0",
+    "@eosio-toppings/api-mongodb-plugin": "^0.3.0",
+    "@eosio-toppings/api-rpc": "^0.3.0",
+    "@eosio-toppings/docker-eosio-nodeos": "^0.3.0",
+    "@eosio-toppings/docker-mongodb": "^0.3.0",
     "axios": "^0.18.0",
     "cogo-toast": "^1.0.4",
     "connected-react-router": "^6.3.2",
