@@ -42,9 +42,7 @@ const deletePm2 = (list) =>{
   list.forEach((app) =>{
     pm2.delete(app.pm2_env.pm_id, (err, res)=> {
       delete_count++;
-      console.log("deleted ",app.pm2_env.name);
       if(delete_count === list.length){
-        console.log("starting")
         startPm2();
       }
     });
@@ -68,7 +66,6 @@ pm2.connect(function(err) {
             deleteList.push(app); 
           }
           if(index === apps.length-1){
-            console.log("deleteList ", deleteList.length);
             if(deleteList.length > 0)
               deletePm2(deleteList);
             else
