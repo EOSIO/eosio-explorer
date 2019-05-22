@@ -96,5 +96,10 @@ if $ISDEV; then
     (cd $APP && PORT=$APP_DEV_PORT yarn start)
   fi
 else
+  # run yarn serve-clear to adding env CLEARBROWSERSTORAGE=true while starting to serve
+  if $CLEARBROWSERSTORAGE; then
+    (cd $APP && yarn serve-clear $COMPILER)
+  else
     (cd $APP && yarn serve $COMPILER)
+  fi
 fi

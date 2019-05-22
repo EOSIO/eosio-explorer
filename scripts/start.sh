@@ -49,17 +49,18 @@ BUILDAPPLICATION=false
 MAKESAMPLEDATA=false
 SERVERMODE=false
 HARDREPLAY=false
+NOTIMESTAMP=false
 
 USAGE="Usage: eosio-explorer start [-dev] [-d] [-b] [-s] [--init] [--server-mode] (program to start eosio-explorer)
 
 where:
     -dev, --develop     Starts the tool in development mode
     -d, --delete        Removes existing Docker containers
-    -b, --build         Re-build gui
+    -b, --build         Build gui
     -s, --sample-data   Starts the tool with pre-existing sample accounts and smart contracts
-    --init              Builds a production-ready version of the web tool,
-                          and opens the tool with cleared local storage
-    --server-mode       Starts the tool in server-mode, it will start the dockers but not the gui"
+    --init              Opens the tools with cleared local storage
+    --server-mode       Starts the tool in server-mode, it will start the dockers but not the gui
+    --no-timestamp      Builds gui without adding env LASTTIMESTAMP. Should only used by developer right before making a release"
 
 
 # check for arguments
@@ -88,6 +89,9 @@ do
     --hard-replay)
       HARDREPLAY=true
       ;;
+    --no-timestamp)
+      NOTIMESTAMP=true
+      ;;
     -h|--help)
       echo "$USAGE"
       exit
@@ -101,12 +105,11 @@ do
 done
 
 # If either of these conditions are true:
-#   init is being run
 #   user has not added -dev flag but:
 #     has added -d flag
 #     the build folder does not exist
 # Then build with a new timestamp.
-if ( $ISINIT || (!($ISDEV) && ($ISDELETE || [ ! -e $APP"/build" ])) ); then
+if (!($ISDEV) && ($ISDELETE || [ ! -e $APP"/build" ])); then
   BUILDAPPLICATION=true
 fi
 
@@ -165,19 +168,32 @@ if ( ! $SERVERMODE ); then
     echo "=============================="
 
     # Set environment variable "REACT_APP_LAST_INIT_TIMESTAMP" at build time to create a new timestamp while serving the app.
-    (cd $APP && REACT_APP_LAST_INIT_TIMESTAMP=$(date +%s) yarn build && printf "${GREEN}done${NC}")
+    if ( ! $NOTIMESTAMP ); then
+      (cd $APP && REACT_APP_LAST_INIT_TIMESTAMP=$(date +%s) yarn build && printf "${GREEN}done${NC}")
+    else
+      # Build without timestamp, this should only be used right before we are doing a release by publishing the build folder to npm
+
+      echo "You are building gui without a last timestamp!"
+      echo " "
+      (cd $APP && yarn build && printf "${GREEN}done${NC}")
+    fi
   fi
 
   # build and start the application
-  # If there is -d or from init setup, clear the browser storage by adding a new timestamp when start CRA dev.
   if $ISDEV; then
+    # If there is -d or from init setup, clear the browser storage by adding a new timestamp when start CRA dev.
     if ($ISDELETE || $ISINIT); then
       ./start_gui.sh -dev --clear-browser-storage
     else
       ./start_gui.sh -dev
     fi
   else
-    ./start_gui.sh
+    # If this is from init setup, clear the browser storage by setting CLEARBROWSERSTORAGE=true while serve.
+    if $ISINIT; then
+      ./start_gui.sh --clear-browser-storage
+    else
+      ./start_gui.sh
+    fi
   fi
 else
   echo ""

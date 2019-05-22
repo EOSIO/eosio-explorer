@@ -164,16 +164,20 @@ Commands:
                     -dev / --develop - Starts the tool in development mode
                     -s / --sample-data - Starts the tool with pre-existing sample accounts
                                          and smart contracts
+                    -b / --build - Force building the gui of the tool
   start             Start the tool, assumes the dependencies and Docker images are already prepared
                     Available flags:
                     --server-mode - Starts the blockchain environment for the tool without
                                     opening the web application
                     -dev / --develop - Starts the tool in development mode
-                    -d / --delete - Removes existing Docker containers
-                    --init - Builds a production-ready version of the web tool,
-                             and opens the tool with cleared local storage
                     -s / --sample-data - Starts the tool with pre-existing
                                          sample accounts and smart contracts
+                    -d / --delete - Removes existing Docker containers
+                    -b / --build - Force building the gui of the tool
+                    --init - Builds a production-ready version of the web tool,
+                             and opens the tool with cleared local storage
+                    --no-timestamp - Builds gui without adding env LASTTIMESTAMP.
+                                     Should only used by developer right before making a release
   start_gui         Starts the web tool locally without touching the nodeos and MongoDB containers.
                     Available flags:
                     -dev / --develop - Starts the tool in development mode
