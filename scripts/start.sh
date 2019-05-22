@@ -50,7 +50,7 @@ MAKESAMPLEDATA=false
 SERVERMODE=false
 HARDREPLAY=false
 
-USAGE="Usage: explorer-eosio start [-dev] [-d] [-b] [-s] [--init] [--server-mode] (program to start eosio-explorer)
+USAGE="Usage: eosio-explorer start [-dev] [-d] [-b] [-s] [--init] [--server-mode] (program to start eosio-explorer)
 
 where:
     -dev, --develop     Starts the tool in development mode
