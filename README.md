@@ -199,7 +199,7 @@ eosio-explorer start --init
 ```
 This command will rebuild the application and clear the Local Storage.
 
-:warning: - Proper way to pause/stop the dockers is to use the below command, if you don't stop the dockers properly then you may lose the data on the blockchain. Also use this command and stop dockers before shutting down the system to save data.
+:warning: **Warning** - Proper way to pause/stop the dockers is to use the below command, if you don't stop the dockers properly then you may lose the data on the blockchain. Also, use this command and stop dockers before shutting down the system to save data.
 
 ```bash
 eosio-explorer stop_dockers
