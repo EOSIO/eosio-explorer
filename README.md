@@ -176,7 +176,7 @@ Commands:
                     Available flags:
                     -dev / --develop - Starts the tool in development mode
                     --clear-browser-storage - Clears the local storage
-  pause_dockers     Pause any currently running Docker containers
+  stop_dockers      Stops any currently running Docker containers gracefully
   remove_dockers    Remove any currently present Docker containers
 ```
 
