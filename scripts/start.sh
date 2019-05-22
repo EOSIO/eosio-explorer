@@ -54,13 +54,13 @@ NOTIMESTAMP=false
 USAGE="Usage: eosio-explorer start [-dev] [-d] [-b] [-s] [--init] [--server-mode] (program to start eosio-explorer)
 
 where:
-    -dev, --develop         Starts the tool in development mode
-    -d, --delete            Removes existing Docker containers
-    -b, --build             Build gui
-    -s, --sample-data       Starts the tool with pre-existing sample accounts and smart contracts
-    --clear-browser-storage Starts the tool with clearing browser local storage
-    --server-mode           Starts the tool in server-mode, it will start the dockers but not the gui
-    --no-timestamp          Builds gui without adding env LASTTIMESTAMP. Should only used by developer right before making a release"
+    -dev, --develop     Starts the tool in development mode
+    -d, --delete        Removes existing Docker containers
+    -b, --build         Build gui
+    -s, --sample-data   Starts the tool with pre-existing sample accounts and smart contracts
+    --init              Opens the tools with cleared local storage
+    --server-mode       Starts the tool in server-mode, it will start the dockers but not the gui
+    --no-timestamp      Builds gui without adding env LASTTIMESTAMP. Should only used by developer right before making a release"
 
 
 # check for arguments
@@ -181,15 +181,15 @@ if ( ! $SERVERMODE ); then
 
   # build and start the application
   if $ISDEV; then
-    # If there is -d or from init setup ( or clear browser storage ), clear the browser storage by adding a new timestamp when start CRA dev.
-    if ($ISDELETE || $CLEARBROWSERSTORAGE); then
+    # If there is -d or from init setup, clear the browser storage by adding a new timestamp when start CRA dev.
+    if ($ISDELETE || $ISINIT); then
       ./start_gui.sh -dev --clear-browser-storage
     else
       ./start_gui.sh -dev
     fi
   else
-    # If this is from init setup ( or clear browser storage ), clear the browser storage by setting CLEARBROWSERSTORAGE=true while serve.
-    if $CLEARBROWSERSTORAGE; then
+    # If this is from init setup, clear the browser storage by setting CLEARBROWSERSTORAGE=true while serve.
+    if $ISINIT; then
       ./start_gui.sh --clear-browser-storage
     else
       ./start_gui.sh
