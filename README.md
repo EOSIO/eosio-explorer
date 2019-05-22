@@ -93,7 +93,7 @@ yarn global add eosio-explorer
 
 This will create a globally installed instance of the tool which you can run anywhere.
 
-:warning: - `yarn` will install global packages in a directory that may not be in your executable PATH. This may apply to certain OSes such as Ubuntu. In this case, you need to add the output of `yarn global bin` to your PATH such as in `~.bash_profile`.
+:warning: - `yarn` will install global packages in a directory that may not be in your executable PATH. This may apply to certain OSes such as Ubuntu. In this case, you need to add the output of `yarn global bin` to your PATH such as in `~/.bash_profile`.
 
 If you wish to install the tool without `global`, then you can do the following instead:
 
