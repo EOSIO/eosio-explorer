@@ -244,6 +244,10 @@ The processes will be called `eosio compiler` for the compiler service and `eosi
 * [Main Documentation](./docs)
 * [Development](./docs/development.md)
 
+## Analytics
+
+In order to help us understand developer usage better, the application will connect to Google Analytics to provide us basic info on country, browser, OS and ISP.”
+
 ## Contributing
 
 Interested in contributing? That's awesome! Please view the following links for more information on contributing to the project.
