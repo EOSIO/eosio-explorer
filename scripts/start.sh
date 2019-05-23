@@ -48,8 +48,9 @@ ISINIT=false
 BUILDAPPLICATION=false
 MAKESAMPLEDATA=false
 SERVERMODE=false
+HARDREPLAY=false
 
-USAGE="Usage: explorer-eosio start [-dev] [-d] [-b] [-s] [--init] [--server-mode] (program to start eosio-explorer)
+USAGE="Usage: eosio-explorer start [-dev] [-d] [-b] [-s] [--init] [--server-mode] (program to start eosio-explorer)
 
 where:
     -dev, --develop     Starts the tool in development mode
@@ -84,6 +85,9 @@ do
     --server-mode)
       SERVERMODE=true
       ;;
+    --hard-replay)
+      HARDREPLAY=true
+      ;;
     -h|--help)
       echo "$USAGE"
       exit
@@ -110,52 +114,20 @@ echo " "
 echo "=============================="
 echo "STARTING MONGODB DOCKER"
 echo "=============================="
-# check if container is paused
-if [ "$(docker ps -q -f status=paused -f name=^$MONGODB_CONTAINER_NAME$)" ]; then
-  echo 'resuming mongodb docker'
-  docker unpause $MONGODB_CONTAINER_NAME
-else
-  # check if container exists
-  if [ ! "$(docker ps -q -f name=^$MONGODB_CONTAINER_NAME$)" ]; then
-    # check if volume exists
-    if [ "$(docker volume ls --format '{{.Name}}' -f name=^$MONGODB_VOLUME_NAME$)" ]; then
-        echo "mongodb docker is not running, but mongo volume exists"
-        echo "removing volume"
-        # remove volume if container doesnt exists
-        docker volume rm --force $MONGODB_VOLUME_NAME
-        sleep 10 #else docker fails  sometimes
-    fi
-  fi
-  # start the docker
-  (cd $MONGODOCKER && ./start_mongodb_docker.sh && printf "${GREEN}done${NC}")
-fi
+(cd $MONGODOCKER && ./start_mongodb_docker.sh && printf "${GREEN}done${NC}")
 
 echo " "
 echo "=============================="
 echo "STARTING EOSIO DOCKER"
 echo "=============================="
-if [ "$(docker ps -q -f status=paused -f name=^$NODEOS_CONTAINER_NAME$)" ]; then
-  echo 'resuming eosio docker'
-  docker unpause $NODEOS_CONTAINER_NAME
+if ($MAKESAMPLEDATA); then
+  (cd $EOSDOCKER && ./start_eosio_docker.sh --nolog --sample-data && printf "${GREEN}done${NC}")
+elif ($HARDREPLAY) then
+  (cd $EOSDOCKER && ./start_eosio_docker.sh --nolog --hard-replay && printf "${GREEN}done${NC}")
 else
-  # check if container exists
-  if [ ! "$(docker ps -q -f name=^$NODEOS_CONTAINER_NAME$)" ]; then
-    # check if volume exists
-    if [ "$(docker volume ls --format '{{.Name}}' -f name=^$NODEOS_VOLUME_NAME$)" ]; then
-      echo "eosio docker is not running, but eosio volume exists"
-      echo "cleaning data now"
-      # remove volume if container doesnt exists
-      docker volume rm --force $NODEOS_VOLUME_NAME
-      sleep 10
-    fi
-  fi
-  # start the docker
-  if ($MAKESAMPLEDATA); then
-    (cd $EOSDOCKER && ./start_eosio_docker.sh --nolog --sample-data && printf "${GREEN}done${NC}")
-  else
-    (cd $EOSDOCKER && ./start_eosio_docker.sh --nolog && printf "${GREEN}done${NC}")
-  fi
+  (cd $EOSDOCKER && ./start_eosio_docker.sh --nolog && printf "${GREEN}done${NC}")
 fi
+
 
 
 # wait until eosio blockchain is started
@@ -174,11 +146,11 @@ do
   else
     # if the blockchain is not running even after a minute, remove the dockers and try to start again
     echo " "
-    echo "Problem starting docker, removing dockers and restarting"
-    ./remove_dockers.sh
+    printf "${RED}Problem starting docker${NC}"
     echo " "
-    echo "Restarting eosio docker"
-    ./start.sh $@
+    echo "here is what you can do"
+    echo "eosio-explorer start --delete (this will clear the data and start the application)"
+    echo "eosio-explorer init (this will initialize the application, clear all the blockchain and mongo data and start the application)"
     exit 0
   fi
 done

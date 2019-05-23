@@ -15,7 +15,7 @@ if [ -f "$APP/config.file.local" ]; then
   source $APP/config.file.local
 fi
 
-USAGE="Usage: eosio-explorer pause_dockers (Pause any currently running Docker containers)"
+USAGE="Usage: eosio-explorer stop_dockers (Stop any currently running Docker containers gracefully)"
 
 # check for arguments
 for arg in $@
@@ -35,39 +35,35 @@ done
 
 echo " "
 echo "=============================="
-echo "PAUSING EOSIO DOCKER"
+echo "STOPPING EOSIO DOCKER"
 echo "=============================="
 # Check if the Docker container is running
-if [ "$(docker ps -q -f name=^$NODEOS_CONTAINER_NAME$)" ]; then
-    if [ "$(docker ps -aq -f status=running -f name=^$NODEOS_CONTAINER_NAME$)" ]; then
-        docker pause $NODEOS_CONTAINER_NAME
-    else
-        echo "eosio docker is not running"
-    fi
+if [ "$(docker ps -q -f status=running -f name=^$NODEOS_CONTAINER_NAME$)" ]; then
+    docker exec -i $NODEOS_CONTAINER_NAME ./scripts/stop_blockchain.sh
+else
+    echo "eosio docker is not running"
 fi
+
 
 echo " "
 echo "=============================="
-echo "PAUSING CDT DOCKER"
+echo "STOPPING CDT DOCKER"
 echo "=============================="
 # Check if the Docker container is running
-if [ "$(docker ps -aq -f name=^$CDT_CONTAINER_NAME$)" ]; then
-    if [ "$(docker ps -aq -f status=running -f name=^$CDT_CONTAINER_NAME$)" ]; then
-        docker pause $CDT_CONTAINER_NAME
-    else
-        echo "cdt docker is not running"
-    fi
+if [ "$(docker ps -aq -f status=running -f name=^$CDT_CONTAINER_NAME$)" ]; then
+    docker stop $CDT_CONTAINER_NAME
+else
+    echo "cdt docker is not running"
 fi
+
 
 echo " "
 echo "=============================="
-echo "PAUSING MONGODB DOCKER"
+echo "STOPPING MONGODB DOCKER"
 echo "=============================="
 # Check if the Docker container is running
-if [ "$(docker ps -aq -f name=^$MONGODB_CONTAINER_NAME$)" ]; then
-    if [ "$(docker ps -aq -f status=running -f name=^$MONGODB_CONTAINER_NAME$)" ]; then
-        docker pause $MONGODB_CONTAINER_NAME
-    else
-        echo "mongodb docker is not running"
-    fi
+if [ "$(docker ps -aq -f status=running -f name=^$MONGODB_CONTAINER_NAME$)" ]; then
+    docker stop $MONGODB_CONTAINER_NAME
+else
+    echo "mongodb docker is not running"
 fi

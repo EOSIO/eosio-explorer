@@ -35,7 +35,7 @@ where [command]:
                     
     start_gui       Starts the web tool locally without touching the nodeos and MongoDB containers
 
-    pause_dockers   Pause any currently running Docker containers
+    stop_dockers    Stops any currently running Docker containers gracefully
 
     remove_dockers  Remove any currently present Docker containers"
 
@@ -52,8 +52,8 @@ case $1 in
   ./scripts/start_gui.sh ${@:2}
   ;;
 
-  pause_dockers)
-  ./scripts/pause_dockers.sh ${@:2}
+  stop_dockers)
+  ./scripts/stop_dockers.sh ${@:2}
   ;;
 
   remove_dockers)

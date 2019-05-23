@@ -22,6 +22,8 @@
    * [For Contributors](#for-contributors)
    * [OS Platform Specific](#os-platform-specific)
 * [Usage](#usage)
+    * [Starting the tool](#starting-the-tool)
+    * [Stopping the tool](#stopping-the-tool)
     * [Modes](#modes)
     * [Using PM2 with the Tool](#using-pm2)
 * [Links to Documentation](#links-to-documentation)
@@ -176,13 +178,15 @@ Commands:
                     Available flags:
                     -dev / --develop - Starts the tool in development mode
                     --clear-browser-storage - Clears the local storage
-  pause_dockers     Pause any currently running Docker containers
+  stop_dockers      Stops any currently running Docker containers gracefully
   remove_dockers    Remove any currently present Docker containers
 ```
 
 You can also add the `-h` flag to any of the commands listed above to view the available flags for each command within the terminal.
 
-Note: Below is a short explanation about the different ways to start the tool.
+### Starting the tool
+
+Below is a short explanation about the different ways to start the tool.
 
 ```bash
 eosio-explorer init
@@ -198,6 +202,16 @@ This command will start/resume the docker containers and the application.
 eosio-explorer start --init
 ```
 This command will rebuild the application and clear the Local Storage.
+
+### Stopping the tool
+
+:warning: - Proper way to pause/stop the docker containers is to use the below command, if you don't stop the docker containers properly then you may lose the data on the blockchain. Also, use this command and stop docker containers before shutting down the system to save data.
+
+```bash
+eosio-explorer stop_dockers
+```
+
+Then use `eosio-explorer start` to resume/restart the docker containers.
 
 ### Modes
 
