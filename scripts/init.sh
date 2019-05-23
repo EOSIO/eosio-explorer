@@ -128,7 +128,7 @@ echo "=============================="
 ./remove_dockers.sh
 
 # start the dockers and gui
-./start.sh $@ --init
+./start.sh $@ --clear-browser-storage
 
 P1=$!
 
