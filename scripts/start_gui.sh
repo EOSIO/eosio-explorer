@@ -47,7 +47,7 @@ USAGE="Usage: eosio-explorer start_gui [-dev] [--clear-browser-storage] (program
 
 where:
     -dev, --develop           Starts the tool in development mode
-    --clear-browser-storage   Clears the local storage"
+    --clear-browser-storage   Starts the tool with clearing browser local storage"
 
 
 # check for arguments
@@ -96,5 +96,10 @@ if $ISDEV; then
     (cd $APP && PORT=$APP_DEV_PORT yarn start)
   fi
 else
+  # run yarn serve-clear to adding env CLEARBROWSERSTORAGE=true while starting to serve
+  if $CLEARBROWSERSTORAGE; then
+    (cd $APP && yarn serve-clear $COMPILER)
+  else
     (cd $APP && yarn serve $COMPILER)
+  fi
 fi

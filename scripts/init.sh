@@ -46,6 +46,7 @@ USAGE="Usage: eosio-explorer init [-dev] [-s] [--server-mode] (program to initia
 where:
     -dev, --develop     Starts the tool in development mode
     -s, --sample-data   Starts the tool with pre-existing sample accounts and smart contracts
+    -b, --build         Build gui
     --server-mode       Starts the tool in server-mode, it will start the dockers but not the gui"
 
 # check for arguments
@@ -60,6 +61,9 @@ do
       ;;
     --server-mode)
       echo "Running the tool in server mode"
+      ;;
+    -b|--build)
+      echo "Running the tool with building gui"
       ;;
     -h|--help)
       echo "$USAGE"
@@ -124,7 +128,7 @@ echo "=============================="
 ./remove_dockers.sh
 
 # start the dockers and gui
-./start.sh $@ --init
+./start.sh $@ --clear-browser-storage
 
 P1=$!
 
