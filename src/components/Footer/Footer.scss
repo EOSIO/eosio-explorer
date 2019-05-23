@@ -1,14 +1,20 @@
 .app-footer {
-  color: #23282c;
-  background: #d5e0eb;
-  border-top: 2px solid #a5b2bf;
-
-  span:first-child {
-    margin-left: 15px;
-  }
+  color: white;
+  background: #443f54;
+  flex: 0 0 37px;
+  padding-top: 7px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: baseline;
   a {
-    color: #23282c;
-    font-weight: bold;
-    margin-right: 75px;
+    color: white;
+    font-weight: 500;
+    &:first-child {
+      font-size: 11px;
+    }
+    &:last-child {
+      margin-right: 83px;
+      font-size: 10px;
+    }
   }
 }
