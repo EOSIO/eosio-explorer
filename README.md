@@ -158,30 +158,32 @@ Commands:
   -h or --help      Prints out the current list of available commands
   init              Initialize the tool by copying initial config, setting up
                     all Docker containers, etc.
-                    Available flags:
-                    --server-mode - Starts the blockchain environment for the tool without
-                                    opening the web application
-                    -dev / --develop - Starts the tool in development mode
+                    Available flag(s):
                     -s / --sample-data - Starts the tool with pre-existing sample accounts
                                          and smart contracts
-                    -b / --build - Force building the gui of the tool
-  start             Start the tool, assumes the dependencies and Docker images are already prepared
-                    Available flags:
                     --server-mode - Starts the blockchain environment for the tool without
                                     opening the web application
+                    Below flag(s) only work in development mode by git cloning the repo:
                     -dev / --develop - Starts the tool in development mode
+                    -b / --build - Force building the gui of the tool
+  start             Start the tool, assumes the dependencies and Docker images are already prepared
+                    Available flag(s):
                     -s / --sample-data - Starts the tool with pre-existing
                                          sample accounts and smart contracts
-                    -d / --delete - Removes existing Docker containers
+                    --server-mode - Starts the blockchain environment for the tool without
+                                    opening the web application
+                    --clear-browser-storage - Starts the tool with clearing browser local storage
+                    -d / --delete - Removes existing Docker containers and clear the browser local storage
+                    Below flag(s) only work in development mode by git cloning the repo:
+                    -dev / --develop - Starts the tool in development mode
                     -b / --build - Force building the gui of the tool
-                    --init - Builds a production-ready version of the web tool,
-                             and opens the tool with cleared local storage
                     --no-timestamp - Builds gui without adding env LASTTIMESTAMP.
                                      Should only used by developer right before making a release
   start_gui         Starts the web tool locally without touching the nodeos and MongoDB containers.
-                    Available flags:
-                    -dev / --develop - Starts the tool in development mode
+                    Available flag(s):
                     --clear-browser-storage - Clears the local storage
+                    Below flag(s) only work in development mode by git cloning the repo:
+                    -dev / --develop - Starts the tool in development mode
   stop_dockers      Stops any currently running Docker containers gracefully
   remove_dockers    Remove any currently present Docker containers
 ```

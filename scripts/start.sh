@@ -51,15 +51,16 @@ SERVERMODE=false
 HARDREPLAY=false
 NOTIMESTAMP=false
 
-USAGE="Usage: eosio-explorer start [-dev] [-d] [-b] [-s] [--init] [--server-mode] (program to start eosio-explorer)
+USAGE="Usage: eosio-explorer start [-dev] [-d] [-b] [-s] [--init] [--server-mode [--clear-browser-storage] (program to start eosio-explorer)
 
 where:
-    -dev, --develop         Starts the tool in development mode
-    -d, --delete            Removes existing Docker containers
-    -b, --build             Build gui
+    --server-mode           Starts the tool in server-mode, it will start the dockers but not the gui
     -s, --sample-data       Starts the tool with pre-existing sample accounts and smart contracts
     --clear-browser-storage Starts the tool with clearing browser local storage
-    --server-mode           Starts the tool in server-mode, it will start the dockers but not the gui
+    -d, --delete            Removes existing Docker containers
+    Only available in development:
+    -dev, --develop         Starts the tool in development mode
+    -b, --build             Build gui
     --no-timestamp          Builds gui without adding env LASTTIMESTAMP. Should only used by developer right before making a release"
 
 
