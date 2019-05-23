@@ -1,0 +1,20 @@
+.app-footer {
+  color: white;
+  background: #443f54;
+  flex: 0 0 37px;
+  padding-top: 7px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: baseline;
+  a {
+    color: white;
+    font-weight: 500;
+    &:first-child {
+      font-size: 11px;
+    }
+    &:last-child {
+      margin-right: 83px;
+      font-size: 10px;
+    }
+  }
+}

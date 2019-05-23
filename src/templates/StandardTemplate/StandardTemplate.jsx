@@ -1,11 +1,12 @@
 import React from 'react';
 import { Container } from 'reactstrap';
 
-import { Header, HelpFAB, ConsoleLogger } from 'components';
+import { Header, Footer, HelpFAB, ConsoleLogger } from 'components';
 import styled from 'styled-components';
 
 import {
-  AppHeader
+  AppHeader,
+  AppFooter
 } from '@coreui/react';
 
 const StandardTemplateStyled = styled.div`
@@ -15,7 +16,7 @@ const StandardTemplateStyled = styled.div`
     
     + .app-body {
         margin-top: 89px;
-        margin-bottom: 50px;
+        margin-bottom: 25px;
     }
   }
 `;
@@ -36,6 +37,9 @@ const StandardTemplate = ({
       </main>
     </div>
     <ConsoleLogger/>
+    <AppFooter>
+      <Footer />
+    </AppFooter>
   </StandardTemplateStyled>
 )
 

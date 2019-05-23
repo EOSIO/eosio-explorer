@@ -1,4 +1,6 @@
 .ConsoleLogger {
+  border: 1px solid #a5b2bf;
+  border-bottom: none;
   position: fixed;
   left: 20px;
   bottom: -600px;
@@ -9,7 +11,6 @@
     bottom: -645px;
   }
   transition: all 0.4s ease-in-out;
-  border: 1px solid #d3d3d3;
   .terminal-wrapper{
     width: 600px;
     height: 600px;
@@ -29,9 +30,9 @@
         align-items: center;
         i{
           font-size: 22px;
-          margin-right: 10px;         
+          margin-right: 10px;
           color: #667d9a;
-          
+
         }
         .fa-window-minimize{
           font-size: 19px;
