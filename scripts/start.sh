@@ -43,7 +43,6 @@ EOSDOCKER="$DEPENDENCIES_ROOT/docker-eosio-nodeos"
 MONGODOCKER="$DEPENDENCIES_ROOT/docker-mongodb"
 
 ISDEV=false
-ISDELETE=false
 CLEARBROWSERSTORAGE=false
 BUILDAPPLICATION=false
 MAKESAMPLEDATA=false
@@ -70,7 +69,7 @@ do
   case $arg in
     -d|--delete)
       ./remove_dockers.sh
-      ISDELETE=true
+      CLEARBROWSERSTORAGE=true
       ;;
     -dev|--develop)
       ISDEV=true
@@ -107,10 +106,9 @@ done
 
 # If either of these conditions are true:
 #   user has not added -dev flag but:
-#     has added -d flag
 #     the build folder does not exist
 # Then build with a new timestamp.
-if (!($ISDEV) && ($ISDELETE || [ ! -e $APP"/build" ])); then
+if (!($ISDEV) && [ ! -e $APP"/build" ]); then
   BUILDAPPLICATION=true
 fi
 
@@ -183,13 +181,13 @@ if ( ! $SERVERMODE ); then
   # build and start the application
   if $ISDEV; then
     # If there is -d or from init setup ( or clear browser storage ), clear the browser storage by adding a new timestamp when start CRA dev.
-    if ($ISDELETE || $CLEARBROWSERSTORAGE); then
+    if $CLEARBROWSERSTORAGE; then
       ./start_gui.sh -dev --clear-browser-storage
     else
       ./start_gui.sh -dev
     fi
   else
-    # If this is from init setup ( or clear browser storage ), clear the browser storage by setting CLEARBROWSERSTORAGE=true while serve.
+    # If there is -d or from init setup ( or clear browser storage ), clear the browser storage by setting CLEARBROWSERSTORAGE=true while serve.
     if $CLEARBROWSERSTORAGE; then
       ./start_gui.sh --clear-browser-storage
     else
