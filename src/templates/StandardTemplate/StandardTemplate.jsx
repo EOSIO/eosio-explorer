@@ -16,7 +16,7 @@ const StandardTemplateStyled = styled.div`
     
     + .app-body {
         margin-top: 89px;
-        margin-bottom: 50px;
+        margin-bottom: 25px;
     }
   }
 `;
