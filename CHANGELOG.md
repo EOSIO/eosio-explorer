@@ -1,5 +1,13 @@
 # Change Log
 
+## [v0.3.1](https://github.com/EOSIO/eosio-explorer/tree/v0.3.1) (2019-05-24)
+[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.3.1-alpha.0...v0.3.1)
+
+**Implemented enhancements:**
+
+- Remove legacy code which only used for npm private package. [\#97](https://github.com/EOSIO/eosio-explorer/pull/97) ([terrylks](https://github.com/terrylks))
+- Align Console Logger to page padding. [\#96](https://github.com/EOSIO/eosio-explorer/pull/96) ([terrylks](https://github.com/terrylks))
+
 ## [v0.3.1-alpha.0](https://github.com/EOSIO/eosio-explorer/tree/v0.3.1-alpha.0) (2019-05-24)
 [Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.3.0...v0.3.1-alpha.0)
 
