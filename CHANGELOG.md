@@ -1,19 +1,47 @@
 # Change Log
 
+## [v0.3.1-alpha.0](https://github.com/EOSIO/eosio-explorer/tree/v0.3.1-alpha.0) (2019-05-24)
+[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.3.0...v0.3.1-alpha.0)
+
+**Implemented enhancements:**
+
+- Move styled-components dependencies from eosio-toppings to here. [\#95](https://github.com/EOSIO/eosio-explorer/pull/95) ([terrylks](https://github.com/terrylks))
+- Prepare push to npm with only build related files. [\#94](https://github.com/EOSIO/eosio-explorer/pull/94) ([terrylks](https://github.com/terrylks))
+- Fogbugz 3447 - Add footer with Privacy Policy link [\#92](https://github.com/EOSIO/eosio-explorer/pull/92) ([mjk90](https://github.com/mjk90))
+- Remove unnecessary dependencies [\#91](https://github.com/EOSIO/eosio-explorer/pull/91) ([varshajnagaraja](https://github.com/varshajnagaraja))
+- Fogbugz 3443 - In production mode, serve the app to user without building GUI while init [\#90](https://github.com/EOSIO/eosio-explorer/pull/90) ([terrylks](https://github.com/terrylks))
+- Fogbugz 3442 - Handle docker volumes after restart [\#89](https://github.com/EOSIO/eosio-explorer/pull/89) ([matharuajay](https://github.com/matharuajay))
+- Fogbugz 3426: Kill and restart the process in pm2 [\#88](https://github.com/EOSIO/eosio-explorer/pull/88) ([varshajnagaraja](https://github.com/varshajnagaraja))
+
+**Fixed bugs:**
+
+- Fogbugz 3442 - Handle docker volumes after restart [\#89](https://github.com/EOSIO/eosio-explorer/pull/89) ([matharuajay](https://github.com/matharuajay))
+
+**Merged pull requests:**
+
+- Doc: add Analytics section. [\#93](https://github.com/EOSIO/eosio-explorer/pull/93) ([terrylks](https://github.com/terrylks))
+- Update README.md .. Fixed path: ~/.bash\_profile [\#87](https://github.com/EOSIO/eosio-explorer/pull/87) ([jcalfee](https://github.com/jcalfee))
+
 ## [v0.3.0](https://github.com/EOSIO/eosio-explorer/tree/v0.3.0) (2019-05-21)
-[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.3.0-beta.0...v0.3.0)
+[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/0.3.0-beta.0...v0.3.0)
 
 **Merged pull requests:**
 
 - Added '0' to list of invalid numbers for account creation [\#86](https://github.com/EOSIO/eosio-explorer/pull/86) ([jcardenas9x](https://github.com/jcardenas9x))
 - Release v0.3.0 and release to public. [\#77](https://github.com/EOSIO/eosio-explorer/pull/77) ([terrylks](https://github.com/terrylks))
 
+## [0.3.0-beta.0](https://github.com/EOSIO/eosio-explorer/tree/0.3.0-beta.0) (2019-05-21)
+[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.3.0-beta.0...0.3.0-beta.0)
+
 ## [v0.3.0-beta.0](https://github.com/EOSIO/eosio-explorer/tree/v0.3.0-beta.0) (2019-05-21)
-[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.3.0-beta...v0.3.0-beta.0)
+[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/0.3.0-beta...v0.3.0-beta.0)
 
 **Merged pull requests:**
 
 - Internal: SKIP\_PREFLIGHT\_CHECK using create react app [\#85](https://github.com/EOSIO/eosio-explorer/pull/85) ([terrylks](https://github.com/terrylks))
+
+## [0.3.0-beta](https://github.com/EOSIO/eosio-explorer/tree/0.3.0-beta) (2019-05-21)
+[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.3.0-beta...0.3.0-beta)
 
 ## [v0.3.0-beta](https://github.com/EOSIO/eosio-explorer/tree/v0.3.0-beta) (2019-05-21)
 [Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.3.0-alpha.2...v0.3.0-beta)
@@ -35,7 +63,10 @@
 - adds wallet related legal rider [\#78](https://github.com/EOSIO/eosio-explorer/pull/78) ([josephjguerra](https://github.com/josephjguerra))
 
 ## [v0.3.0-alpha.2](https://github.com/EOSIO/eosio-explorer/tree/v0.3.0-alpha.2) (2019-05-20)
-[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.3.0-alpha.1...v0.3.0-alpha.2)
+[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/0.3.0-alpha.2...v0.3.0-alpha.2)
+
+## [0.3.0-alpha.2](https://github.com/EOSIO/eosio-explorer/tree/0.3.0-alpha.2) (2019-05-20)
+[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.3.0-alpha.1...0.3.0-alpha.2)
 
 **Fixed bugs:**
 
@@ -118,7 +149,7 @@
 - v0.2.2 release [\#37](https://github.com/EOSIO/eosio-explorer/pull/37) ([terrylks](https://github.com/terrylks))
 
 ## [v0.2.2](https://github.com/EOSIO/eosio-explorer/tree/v0.2.2) (2019-05-08)
-[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.2.1...v0.2.2)
+[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/eosio-explorer@0.2.1...v0.2.2)
 
 **Implemented enhancements:**
 
@@ -165,10 +196,10 @@
 - Doc update [\#6](https://github.com/EOSIO/eosio-explorer/pull/6) ([terrylks](https://github.com/terrylks))
 - Internal: yarn lock updates [\#3](https://github.com/EOSIO/eosio-explorer/pull/3) ([terrylks](https://github.com/terrylks))
 
-## [v0.2.1](https://github.com/EOSIO/eosio-explorer/tree/v0.2.1) (2019-05-03)
-[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/eosio-explorer@0.2.1...v0.2.1)
-
 ## [eosio-explorer@0.2.1](https://github.com/EOSIO/eosio-explorer/tree/eosio-explorer@0.2.1) (2019-05-03)
+[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.2.1...eosio-explorer@0.2.1)
+
+## [v0.2.1](https://github.com/EOSIO/eosio-explorer/tree/v0.2.1) (2019-05-03)
 
 
 \* *This Change Log was automatically generated by [github_changelog_generator](https://github.com/skywinder/Github-Changelog-Generator)*
