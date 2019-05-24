@@ -61,6 +61,7 @@
     "node-sass": "^4.11.0",
     "react": "^16.8.4",
     "react-app-rewired": "^2.1.1",
+    "react-app-rewire-styled-components": "^3.0.2",
     "react-dom": "^16.8.4",
     "react-dropzone": "^10.0.4",
     "react-gtm-module": "^2.0.4",
@@ -77,6 +78,7 @@
     "redux-persist-transform-filter": "^0.0.18",
     "redux-thunk": "^2.3.0",
     "rxjs": "^6.4.0",
+    "styled-components": "^4.1.3",
     "terminal-in-react": "^4.3.1"
   },
   "files": [
