@@ -46,8 +46,9 @@ CLEARBROWSERSTORAGE=false
 USAGE="Usage: eosio-explorer start_gui [-dev] [--clear-browser-storage] (program to start eosio-explorer gui)
 
 where:
-    -dev, --develop           Starts the tool in development mode
-    --clear-browser-storage   Starts the tool with clearing browser local storage"
+    --clear-browser-storage   Starts the tool with clearing browser local storage
+    Only available in development:
+    -dev, --develop           Starts the tool in development mode"
 
 
 # check for arguments

@@ -44,10 +44,11 @@ MAKESAMPLEDATA=false
 USAGE="Usage: eosio-explorer init [-dev] [-s] [--server-mode] (program to initialize eosio-explorer)
 
 where:
-    -dev, --develop     Starts the tool in development mode
     -s, --sample-data   Starts the tool with pre-existing sample accounts and smart contracts
-    -b, --build         Build gui
-    --server-mode       Starts the tool in server-mode, it will start the dockers but not the gui"
+    --server-mode       Starts the tool in server-mode, it will start the dockers but not the gui
+    Only available in development:
+    -dev, --develop     Starts the tool in development mode
+    -b, --build         Build gui"
 
 # check for arguments
 for arg in $@
@@ -93,11 +94,6 @@ echo "REACT_APP_MONGODB_PORT=$MONGODB_PORT" > $APP/.env.local
 echo "REACT_APP_MONGODB_DB_NAME=$MONGODB_DB_NAME" >> $APP/.env.local
 echo "REACT_APP_LOCAL_SERVICE_PORT=$LOCAL_SERVICE_PORT" >> $APP/.env.local
 echo "REACT_APP_APP_SERVE_PORT=$APP_SERVE_PORT" >> $APP/.env.local
-
-# DO NOT SKIP PREFLIGHT CHECK if the app is installed locally
-if [[ !($PWD == $YARN_GLOBAL_DIR*) ]]; then
-  echo "SKIP_PREFLIGHT_CHECK=false" >> $APP/.env.local
-fi
 
 echo "LOCAL_SERVICE_PORT=$LOCAL_SERVICE_PORT" > $LOCALSERVICE/.env.local
 

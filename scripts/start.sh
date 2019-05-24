@@ -43,7 +43,6 @@ EOSDOCKER="$DEPENDENCIES_ROOT/docker-eosio-nodeos"
 MONGODOCKER="$DEPENDENCIES_ROOT/docker-mongodb"
 
 ISDEV=false
-ISDELETE=false
 CLEARBROWSERSTORAGE=false
 BUILDAPPLICATION=false
 MAKESAMPLEDATA=false
@@ -51,15 +50,16 @@ SERVERMODE=false
 HARDREPLAY=false
 NOTIMESTAMP=false
 
-USAGE="Usage: eosio-explorer start [-dev] [-d] [-b] [-s] [--init] [--server-mode] (program to start eosio-explorer)
+USAGE="Usage: eosio-explorer start [-dev] [-d] [-b] [-s] [--init] [--server-mode [--clear-browser-storage] (program to start eosio-explorer)
 
 where:
-    -dev, --develop         Starts the tool in development mode
-    -d, --delete            Removes existing Docker containers
-    -b, --build             Build gui
+    --server-mode           Starts the tool in server-mode, it will start the dockers but not the gui
     -s, --sample-data       Starts the tool with pre-existing sample accounts and smart contracts
     --clear-browser-storage Starts the tool with clearing browser local storage
-    --server-mode           Starts the tool in server-mode, it will start the dockers but not the gui
+    -d, --delete            Removes existing Docker containers
+    Only available in development:
+    -dev, --develop         Starts the tool in development mode
+    -b, --build             Build gui
     --no-timestamp          Builds gui without adding env LASTTIMESTAMP. Should only used by developer right before making a release"
 
 
@@ -69,7 +69,7 @@ do
   case $arg in
     -d|--delete)
       ./remove_dockers.sh
-      ISDELETE=true
+      CLEARBROWSERSTORAGE=true
       ;;
     -dev|--develop)
       ISDEV=true
@@ -106,10 +106,9 @@ done
 
 # If either of these conditions are true:
 #   user has not added -dev flag but:
-#     has added -d flag
 #     the build folder does not exist
 # Then build with a new timestamp.
-if (!($ISDEV) && ($ISDELETE || [ ! -e $APP"/build" ])); then
+if (!($ISDEV) && [ ! -e $APP"/build" ]); then
   BUILDAPPLICATION=true
 fi
 
@@ -182,13 +181,13 @@ if ( ! $SERVERMODE ); then
   # build and start the application
   if $ISDEV; then
     # If there is -d or from init setup ( or clear browser storage ), clear the browser storage by adding a new timestamp when start CRA dev.
-    if ($ISDELETE || $CLEARBROWSERSTORAGE); then
+    if $CLEARBROWSERSTORAGE; then
       ./start_gui.sh -dev --clear-browser-storage
     else
       ./start_gui.sh -dev
     fi
   else
-    # If this is from init setup ( or clear browser storage ), clear the browser storage by setting CLEARBROWSERSTORAGE=true while serve.
+    # If there is -d or from init setup ( or clear browser storage ), clear the browser storage by setting CLEARBROWSERSTORAGE=true while serve.
     if $CLEARBROWSERSTORAGE; then
       ./start_gui.sh --clear-browser-storage
     else

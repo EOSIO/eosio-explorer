@@ -3,7 +3,7 @@ const path = require('path');
 const app = express();
 const mongodb = require('./routers/mongodb');
 
-const openBrowser = require('react-dev-utils/openBrowser');
+const openBrowser = require('./helpers/openBrowser');
 
 const fs = require('fs');
 const dotenv = require('dotenv');
