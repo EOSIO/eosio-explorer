@@ -19,15 +19,9 @@ YARN_GLOBAL_DIR=$(yarn global dir)
 
 # If current folder is localed inside yarn global folder, means it is installed globally
 if [[ $PWD == $YARN_GLOBAL_DIR* ]]; then
-  if [ '@ptb1' == $(basename "$(dirname "$(dirname "$( pwd -P )")")") ]; then
 
-      # yarn added globally with scope, dependencies are installed as siblings directory of one level upper
-      DEPENDENCIES_ROOT="$(dirname "$(dirname "$(dirname "$( pwd -P )")")")/$DEPENDENCIES_SCOPE_NAME"
-  else
-
-      # yarn added globally, dependencies are installed as siblings directory
-      DEPENDENCIES_ROOT="$(dirname "$(dirname "$( pwd -P )")")/$DEPENDENCIES_SCOPE_NAME"
-  fi
+    # yarn added globally, dependencies are installed as siblings directory
+    DEPENDENCIES_ROOT="$(dirname "$(dirname "$( pwd -P )")")/$DEPENDENCIES_SCOPE_NAME"
 else
 
     # yarn installed locally, dependencies are installed under current's project directory
