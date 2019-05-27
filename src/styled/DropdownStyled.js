@@ -10,6 +10,10 @@ export default styled(Dropdown)`
     min-width: 160px;
     color: #747c84;
     text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: 1.5rem;
 
     &.invalid {
       border: 1px solid red;
@@ -50,8 +54,11 @@ export default styled(Dropdown)`
     outline: none;
   }
   .dropdown-toggle::after {
-    float: right;
-    top: 0.5em;
-    position: relative;
+    top: 1.2em;
+    right: 0.9em;
+    position: absolute;
+    border-top: 0.35em solid;
+    border-right: 0.325em solid transparent;
+    border-left: 0.325em solid transparent;
   }
 `

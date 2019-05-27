@@ -83,6 +83,9 @@ const DivFlexStyled = styled.div`
   justify-content: space-between;
   margin-top: 1.5em;
 `
+const NavLinkFullHeight = styled(NavLink)`
+  height: 100%;
+`
 
 /**
  * Define constants to match the action state
@@ -465,28 +468,28 @@ const DeploymentPage = (props) => {
                 <div>
                   <Nav tabs justified>
                     <NavItem>
-                      <NavLink
+                      <NavLinkFullHeight
                         className={activeTab === "1" ? 'active' : ''}
                         onClick={() => setActiveTab("1")}
                       >
                         Warnings {stdoutLog && stdoutLog.length > 0 ? "⚠️" : null}
-                      </NavLink>
+                      </NavLinkFullHeight>
                     </NavItem>
                     <NavItem>
-                      <NavLink
+                      <NavLinkFullHeight
                         className={activeTab === "2" ? 'active' : ''}
                         onClick={() => setActiveTab("2")}
                       >
                         Compiler Errors {stderrLog && stderrLog.length > 0 ? "⚠️" : null}
-                      </NavLink>
+                      </NavLinkFullHeight>
                     </NavItem>
                     <NavItem>
-                      <NavLink
+                      <NavLinkFullHeight
                         className={activeTab === "3" ? 'active' : ''}
                         onClick={() => setActiveTab("3")}
                       >
                         Service Errors {errors && errors.length > 0 ? "⚠️" : null}
-                      </NavLink>
+                      </NavLinkFullHeight>
                     </NavItem>
                   </Nav>
                   <TabContent activeTab={activeTab}>
