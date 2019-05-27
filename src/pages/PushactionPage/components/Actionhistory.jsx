@@ -54,7 +54,7 @@ const dropdownMaxHeight = {
 
 const Actionhistory = (props) => {
 
-  let { pushactionPage: { isFetching, data: { actionsList = [] }, records, filter, smartContracts: { smartContractsList = [] } } } = props;
+  let { pushactionPage: { isFetchingActionHistory, data: { actionsList = [] }, records, filter, smartContracts: { smartContractsList = [] } } } = props;
 
   const [isOpenDropDownSmartContract, toggleDropDownSmartContract] = useState(false);
 
@@ -62,9 +62,6 @@ const Actionhistory = (props) => {
     <div className="Actionhistory">
       <Row>
         <Col xs="12">
-        { isFetching ? (
-          <LoadingSpinner />
-        ) : (
           <Row>
             <ColStyled xs="3">
               <CustomDropdown id="SmartContractFilterDropdown" isOpen={isOpenDropDownSmartContract} toggle={() => { toggleDropDownSmartContract(!isOpenDropDownSmartContract) }}>
@@ -72,7 +69,7 @@ const Actionhistory = (props) => {
                 <DropdownMenu modifiers={dropdownMaxHeight}>
                   {smartContractsList &&
                     (smartContractsList).map((smartContract) =>
-                      <DropdownItem key={smartContract._id} onClick={(e) => { props.filterUpdate({ smartContractName: smartContract.name }); }}>
+                      <DropdownItem key={smartContract._id} onClick={(e) => { (smartContract.name !== filter.smartContractName) && props.filterUpdate({ smartContractName: smartContract.name }); }}>
                         {smartContract.name}
                       </DropdownItem>)}
                 </DropdownMenu>
@@ -98,7 +95,9 @@ const Actionhistory = (props) => {
                   </tr>
                 </thead>
                 <tbody>
-                  {actionsList.length < 1 ?
+                  { isFetchingActionHistory ?
+                    <tr><td colSpan="5" className="text-center"><LoadingSpinner /></td></tr>
+                  : actionsList.length < 1 ?
                     <tr><td colSpan="5" className="text-center">No actions found{filter.smartContractName && ` with Smart Contract name ${filter.smartContractName}` }</td></tr>
                   : actionsList.map((action, index)=>
                     <tr key={index} data-globalsequence={action.receipt.global_sequence}>
@@ -116,7 +115,6 @@ const Actionhistory = (props) => {
               </TableStyledNoPointer>
             </Col>            
           </Row>
-        )}
         </Col>
       </Row>
     </div>

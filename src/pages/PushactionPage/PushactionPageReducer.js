@@ -264,7 +264,7 @@ const dataReducer = (state = dataInitState, action) => {
 };
 
 // Handles loading state
-const isFetchingReducer = (state = false, action) => {
+const isFetchingActionHistoryReducer = (state = false, action) => {
   switch (action.type) {
     case FETCH_START:
       return true;
@@ -394,7 +394,7 @@ const filterReducer = (state = filterInitState, action) => {
 
 export const combinedReducer = combineReducers({
   data: dataReducer,
-  isFetching: isFetchingReducer,
+  isFetchingActionHistory: isFetchingActionHistoryReducer,
   actionId: actionIdReducer,
   action: actionReducer,
   isPushingAction: isPushingActionReducer,
