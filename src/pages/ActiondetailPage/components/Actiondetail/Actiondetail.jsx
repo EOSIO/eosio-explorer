@@ -11,8 +11,7 @@ const Actiondetail = (props) => {
 
   return (
     <>
-      { payload && (payload.length > 0 ? (
-        payload.map((action, index) =>
+      { payload.map((action, index) =>
         <Form key={index} className="form-horizontal">
           <FormGroup row className="mb-0">
             <Col xs="2">
@@ -62,11 +61,7 @@ const Actiondetail = (props) => {
               </p>
             </Col>
           </FormGroup>
-        </Form>
-      )) :
-        <div className="text-center">
-          <p className="text-danger mb-0">Action data empty</p>
-        </div>
+        </Form>      
       )}
     </>
   );

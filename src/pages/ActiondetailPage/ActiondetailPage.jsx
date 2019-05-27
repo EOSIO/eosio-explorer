@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { CardBody, Row, Col } from 'reactstrap';
 import { connect } from 'react-redux';
-
+import { push } from 'connected-react-router'
 import { LoadingSpinner } from 'components';
 import { StandardTemplate } from 'templates';
 import { fetchStart, paramsSet } from './ActiondetailPageReducer';
@@ -9,7 +9,7 @@ import Actiondetail from './components/Actiondetail';
 import Actionjson from './components/Actionjson';
 import styled from 'styled-components';
 import isObjectEmpty from 'helpers/is-object-empty';
-import { PageTitleDivStyled, CardStyled, CardHeaderStyled, ErrorButton } from 'styled';
+import { PageTitleDivStyled, CardStyled, CardHeaderStyled, ErrorButton, ErrorDivStyled, ButtonPrimary } from 'styled';
 
 const FirstCardStyled = styled(CardStyled)`
   border-top: solid 2px #1173a4;
@@ -25,8 +25,8 @@ const ActiondetailPage = (props) => {
     props.fetchStart();
   }, [])
 
-  let { actiondetailPage: { data, isFetching } } = props;
-  let { error } = data;
+  let { actiondetailPage: { data, isFetching, params } } = props;
+  let { payload, error } = data;
   
   return (
     <StandardTemplate>
@@ -35,44 +35,52 @@ const ActiondetailPage = (props) => {
           <Col xs="12">
             <PageTitleDivStyled>Actions | Action Detail Page</PageTitleDivStyled>
           </Col>
-        </Row>
-        <Row>
-          <Col xs="12">
-            <FirstCardStyled>
-              <CardHeaderStyled>
-                Action Detail
-              </CardHeaderStyled>
-              <CardBody>
-                { error ?
-                  <>
-                    {!isObjectEmpty(error) && <p className="text-danger">{JSON.stringify(error)}</p>}
-                    <ErrorButton onClick={props.fetchStart}>Connection error, click to reload</ErrorButton>
-                  </>
-                : isFetching ? (
-                  <LoadingSpinner />
-                ) : (
-                  <Actiondetail/>
-                )}
-              </CardBody>
-            </FirstCardStyled>
-          </Col>
-        </Row>
-        
-        {!isFetching && (
-          !error &&
-            <Row>
-              <Col xs="12">
-                <CardStyled>
-                  <CardHeaderStyled>
-                    Action Raw JSON
-                  </CardHeaderStyled>
-                  <CardBody>
-                    <Actionjson />
-                  </CardBody>
-                </CardStyled>
-              </Col>
-            </Row>
-        )}
+        </Row>       
+          { error ?
+            <>
+              {!isObjectEmpty(error) && <p className="text-danger">{JSON.stringify(error)}</p>}
+              <ErrorButton onClick={props.fetchStart}>Connection error, click to reload</ErrorButton>
+            </>
+          : isFetching 
+            ? <LoadingSpinner />
+            : payload && payload.length > 0
+                ? <> 
+                    <Row>
+                      <Col xs="12">
+                        <FirstCardStyled>
+                          <CardHeaderStyled>
+                            Action Detail
+                          </CardHeaderStyled>
+                          <CardBody>
+                            <Actiondetail/> 
+                          </CardBody>
+                        </FirstCardStyled>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col xs="12">
+                        <CardStyled>
+                          <CardHeaderStyled>
+                            Action Raw JSON
+                          </CardHeaderStyled>
+                          <CardBody>
+                            <Actionjson />
+                          </CardBody>
+                        </CardStyled>
+                      </Col>
+                    </Row>
+                  </>    
+                : <CardStyled>
+                    <CardHeaderStyled></CardHeaderStyled>
+                    <CardBody>
+                      <ErrorDivStyled>No Action found with Block Number '{params.block_num}' and Global Sequence Number '{params.global_sequence}'<br/><br/>
+                        <ButtonPrimary
+                          onClick={evt=> props.push(`/action-list`)}>Back
+                        </ButtonPrimary>           
+                      </ErrorDivStyled>           
+                    </CardBody>
+                  </CardStyled>                  
+          }
       </div>
     </StandardTemplate>
   );
@@ -86,5 +94,6 @@ export default connect(
   {
     fetchStart,
     paramsSet,
+    push
   }
 )(ActiondetailPage);
