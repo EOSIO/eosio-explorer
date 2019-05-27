@@ -69,7 +69,7 @@ const Actionhistory = (props) => {
                 <DropdownMenu modifiers={dropdownMaxHeight}>
                   {smartContractsList &&
                     (smartContractsList).map((smartContract) =>
-                      <DropdownItem key={smartContract._id} onClick={(e) => { props.filterUpdate({ smartContractName: smartContract.name }); }}>
+                      <DropdownItem key={smartContract._id} onClick={(e) => { (smartContract.name !== filter.smartContractName) && props.filterUpdate({ smartContractName: smartContract.name }); }}>
                         {smartContract.name}
                       </DropdownItem>)}
                 </DropdownMenu>
