@@ -6,6 +6,7 @@
   bottom: -600px;
   z-index: 2;
   &.open{
+    max-height: calc(100vh - 80px);
     bottom: 0;
   }
   &.close{
