@@ -52,6 +52,17 @@ const dropdownMaxHeight = {
   }
 }
 
+// Sort smartcontract list by alphabetical order
+const alphabeticalSort = (a, b) => {
+  let contractNameA = a.name,
+      contractNameB = b.name;
+  if (contractNameA < contractNameB)
+    return -1;
+  if (contractNameA > contractNameB)
+    return 1;
+  return 0;
+}
+
 const Actionhistory = (props) => {
 
   let { pushactionPage: { isFetchingActionHistory, data: { actionsList = [] }, records, filter, smartContracts: { smartContractsList = [] } } } = props;
@@ -68,7 +79,7 @@ const Actionhistory = (props) => {
                 <DropdownToggle caret>{filter.smartContractName || "Filter by Smart Contract"}</DropdownToggle>
                 <DropdownMenu modifiers={dropdownMaxHeight}>
                   {smartContractsList &&
-                    (smartContractsList).map((smartContract) =>
+                    (smartContractsList.sort(alphabeticalSort)).map((smartContract) =>
                       <DropdownItem key={smartContract._id} onClick={(e) => { (smartContract.name !== filter.smartContractName) && props.filterUpdate({ smartContractName: smartContract.name }); }}>
                         {smartContract.name}
                       </DropdownItem>)}
