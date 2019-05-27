@@ -4,6 +4,7 @@
   position: fixed;
   left: 30px;
   bottom: -600px;
+  z-index: 2;
   &.open{
     bottom: 0;
   }
