@@ -83,7 +83,7 @@ const Actionlist = (props) => {
                       <tr onClick={evt=>props.push(`/action/${action.block_num}/${action.receipt.global_sequence}`)} key={index}>
                         <td>{action.act.account}</td>
                         <td>{action.act.name}</td>
-                        <td>{action.createdAt}</td>
+                        <td>{action.block_time}</td>
                       </tr>)}
                 </tbody>
               </TableStyled>

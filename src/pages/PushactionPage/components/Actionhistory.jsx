@@ -103,7 +103,7 @@ const Actionhistory = (props) => {
                     <tr key={index} data-globalsequence={action.receipt.global_sequence}>
                       <TdStyled>{action.act.account}</TdStyled>
                       <TdStyled>{action.act.name}</TdStyled>
-                      <TdStyled>{action.createdAt}</TdStyled>
+                      <TdStyled>{action.block_time}</TdStyled>
                       <TdStyled>{(action.act.authorization.length > 0) ? action.act.authorization[0].actor + "@" + action.act.authorization[0].permission : ""}</TdStyled>
                       <td className="text-center">
                         {/* When the prefill button is clicked, call the prefill callback supplied by the parent component */}

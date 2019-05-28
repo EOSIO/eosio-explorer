@@ -89,7 +89,7 @@ const Transactionlist = (props) => {
                             <tr onClick={evt=>props.push(`/transaction/${eachTransaction.trx_id}`)} key={eachTransaction.trx_id}>
                               <td>{eachTransaction.trx_id}</td>
                               <td>{eachTransaction.block_num}</td>
-                              <td>{eachTransaction.createdAt}</td>
+                              <td>{eachTransaction.expiration}</td>
                             </tr>)}
                         </tbody>
                       </TableStyled>

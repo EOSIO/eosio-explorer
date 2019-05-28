@@ -101,7 +101,7 @@ const Blocklist = (props) => {
                               <td>{eachBlock.block_num}</td>
                               <td>{eachBlock.block_id}</td>
                               <td>{eachBlock.block.transactions.length}</td>
-                              <td>{eachBlock.createdAt}</td>
+                              <td>{eachBlock.block.timestamp}</td>
                             </tr>)}
                         </tbody>
                       </TableStyled>
