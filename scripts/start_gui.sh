@@ -84,6 +84,8 @@ echo "=============================="
 echo "STARTING APP AND COMPILER SERVICE"
 echo "=============================="
 if $ISDEV; then
+  (cd $COMPILER && yarn start &)
+  echo " "
   if $CLEARBROWSERSTORAGE; then
     # Set environment variable "REACT_APP_LAST_INIT_TIMESTAMP" at dev build to create a new timestamp in CRA development
     (cd $APP && REACT_APP_LAST_INIT_TIMESTAMP=$(date +%s) PORT=$APP_DEV_PORT yarn start)
