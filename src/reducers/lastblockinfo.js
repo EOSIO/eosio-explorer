@@ -8,7 +8,6 @@ import { combineReducers } from 'redux';
 import { interval, of} from 'rxjs';
 import { switchMap, mapTo, map, takeUntil, catchError, delay, startWith, exhaustMap } from 'rxjs/operators';
 import { combineEpics, ofType } from 'redux-observable';
-import store from 'store';
 
 import apiRpc from 'services/api-rpc';
 import { errorLog } from 'helpers/error-logger';
