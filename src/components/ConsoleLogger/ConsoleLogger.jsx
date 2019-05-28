@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import Terminal from 'terminal-in-react';
 import { CardHeaderStyled } from 'styled';
 
-import { panelSet } from 'reducers/errorlog';
+import { panelSet, logReset } from 'reducers/errorlog';
 
 class ConsoleLogger extends Component {
 
@@ -17,12 +17,14 @@ class ConsoleLogger extends Component {
     this.handleClickOutside = this.handleClickOutside.bind(this);
   }
 
-
   componentDidMount() {
     document.addEventListener('mousedown', this.handleClickOutside);
   }
 
   componentWillUnmount() {
+    if (this.props.errorlog.data.unseen > 0) {
+      this.props.logReset();
+    }
     document.removeEventListener('mousedown', this.handleClickOutside);
   }
   /**
@@ -91,6 +93,7 @@ export default connect(
   }),
   {
     panelSet,
+    logReset,
   }
 
 )(ConsoleLogger);
