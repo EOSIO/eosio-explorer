@@ -39,7 +39,6 @@ class ConsoleLogger extends Component {
    */
   handleClickOutside(event) {
     if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
-      // alert('You clicked outside of me!');
       this.props.panelSet("UNOPEN");
     }
   }
@@ -50,7 +49,6 @@ class ConsoleLogger extends Component {
 
     return (
       <div ref={this.setWrapperRef} className={`ConsoleLogger ${ status.toLowerCase() }`}>
-
         <CardHeaderStyled
           className="console-title"
           onClick={()=>{
