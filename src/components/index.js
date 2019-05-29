@@ -6,6 +6,7 @@ import LimitSelectDropdown from './LimitSelectDropdown';
 import LoadingSpinner from './LoadingSpinner';
 import HelpFAB from './HelpFAB';
 import ConsoleLogger from './ConsoleLogger';
+import BasicTooltip from './BasicTooltip';
 
 export {
   Header,
@@ -15,5 +16,6 @@ export {
   LimitSelectDropdown,
   LoadingSpinner,
   HelpFAB,
-  ConsoleLogger
+  ConsoleLogger,
+  BasicTooltip
 }

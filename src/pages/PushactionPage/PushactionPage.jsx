@@ -4,7 +4,7 @@ import { CardBody, Row, Col, Form, FormGroup, FormFeedback, Label, Input,
   UncontrolledAlert, DropdownToggle, DropdownMenu, DropdownItem, Spinner
 } from 'reactstrap';
 
-import { actionIdSet, updateActionToPush, actionPush, fetchStart, fetchSmartContracts } from './PushactionPageReducer';
+import { updateActionToPush, prefillActionToPush, actionPush, fetchStart, fetchSmartContracts } from './PushactionPageReducer';
 import { CodeViewer, LoadingSpinner } from 'components';
 import useForm from 'helpers/useForm';
 import validate from './components/PushActionValidatorEngine/PushActionValidatorEngine';
@@ -95,9 +95,8 @@ const PushactionPage = (props) => {
     ];
     updateValues(vals);
 
-    // Confirm the successful prefill with a popup message (moved this down to the prefill action callback temporarily, will be moved back here later)
+    // Confirm the successful prefill with a popup message
     if(prefillingAction.current && action.act.name && action.act.account) {
-      props.actionIdSet({ block_num: null, global_sequence: null });
       prefillingAction.current = false;
       cogoToast.success(`Prefilled action: ${action.act.name} from ${action.act.account}`, {
         heading: "Action Prefilled",
@@ -133,11 +132,6 @@ const PushactionPage = (props) => {
 
   // Set up useForm functionality. This contains the callback function which will be called on successful form submit
   const { handleChange, handleSubmit, updateValues, resetValidation, setAdditionalValues, errors } = useForm(function () { window.scrollTo(0, 0); props.actionPush(action); }, validate);
-
-  // const [ isOpenAccountTooltip, toggleAccountTooltip ] = useState(false);
-  // const [ isOpenActionTooltip, toggleActionTooltip ] = useState(false);
-  // const [ isOpenPermissionTooltip, togglePermissionTooltip ] = useState(false);
-  // const [ isOpenPayloadTooltip, togglePayloadTooltip ] = useState(false);
 
   const [isOpenDropDownSmartContract, toggleDropDownSmartContract] = useState(false);
   const [isOpenDropDownActionType, toggleDropDownActionType] = useState(false);
@@ -317,50 +311,12 @@ const PushactionPage = (props) => {
                       <ButtonGroupSeperated className="float-right">
                         <ButtonSecondary type="button" onClick={(e) => {
                           clearAction(action, props.updateActionToPush);
-                          props.actionIdSet({ block_num: null, global_sequence: null });
                           resetValidation(e);
                         }}>Clear</ButtonSecondary>
                         <ButtonPrimary type="submit">Push</ButtonPrimary>
                       </ButtonGroupSeperated>
                     </Col>
                   </FormGroup>
-                  {/* <Tooltip placement="bottom" target="PayloadItem"
-                    isOpen={isOpenPayloadTooltip}
-                    toggle={() => togglePayloadTooltip(!isOpenPayloadTooltip)}
-                    delay={{show: 0, hide: 0}}
-                    trigger="hover focus"
-                    autohide={true}
-                    >
-                    Finally, an object containing the parameters of the action you selected
-                    must be typed in this payload text area.
-                  </Tooltip>
-                  <Tooltip placement="left" target="PermissionDropdown"
-                    isOpen={isOpenPermissionTooltip}
-                    toggle={() => togglePermissionTooltip(!isOpenPermissionTooltip)}
-                    delay={{show: 0, hide: 0}}
-                    trigger="hover focus"
-                    autohide={true}
-                    >
-                    Also, select the permission which should authorize and sign the action
-                  </Tooltip>
-                  <Tooltip placement="left" target="AccountDropdown"
-                    isOpen={isOpenAccountTooltip}
-                    toggle={() => toggleAccountTooltip(!isOpenAccountTooltip)}
-                    delay={{show: 0, hide: 0}}
-                    trigger="hover focus"
-                    autohide={true}
-                    >
-                    Firstly, select the name of the smart contract here
-                  </Tooltip>
-                  <Tooltip placement="left" target="ActionDropdown"
-                    isOpen={isOpenActionTooltip}
-                    toggle={() => toggleActionTooltip(!isOpenActionTooltip)}
-                    delay={{show: 0, hide: 0}}
-                    trigger="hover focus"
-                    autohide={true}
-                    >
-                    After selecting the name of the smart contract, you can choose the name of the action you plan to push here
-                  </Tooltip> */}
                 </Form>
               )} 
               </CardBody>
@@ -378,7 +334,7 @@ const PushactionPage = (props) => {
                 <Actionhistory prefillCallback={(action) => {
                   // When "Prefill" is clicked, set the actionId variable in the reducer to an object containing the block number and global sequence
                   // of that action. Then rebuild the Action Type list with actions available to the smart contract of that action.
-                  props.actionIdSet({ block_num: action.block_num, global_sequence: action.receipt.global_sequence });
+                  props.prefillActionToPush(action);
                   let actionListToSet = smartContractsList.find(smartContract => smartContract.name === action.act.account);
                   actionListToSet ? setActionList(smartContractsList.find(smartContract => smartContract.name === action.act.account).abi.actions) : setActionList([]);
                   resetValidation();
@@ -402,8 +358,8 @@ export default connect(
   {
     defaultSet,
     fetchStart,
-    actionIdSet,
     updateActionToPush,
+    prefillActionToPush,
     actionPush,
     fetchSmartContracts
   }

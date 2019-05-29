@@ -16,7 +16,8 @@ import ErrorDivStyled from './ErrorDivStyled';
 import InfoDivStyled from './InfoDivStyled';
 import ToolTipUncontrolledStyled from './ToolTipUncontrolledStyled';
 import ToolTipStyled from './ToolTipStyled';
-
+import ExclamationIconStyled from './ExclamationIconStyled';
+import SuccessIconStyled from './SuccessIconStyled';
 
 export { 
   CardStyled, 
@@ -36,5 +37,7 @@ export {
   ErrorDivStyled,
   InfoDivStyled,
   ToolTipUncontrolledStyled,
-  ToolTipStyled
+  ToolTipStyled,
+  ExclamationIconStyled,
+  SuccessIconStyled
 }
