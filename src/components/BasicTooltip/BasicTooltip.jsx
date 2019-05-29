@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-// import { Tooltip } from 'reactstrap';
 import { ToolTipStyled } from 'styled';
 
 const BasicTooltip = (props) => {
