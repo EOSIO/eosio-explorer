@@ -204,11 +204,6 @@ eosio-explorer start
 ```
 This command will start/resume the docker containers and the application.
 
-```bash
-eosio-explorer start --init
-```
-This command will rebuild the application and clear the Local Storage.
-
 ### Stopping the tool
 
 :warning: - Proper way to pause/stop the docker containers is to use the below command, if you don't stop the docker containers properly then you may lose the data on the blockchain. Also, use this command and stop docker containers before shutting down the system to save data.
