@@ -44,7 +44,7 @@ SERVERMODE=false
 HARDREPLAY=false
 NOTIMESTAMP=false
 
-USAGE="Usage: eosio-explorer start [-dev] [-d] [-b] [-s] [--init] [--server-mode [--clear-browser-storage] (program to start eosio-explorer)
+USAGE="Usage: eosio-explorer start [-dev] [-d] [-b] [-s] [--server-mode [--clear-browser-storage] (program to start eosio-explorer)
 
 where:
     --server-mode           Starts the tool in server-mode, it will start the dockers but not the gui
