@@ -3,9 +3,9 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Row, Col, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
-import { LoadingSpinner, LimitSelectDropdown, BasicTooltip } from 'components';
+import { LoadingSpinner, LimitSelectDropdown } from 'components';
 import styled from 'styled-components';
-import { TableStyled, ButtonPrimary, DropdownStyled, ButtonSecondary, ExclamationIconStyled, SuccessIconStyled } from 'styled';
+import { TableStyled, ButtonPrimary, DropdownStyled, ButtonSecondary, ExclamationIconStyled, SuccessIconStyled, ToolTipUncontrolledStyled } from 'styled';
 import { recordsUpdate, filterUpdate } from '../PushactionPageReducer';
 
 const CustomButton = styled(ButtonPrimary)`
@@ -121,7 +121,13 @@ const Actionhistory = (props) => {
                             {action.except ?
                               <>
                                 <ExclamationIconStyled id={"actionErrorIndicator" + index} className="fa fa-exclamation-circle"></ExclamationIconStyled>
-                                <BasicTooltip target={"actionErrorIndicator" + index} text={action.except.message || "Action Failed"} placement="left" />
+                                <ToolTipUncontrolledStyled placement="left" target={"actionErrorIndicator" + index}
+                                  delay={{ show: 0, hide: 0 }}
+                                  trigger="hover"
+                                  autohide={true}
+                                >
+                                  {action.except.message}
+                                </ToolTipUncontrolledStyled>
                               </>
                               : <SuccessIconStyled className="fa fa-check-circle"></SuccessIconStyled>}
                           </TdStyled>
