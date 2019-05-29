@@ -93,6 +93,11 @@ const actionPushFulfilledEpic = action$ => action$.pipe(
   mapTo(fetchStart())
 );
 
+const actionPushRejectedEpic = action$ => action$.pipe(
+  ofType(ACTION_PUSH_REJECTED),
+  mapTo(fetchStart())
+);
+
 const recordsUpdateEpic = action$ => action$.pipe(
   ofType(RECORDS_UPDATE),
   mapTo(fetchStart()),
@@ -129,6 +134,7 @@ export const combinedEpic = combineEpics(
   fetchEpic,
   actionPushEpic,
   actionPushFulfilledEpic,
+  actionPushRejectedEpic,
   fetchSmartContractsEpic,
   recordsUpdateEpic,
   filterUpdateEpic
