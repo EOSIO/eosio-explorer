@@ -22,7 +22,6 @@ const actionPrefix = `PushactionPage/Pushaction/`;
 const FETCH_START = actionPrefix + `FETCH_START`;
 const FETCH_FULFILLED = actionPrefix + `FETCH_FULFILLED`;
 const FETCH_REJECTED = actionPrefix + `FETCH_REJECTED`;
-const ACTION_ID_SET = actionPrefix + `ACTION_ID_SET`;
 const ACTION_UPDATE = actionPrefix + `ACTION_UPDATE`;
 const ACTION_PREFILL = actionPrefix + `ACTION_PREFILL`;
 const ACTION_PUSH = actionPrefix + `ACTION_PUSH`;
@@ -38,7 +37,6 @@ const FILTER_UPDATE = actionPrefix + `FILTER_UPDATE`;
 export const fetchStart = () => ({ type: FETCH_START });
 export const fetchFulfilled = (actionsList) => ({ type: FETCH_FULFILLED, actionsList });
 export const fetchRejected = (payload, error) => ({ type: FETCH_REJECTED, payload, error });
-export const actionIdSet = (act_id) => ({ type: ACTION_ID_SET, actionId: act_id });
 export const updateActionToPush = (updatedAction) => ({ type: ACTION_UPDATE, updatedAction });
 export const prefillActionToPush = (updatedAction) => ({ type: ACTION_PREFILL, updatedAction });
 export const actionPush = (action) => ({ type: ACTION_PUSH, actionToPush: action });
@@ -54,60 +52,25 @@ export const filterUpdate = (filter) => ({ type: FILTER_UPDATE, filter });
 const fetchEpic = (action$, state$) => action$.pipe(
   ofType(FETCH_START),
   mergeMap(action => {
-    let { value: { pushactionPage: { actionId, records, filter } } } = state$;
-    let actionHistoryParams = { records_count: records };
-    let getActionParams = { };
-    // Check that we have block number and global sequence. Global sequence can be equal to 0 so we have to account for that here as well
-    if(actionId.block_num && (actionId.global_sequence === 0 || actionId.global_sequence)) {
-      getActionParams.block_num = actionId.block_num;
-      getActionParams.global_sequence = actionId.global_sequence;
-    }
+    let { value: { pushactionPage: { records, filter } } } = state$;
+    let actionHistoryParams = { records_count: records, fetch_failed_action: true };
+
     // Check for user selected filters and apply them if they exist
     if(filter.smartContractName) {
       actionHistoryParams.account_name = filter.smartContractName;
     }
 
     let actionHistoryQuery = paramsToQuery(actionHistoryParams);
-    let getActionQuery = paramsToQuery(getActionParams);
 
-    // If the actionId has been set by a user clicking "Prefill"
-    if (getActionQuery) {
-      // First, get the action history list
-      return apiMongodb(`get_actions${actionHistoryQuery}`).pipe(
-        mergeMap(actionsListResponse => {
-          // And then, use the actionId to get the details of the selected action
-          return apiMongodb(`get_action_details${getActionQuery}`)
-            .pipe(
-              mergeMap(actionResponse => [
-                // Send them both to the data reducer
-                fetchFulfilled(actionsListResponse.response),
-                prefillActionToPush(actionResponse.response)
-              ]),
-              catchError(error => {
-                errorLog("Push Action page/ get action details error", error);
-                return of(
-                  fetchFulfilled(actionsListResponse.response),
-                  fetchRejected(error.response, { status: error.status })
-                )
-              })
-            );
-        }),
-        catchError(error => {
-          errorLog("Push Action page/ get action list error", error);
-          return of(fetchRejected(error.response, { status: error.status }))
-        })
-      )
-    } else {
-      // If no actionId is present, just get the action history list
-      return apiMongodb(`get_actions${actionHistoryQuery}`).pipe(
-        // Send it to the data reducer
-        map(actionsListResponse => fetchFulfilled(actionsListResponse.response)),
-        catchError(error => {
-          errorLog("Push Action page/ get action list error", error);
-          return of(fetchRejected(error.response, { status: error.status }))
-        })
-      )
-    }
+    // Get the action history list
+    return apiMongodb(`get_actions${actionHistoryQuery}`).pipe(
+      // Send it to the data reducer
+      map(actionsListResponse => fetchFulfilled(actionsListResponse.response)),
+      catchError(error => {
+        errorLog("Push Action page / get action list error", error);
+        return of(fetchRejected(error.response, { status: error.status }))
+      })
+    )
   }),
 );
 
@@ -125,14 +88,14 @@ const fetchSmartContractsEpic = action$ => action$.pipe(
   })
 );
 
-const actionIdSetEpic = action$ => action$.pipe(
-  ofType(ACTION_ID_SET),
-  mapTo(fetchStart()),
-);
-
 const actionPushFulfilledEpic = action$ => action$.pipe(
   ofType(ACTION_PUSH_FULFILLED),
-  mapTo(actionIdSet(""), fetchStart())
+  mapTo(fetchStart())
+);
+
+const actionPushRejectedEpic = action$ => action$.pipe(
+  ofType(ACTION_PUSH_REJECTED),
+  mapTo(fetchStart())
 );
 
 const recordsUpdateEpic = action$ => action$.pipe(
@@ -169,9 +132,9 @@ const actionPushEpic = action$ => action$.pipe(
 
 export const combinedEpic = combineEpics(
   fetchEpic,
-  actionIdSetEpic,
   actionPushEpic,
   actionPushFulfilledEpic,
+  actionPushRejectedEpic,
   fetchSmartContractsEpic,
   recordsUpdateEpic,
   filterUpdateEpic
@@ -203,16 +166,15 @@ const filterInitState = {
 const mapPrefilledAction = (prefilledAction) => {
   if (!prefilledAction)
     return getActionInitState();
-
-  let action = prefilledAction.find(x => x !== undefined);
+  
   return {
-    _id: action._id,
+    _id: prefilledAction._id,
     act: {
-      account: action.act.account,
-      name: action.act.name,
-      authorization: action.act.authorization.find(x => x !== undefined),
+      account: prefilledAction.act.account,
+      name: prefilledAction.act.name,
+      authorization: prefilledAction.act.authorization.find(x => x !== undefined),
     },
-    payload: JSON.stringify(action.act.data, null, 2)
+    payload: JSON.stringify(prefilledAction.act.data, null, 2)
   }
 }
 
@@ -232,7 +194,7 @@ const mapUpdatedAction = (updatedAction) => {
   }
 }
 
-//Reducers
+// Reducers
 
 // Manages the action history list and the action object
 const dataReducer = (state = dataInitState, action) => {
@@ -302,17 +264,6 @@ const isFetchingSmartContractReducer = (state = false, action) => {
     case FETCH_SMART_CONTRACTS_FULFILLED:
     case FETCH_SMART_CONTRACTS_REJECTED:
       return false;
-
-    default:
-      return state;
-  }
-};
-
-// Manages the actionId, set when user clicks "Prefill" on an action in the action history viewer
-const actionIdReducer = (state = "", action) => {
-  switch (action.type) {
-    case ACTION_ID_SET:
-      return action.actionId;
 
     default:
       return state;
@@ -395,7 +346,6 @@ const filterReducer = (state = filterInitState, action) => {
 export const combinedReducer = combineReducers({
   data: dataReducer,
   isFetchingActionHistory: isFetchingActionHistoryReducer,
-  actionId: actionIdReducer,
   action: actionReducer,
   isPushingAction: isPushingActionReducer,
   smartContracts: smartContractsReducer,

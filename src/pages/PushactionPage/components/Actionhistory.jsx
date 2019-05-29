@@ -5,7 +5,7 @@ import { Row, Col, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap
 
 import { LoadingSpinner, LimitSelectDropdown } from 'components';
 import styled from 'styled-components';
-import { TableStyled, ButtonPrimary, DropdownStyled, ButtonSecondary } from 'styled';
+import { TableStyled, ButtonPrimary, DropdownStyled, ButtonSecondary, ExclamationIconStyled, SuccessIconStyled, ToolTipUncontrolledStyled } from 'styled';
 import { recordsUpdate, filterUpdate } from '../PushactionPageReducer';
 
 const CustomButton = styled(ButtonPrimary)`
@@ -55,7 +55,7 @@ const dropdownMaxHeight = {
 // Sort smartcontract list by alphabetical order
 const alphabeticalSort = (a, b) => {
   let contractNameA = a.name,
-      contractNameB = b.name;
+    contractNameB = b.name;
   if (contractNameA < contractNameB)
     return -1;
   if (contractNameA > contractNameB)
@@ -100,31 +100,46 @@ const Actionhistory = (props) => {
                   <tr className="font-weight-bold">
                     <th width="20%">Smart Contract Name</th>
                     <th width="20%">Action Type</th>
-                    <th width="25%">Timestamp</th>
+                    <th width="20%">Timestamp</th>
                     <th width="20%">Permission</th>
+                    <th width="5%" className="text-center">Success</th>
                     <th width="15%" className="text-center">Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  { isFetchingActionHistory ?
-                    <tr><td colSpan="5" className="text-center"><LoadingSpinner /></td></tr>
-                  : actionsList.length < 1 ?
-                    <tr><td colSpan="5" className="text-center">No actions found{filter.smartContractName && ` with Smart Contract name ${filter.smartContractName}` }</td></tr>
-                  : actionsList.map((action, index)=>
-                    <tr key={index} data-globalsequence={action.receipt.global_sequence}>
-                      <TdStyled>{action.act.account}</TdStyled>
-                      <TdStyled>{action.act.name}</TdStyled>
-                      <TdStyled>{action.block_time}</TdStyled>
-                      <TdStyled>{(action.act.authorization.length > 0) ? action.act.authorization[0].actor + "@" + action.act.authorization[0].permission : ""}</TdStyled>
-                      <td className="text-center">
-                        {/* When the prefill button is clicked, call the prefill callback supplied by the parent component */}
-                        <CustomButton block size="sm" onClick={(e) => { e.preventDefault(); props.prefillCallback(action); }}>Prefill</CustomButton>
-                      </td>
-                    </tr>
-                  )}
+                  {isFetchingActionHistory ?
+                    <tr><td colSpan="6" className="text-center"><LoadingSpinner /></td></tr>
+                    : actionsList.length < 1 ?
+                      <tr><td colSpan="6" className="text-center">No actions found{filter.smartContractName && ` with Smart Contract name ${filter.smartContractName}`}</td></tr>
+                      : actionsList.map((action, index) =>
+                        <tr key={index}>
+                          <TdStyled>{action.act.account}</TdStyled>
+                          <TdStyled>{action.act.name}</TdStyled>
+                          <TdStyled>{action.block_time}</TdStyled>
+                          <TdStyled>{(action.act.authorization.length > 0) ? action.act.authorization[0].actor + "@" + action.act.authorization[0].permission : ""}</TdStyled>
+                          <TdStyled className="text-center">
+                            {action.except ?
+                              <>
+                                <ExclamationIconStyled id={"actionErrorIndicator" + index} className="fa fa-exclamation-circle"></ExclamationIconStyled>
+                                <ToolTipUncontrolledStyled placement="left" target={"actionErrorIndicator" + index}
+                                  delay={{ show: 0, hide: 0 }}
+                                  trigger="hover"
+                                  autohide={true}
+                                >
+                                  {action.except.message}
+                                </ToolTipUncontrolledStyled>
+                              </>
+                              : <SuccessIconStyled className="fa fa-check-circle"></SuccessIconStyled>}
+                          </TdStyled>
+                          <td className="text-center">
+                            {/* When the prefill button is clicked, call the prefill callback supplied by the parent component */}
+                            <CustomButton block size="sm" onClick={(e) => { e.preventDefault(); props.prefillCallback(action); }}>Prefill</CustomButton>
+                          </td>
+                        </tr>
+                      )}
                 </tbody>
               </TableStyledNoPointer>
-            </Col>            
+            </Col>
           </Row>
         </Col>
       </Row>
@@ -133,7 +148,7 @@ const Actionhistory = (props) => {
 }
 
 export default connect(
-  ({ pushactionPage, router}) => ({
+  ({ pushactionPage, router }) => ({
     pushactionPage,
     router
   }),
