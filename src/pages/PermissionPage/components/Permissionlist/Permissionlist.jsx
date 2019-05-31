@@ -92,9 +92,12 @@ const Permissionlist = (props) => {
     props.fetchStart();
   }, [])
 
-  function getKeysData (accName, list, panel) {
-    const keysData = list.filter(acct => acct["account"] === accName);
-    props.accountImport(keysData);
+  function getKeysData (permissionObj, list, panel) {
+    const keysData = list.filter(acct => acct["account"] === permissionObj.account);   
+    let editPermission = keysData.filter(eachPermission => eachPermission.permission === permissionObj.permission );
+    console.log("editPermission ", editPermission);
+    props.accountImport(editPermission);
+    //props.accountImport(keysData);
     panelSelect("import-account-"+panel);
   }
 
@@ -192,7 +195,7 @@ const Permissionlist = (props) => {
                                                 <EditButtonCell width="40%">
                                                   <ButtonPrimary 
                                                         style={{float:'right', marginRight:'5%'}}
-                                                        onClick={() => getKeysData(eachPermission.account, list, "edit")}
+                                                        onClick={() => getKeysData(eachPermission, list, "edit")}
                                                         disabled={isDefaultEosio(defaultAccountsList[account])}
                                                         block
                                                         >
