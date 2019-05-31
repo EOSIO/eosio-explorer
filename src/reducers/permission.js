@@ -155,15 +155,20 @@ const updateEpic = action$ => action$.pipe(
       };
 
       query["new_"+permission+"_key"] = publicKey;
+      let baseData = {
+        permission: permission,
+        privateKey: privateKey,
+        accountName: accountName
+      }
 
       return editAccountObservable(query, privateKey, permission, accountName)
         .pipe(
           mergeMap(response => {
             console.log("query ", query);
-            return apiMongodb(`get_account_details${paramsToQuery({account_name: accountName})}`)
+            return apiMongodb(`get_account_details${paramsToQuery({account_name: baseData.accountName})}`)
               .pipe(
                 map(res => editSuccess({
-                  baseData: response,
+                  baseData: baseData,
                   queryData: res.response
                 })),
                 catchError(err => of(editRejected(err.message, { status: err })))
@@ -265,10 +270,12 @@ const composePermissionList = (originalList = [], payloadList = []) => {
 
 const addKeysToAccount = (accountData, list) => {
   let updatedList = list.slice(0);
-  let activeItem = updatedList.findIndex(el => (accountData.accountName === el.account && el.permission === 'active'));
-  let ownerItem = updatedList.findIndex(el => (accountData.accountName === el.account && el.permission === 'owner'));
-  updatedList[activeItem]["private_key"] = accountData.activePrivate;
-  updatedList[ownerItem]["private_key"] = accountData.ownerPrivate;
+  let index = updatedList.findIndex(el => (accountData.accountName === el.account && el.permission === accountData.permission));
+  updatedList[index].private_key = accountData.privateKey;
+  // let activeItem = updatedList.findIndex(el => (accountData.accountName === el.account && el.permission === 'active'));
+  // let ownerItem = updatedList.findIndex(el => (accountData.accountName === el.account && el.permission === 'owner'));
+  // updatedList[activeItem]["private_key"] = accountData.activePrivate;
+  // updatedList[ownerItem]["private_key"] = accountData.ownerPrivate;
   return updatedList;
 }
 
@@ -304,28 +311,35 @@ const storeNewAccount = (createResponse, list) => {
 
 const updateAccountList = (createResponse, list) => {
   let {
-    baseData: { ownerPrivateKey, activePrivateKey, accountName },
+    baseData: { permission, privateKey, accountName },
     queryData
   } = createResponse;
+  console.log("queryData ", queryData);
   let accountSuccess = true;
   let msg = `Successfully updated the keys for ${accountName}`;
+  console.log("list ", list);
   let updatedList = list.slice(0);
+  console.log("updatedList ", updatedList);
   let defaultId = "1";
 
   if (queryData && queryData.length > 0) {
-    let ownerIndex = updatedList.findIndex(item => item.account === accountName && item.permission === 'owner');
-    let activeIndex = updatedList.findIndex(item => item.account === accountName && item.permission === 'active');
-    updatedList[ownerIndex].private_key = ownerPrivateKey;
-    updatedList[ownerIndex].public_key = (queryData[0].permission === 'owner') ?
-      queryData[0].public_key : queryData[1].public_key;
-    updatedList[ownerIndex]._id = (queryData[0].permission === 'owner') ?
-      queryData[0]._id : queryData[1]._id;
-    updatedList[activeIndex].private_key = activePrivateKey;
-    updatedList[activeIndex].public_key = (queryData[0].permission === 'active') ?
-      queryData[0].public_key : queryData[1].public_key;
-    updatedList[activeIndex]._id = (queryData[0].permission === 'active') ?
-      queryData[0]._id : queryData[1]._id;
-    defaultId = updatedList[ownerIndex]._id;
+
+    let index = updatedList.findIndex(item => item.account === accountName && item.permission === permission);
+    updatedList[index].private_key = privateKey;
+    defaultId = updatedList[index]._id;
+    // let ownerIndex = updatedList.findIndex(item => item.account === accountName && item.permission === 'owner');
+    // let activeIndex = updatedList.findIndex(item => item.account === accountName && item.permission === 'active');
+    // updatedList[ownerIndex].private_key = ownerPrivateKey;
+    // updatedList[ownerIndex].public_key = (queryData[0].permission === 'owner') ?
+    //   queryData[0].public_key : queryData[1].public_key;
+    // updatedList[ownerIndex]._id = (queryData[0].permission === 'owner') ?
+    //   queryData[0]._id : queryData[1]._id;
+    // updatedList[activeIndex].private_key = activePrivateKey;
+    // updatedList[activeIndex].public_key = (queryData[0].permission === 'active') ?
+    //   queryData[0].public_key : queryData[1].public_key;
+    // updatedList[activeIndex]._id = (queryData[0].permission === 'active') ?
+    //   queryData[0]._id : queryData[1]._id;
+    // defaultId = updatedList[ownerIndex]._id;
   } else {
     msg = `Updated the keys for ${accountName} but failed to query the
        account after creation. Please import the keys you just used in the previous

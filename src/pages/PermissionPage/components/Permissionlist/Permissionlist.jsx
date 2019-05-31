@@ -94,9 +94,9 @@ const Permissionlist = (props) => {
 
   function getKeysData (permissionObj, list, panel) {
     const keysData = list.filter(acct => acct["account"] === permissionObj.account);   
-    let editPermission = keysData.filter(eachPermission => eachPermission.permission === permissionObj.permission );
-    console.log("editPermission ", editPermission);
-    props.accountImport(editPermission);
+    let editOrImportPermission = keysData.filter(eachPermission => eachPermission.permission === permissionObj.permission );
+    console.log("editOrImportPermission ", editOrImportPermission);
+    props.accountImport(editOrImportPermission);
     //props.accountImport(keysData);
     panelSelect("import-account-"+panel);
   }
@@ -304,18 +304,18 @@ const Permissionlist = (props) => {
                                           ) &&
                                         <tbody className="accountRow" key={account}>
                                           {
-                                            importAccountsList[account].map(eachAccount=>(
-                                              <tr key={eachAccount.permission}>
+                                            importAccountsList[account].map(eachPermission=>(
+                                              <tr key={eachPermission.permission}>
                                                 <td width="2%"></td>
                                                 <td width="58%" style={{verticalAlign: "middle"}}>
-                                                  <PermissionLink to={`/account/${eachAccount.account}`}>
-                                                    {eachAccount.account}@{eachAccount.permission}
+                                                  <PermissionLink to={`/account/${eachPermission.account}`}>
+                                                    {eachPermission.account}@{eachPermission.permission}
                                                   </PermissionLink>                                              
                                                 </td>
                                                 <EditButtonCell width="40%">
                                                   <ButtonPrimary 
                                                         style={{float:'right', marginRight:'5%'}}
-                                                        onClick={() => getKeysData(eachAccount.account, list, "importer")}
+                                                        onClick={() => getKeysData(eachPermission, list, "importer")}
                                                         block
                                                         >
                                                         Import Keys

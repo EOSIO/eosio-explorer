@@ -47,8 +47,8 @@ const ImportAccount = (props) => {
   function importAccount() {
     accountAdd({
       accountName: (keysData) ? keysData[0].account : "Unknown",
-      ownerPrivate: values.privateKey,
-      activePrivate: values.activePrivate
+      privateKey: values.privateKey,
+      permission: keysData[0].permission
     });
     window.scrollTo(0,0);
   }
