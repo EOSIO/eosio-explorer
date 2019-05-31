@@ -25,11 +25,12 @@ const ImportAccount = (props) => {
   let {
     permission: {
       data: {
-        keysData = [[], []],
+        keysData = [],
         importSuccess,
         isSubmitting,
         creationSuccess,
-        submitError
+        submitError,
+        list
       }
     },
     panel,
@@ -38,73 +39,57 @@ const ImportAccount = (props) => {
     panelSelect
   } = props;
 
+  
+
   const { values, handleChange, handleSubmit, updateValues, errors } = (panel === 'import-account-importer')
     ? useForm(importAccount, importValidate) : useForm(editAccountKeys, editValidate);
 
   function importAccount() {
     accountAdd({
       accountName: (keysData) ? keysData[0].account : "Unknown",
-      ownerPrivate: values.ownerPrivate,
+      ownerPrivate: values.privateKey,
       activePrivate: values.activePrivate
     });
     window.scrollTo(0,0);
   }
 
   function editAccountKeys() {
+    let accountObj = list.filter(acct => acct["account"] === keysData[0].account);
+    let ownerObj = accountObj.filter(eachPermission => eachPermission.permission === "owner" );
+
     let accountData = {      
       accountName: (keysData) ? keysData[0].account : "Unknown",
-      accountOwnerPrivateKey: (keysData && keysData[0].permission === 'owner') ? keysData[0].private_key : keysData[1].private_key
+      accountOwnerPrivateKey: ownerObj[0].private_key,
+      permission: keysData[0].permission
     };
-    if (keysData) {
-      let ownerDidNotChange = false;
-      let activeDidNotChange = false;
 
-      if (keysData[0].permission === 'owner') {
-        ownerDidNotChange = keysData[0].private_key === values.ownerPrivate && keysData[0].public_key === values.ownerPublic;
-        activeDidNotChange = keysData[1].private_key === values.activePrivate && keysData[1].public_key === values.activePublic;
-      } else {
-        ownerDidNotChange = keysData[1].private_key === values.ownerPrivate && keysData[1].public_key === values.ownerPublic;
-        activeDidNotChange = keysData[0].private_key === values.activePrivate && keysData[0].public_key === values.activePublic;
-      }
+    if (keysData) {     
+      let keyNotChanged = keysData[0].private_key === values.privateKey && keysData[0].public_key === values.publicKey;
 
-      if (ownerDidNotChange && activeDidNotChange) {
+      if(keyNotChanged){
         cogoToast.info("Your keys did not change, canceling the action", {
           heading: 'Keys Did Not Change',
           position: 'bottom-center',
           hideAfter: 2
         });
-      } else if (!ownerDidNotChange && activeDidNotChange) {
-        accountData["ownerPublicKey"] = values.ownerPublic;
-        accountData["ownerPrivate"] = values.ownerPrivate;
-        accountData["activePrivate"] = values.activePrivate;
+      }else{
+        accountData["publicKey"] = values.publicKey;
+        accountData["privateKey"] = values.privateKey;
+        console.log("accountData ",accountData);
         accountEdit(accountData);
-      } else if (ownerDidNotChange && !activeDidNotChange) {
-        accountData["activePublicKey"] = values.activePublic;
-        accountData["activePrivate"] = values.activePrivate;
-        accountData["ownerPrivate"] = values.ownerPrivate;
-        accountEdit(accountData);
-      } else {
-        accountData["ownerPublicKey"] = values.ownerPublic;
-        accountData["ownerPrivate"] = values.ownerPrivate;
-        accountData["activePublicKey"] = values.activePublic;
-        accountData["activePrivate"] = values.activePrivate;
-        accountEdit(accountData);
-      }
+        
+      }      
     }
     window.scrollTo(0,0);
   }
 
   useEffect(() => {
     const vals = (keysData) ? [
-      { name: "ownerPrivate", value: keysData[0].permission === "owner" ? keysData[0].private_key : keysData[1].private_key },
-      { name: "activePrivate", value: keysData[1].permission === "active" ? keysData[1].private_key : keysData[0].private_key },
-      { name: "ownerPublic", value: keysData[0].permission === "owner" ? keysData[0].public_key : keysData[1].public_key },
-      { name: "activePublic", value: keysData[1].permission === "active" ? keysData[1].public_key : keysData[0].public_key }
+      { name: "privateKey", value: keysData[0].private_key },      
+      { name: "publicKey", value: keysData[0].public_key }
     ] : [
-        { name: "ownerPrivate", value: "No private key" },
-        { name: "activePrivate", value: "No private key" },
-        { name: "ownerPublic", value: "No public key" },
-        { name: "activePublic", value: "No public key" }
+        { name: "privateKey", value: "No private key" },
+        { name: "publicKey", value: "No public key" }
       ]
     updateValues(vals);
     window.scrollTo(0, 0);
@@ -182,7 +167,70 @@ const ImportAccount = (props) => {
               <Form onSubmit={
                 handleSubmit
               }>
+              <FormGroup row>
+                  <Label htmlFor="accountName" sm={1}>Account Name</Label>
+                  <Col sm={11}>
+                    <InputStyled type="text"
+                      name="accountName"
+                      id="accountName"
+                      defaultValue={keysData[0].account || "Unknown"}
+                      readOnly
+                    />
+                  </Col>
+                </FormGroup>
                 <FormGroup row>
+                  <Label htmlFor="permissionName" sm={1}>Permission</Label>
+                  <Col sm={11}>
+                    <InputStyled type="text"
+                      name="permissionName"
+                      id="permissionName"
+                      defaultValue={keysData[0].permission || "Unknown"}
+                      readOnly
+                    />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label htmlFor="publicKey" sm={1}>Public Key</Label>
+                  <Col sm={11}>
+                    <InputStyled type="text"
+                      name="publicKey"
+                      id="publicKey"
+                      defaultValue={ keysData[0].public_key }
+                      placeholder="Enter public key"
+                      onChange={handleChange}
+                      invalid={!!errors.publicKey}
+                      readOnly={panel === 'import-account-importer'}
+                      required={panel === 'import-account-edit'}
+                    />
+                    {
+                      errors.publicKey &&
+                      <FormFeedback invalid="true">
+                        {errors.publicKey}
+                      </FormFeedback>
+                    }
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label htmlFor="privateKey" sm={1}>Private Key</Label>
+                  <Col sm={11}>
+                    <InputStyled type="text"
+                      name="privateKey"
+                      id="privateKey"
+                      defaultValue={ keysData[0].private_key }
+                      placeholder="Enter private key"
+                      onChange={handleChange}
+                      invalid={!!errors.privateKey}
+                      required
+                    />
+                    {
+                      errors.privateKey &&
+                      <FormFeedback invalid="true">
+                        {errors.privateKey}
+                      </FormFeedback>
+                    }
+                  </Col>
+                </FormGroup>
+                {/* <FormGroup row>
                   <Label htmlFor="accountName" sm={1}>Account Name</Label>
                   <Col sm={11}>
                     <InputStyled type="text"
@@ -296,7 +344,7 @@ const ImportAccount = (props) => {
                       </FormFeedback>
                     }
                   </Col>
-                </FormGroup>
+                </FormGroup> */}
                 <FormGroup row>
                   <Col sm={8}>
 
@@ -308,7 +356,7 @@ const ImportAccount = (props) => {
                         Back
                       </ButtonSecondary>
                       <ButtonPrimary className="float-right"
-                        disabled={!(values.activePrivate && values.ownerPrivate)}
+                        disabled={!(values.privateKey)}
                         block>
                         Submit
                       </ButtonPrimary>

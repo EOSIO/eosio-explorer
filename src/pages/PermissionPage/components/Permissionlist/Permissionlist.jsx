@@ -19,20 +19,6 @@ const PermissionTable = styled(Table)`
   }
 `
 
-const AccountTable = styled(Table)`
-  margin-bottom: 0 !important;
-`
-
-const AccountRow = styled.tr`
-  border: none !important;
-
-  .permissionLabel {
-    margin-left: 30px;
-    text-align: left;
-    vertical-align: middle;
-  }
-`
-
 const EditButtonCell = styled.td`
   vertical-align: middle !important;
 `
@@ -47,6 +33,7 @@ const PermissionLink = styled(Link)`
 const FirstCardStyled = styled(CardStyled)`
   border-top: solid 2px #1173a4;
 `
+
 
 // Each account must have two permissions, so we multiply number of accounts by 2
 // N = 100
@@ -105,9 +92,12 @@ const Permissionlist = (props) => {
     props.fetchStart();
   }, [])
 
-  function getKeysData (accName, list, panel) {
-    const keysData = list.filter(acct => acct["account"] === accName);
-    props.accountImport(keysData);
+  function getKeysData (permissionObj, list, panel) {
+    const keysData = list.filter(acct => acct["account"] === permissionObj.account);   
+    let editPermission = keysData.filter(eachPermission => eachPermission.permission === permissionObj.permission );
+    console.log("editPermission ", editPermission);
+    props.accountImport(editPermission);
+    //props.accountImport(keysData);
     panelSelect("import-account-"+panel);
   }
 
@@ -176,10 +166,50 @@ const Permissionlist = (props) => {
                                           defaultAccountsList[account][0].private_key &&
                                           containsOnlyActiveOrOwner(defaultAccountsList[account])
                                           ) &&
-                                        <tbody className="accountRow" key={account}>
-                                          <tr>
-                                            <td width="60%">
-                                              <AccountTable borderless>
+                                        <tbody className="accountRow" key={account}>                                         
+                                            {defaultAccountsList[account].map(eachPermission => (
+                                              <tr key={eachPermission._id}>
+                                                <td width="7%">
+                                                  <div style={{marginTop: "14px"}}>                                                
+                                                    <RadioButtonDivStyled>
+                                                      <label className="radioContainer">
+                                                        <input name={eachPermission._id}
+                                                          type="radio"
+                                                          checked={eachPermission._id === defaultId ? true : false}
+                                                          onClick={() => setAsDefault(eachPermission._id, 
+                                                            eachPermission.account, 
+                                                            eachPermission.permission)}
+                                                          readOnly />
+                                                        <span className="checkmark"></span>
+                                                      </label>
+                                                    </RadioButtonDivStyled>  
+                                                  </div>                                                  
+                                                </td>  
+                                                <td width="53%">
+                                                  <div style={{marginTop: "6px"}}>
+                                                    <PermissionLink to={`/account/${eachPermission.account}`}>
+                                                      {eachPermission.account}@{eachPermission.permission}
+                                                    </PermissionLink>
+                                                  </div>                                            
+                                                </td>
+                                                <EditButtonCell width="40%">
+                                                  <ButtonPrimary 
+                                                        style={{float:'right', marginRight:'5%'}}
+                                                        onClick={() => getKeysData(eachPermission, list, "edit")}
+                                                        disabled={isDefaultEosio(defaultAccountsList[account])}
+                                                        block
+                                                        >
+                                                        {
+                                                          (isDefaultEosio(defaultAccountsList[account])) ? 
+                                                            "Uneditable" : "Edit"
+                                                        }
+                                                      </ButtonPrimary>
+                                                </EditButtonCell>
+                                              </tr>
+                                            ))
+                                            }
+                                            
+                                              {/* <AccountTable borderless>
                                                 <tbody>
                                                   <AccountRow>
                                                     <td className="radio" width="10%">
@@ -224,9 +254,9 @@ const Permissionlist = (props) => {
                                                     </td>
                                                   </AccountRow>
                                                 </tbody>
-                                              </AccountTable>
-                                            </td>
-                                            <EditButtonCell width="40%">
+                                              </AccountTable> */}
+                                            
+                                            {/* <EditButtonCell width="40%">
                                               <ButtonPrimary 
                                                     style={{float:'right', marginRight:'5%'}}
                                                     onClick={() => getKeysData(defaultAccountsList[account][0].account, list, "edit")}
@@ -238,8 +268,8 @@ const Permissionlist = (props) => {
                                                         "Uneditable" : "Edit"
                                                     }
                                                   </ButtonPrimary>
-                                            </EditButtonCell>
-                                          </tr>
+                                            </EditButtonCell> */}
+                                          
                                         </tbody>
                                       ))
                                       : <tbody>
@@ -273,8 +303,29 @@ const Permissionlist = (props) => {
                                           containsOnlyActiveOrOwner(importAccountsList[account])
                                           ) &&
                                         <tbody className="accountRow" key={account}>
-                                          <tr>
-                                            <td width="60%">
+                                          {
+                                            importAccountsList[account].map(eachAccount=>(
+                                              <tr key={eachAccount.permission}>
+                                                <td width="2%"></td>
+                                                <td width="58%" style={{verticalAlign: "middle"}}>
+                                                  <PermissionLink to={`/account/${eachAccount.account}`}>
+                                                    {eachAccount.account}@{eachAccount.permission}
+                                                  </PermissionLink>                                              
+                                                </td>
+                                                <EditButtonCell width="40%">
+                                                  <ButtonPrimary 
+                                                        style={{float:'right', marginRight:'5%'}}
+                                                        onClick={() => getKeysData(eachAccount.account, list, "importer")}
+                                                        block
+                                                        >
+                                                        Import Keys
+                                                      </ButtonPrimary>
+                                                </EditButtonCell> 
+                                              </tr>
+                                            ))
+                                          }                                         
+
+                                            {/* <td width="60%">
                                               <AccountTable borderless>
                                                 <tbody>
                                                   <AccountRow>
@@ -306,8 +357,8 @@ const Permissionlist = (props) => {
                                                     >
                                                     Import Keys
                                                   </ButtonPrimary>
-                                            </EditButtonCell>
-                                          </tr>
+                                            </EditButtonCell> */}
+                                         
                                         </tbody>
                                       ))
                                     }

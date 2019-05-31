@@ -95,14 +95,16 @@ const createAccountObservable = (
   )
 
 const editAccountObservable = (
-  query, owner_private_key, active_private_key, accountName
+  query, privateKey, permission, accountName
 ) =>
   apiRpc("update_auth", query).pipe(
-    map(res => ({
-      ownerPrivateKey: owner_private_key,
-      activePrivateKey: active_private_key,
+    map(res => {
+      console.log("res ",res);
+      return ({
+      permission: permission,
+      privateKey: privateKey,
       accountName: accountName
-    })),
+    })}),
     catchError(err => throwError(err))
   )
 
@@ -143,7 +145,7 @@ const updateEpic = action$ => action$.pipe(
   mergeMap(
     action => {
       let { accountData: {
-        accountName, accountOwnerPrivateKey, ownerPublicKey = "NONE", activePublicKey = "NONE", ownerPrivate, activePrivate
+        accountName, accountOwnerPrivateKey, publicKey, privateKey, permission
       } } = action;
       let query = {
         actor: accountName,
@@ -152,12 +154,12 @@ const updateEpic = action$ => action$.pipe(
         private_key: accountOwnerPrivateKey
       };
 
-      if (ownerPublicKey !== "NONE") query["new_owner_key"] = ownerPublicKey;
-      if (activePublicKey !== "NONE") query["new_active_key"] = activePublicKey;
+      query["new_"+permission+"_key"] = publicKey;
 
-      return editAccountObservable(query, ownerPrivate, activePrivate, accountName)
+      return editAccountObservable(query, privateKey, permission, accountName)
         .pipe(
           mergeMap(response => {
+            console.log("query ", query);
             return apiMongodb(`get_account_details${paramsToQuery({account_name: accountName})}`)
               .pipe(
                 map(res => editSuccess({
