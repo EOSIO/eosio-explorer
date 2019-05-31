@@ -52,6 +52,19 @@ const Permissionlist = (props) => {
   } = props;
   let { list, defaultId } = data;
   let clonedList = list.slice(0);
+  
+
+  //Seperate Permissions based on Private keys
+  let listWithPrivateKey = [];
+  let listWithoutPrivateKey = [];
+  clonedList.map(eachPermission => {
+    if(eachPermission.private_key !== undefined && eachPermission.private_key !== "" && eachPermission.private_key !== null){
+      listWithPrivateKey.push(eachPermission);
+    }else{      
+      listWithoutPrivateKey.push(eachPermission);
+    }
+  });
+
 
   let baseDefaultAccountsList = (clonedList.length > 0) ? clonedList.reduce((result, permission) => {
     if (permission.account && permission.private_key) {
@@ -159,15 +172,9 @@ const Permissionlist = (props) => {
                                   </InfoDivStyled>
                                   <PermissionTable borderless>
                                     {
-                                      defaultAccountsList && numberOfDefaultAccounts > 0 
-                                        ? Object.keys(defaultAccountsList).map((account) => (
-                                        (defaultAccountsList[account] && 
-                                          defaultAccountsList[account].length === 2 && 
-                                          defaultAccountsList[account][0].private_key &&
-                                          containsOnlyActiveOrOwner(defaultAccountsList[account])
-                                          ) &&
-                                        <tbody className="accountRow" key={account}>                                         
-                                            {defaultAccountsList[account].map(eachPermission => (
+                                      listWithPrivateKey.length > 0 
+                                        ? listWithPrivateKey.map((eachPermission) => (
+                                            <tbody className="accountRow" key={eachPermission.account+""+eachPermission.permission}> 
                                               <tr key={eachPermission._id}>
                                                 <td width="7%">
                                                   <div style={{marginTop: "14px"}}>                                                
@@ -196,81 +203,17 @@ const Permissionlist = (props) => {
                                                   <ButtonPrimary 
                                                         style={{float:'right', marginRight:'5%'}}
                                                         onClick={() => getKeysData(eachPermission, list, "edit")}
-                                                        disabled={isDefaultEosio(defaultAccountsList[account])}
+                                                        disabled={isDefaultEosio(eachPermission)}
                                                         block
                                                         >
                                                         {
-                                                          (isDefaultEosio(defaultAccountsList[account])) ? 
+                                                          (isDefaultEosio(eachPermission)) ? 
                                                             "Uneditable" : "Edit"
                                                         }
                                                       </ButtonPrimary>
                                                 </EditButtonCell>
                                               </tr>
-                                            ))
-                                            }
-                                            
-                                              {/* <AccountTable borderless>
-                                                <tbody>
-                                                  <AccountRow>
-                                                    <td className="radio" width="10%">
-                                                      <RadioButtonDivStyled>
-                                                        <label className="radioContainer">
-                                                          <input name={defaultAccountsList[account][0]._id}
-                                                            type="radio"
-                                                            checked={defaultAccountsList[account][0]._id === defaultId ? true : false}
-                                                            onClick={() => setAsDefault(defaultAccountsList[account][0]._id, 
-                                                              defaultAccountsList[account][0].account, 
-                                                              defaultAccountsList[account][0].permission)}
-                                                            readOnly />
-                                                          <span className="checkmark"></span>
-                                                        </label>
-                                                      </RadioButtonDivStyled>
-                                                    </td>
-                                                    <td className="permissionLabel" width="90%">
-                                                      <PermissionLink to={`/account/${defaultAccountsList[account][0].account}`}>
-                                                        {defaultAccountsList[account][0].account}@{defaultAccountsList[account][0].permission}
-                                                      </PermissionLink>
-                                                    </td>
-                                                  </AccountRow>
-                                                  <AccountRow>
-                                                    <td className="radio" width="10%">
-                                                      <RadioButtonDivStyled>
-                                                        <label className="radioContainer">
-                                                          <input name={defaultAccountsList[account][1]._id}
-                                                            type="radio"
-                                                            checked={defaultAccountsList[account][1]._id === defaultId ? true : false}
-                                                            onClick={() => setAsDefault(defaultAccountsList[account][1]._id, 
-                                                              defaultAccountsList[account][1].account, 
-                                                              defaultAccountsList[account][1].permission)}
-                                                            readOnly />
-                                                          <span className="checkmark"></span>
-                                                        </label>
-                                                      </RadioButtonDivStyled>
-                                                    </td>
-                                                    <td className="permissionLabel" width="90%">
-                                                      <PermissionLink to={`/account/${defaultAccountsList[account][1].account}`}>
-                                                        {defaultAccountsList[account][1].account}@{defaultAccountsList[account][1].permission}
-                                                      </PermissionLink>
-                                                    </td>
-                                                  </AccountRow>
-                                                </tbody>
-                                              </AccountTable> */}
-                                            
-                                            {/* <EditButtonCell width="40%">
-                                              <ButtonPrimary 
-                                                    style={{float:'right', marginRight:'5%'}}
-                                                    onClick={() => getKeysData(defaultAccountsList[account][0].account, list, "edit")}
-                                                    disabled={isDefaultEosio(defaultAccountsList[account])}
-                                                    block
-                                                    >
-                                                    {
-                                                      (isDefaultEosio(defaultAccountsList[account])) ? 
-                                                        "Uneditable" : "Edit"
-                                                    }
-                                                  </ButtonPrimary>
-                                            </EditButtonCell> */}
-                                          
-                                        </tbody>
+                                            </tbody>
                                       ))
                                       : <tbody>
                                         <tr>
@@ -283,7 +226,7 @@ const Permissionlist = (props) => {
                                   </PermissionTable>
                                 </CardBody>
                               </FirstCardStyled>                              
-                              { (importAccountsList && numberOfImportAccounts > 0) 
+                              { (listWithoutPrivateKey.length > 0) 
                                 ? <FirstCardStyled>
                                   <CardHeaderStyled>Import Account</CardHeaderStyled>
                                   <CardBody>
@@ -296,69 +239,25 @@ const Permissionlist = (props) => {
                                     </InfoDivStyled>
                                     <PermissionTable borderless>
                                     {
-                                        Object.keys(importAccountsList).map((account) => (
-                                        (importAccountsList[account] &&
-                                          importAccountsList[account].length === 2 && 
-                                          !importAccountsList[account][0].private_key &&
-                                          containsOnlyActiveOrOwner(importAccountsList[account])
-                                          ) &&
-                                        <tbody className="accountRow" key={account}>
-                                          {
-                                            importAccountsList[account].map(eachPermission=>(
-                                              <tr key={eachPermission.permission}>
-                                                <td width="2%"></td>
-                                                <td width="58%" style={{verticalAlign: "middle"}}>
-                                                  <PermissionLink to={`/account/${eachPermission.account}`}>
-                                                    {eachPermission.account}@{eachPermission.permission}
-                                                  </PermissionLink>                                              
-                                                </td>
-                                                <EditButtonCell width="40%">
-                                                  <ButtonPrimary 
-                                                        style={{float:'right', marginRight:'5%'}}
-                                                        onClick={() => getKeysData(eachPermission, list, "importer")}
-                                                        block
-                                                        >
-                                                        Import Keys
-                                                      </ButtonPrimary>
-                                                </EditButtonCell> 
-                                              </tr>
-                                            ))
-                                          }                                         
-
-                                            {/* <td width="60%">
-                                              <AccountTable borderless>
-                                                <tbody>
-                                                  <AccountRow>
-                                                    <td className="radio" width="3%">
-                                                    </td>
-                                                    <td className="permissionLabel" width="97%">
-                                                      <PermissionLink to={`/account/${importAccountsList[account][0].account}`}>
-                                                        {importAccountsList[account][0].account}@{importAccountsList[account][0].permission}
-                                                      </PermissionLink>
-                                                    </td>
-                                                  </AccountRow>
-                                                  <AccountRow>
-                                                    <td className="radio" width="3%">
-                                                    </td>
-                                                    <td className="permissionLabel" width="97%">
-                                                      <PermissionLink to={`/account/${importAccountsList[account][1].account}`}>
-                                                        {importAccountsList[account][1].account}@{importAccountsList[account][1].permission}
-                                                      </PermissionLink>
-                                                    </td>
-                                                  </AccountRow>
-                                                </tbody>
-                                              </AccountTable>
+                                      listWithoutPrivateKey.map((eachPermission) => (
+                                        <tbody className="accountRow" key={eachPermission.account+""+eachPermission.permission}>
+                                          <tr key={eachPermission.permission}>
+                                            <td width="2%"></td>
+                                            <td width="58%" style={{verticalAlign: "middle"}}>
+                                              <PermissionLink to={`/account/${eachPermission.account}`}>
+                                                {eachPermission.account}@{eachPermission.permission}
+                                              </PermissionLink>                                              
                                             </td>
                                             <EditButtonCell width="40%">
                                               <ButtonPrimary 
                                                     style={{float:'right', marginRight:'5%'}}
-                                                    onClick={() => getKeysData(importAccountsList[account][0].account, list, "importer")}
+                                                    onClick={() => getKeysData(eachPermission, list, "importer")}
                                                     block
                                                     >
                                                     Import Keys
                                                   </ButtonPrimary>
-                                            </EditButtonCell> */}
-                                         
+                                            </EditButtonCell> 
+                                          </tr>
                                         </tbody>
                                       ))
                                     }
@@ -367,7 +266,7 @@ const Permissionlist = (props) => {
                                 </FirstCardStyled>
                                 : null
                               }
-                              </div>
+                            </div>
               }
       </div>
     </div>
