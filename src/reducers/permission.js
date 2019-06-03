@@ -191,7 +191,7 @@ export const combinedEpic = combineEpics(
   updateEpic
 );
 
-const initData = [
+/* const initData = [
   {
     _id: '1',
     account: 'eosio',
@@ -206,7 +206,9 @@ const initData = [
     public_key: 'EOS5GnobZ231eekYUJHGTcmy2qve1K23r5jSFQbMfwWTtPB7mFZ1L',
     private_key: '5Jr65kdYmn33C3UabzhmWDm2PuqbRfPuDStts3ZFNSBLM7TqaiL'
   }
-];
+]; */
+
+const initData = [];
 
 const dataInitState = {
   list: navigator.userAgent !== 'ReactSnap'
@@ -216,7 +218,7 @@ const dataInitState = {
   submitError: null,
   isSubmitting: false,
   creationSuccess: false,
-  defaultId: "1"
+  defaultId: null,
 }
 
 const reinitializedState = (
@@ -231,7 +233,7 @@ const reinitializedState = (
     submitError: null,
     isSubmitting: false,
     creationSuccess: false,
-    defaultId: "1"
+    defaultId: null,
   }
 };
 
@@ -251,12 +253,20 @@ const hasPrivateKey = (item) => {
   return (item.private_key !== undefined);
 }  
 
+const initializeDefaultId = (stateId, list) => {
+  if (!stateId) {
+    let defaultId = list.filter(el => el.private_key)[0]._id;
+    return defaultId;
+  } else
+    return stateId;
+}
+
 const composePermissionList = (originalList = [], payloadList = []) => {
   // Check if any keys were deleted using `updateauth`
   let clonedList = originalList.slice(0);  
   let newList = clonedList.filter(
     item => {
-      return item._id === "1" || item._id === "2" || ((payloadList.findIndex(dbItem => dbItem._id === item._id) > -1) && hasPrivateKey(item)) ;
+      return payloadList.findIndex(dbItem => dbItem._id === item._id) > -1;
     }
   );
   console.log("newList before", newList);
@@ -268,8 +278,11 @@ const composePermissionList = (originalList = [], payloadList = []) => {
         newList[index].private_key = null;
       }
     } else {
+      if (el.account === 'eosio' && el.public_key) {
+        el.private_key = "5Jr65kdYmn33C3UabzhmWDm2PuqbRfPuDStts3ZFNSBLM7TqaiL";
+      }
       if(newList.length < MAX_ACCOUNT_TO_SHOW)
-      newList.push(el);
+        newList.push(el);
     }
     return null;
   });
@@ -370,12 +383,14 @@ const updateAccountList = (createResponse, list) => {
 const dataReducer = (state=dataInitState, action) => {
   switch (action.type) {
     case FETCH_FULFILLED:
+      let composedList = composePermissionList(action.payload.originalList, action.payload.response);
       return {
         ...state,
         creationSuccess: false,
         isSubmitting: false,
         submitError: null,
-        list: composePermissionList(action.payload.originalList, action.payload.response)
+        list: composedList,
+        defaultId: initializeDefaultId(state.defaultId, composedList),
       };
     case DEFAULT_SET:
       return {
