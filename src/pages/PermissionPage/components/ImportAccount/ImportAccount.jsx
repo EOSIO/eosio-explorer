@@ -53,11 +53,11 @@ const ImportAccount = (props) => {
 
   function editAccountKeys() {
     let accountObj = list.filter(acct => acct["account"] === keysData[0].account);
-    let ownerObj = accountObj.filter(eachPermission => eachPermission.permission === "owner" );
+    let ownerObj = accountObj.filter(eachPermission => eachPermission.permission === "owner")[0] || {"private_key": ""};
 
     let accountData = {      
       accountName: (keysData) ? keysData[0].account : "Unknown",
-      accountOwnerPrivateKey: ownerObj[0].private_key,
+      accountOwnerPrivateKey: ownerObj.private_keyprivate_key,
       permission: keysData[0].permission
     };
 

@@ -95,7 +95,7 @@ const createAccountObservable = (
     catchError(err => throwError(err))
   )
 
-const editAccountObservable = query =>
+  const editAccountObservable = query =>
   apiRpc("update_auth", query).pipe(
     map(res => res),
     catchError(err => throwError(err))
@@ -227,8 +227,7 @@ const alphabeticalSort = (a, b) => {
 }
 
 const hasPrivateKey = (item) => {
-  console.log("item ", item.private_key);
-  return (item.private_key !== undefined);
+  return (!!item.private_key);
 }  
 
 const initializeDefaultId = (stateId, list) => {
@@ -250,18 +249,23 @@ const initializeDefaultId = (stateId, list) => {
 const composePermissionList = (originalList = [], payloadList = []) => {
   // Check if any keys were deleted using `updateauth`
   let clonedList = originalList.slice(0);  
+  console.log("originalList ", originalList);
+  console.log("payloadList ", payloadList);
   let newList = clonedList.filter(
     item => {
-      return (payloadList.findIndex(dbItem => dbItem._id === item._id) > -1 && hasPrivateKey(item));
+      return hasPrivateKey(item) && payloadList.findIndex(eachItem => item.account === eachItem.account && item.permission === eachItem.permission) > -1;
     }
   );
-  console.log("newList before", newList);
+  console.log("newList before", newList.slice(0));
   payloadList.map(function(el) {
     let index = newList.findIndex(eachItem => el.account === eachItem.account && el.permission === eachItem.permission);
     if (index >= 0) {
       if (newList[index].public_key !== el.public_key) {
+        newList[index]._id = el._id;
         newList[index].public_key = el.public_key;
         newList[index].private_key = null;
+      }else{
+        newList[index]._id = el._id;
       }
     } else {
       if (el.account === 'eosio' && el.private_key === undefined && el.public_key && 
