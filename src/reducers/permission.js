@@ -273,7 +273,7 @@ const composePermissionList = (originalList = [], payloadList = []) => {
   let clonedList = originalList.slice(0);  
   let newList = clonedList.filter(
     item => {
-      return payloadList.findIndex(dbItem => dbItem._id === item._id) > -1;
+      return (payloadList.findIndex(dbItem => dbItem._id === item._id) > -1 && hasPrivateKey(item));
     }
   );
   console.log("newList before", newList);

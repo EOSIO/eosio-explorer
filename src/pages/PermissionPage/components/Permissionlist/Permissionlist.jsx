@@ -207,14 +207,10 @@ const Permissionlist = (props) => {
                                                 <EditButtonCell width="40%">
                                                   <ButtonPrimary 
                                                         style={{float:'right', marginRight:'5%'}}
-                                                        onClick={() => getKeysData(eachPermission, list, "edit")}
-                                                        disabled={isDefaultEosio(eachPermission)}
+                                                        onClick={() => getKeysData(eachPermission, list, "edit")}                                                        
                                                         block
                                                         >
-                                                        {
-                                                          (isDefaultEosio(eachPermission)) ? 
-                                                            "Uneditable" : "Edit"
-                                                        }
+                                                        Edit
                                                       </ButtonPrimary>
                                                 </EditButtonCell>
                                               </tr>
