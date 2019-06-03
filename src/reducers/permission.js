@@ -254,14 +254,18 @@ const hasPrivateKey = (item) => {
 }  
 
 const initializeDefaultId = (stateId, list) => {
+  let eosio_owner = list.filter(
+    el => el.private_key && el.account === 'eosio' && el.permission === 'owner'
+  )[0];
+  let currentDefault = list.filter(el => el._id)[0];
+  let defaultId = list.filter(el => el.private_key)[0]._id;
+
   if (!stateId) {
-    let eosio_owner = list.filter(
-      el => el.private_key && el.account === 'eosio' && el.permission === 'owner'
-    )[0];
-    let defaultId = list.filter(el => el.private_key)[0]._id;
     return (eosio_owner) ? eosio_owner._id : defaultId;
-  } else
-    return stateId;
+  } else {
+    return (currentDefault.private_key) ? currentDefault._id :
+      (eosio_owner) ? eosio_owner._id : defaultId;
+  }
 }
 
 const composePermissionList = (originalList = [], payloadList = []) => {
