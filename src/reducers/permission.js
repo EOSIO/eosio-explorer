@@ -52,6 +52,7 @@ export const createRejected = ( payload, error ) => ({ type: CREATE_REJECTED, pa
 
 export const LOCAL_CHAIN_ID = "32b303dbe6bc3cf9a0d28fbdc95ea3cd18310923ac20f11fab3ca5ab4f18f135";
 
+const MAX_ACCOUNT_TO_SHOW = 200;
 //Epic
 
 const fetchEpic = ( action$, state$ ) => action$.pipe(
@@ -245,27 +246,35 @@ const alphabeticalSort = (a, b) => {
   return 0;
 }
 
+const hasPrivateKey = (item) => {
+  console.log("item ", item.private_key);
+  return (item.private_key !== undefined);
+}  
+
 const composePermissionList = (originalList = [], payloadList = []) => {
   // Check if any keys were deleted using `updateauth`
-  let clonedList = originalList.slice(0);
-  originalList = clonedList.filter(
+  let clonedList = originalList.slice(0);  
+  let newList = clonedList.filter(
     item => {
-      return item._id === "1" || item._id === "2" || payloadList.findIndex(dbItem => dbItem._id === item._id) > -1;
+      return item._id === "1" || item._id === "2" || ((payloadList.findIndex(dbItem => dbItem._id === item._id) > -1) && hasPrivateKey(item)) ;
     }
   );
+  console.log("newList before", newList);
   payloadList.map(function(el) {
-    let index = originalList.findIndex(eachItem => el.account === eachItem.account && el.permission === eachItem.permission);
+    let index = newList.findIndex(eachItem => el.account === eachItem.account && el.permission === eachItem.permission);
     if (index >= 0) {
-      if (originalList[index].public_key !== el.public_key) {
-        originalList[index].public_key = el.public_key;
-        originalList[index].private_key = null;
+      if (newList[index].public_key !== el.public_key) {
+        newList[index].public_key = el.public_key;
+        newList[index].private_key = null;
       }
     } else {
-      originalList.push(el);
+      if(newList.length < MAX_ACCOUNT_TO_SHOW)
+      newList.push(el);
     }
     return null;
   });
-  return originalList;
+  console.log("newList after", newList);
+  return newList;
 }
 
 const addKeysToAccount = (accountData, list) => {
