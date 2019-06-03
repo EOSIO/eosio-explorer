@@ -43,42 +43,54 @@ const ImportAccount = (props) => {
     ? useForm(importAccount, importValidate) : useForm(editAccountKeys, editValidate);
 
   function importAccount() {
-    accountAdd({
-      accountName: (keysData) ? keysData[0].account : "Unknown",
-      privateKey: values.privateKey,
-      permission: keysData[0].permission
-    });
-    window.scrollTo(0,0);
+    if (keysData) {
+      let keyAlreadyExists = keysData[0].private_key === values.privateKey && keysData[0].public_key === values.publicKey;
+
+      if (keyAlreadyExists) {
+        cogoToast.info("This key has already been imported, canceling the action", {
+          heading: 'Key Already Imported',
+          position: 'bottom-center',
+          hideAfter: 2
+        });
+      } else {
+        accountAdd({
+          accountName: (keysData) ? keysData[0].account : "Unknown",
+          privateKey: values.privateKey,
+          permission: keysData[0].permission
+        });
+      }
+    }
+    window.scrollTo(0, 0);
   }
 
   function editAccountKeys() {
     let accountObj = list.filter(acct => acct["account"] === keysData[0].account);
     let ownerObj = accountObj.filter(eachPermission => eachPermission.permission === "owner")[0] || {"private_key": ""};
 
-    let accountData = {      
+    let accountData = {
       accountName: (keysData) ? keysData[0].account : "Unknown",
-      accountOwnerPrivateKey: ownerObj.private_keyprivate_key,
+      accountOwnerPrivateKey: ownerObj.private_key,
       permission: keysData[0].permission
     };
 
-    if (keysData) {     
+    if (keysData) {
       let keyNotChanged = keysData[0].private_key === values.privateKey && keysData[0].public_key === values.publicKey;
-      
-      if(keyNotChanged){
+
+      if (keyNotChanged) {
         cogoToast.info("Your keys did not change, canceling the action", {
           heading: 'Keys Did Not Change',
           position: 'bottom-center',
           hideAfter: 2
         });
-      }else{
+      } else {
         accountData["publicKey"] = values.publicKey;
         accountData["privateKey"] = values.privateKey;
-        console.log("accountData ",accountData);
+        console.log("accountData ", accountData);
         accountEdit(accountData);
-        
-      }      
+
+      }
     }
-    window.scrollTo(0,0);
+    window.scrollTo(0, 0);
   }
 
   useEffect(() => {
