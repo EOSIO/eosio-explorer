@@ -255,8 +255,11 @@ const hasPrivateKey = (item) => {
 
 const initializeDefaultId = (stateId, list) => {
   if (!stateId) {
+    let eosio_owner = list.filter(
+      el => el.private_key && el.account === 'eosio' && el.permission === 'owner'
+    )[0];
     let defaultId = list.filter(el => el.private_key)[0]._id;
-    return defaultId;
+    return (eosio_owner) ? eosio_owner._id : defaultId;
   } else
     return stateId;
 }
