@@ -249,14 +249,11 @@ const initializeDefaultId = (stateId, list) => {
 const composePermissionList = (originalList = [], payloadList = []) => {
   // Check if any keys were deleted using `updateauth`
   let clonedList = originalList.slice(0);  
-  console.log("originalList ", originalList);
-  console.log("payloadList ", payloadList);
   let newList = clonedList.filter(
     item => {
       return hasPrivateKey(item) && payloadList.findIndex(eachItem => item.account === eachItem.account && item.permission === eachItem.permission) > -1;
     }
   );
-  console.log("newList before", newList.slice(0));
   payloadList.map(function(el) {
     let index = newList.findIndex(eachItem => el.account === eachItem.account && el.permission === eachItem.permission);
     if (index >= 0) {
@@ -285,7 +282,6 @@ const composePermissionList = (originalList = [], payloadList = []) => {
     return null;
   });
   newList.sort(alphabeticalSort);
-  console.log("newList after", newList);
   return newList;
 }
 

@@ -85,7 +85,6 @@ const ImportAccount = (props) => {
       } else {
         accountData["publicKey"] = values.publicKey;
         accountData["privateKey"] = values.privateKey;
-        console.log("accountData ", accountData);
         accountEdit(accountData);
 
       }
