@@ -257,7 +257,7 @@ const initializeDefaultId = (stateId, list) => {
   let eosio_owner = list.filter(
     el => el.private_key && el.account === 'eosio' && el.permission === 'owner'
   )[0];
-  let currentDefault = list.filter(el => el._id)[0];
+  let currentDefault = list.filter(el => el._id === stateId)[0];
   let defaultId = list.filter(el => el.private_key)[0]._id;
 
   if (!stateId) {
