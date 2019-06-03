@@ -18,31 +18,18 @@ const PermissionTable = styled(Table)`
     background-color: #fbfbfc;
   }
 `
-
 const EditButtonCell = styled.td`
   vertical-align: middle !important;
 `
-
 const PermissionLink = styled(Link)`
   :hover {
     font-weight: strong;
     color: 4d9cc3;
   }
 `
-
 const FirstCardStyled = styled(CardStyled)`
   border-top: solid 2px #1173a4;
 `
-
-
-// Each account must have two permissions, so we multiply number of accounts by 2
-// N = 100
-const MAX_ACCOUNTS_TO_SHOW = 100 * 2;
-
-// If baseListLength < (MAX_ACCOUNTS_TO_SHOW - (currentNumberOfDefaultAccounts * 2))
-// Then we just show everything
-const calculateMaxAccountsToShow = (baseListLength, currentNumberOfDefaultAccounts) => 
-  (baseListLength - (MAX_ACCOUNTS_TO_SHOW - (currentNumberOfDefaultAccounts * 2)))
 
 const Permissionlist = (props) => {
 
@@ -51,8 +38,7 @@ const Permissionlist = (props) => {
     panelSelect, defaultSet 
   } = props;
   let { list, defaultId } = data;
-  let clonedList = list.slice(0);
-  
+  let clonedList = list.slice(0);  
 
   //Seperate Permissions based on Private keys
   let listWithPrivateKey = [];
@@ -66,42 +52,6 @@ const Permissionlist = (props) => {
     return null;
   });
 
-
-  let baseDefaultAccountsList = (clonedList.length > 0) ? clonedList.reduce((result, permission) => {
-    if (permission.account && permission.private_key) {
-      result[permission.account] = result[permission.account] || [];
-      result[permission.account].push(permission);
-    } 
-    return result;
-  }, Object.create({})) : null;
-  let defaultAccountsList = (Object.keys(baseDefaultAccountsList || {}).length > 0) ? 
-    Object.keys(baseDefaultAccountsList).sort().filter(key => baseDefaultAccountsList[key].length > 1).map(key => baseDefaultAccountsList[key]) : {};
-  let numberOfDefaultAccounts = Object.keys(defaultAccountsList || {}).length;
-  
-  let baseImportAccountsList = (clonedList.length > 0) ? clonedList.reduce((result, permission, idx) => {
-    if (permission.account && !permission.private_key && idx >= calculateMaxAccountsToShow(clonedList.length, numberOfDefaultAccounts)) {
-      result[permission.account] = result[permission.account] || [];
-      result[permission.account].push(permission);
-    }
-    return result;
-  }, Object.create({})) : null;
-  if (Object.keys(baseImportAccountsList || {}).length > 0)
-    Object.keys(baseImportAccountsList).forEach(key => {
-      if (baseImportAccountsList[key].length === 1) {
-        let permission = baseImportAccountsList[key][0].permission;
-        if (permission === 'active') {
-          let missingPermission = clonedList.filter(item => item.permission === 'owner' && item.account === baseImportAccountsList[key][0].account)[0];
-          baseImportAccountsList[key].push(missingPermission);
-        } else {
-          let missingPermission = clonedList.filter(item => item.permission === 'active' && item.account === baseImportAccountsList[key][0].account)[0];
-          baseImportAccountsList[key].push(missingPermission);
-        }
-      }
-    })
-  let importAccountsList = (Object.keys(baseImportAccountsList || {}).length > 0) ?
-     Object.keys(baseImportAccountsList).sort().map(key => baseImportAccountsList[key]) : {};
-  let numberOfImportAccounts = Object.keys(importAccountsList || {}).length;
-
   useEffect(()=>{
     props.fetchStart();
   }, [])
@@ -109,9 +59,7 @@ const Permissionlist = (props) => {
   function getKeysData (permissionObj, list, panel) {
     const keysData = list.filter(acct => acct["account"] === permissionObj.account);   
     let editOrImportPermission = keysData.filter(eachPermission => eachPermission.permission === permissionObj.permission );
-    console.log("editOrImportPermission ", editOrImportPermission);
     props.accountImport(editOrImportPermission);
-    //props.accountImport(keysData);
     panelSelect("import-account-"+panel);
   }
 
@@ -125,38 +73,6 @@ const Permissionlist = (props) => {
         hideAfter: 2
       });
   }
-
-  function isDefaultEosio (eachPermission) {    
-    // let _accountNameOne = (permissionList[0]) ?
-    //   permissionList[0].account === 'eosio' : false;
-    // let _accountNameTwo = (permissionList[1]) ?
-    //   permissionList[1].account === 'eosio' : false;
-    // let _accountOneId = (permissionList[0]) ?
-    //   (permissionList[0]._id === '1' || permissionList[0]._id === '2') : false;
-    // let _accountTwoId = (permissionList[1]) ?
-    //   (permissionList[1]._id === '1' || permissionList[1]._id === '2') : false;
-
-    //return _accountNameOne && _accountNameTwo && _accountOneId && _accountTwoId;
-
-    //Also add the check for chain ID after discussion
-    let result = eachPermission.account === 'eosio' && (eachPermission.permission === 'owner' || 'active') ? true : false;
-    return result;
-  }
-
-  function containsOnlyActiveOrOwner (permissionList) {
-    let _permissionOneCorrect = false;
-    let _permissionTwoCorrect = false;
-
-    if (permissionList.length > 0) {
-      _permissionOneCorrect = (permissionList[0]) ?
-        (permissionList[0].permission === 'owner' || permissionList[0].permission === 'active') : false;
-      _permissionTwoCorrect = (permissionList[1]) ?
-        (permissionList[1].permission === 'owner' || permissionList[1].permission === 'active') : false;
-    }
-
-    return _permissionOneCorrect && _permissionTwoCorrect;
-  }
-
   return (
     <div className="Permissionlist">
 
