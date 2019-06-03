@@ -263,7 +263,8 @@ const initializeDefaultId = (stateId, list) => {
   if (!stateId) {
     return (eosio_owner) ? eosio_owner._id : defaultId;
   } else {
-    return (currentDefault.private_key) ? currentDefault._id :
+    let currentDefaultExists = (currentDefault) ? currentDefault.private_key : null;
+    return (currentDefaultExists) ? currentDefault._id :
       (eosio_owner) ? eosio_owner._id : defaultId;
   }
 }
@@ -293,6 +294,7 @@ const composePermissionList = (originalList = [], payloadList = []) => {
     }
     return null;
   });
+  newList.sort(alphabeticalSort);
   console.log("newList after", newList);
   return newList;
 }
