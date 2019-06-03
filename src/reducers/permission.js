@@ -258,7 +258,7 @@ const initializeDefaultId = (stateId, list) => {
     el => el.private_key && el.account === 'eosio' && el.permission === 'owner'
   )[0];
   let currentDefault = list.filter(el => el._id === stateId)[0];
-  let defaultId = list.filter(el => el.private_key)[0]._id;
+  let defaultId = list.filter(el => el.private_key)[0];
 
   if (!stateId) {
     return (eosio_owner) ? eosio_owner._id : defaultId;
@@ -286,7 +286,7 @@ const composePermissionList = (originalList = [], payloadList = []) => {
         newList[index].private_key = null;
       }
     } else {
-      if (el.account === 'eosio' && el.public_key) {
+      if (el.account === 'eosio' && el.private_key === undefined && el.public_key) {
         el.private_key = "5Jr65kdYmn33C3UabzhmWDm2PuqbRfPuDStts3ZFNSBLM7TqaiL";
       }
       if(newList.length < MAX_ACCOUNT_TO_SHOW)
@@ -354,8 +354,10 @@ const updateAccountList = (createResponse, list) => {
   let defaultId = "1";
 
   if (queryData && queryData.length > 0) {
-
     let index = updatedList.findIndex(item => item.account === accountName && item.permission === permission);
+    let updatedAccount = queryData.filter(el => el.permission === permission)[0];
+    updatedList[index]._id = updatedAccount._id;
+    updatedList[index].public_key = updatedAccount.public_key;
     updatedList[index].private_key = privateKey;
     defaultId = updatedList[index]._id;
     // let ownerIndex = updatedList.findIndex(item => item.account === accountName && item.permission === 'owner');
