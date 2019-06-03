@@ -63,6 +63,7 @@ const Permissionlist = (props) => {
     }else{      
       listWithoutPrivateKey.push(eachPermission);
     }
+    return null;
   });
 
 
@@ -125,17 +126,21 @@ const Permissionlist = (props) => {
       });
   }
 
-  function isDefaultEosio (permissionList) {
-    let _accountNameOne = (permissionList[0]) ?
-      permissionList[0].account === 'eosio' : false;
-    let _accountNameTwo = (permissionList[1]) ?
-      permissionList[1].account === 'eosio' : false;
-    let _accountOneId = (permissionList[0]) ?
-      (permissionList[0]._id === '1' || permissionList[0]._id === '2') : false;
-    let _accountTwoId = (permissionList[1]) ?
-      (permissionList[1]._id === '1' || permissionList[1]._id === '2') : false;
+  function isDefaultEosio (eachPermission) {    
+    // let _accountNameOne = (permissionList[0]) ?
+    //   permissionList[0].account === 'eosio' : false;
+    // let _accountNameTwo = (permissionList[1]) ?
+    //   permissionList[1].account === 'eosio' : false;
+    // let _accountOneId = (permissionList[0]) ?
+    //   (permissionList[0]._id === '1' || permissionList[0]._id === '2') : false;
+    // let _accountTwoId = (permissionList[1]) ?
+    //   (permissionList[1]._id === '1' || permissionList[1]._id === '2') : false;
 
-    return _accountNameOne && _accountNameTwo && _accountOneId && _accountTwoId;
+    //return _accountNameOne && _accountNameTwo && _accountOneId && _accountTwoId;
+
+    //Also add the check for chain ID after discussion
+    let result = eachPermission.account === 'eosio' && (eachPermission.permission === 'owner' || 'active') ? true : false;
+    return result;
   }
 
   function containsOnlyActiveOrOwner (permissionList) {
