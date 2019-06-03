@@ -53,6 +53,7 @@ const CreateAccount = (props) => {
         position: 'bottom-center',
         hideAfter: 2
       });
+    window.scrollTo(0, 0);  
   }
 
   return (
