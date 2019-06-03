@@ -95,17 +95,9 @@ const createAccountObservable = (
     catchError(err => throwError(err))
   )
 
-const editAccountObservable = (
-  query, privateKey, permission, accountName
-) =>
+const editAccountObservable = query =>
   apiRpc("update_auth", query).pipe(
-    map(res => {
-      console.log("res ",res);
-      return ({
-      permission: permission,
-      privateKey: privateKey,
-      accountName: accountName
-    })}),
+    map(res => res),
     catchError(err => throwError(err))
   )
 
@@ -156,16 +148,16 @@ const updateEpic = action$ => action$.pipe(
       };
 
       query["new_"+permission+"_key"] = publicKey;
+
       let baseData = {
         permission: permission,
         privateKey: privateKey,
         accountName: accountName
       }
 
-      return editAccountObservable(query, privateKey, permission, accountName)
+      return editAccountObservable(query)
         .pipe(
           mergeMap(response => {
-            console.log("query ", query);
             return apiMongodb(`get_account_details${paramsToQuery({account_name: baseData.accountName})}`)
               .pipe(
                 map(res => editSuccess({
@@ -205,12 +197,15 @@ const dataInitState = {
 }
 
 const reinitializedState = (
-  chainId = LOCAL_CHAIN_ID
+  chainId = LOCAL_CHAIN_ID, oldList
 ) => {
+  let eosioPerms = oldList.filter(el => 
+    el.account === 'eosio' && el.private_key && el.public_key
+  );
   return {
     list: (
       chainId === LOCAL_CHAIN_ID
-    ) ? [...initData] : [],
+    ) ? [...eosioPerms] : [],
     importSuccess: false,
     importError: null,
     submitError: null,
@@ -269,8 +264,14 @@ const composePermissionList = (originalList = [], payloadList = []) => {
         newList[index].private_key = null;
       }
     } else {
-      if (el.account === 'eosio' && el.private_key === undefined && el.public_key) {
-        if(el.public_key === "EOS5GnobZ231eekYUJHGTcmy2qve1K23r5jSFQbMfwWTtPB7mFZ1L"){
+      if (el.account === 'eosio' && el.private_key === undefined && el.public_key && 
+        (el.permission === 'owner' || el.permission === 'active')) {
+        /**
+         * If the eosio account made from our tool is initialized state and has no private key in local storage,
+         * we assign the corresponding private key to the public key in the database. This only applies for
+         * owner and/or active permissions. Otherwise, we do nothing
+         */
+        if (el.public_key === "EOS5GnobZ231eekYUJHGTcmy2qve1K23r5jSFQbMfwWTtPB7mFZ1L") {
           el.private_key = "5Jr65kdYmn33C3UabzhmWDm2PuqbRfPuDStts3ZFNSBLM7TqaiL";
         }       
       }
@@ -430,7 +431,7 @@ const dataReducer = (state=dataInitState, action) => {
         isSubmitting: false
       };
     case ACCOUNT_CLEAR:
-      return reinitializedState(action.chainId);
+      return reinitializedState(action.chainId, state.list);
     default:
       return state;
   }
