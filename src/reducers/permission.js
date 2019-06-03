@@ -191,23 +191,6 @@ export const combinedEpic = combineEpics(
   updateEpic
 );
 
-/* const initData = [
-  {
-    _id: '1',
-    account: 'eosio',
-    permission: 'active',
-    public_key: 'EOS5GnobZ231eekYUJHGTcmy2qve1K23r5jSFQbMfwWTtPB7mFZ1L',
-    private_key: '5Jr65kdYmn33C3UabzhmWDm2PuqbRfPuDStts3ZFNSBLM7TqaiL'
-  },
-  {
-    _id: '2',
-    account: 'eosio',
-    permission: 'owner',
-    public_key: 'EOS5GnobZ231eekYUJHGTcmy2qve1K23r5jSFQbMfwWTtPB7mFZ1L',
-    private_key: '5Jr65kdYmn33C3UabzhmWDm2PuqbRfPuDStts3ZFNSBLM7TqaiL'
-  }
-]; */
-
 const initData = [];
 
 const dataInitState = {
@@ -287,7 +270,9 @@ const composePermissionList = (originalList = [], payloadList = []) => {
       }
     } else {
       if (el.account === 'eosio' && el.private_key === undefined && el.public_key) {
-        el.private_key = "5Jr65kdYmn33C3UabzhmWDm2PuqbRfPuDStts3ZFNSBLM7TqaiL";
+        if(el.public_key === "EOS5GnobZ231eekYUJHGTcmy2qve1K23r5jSFQbMfwWTtPB7mFZ1L"){
+          el.private_key = "5Jr65kdYmn33C3UabzhmWDm2PuqbRfPuDStts3ZFNSBLM7TqaiL";
+        }       
       }
       if(newList.length < MAX_ACCOUNT_TO_SHOW)
         newList.push(el);
@@ -303,10 +288,6 @@ const addKeysToAccount = (accountData, list) => {
   let updatedList = list.slice(0);
   let index = updatedList.findIndex(el => (accountData.accountName === el.account && el.permission === accountData.permission));
   updatedList[index].private_key = accountData.privateKey;
-  // let activeItem = updatedList.findIndex(el => (accountData.accountName === el.account && el.permission === 'active'));
-  // let ownerItem = updatedList.findIndex(el => (accountData.accountName === el.account && el.permission === 'owner'));
-  // updatedList[activeItem]["private_key"] = accountData.activePrivate;
-  // updatedList[ownerItem]["private_key"] = accountData.ownerPrivate;
   return updatedList;
 }
 
@@ -345,12 +326,9 @@ const updateAccountList = (createResponse, list) => {
     baseData: { permission, privateKey, accountName },
     queryData
   } = createResponse;
-  console.log("queryData ", queryData);
   let accountSuccess = true;
   let msg = `Successfully updated the keys for ${accountName}`;
-  console.log("list ", list);
   let updatedList = list.slice(0);
-  console.log("updatedList ", updatedList);
   let defaultId = "1";
 
   if (queryData && queryData.length > 0) {
@@ -359,20 +337,7 @@ const updateAccountList = (createResponse, list) => {
     updatedList[index]._id = updatedAccount._id;
     updatedList[index].public_key = updatedAccount.public_key;
     updatedList[index].private_key = privateKey;
-    defaultId = updatedList[index]._id;
-    // let ownerIndex = updatedList.findIndex(item => item.account === accountName && item.permission === 'owner');
-    // let activeIndex = updatedList.findIndex(item => item.account === accountName && item.permission === 'active');
-    // updatedList[ownerIndex].private_key = ownerPrivateKey;
-    // updatedList[ownerIndex].public_key = (queryData[0].permission === 'owner') ?
-    //   queryData[0].public_key : queryData[1].public_key;
-    // updatedList[ownerIndex]._id = (queryData[0].permission === 'owner') ?
-    //   queryData[0]._id : queryData[1]._id;
-    // updatedList[activeIndex].private_key = activePrivateKey;
-    // updatedList[activeIndex].public_key = (queryData[0].permission === 'active') ?
-    //   queryData[0].public_key : queryData[1].public_key;
-    // updatedList[activeIndex]._id = (queryData[0].permission === 'active') ?
-    //   queryData[0]._id : queryData[1]._id;
-    // defaultId = updatedList[ownerIndex]._id;
+    defaultId = updatedList[index]._id;    
   } else {
     msg = `Updated the keys for ${accountName} but failed to query the
        account after creation. Please import the keys you just used in the previous

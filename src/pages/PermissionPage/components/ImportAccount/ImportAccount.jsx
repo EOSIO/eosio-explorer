@@ -241,7 +241,7 @@ const ImportAccount = (props) => {
                       <ButtonPrimary className="float-right"
                         disabled={!(values.privateKey)}
                         block>
-                        Submit
+                        {panel === 'import-account-edit' ? "Edit" : "Import"}
                       </ButtonPrimary>
                     </ButtonGroupSeperated>
                   </Col>
