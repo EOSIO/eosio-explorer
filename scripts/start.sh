@@ -44,13 +44,13 @@ SERVERMODE=false
 HARDREPLAY=false
 NOTIMESTAMP=false
 
-USAGE="Usage: eosio-explorer start [-dev] [-d] [-b] [-s] [--server-mode [--clear-browser-storage] (program to start eosio-explorer)
+USAGE="Usage: eosio-explorer start [-dev] [-del] [-b] [-s] [--server-mode [--clear-browser-storage] (program to start eosio-explorer)
 
 where:
     --server-mode           Starts the tool in server-mode, it will start the dockers but not the gui
     -s, --sample-data       Starts the tool with pre-existing sample accounts and smart contracts
     --clear-browser-storage Starts the tool with clearing browser local storage
-    -d, --delete            Removes existing Docker containers
+    -del, --delete            Removes existing Docker containers
     Only available in development:
     -dev, --develop         Starts the tool in development mode
     -b, --build             Build gui
@@ -61,7 +61,7 @@ where:
 for arg in $@
 do
   case $arg in
-    -d|--delete)
+    -del|--delete)
       ./remove_dockers.sh
       CLEARBROWSERSTORAGE=true
       ;;
