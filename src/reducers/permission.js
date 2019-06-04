@@ -50,8 +50,6 @@ export const createStart = account => ({ type: CREATE_START, account });
 export const createFulfilled = payload => ({ type: CREATE_FULFILLED, payload });
 export const createRejected = ( payload, error ) => ({ type: CREATE_REJECTED, payload, error });
 
-export const LOCAL_CHAIN_ID = "32b303dbe6bc3cf9a0d28fbdc95ea3cd18310923ac20f11fab3ca5ab4f18f135";
-
 //Epic
 
 const fetchEpic = ( action$, state$ ) => action$.pipe(
@@ -211,13 +209,9 @@ const dataInitState = {
   defaultId: "1"
 }
 
-const reinitializedState = (
-  chainId = LOCAL_CHAIN_ID
-) => {
+const reinitializedState = () => {
   return {
-    list: (
-      chainId === LOCAL_CHAIN_ID
-    ) ? [...initData] : [],
+    list: [...initData],
     importSuccess: false,
     importError: null,
     submitError: null,
@@ -414,7 +408,7 @@ const dataReducer = (state=dataInitState, action) => {
         isSubmitting: false
       };
     case ACCOUNT_CLEAR:
-      return reinitializedState(action.chainId);
+      return reinitializedState();
     default:
       return state;
   }
