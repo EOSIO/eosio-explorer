@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { connect } from 'react-redux';
 import { Row, Col, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
-
+import { Link } from 'react-router-dom';
 import { LoadingSpinner, LimitSelectDropdown } from 'components';
 import styled from 'styled-components';
 import { TableStyled, ButtonPrimary, DropdownStyled, ButtonSecondary, ExclamationIconStyled, SuccessIconStyled, ToolTipUncontrolledStyled } from 'styled';
@@ -113,7 +113,7 @@ const Actionhistory = (props) => {
                       <tr><td colSpan="6" className="text-center">No actions found{filter.smartContractName && ` with Smart Contract name ${filter.smartContractName}`}</td></tr>
                       : actionsList.map((action, index) =>
                         <tr key={index}>
-                          <TdStyled>{action.act.account}</TdStyled>
+                          <TdStyled><Link to={`/contract/${action.act.account}`}>{action.act.account}</Link></TdStyled>
                           <TdStyled>{action.act.name}</TdStyled>
                           <TdStyled>{action.block_time}</TdStyled>
                           <TdStyled>{(action.act.authorization.length > 0) ? action.act.authorization[0].actor + "@" + action.act.authorization[0].permission : ""}</TdStyled>
