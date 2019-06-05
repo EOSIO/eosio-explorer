@@ -100,15 +100,9 @@ const createAccountObservable = (
     return apiRpc("get_account_details",{account_name: query.account_name})
       .pipe(
         mergeMap(res => {
-          let index = res.permissions.findIndex(eachPermission => eachPermission.perm_name === query.permission_to_update);
+          let index = res.permissions.findIndex(eachPermission => eachPermission.perm_name === query.permission);
           if(index > -1){
-            console.log("query before permission", query.permission);
-            console.log("query before private_key", query.private_key);
-            query["parent"] = res.permissions[index].parent;
-            //If the owner private key is not available then try with parent private key to edit keys
-            if(query.private_key === ""){
-              query["permission"] = res.permissions[index].parent;
-            }            
+            query["parent"] = res.permissions[index].parent;         
             return apiRpc("update_auth", query)
               .pipe(
                 map(res => res),
@@ -122,7 +116,7 @@ const createAccountObservable = (
     )
   }
 
- 
+
 const createEpic = action$ => action$.pipe(
   ofType(CREATE_START),
   mergeMap(
@@ -164,8 +158,7 @@ const updateEpic = action$ => action$.pipe(
       } } = action;
       let query = {
         actor: accountName,
-        permission: "owner",
-        permission_to_update: permission,
+        permission: permission,
         account_name: accountName,
         private_key: accountOwnerPrivateKey
       };
