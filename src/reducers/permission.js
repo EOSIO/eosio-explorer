@@ -42,7 +42,7 @@ export const fetchRejected = ( payload, error ) => ({ type: FETCH_REJECTED, payl
 export const defaultSet = ( id ) => ({ type: DEFAULT_SET, id });
 export const accountAdd = accountData => ({ type: ACCOUNT_ADD, accountData });
 export const accountImport = accountData => ({ type: ACCOUNT_IMPORT, accountData });
-export const accountClear = chainId => ({ type: ACCOUNT_CLEAR, chainId });
+export const accountClear = () => ({ type: ACCOUNT_CLEAR });
 export const accountEdit = accountData => ({ type: ACCOUNT_EDIT, accountData });
 export const editSuccess = payload => ({ type: EDIT_SUCCESS, payload });
 export const editRejected = ( payload, error ) => ({ type: EDIT_REJECTED, payload, error });
@@ -209,7 +209,7 @@ const dataInitState = {
 
 const reinitializedState = (oldList) => {
   let eosioPerms = oldList.filter(el => 
-    el.account === 'eosio' && el.private_key && el.public_key
+    el.account === 'eosio' && (el.permission === "active" || "owner") && el.public_key === "EOS5GnobZ231eekYUJHGTcmy2qve1K23r5jSFQbMfwWTtPB7mFZ1L" && el.private_key
   );
   return {
     list: [...eosioPerms],
