@@ -16,7 +16,7 @@ import paramsToQuery from 'helpers/params-to-query';
 import { errorLog } from 'helpers/error-logger';
 
 
-// IMPORTANT
+// IMPORTANT 
 // Must modify action prefix since action types must be unique in the whole app
 const actionPrefix = `permission/`;
 
@@ -94,13 +94,35 @@ const createAccountObservable = (
     })),
     catchError(err => throwError(err))
   )
+  
+  const editAccountObservable = query => {
+    //get parent of the current permission to be edited
+    return apiRpc("get_account_details",{account_name: query.account_name})
+      .pipe(
+        mergeMap(res => {
+          let index = res.permissions.findIndex(eachPermission => eachPermission.perm_name === query.permission_to_update);
+          if(index > -1){
+            console.log("query before permission", query.permission);
+            console.log("query before private_key", query.private_key);
+            query["parent"] = res.permissions[index].parent;
+            //If the owner private key is not available then try with parent private key to edit keys
+            if(query.private_key === ""){
+              query["permission"] = res.permissions[index].parent;
+            }            
+            return apiRpc("update_auth", query)
+              .pipe(
+                map(res => res),
+                catchError(err => throwError(err))
+              )
+          }else{
+            return throwError({"message": `Parent not found for the permission ${query.permission}`});
+          }          
+        }),
+      catchError(error => throwError(error))
+    )
+  }
 
-  const editAccountObservable = query =>
-  apiRpc("update_auth", query).pipe(
-    map(res => res),
-    catchError(err => throwError(err))
-  )
-
+ 
 const createEpic = action$ => action$.pipe(
   ofType(CREATE_START),
   mergeMap(
@@ -142,12 +164,13 @@ const updateEpic = action$ => action$.pipe(
       } } = action;
       let query = {
         actor: accountName,
-        permission: 'owner',
+        permission: "owner",
+        permission_to_update: permission,
         account_name: accountName,
         private_key: accountOwnerPrivateKey
       };
 
-      query["new_"+permission+"_key"] = publicKey;
+      query["new_key"] = publicKey;
 
       let baseData = {
         permission: permission,
@@ -322,7 +345,7 @@ const storeNewAccount = (createResponse, list) => {
 
 }
 
-const updateAccountList = (createResponse, list) => {
+const updateAccountList = (createResponse, list, defaultId) => {
   let {
     baseData: { permission, privateKey, accountName },
     queryData
@@ -330,15 +353,19 @@ const updateAccountList = (createResponse, list) => {
   let accountSuccess = true;
   let msg = `Successfully updated the keys for ${accountName}`;
   let updatedList = list.slice(0);
-  let defaultId = "1";
 
   if (queryData && queryData.length > 0) {
     let index = updatedList.findIndex(item => item.account === accountName && item.permission === permission);
-    let updatedAccount = queryData.filter(el => el.permission === permission)[0];
-    updatedList[index]._id = updatedAccount._id;
+    let updatedAccount = queryData.filter(el => el.permission === permission)[0];    
     updatedList[index].public_key = updatedAccount.public_key;
     updatedList[index].private_key = privateKey;
-    defaultId = updatedList[index]._id;    
+    //set new id as default id if the the permisssion was default permission
+    if(defaultId === updatedList[index]._id){
+      updatedList[index]._id = updatedAccount._id;
+      defaultId = updatedList[index]._id;
+    }else{
+      updatedList[index]._id = updatedAccount._id;
+    }       
   } else {
     msg = `Updated the keys for ${accountName} but failed to query the
        account after creation. Please import the keys you just used in the previous
@@ -413,7 +440,7 @@ const dataReducer = (state=dataInitState, action) => {
         creationSuccess: success
       };
     case EDIT_SUCCESS:
-      let { updatedList, updatedMsg, updatedSuccess, defaultId } = updateAccountList(action.payload, state.list);
+      let { updatedList, updatedMsg, updatedSuccess, defaultId } = updateAccountList(action.payload, state.list, state.defaultId);
       return {
         ...state,
         defaultId: defaultId,
