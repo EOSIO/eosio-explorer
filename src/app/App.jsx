@@ -25,6 +25,7 @@ import { WillRoute } from 'hocs';
 import { connectStart } from 'reducers/endpoint';
 import { pollingStart as headblock_pollingStart} from 'reducers/headblock';
 import { pollingStart as lastblockinfo_pollingStart } from 'reducers/lastblockinfo';
+import { fetchStart as blockchaininfo_fetchstart } from 'pages/InfoPage/components/BlockchainInfo/BlockchainInfoReducer';
 
 const prodTagManagerArgs = {
   gtmId: process.env.REACT_APP_PROD_GTM_ID
@@ -49,6 +50,7 @@ class App extends Component {
 
     let { endpoint: { path : { nodeos, mongodb }}} = this.props;
     this.props.connectStart(nodeos, mongodb);
+    this.props.blockchaininfo_fetchstart();
     this.props.headblock_pollingStart();
     this.props.lastblockinfo_pollingStart();
   }
@@ -86,6 +88,7 @@ export default withRouter(connect(
   }),
   {
     connectStart,
+    blockchaininfo_fetchstart,
     headblock_pollingStart,
     lastblockinfo_pollingStart,
   }
