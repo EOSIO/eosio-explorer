@@ -50,8 +50,6 @@ export const createStart = account => ({ type: CREATE_START, account });
 export const createFulfilled = payload => ({ type: CREATE_FULFILLED, payload });
 export const createRejected = ( payload, error ) => ({ type: CREATE_REJECTED, payload, error });
 
-export const LOCAL_CHAIN_ID = "32b303dbe6bc3cf9a0d28fbdc95ea3cd18310923ac20f11fab3ca5ab4f18f135";
-
 const MAX_ACCOUNT_TO_SHOW = 200;
 //Epic
 
@@ -209,16 +207,12 @@ const dataInitState = {
   defaultId: null,
 }
 
-const reinitializedState = (
-  chainId = LOCAL_CHAIN_ID, oldList
-) => {
+const reinitializedState = (oldList) => {
   let eosioPerms = oldList.filter(el => 
     el.account === 'eosio' && el.private_key && el.public_key
   );
   return {
-    list: (
-      chainId === LOCAL_CHAIN_ID
-    ) ? [...eosioPerms] : [],
+    list: [...eosioPerms],
     importSuccess: false,
     importError: null,
     submitError: null,
@@ -448,7 +442,7 @@ const dataReducer = (state=dataInitState, action) => {
         isSubmitting: false
       };
     case ACCOUNT_CLEAR:
-      return reinitializedState(action.chainId, state.list);
+      return reinitializedState(state.list);
     default:
       return state;
   }
