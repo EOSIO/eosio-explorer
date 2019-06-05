@@ -199,11 +199,8 @@ export const combinedEpic = combineEpics(
   updateEpic
 );
 
-const initData = [];
-
 const dataInitState = {
-  list: navigator.userAgent !== 'ReactSnap'
-   ? initData : [],
+  list: [],
   importSuccess: false,
   importError: null,
   submitError: null,
