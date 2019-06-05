@@ -177,8 +177,8 @@ const ImportAccount = (props) => {
                 handleSubmit
               }>
               <FormGroup row>
-                  <Label htmlFor="accountName" sm={1}>Account Name</Label>
-                  <Col sm={11}>
+                  <Label htmlFor="accountName" sm={2}>Account Name</Label>
+                  <Col sm={10}>
                     <InputStyled type="text"
                       name="accountName"
                       id="accountName"
@@ -188,8 +188,8 @@ const ImportAccount = (props) => {
                   </Col>
                 </FormGroup>
                 <FormGroup row>
-                  <Label htmlFor="permissionName" sm={1}>Permission</Label>
-                  <Col sm={11}>
+                  <Label htmlFor="permissionName" sm={2}>Permission</Label>
+                  <Col sm={10}>
                     <InputStyled type="text"
                       name="permissionName"
                       id="permissionName"
@@ -199,8 +199,8 @@ const ImportAccount = (props) => {
                   </Col>
                 </FormGroup>
                 <FormGroup row>
-                  <Label htmlFor="publicKey" sm={1}>Public Key</Label>
-                  <Col sm={11}>
+                  <Label htmlFor="publicKey" sm={2}>Public Key</Label>
+                  <Col sm={10}>
                     <InputStyled type="text"
                       name="publicKey"
                       id="publicKey"
@@ -220,8 +220,8 @@ const ImportAccount = (props) => {
                   </Col>
                 </FormGroup>
                 <FormGroup row>
-                  <Label htmlFor="privateKey" sm={1}>Private Key</Label>
-                  <Col sm={11}>
+                  <Label htmlFor="privateKey" sm={2}>Private Key</Label>
+                  <Col sm={10}>
                     <InputStyled type="text"
                       name="privateKey"
                       id="privateKey"

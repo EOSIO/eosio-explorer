@@ -96,8 +96,8 @@ const CreateAccount = (props) => {
                     handleSubmit
                   }>
                     <FormGroup row>
-                      <Label htmlFor="accountName" sm={1}>Account Name</Label>
-                      <Col sm={11}>
+                      <Label htmlFor="accountName" sm={2}>Account Name</Label>
+                      <Col sm={10}>
                         <InputStyled type="text"
                           name="accountName"
                           id="accountName"
@@ -122,8 +122,8 @@ const CreateAccount = (props) => {
                     </FormGroup>
                     <div><b>Owner</b></div>
                     <FormGroup row>
-                      <Label htmlFor="ownerPublic" sm={1}>Public Key</Label>
-                      <Col sm={11}>
+                      <Label htmlFor="ownerPublic" sm={2}>Public Key</Label>
+                      <Col sm={10}>
                         <InputStyled type="text"
                           name="ownerPublic"
                           id="ownerPublic"
@@ -138,8 +138,8 @@ const CreateAccount = (props) => {
                       </Col> 
                     </FormGroup>
                     <FormGroup row>
-                      <Label htmlFor="ownerPrivate" sm={1}>Private Key</Label>
-                      <Col sm={11}>
+                      <Label htmlFor="ownerPrivate" sm={2}>Private Key</Label>
+                      <Col sm={10}>
                         <InputStyled type="text"
                             name="ownerPrivate"
                             id="ownerPrivate"
@@ -155,8 +155,8 @@ const CreateAccount = (props) => {
                     </FormGroup>
                     <div><b>Active</b></div>
                     <FormGroup row>
-                      <Label htmlFor="activePublic" sm={1}>Public Key</Label>
-                      <Col sm={11}>
+                      <Label htmlFor="activePublic" sm={2}>Public Key</Label>
+                      <Col sm={10}>
                         <InputStyled type="text"
                           name="activePublic"
                           id="activePublic"
@@ -171,8 +171,8 @@ const CreateAccount = (props) => {
                       </Col> 
                     </FormGroup>
                     <FormGroup row>
-                      <Label htmlFor="activePrivate" sm={1}>Private Key</Label>
-                      <Col sm={11}>
+                      <Label htmlFor="activePrivate" sm={2}>Private Key</Label>
+                      <Col sm={10}>
                         <InputStyled type="text"
                             name="activePrivate"
                             id="activePrivate"
