@@ -73,9 +73,9 @@ const updateAction = (name, action, value, callback) => {
  * @param {*} action The action object to be cleared
  * @param {*} callback The function to call on the cleared action
  */
-const clearAction = (action, callback) => {
+const clearAction = (action, callback, defaultPermission = undefined) => {
   action = undefined;
-  callback(action);
+  callback(action, defaultPermission);
 };
 
 const PushactionPage = (props) => {
@@ -112,13 +112,15 @@ const PushactionPage = (props) => {
     props.fetchStart();
     props.fetchSmartContracts();
     setAdditionalValues(list);
-    updateAction("", action, null, props.updateActionToPush);
-    if(action.act.account !== ""){
+    // Set initial permission based on the default
+    updateAction("permission", action, { actor: selectedPermission.account, permission: selectedPermission.permission }, props.updateActionToPush);
+
+    if (action.act.account !== "") {
       let smartContract = props.pushactionPage.smartContracts.smartContractsList.find(smartContract => smartContract.name === action.act.account) || {};
       if (Object.keys(smartContract).length > 0 && smartContract.abi.actions)
         setActionList(smartContract.abi.actions);
-      else 
-        setActionList([]); 
+      else
+        setActionList([]);
     }
   }, [])
 
@@ -126,7 +128,7 @@ const PushactionPage = (props) => {
   let { list, defaultId } = data;  
 
   // Get the default permission. Overwrite it with the action object's permission, if the action object has a permission.
-  let selectedPermission = list.find(permission => defaultId === permission._id) || {}; 
+  let selectedPermission = list.find(permission => defaultId === permission._id) || {};
   if (action.act.authorization)
     selectedPermission = list.find(p => p.account === action.act.authorization.actor && p.permission === action.act.authorization.permission) || selectedPermission;
 
@@ -252,11 +254,12 @@ const PushactionPage = (props) => {
                     <Col xs="9">
                       <CustomDropdown id="PermissionDropdown" isOpen={isOpenDropDownPermission} toggle={()=>{toggleDropDownPermission(!isOpenDropDownPermission)}}>
                         <DropdownToggle className={errors.permission && "invalid"} caret>                        
-                          { Object.keys(selectedPermission).length > 0
+                          { list.length < 1 ? "No Permissions Available"
+                            : Object.keys(selectedPermission).length > 0
                               ? (selectedPermission._id === defaultId)
                                   ? (selectedPermission.account + "@" + selectedPermission.permission + " (default)")
                                   : (selectedPermission.account + "@" + selectedPermission.permission)
-                              : "No Permissions Available"}
+                              : "Select Permission"}
                         </DropdownToggle>
                         <DropdownMenu modifiers={dropdownMaxHeight}>
                           {(list).map( permission => permission.private_key &&
@@ -275,7 +278,7 @@ const PushactionPage = (props) => {
                         </DropdownMenu>     
                       </CustomDropdown>  
                       {/* Hidden inputs for validation and to make sure validation messages are shown by Bootstrap  */}
-                      <Input type="hidden" id="permission" name="permission" value={selectedPermission._id} onChange={(e) => { handleChange(e); } } invalid={!!errors.permission} />
+                      <Input type="hidden" id="permission" name="permission" value={selectedPermission._id || ""} onChange={(e) => { handleChange(e); } } invalid={!!errors.permission} />
                       {
                         errors.permission && 
                         <FormFeedback invalid="true">
@@ -310,7 +313,10 @@ const PushactionPage = (props) => {
                     <Col xs="12">
                       <ButtonGroupSeperated className="float-right">
                         <ButtonSecondary type="button" onClick={(e) => {
-                          clearAction(action, props.updateActionToPush);
+                          // Clear the action to its empty state and set the permission back to the default permission
+                          let defaultPermission = list.find(permission => defaultId === permission._id);
+                          let actionDefaultPermission = !!defaultPermission ? { actor: defaultPermission.account, permission: defaultPermission.permission } : undefined;
+                          clearAction(action, props.updateActionToPush, actionDefaultPermission);
                           resetValidation(e);
                         }}>Clear</ButtonSecondary>
                         <ButtonPrimary type="submit">Push</ButtonPrimary>

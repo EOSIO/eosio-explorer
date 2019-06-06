@@ -127,10 +127,6 @@ const DeploymentPage = (props) => {
     compilerState
   } = deployContainer;
   let { list, defaultId } = data;
-  let noOfPermissions = list.slice(0).reduce((accounts, el) => {
-    if (el.private_key) accounts++;
-    return accounts;
-  }, 0);
 
   const [clickDeploy, setClickDeploy] = useState(false);
   const [isOpenDropDown, toggleDropDown] = useState(false);
@@ -141,6 +137,12 @@ const DeploymentPage = (props) => {
   const [deployTooltip, toggleDeployTooltip] = useState(false);
 
   const importRef = React.createRef();
+
+  let selectedPermission = list.find(permission => currentId === permission._id && !!permission.private_key) || {};
+  let noOfPermissions = list.slice(0).reduce((accounts, el) => {
+    if (el.private_key) accounts++;
+    return accounts;
+  }, 0);
 
   useEffect(() => {
     outputClear();
@@ -388,15 +390,17 @@ const DeploymentPage = (props) => {
                         <DropdownToggle style={{width: "100%"}} caret={noOfPermissions > 0}>
                           {
                             noOfPermissions > 0
-                              ? list.map(permission => {
-                                let msg = (currentId === defaultId) ?
-                                  `${permission.account}@${permission.permission} (default)` :
-                                  `${permission.account}@${permission.permission}`;
-                                if (currentId === permission._id)
-                                  return msg;
-                                else
-                                  return null;
-                              })
+                              ? Object.keys(selectedPermission).length > 0
+                                ? list.map(permission => {
+                                  let msg = (currentId === defaultId) ?
+                                    `${permission.account}@${permission.permission} (default)` :
+                                    `${permission.account}@${permission.permission}`;
+                                  if (currentId === permission._id)
+                                    return msg;
+                                  else
+                                    return null;
+                                })
+                                : "Select Permission"
                               : "No Permissions Available"
                           }
                         </DropdownToggle>
