@@ -238,18 +238,34 @@ const hasPrivateKey = (item) => {
 }  
 
 const initializeDefaultId = (stateId, list) => {
+  //Get eosio owner permission
   let eosio_owner = list.filter(
     el => el.private_key && el.account === 'eosio' && el.permission === 'owner'
   )[0];
+  //Get eosio active permission
+  let eosio_active = list.filter(
+    el => el.private_key && el.account === 'eosio' && el.permission === 'active'
+  )[0];
+  //Check and get current default permission   
   let currentDefault = list.filter(el => el._id === stateId)[0];
-  let defaultId = list.filter(el => el.private_key)[0];
+  //Get first permission
+  let firstPermission = list.filter(el => el.private_key)[0];
+  let newDefaultId = "";
+  if(!firstPermission){
+    newDefaultId = "";
+  }else{
+    newDefaultId = firstPermission._id;
+  }
 
+  //Check if the default permission set before exists, if not set either eosio owner or active permission as default
+  //If eosio permissions doesn't exists then get the first permission and set as default permission
+  //If no permission exist, then set empty string as to defaultId
   if (!stateId) {
-    return (eosio_owner) ? eosio_owner._id : defaultId;
+    return (eosio_owner) ? eosio_owner._id : (eosio_active) ? eosio_active._id : newDefaultId;
   } else {
     let currentDefaultExists = (currentDefault) ? currentDefault.private_key : null;
     return (currentDefaultExists) ? currentDefault._id :
-      (eosio_owner) ? eosio_owner._id : defaultId;
+      (eosio_owner) ? eosio_owner._id : (eosio_active) ? eosio_active._id : newDefaultId;
   }
 }
 
