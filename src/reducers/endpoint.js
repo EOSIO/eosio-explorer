@@ -11,6 +11,7 @@ import { mergeMap, mapTo, map, flatMap, catchError } from 'rxjs/operators';
 import { combineEpics, ofType } from 'redux-observable';
 
 import apiMongodb from 'services/api-mongodb';
+import { fetchStart as permission_fetchstart} from 'reducers/permission';
 import { switchCheck } from 'pages/InfoPage/components/BlockchainInfo/BlockchainInfoReducer';
 import paramsToQuery from 'helpers/params-to-query';
 
@@ -59,7 +60,7 @@ const swapEpic = ( action$, state$ ) => action$.pipe(
         }
       } = state$;
       return apiMongodb(`set_endpoint${paramsToQuery({path: mongodbTemp})}`).pipe(
-        flatMap(res => ([connectFulfilled(res.response), switchCheck()])),
+        flatMap(res => ([connectFulfilled(res.response), switchCheck(), permission_fetchstart()])),
         catchError((error={}) => of(connectRejected(error.response)))
         )
     }

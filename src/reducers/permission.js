@@ -56,17 +56,7 @@ const MAX_ACCOUNT_TO_SHOW = 200;
 const fetchEpic = ( action$, state$ ) => action$.pipe(
   ofType(FETCH_START),
   mergeMap(action =>{
-    let {
-      value: {
-        permission: {
-          data: {
-            defaultId,
-            list
-          }
-        }
-      }
-    } = state$;
-
+    let { value: { permission: { data: { defaultId, list } } } } = state$;
     return apiMongodb(`get_all_permissions`).pipe(
       map(res => fetchFulfilled({
         response: res.response,
@@ -93,26 +83,26 @@ const createAccountObservable = (
     catchError(err => throwError(err))
   )
   
-  const editAccountObservable = query => {
-    //get parent of the current permission to be edited
-    return apiRpc("get_account_details",{account_name: query.account_name})
-      .pipe(
-        mergeMap(res => {
-          let index = res.permissions.findIndex(eachPermission => eachPermission.perm_name === query.permission);
-          if(index > -1){
-            query["parent"] = res.permissions[index].parent;         
-            return apiRpc("update_auth", query)
-              .pipe(
-                map(res => res),
-                catchError(err => throwError(err))
-              )
-          }else{
-            return throwError({"message": `Parent not found for the permission ${query.permission}`});
-          }          
-        }),
-      catchError(error => throwError(error))
-    )
-  }
+const editAccountObservable = query => {
+  //get parent of the current permission to be edited
+  return apiRpc("get_account_details",{account_name: query.account_name})
+    .pipe(
+      mergeMap(res => {
+        let index = res.permissions.findIndex(eachPermission => eachPermission.perm_name === query.permission);
+        if(index > -1){
+          query["parent"] = res.permissions[index].parent;         
+          return apiRpc("update_auth", query)
+            .pipe(
+              map(res => res),
+              catchError(err => throwError(err))
+            )
+        }else{
+          return throwError({"message": `Parent not found for the permission ${query.permission}`});
+        }          
+      }),
+    catchError(error => throwError(error))
+  )
+}
 
 
 const createEpic = action$ => action$.pipe(
@@ -238,6 +228,8 @@ const hasPrivateKey = (item) => {
 }  
 
 const initializeDefaultId = (stateId, list) => {
+
+
   //Get eosio owner permission
   let eosio_owner = list.filter(
     el => el.private_key && el.account === 'eosio' && el.permission === 'owner'
@@ -256,7 +248,7 @@ const initializeDefaultId = (stateId, list) => {
   }else{
     newDefaultId = firstPermission._id;
   }
-
+  
   //Check if the default permission set before exists, if not set either eosio owner or active permission as default
   //If eosio permissions doesn't exists then get the first permission and set as default permission
   //If no permission exist, then set empty string as to defaultId
@@ -372,7 +364,6 @@ const updateAccountList = (createResponse, list, defaultId) => {
        panel.`;
     accountSuccess = false;
   }
-
   updatedList.sort(alphabeticalSort);
 
   return {
