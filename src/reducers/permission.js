@@ -16,7 +16,7 @@ import paramsToQuery from 'helpers/params-to-query';
 import { errorLog } from 'helpers/error-logger';
 
 
-// IMPORTANT
+// IMPORTANT 
 // Must modify action prefix since action types must be unique in the whole app
 const actionPrefix = `permission/`;
 
@@ -42,7 +42,7 @@ export const fetchRejected = ( payload, error ) => ({ type: FETCH_REJECTED, payl
 export const defaultSet = ( id ) => ({ type: DEFAULT_SET, id });
 export const accountAdd = accountData => ({ type: ACCOUNT_ADD, accountData });
 export const accountImport = accountData => ({ type: ACCOUNT_IMPORT, accountData });
-export const accountClear = chainId => ({ type: ACCOUNT_CLEAR, chainId });
+export const accountClear = () => ({ type: ACCOUNT_CLEAR });
 export const accountEdit = accountData => ({ type: ACCOUNT_EDIT, accountData });
 export const editSuccess = payload => ({ type: EDIT_SUCCESS, payload });
 export const editRejected = ( payload, error ) => ({ type: EDIT_REJECTED, payload, error });
@@ -50,24 +50,13 @@ export const createStart = account => ({ type: CREATE_START, account });
 export const createFulfilled = payload => ({ type: CREATE_FULFILLED, payload });
 export const createRejected = ( payload, error ) => ({ type: CREATE_REJECTED, payload, error });
 
-export const LOCAL_CHAIN_ID = "32b303dbe6bc3cf9a0d28fbdc95ea3cd18310923ac20f11fab3ca5ab4f18f135";
-
+const MAX_ACCOUNT_TO_SHOW = 200;
 //Epic
 
 const fetchEpic = ( action$, state$ ) => action$.pipe(
   ofType(FETCH_START),
   mergeMap(action =>{
-    let {
-      value: {
-        permission: {
-          data: {
-            defaultId,
-            list
-          }
-        }
-      }
-    } = state$;
-
+    let { value: { permission: { data: { defaultId, list } } } } = state$;
     return apiMongodb(`get_all_permissions`).pipe(
       map(res => fetchFulfilled({
         response: res.response,
@@ -93,18 +82,28 @@ const createAccountObservable = (
     })),
     catchError(err => throwError(err))
   )
-
-const editAccountObservable = (
-  query, owner_private_key, active_private_key, accountName
-) =>
-  apiRpc("update_auth", query).pipe(
-    map(res => ({
-      ownerPrivateKey: owner_private_key,
-      activePrivateKey: active_private_key,
-      accountName: accountName
-    })),
-    catchError(err => throwError(err))
+  
+const editAccountObservable = query => {
+  //get parent of the current permission to be edited
+  return apiRpc("get_account_details",{account_name: query.account_name})
+    .pipe(
+      mergeMap(res => {
+        let index = res.permissions.findIndex(eachPermission => eachPermission.perm_name === query.permission);
+        if(index > -1){
+          query["parent"] = res.permissions[index].parent;         
+          return apiRpc("update_auth", query)
+            .pipe(
+              map(res => res),
+              catchError(err => throwError(err))
+            )
+        }else{
+          return throwError({"message": `Parent not found for the permission ${query.permission}`});
+        }          
+      }),
+    catchError(error => throwError(error))
   )
+}
+
 
 const createEpic = action$ => action$.pipe(
   ofType(CREATE_START),
@@ -143,25 +142,30 @@ const updateEpic = action$ => action$.pipe(
   mergeMap(
     action => {
       let { accountData: {
-        accountName, accountOwnerPrivateKey, ownerPublicKey = "NONE", activePublicKey = "NONE", ownerPrivate, activePrivate
+        accountName, accountOwnerPrivateKey, publicKey, privateKey, permission
       } } = action;
       let query = {
         actor: accountName,
-        permission: 'owner',
+        permission: permission,
         account_name: accountName,
         private_key: accountOwnerPrivateKey
       };
 
-      if (ownerPublicKey !== "NONE") query["new_owner_key"] = ownerPublicKey;
-      if (activePublicKey !== "NONE") query["new_active_key"] = activePublicKey;
+      query["new_key"] = publicKey;
 
-      return editAccountObservable(query, ownerPrivate, activePrivate, accountName)
+      let baseData = {
+        permission: permission,
+        privateKey: privateKey,
+        accountName: accountName
+      }
+
+      return editAccountObservable(query)
         .pipe(
           mergeMap(response => {
-            return apiMongodb(`get_account_details${paramsToQuery({account_name: accountName})}`)
+            return apiMongodb(`get_account_details${paramsToQuery({account_name: baseData.accountName})}`)
               .pipe(
                 map(res => editSuccess({
-                  baseData: response,
+                  baseData: baseData,
                   queryData: res.response
                 })),
                 catchError(err => of(editRejected(err.message, { status: err })))
@@ -183,47 +187,28 @@ export const combinedEpic = combineEpics(
   updateEpic
 );
 
-const initData = [
-  {
-    _id: '1',
-    account: 'eosio',
-    permission: 'active',
-    public_key: 'EOS5GnobZ231eekYUJHGTcmy2qve1K23r5jSFQbMfwWTtPB7mFZ1L',
-    private_key: '5Jr65kdYmn33C3UabzhmWDm2PuqbRfPuDStts3ZFNSBLM7TqaiL'
-  },
-  {
-    _id: '2',
-    account: 'eosio',
-    permission: 'owner',
-    public_key: 'EOS5GnobZ231eekYUJHGTcmy2qve1K23r5jSFQbMfwWTtPB7mFZ1L',
-    private_key: '5Jr65kdYmn33C3UabzhmWDm2PuqbRfPuDStts3ZFNSBLM7TqaiL'
-  }
-];
-
 const dataInitState = {
-  list: navigator.userAgent !== 'ReactSnap'
-   ? initData : [],
+  list: [],
   importSuccess: false,
   importError: null,
   submitError: null,
   isSubmitting: false,
   creationSuccess: false,
-  defaultId: "1"
+  defaultId: null,
 }
 
-const reinitializedState = (
-  chainId = LOCAL_CHAIN_ID
-) => {
+const reinitializedState = (oldList) => {
+  let eosioPerms = oldList.filter(el => 
+    el.account === 'eosio' && (el.permission === "active" || "owner") && el.public_key === "EOS5GnobZ231eekYUJHGTcmy2qve1K23r5jSFQbMfwWTtPB7mFZ1L" && el.private_key
+  );
   return {
-    list: (
-      chainId === LOCAL_CHAIN_ID
-    ) ? [...initData] : [],
+    list: [...eosioPerms],
     importSuccess: false,
     importError: null,
     submitError: null,
     isSubmitting: false,
     creationSuccess: false,
-    defaultId: "1"
+    defaultId: null,
   }
 };
 
@@ -238,35 +223,87 @@ const alphabeticalSort = (a, b) => {
   return 0;
 }
 
+const hasPrivateKey = (item) => {
+  return (!!item.private_key);
+}  
+
+const initializeDefaultId = (stateId, list) => {
+
+
+  //Get eosio owner permission
+  let eosio_owner = list.filter(
+    el => el.private_key && el.account === 'eosio' && el.permission === 'owner'
+  )[0];
+  //Get eosio active permission
+  let eosio_active = list.filter(
+    el => el.private_key && el.account === 'eosio' && el.permission === 'active'
+  )[0];
+  //Check and get current default permission   
+  let currentDefault = list.filter(el => el._id === stateId)[0];
+  //Get first permission
+  let firstPermission = list.filter(el => el.private_key)[0];
+  let newDefaultId = "";
+  if(!firstPermission){
+    newDefaultId = "";
+  }else{
+    newDefaultId = firstPermission._id;
+  }
+  
+  //Check if the default permission set before exists, if not set either eosio owner or active permission as default
+  //If eosio permissions doesn't exists then get the first permission and set as default permission
+  //If no permission exist, then set empty string as to defaultId
+  if (!stateId) {
+    return (eosio_owner) ? eosio_owner._id : (eosio_active) ? eosio_active._id : newDefaultId;
+  } else {
+    let currentDefaultExists = (currentDefault) ? currentDefault.private_key : null;
+    return (currentDefaultExists) ? currentDefault._id :
+      (eosio_owner) ? eosio_owner._id : (eosio_active) ? eosio_active._id : newDefaultId;
+  }
+}
+
 const composePermissionList = (originalList = [], payloadList = []) => {
   // Check if any keys were deleted using `updateauth`
-  let clonedList = originalList.slice(0);
-  originalList = clonedList.filter(
+  let clonedList = originalList.slice(0);  
+  let newList = clonedList.filter(
     item => {
-      return item._id === "1" || item._id === "2" || payloadList.findIndex(dbItem => dbItem._id === item._id) > -1;
+      return hasPrivateKey(item) && payloadList.findIndex(eachItem => item.account === eachItem.account && item.permission === eachItem.permission) > -1;
     }
   );
   payloadList.map(function(el) {
-    let index = originalList.findIndex(eachItem => el.account === eachItem.account && el.permission === eachItem.permission);
+    let index = newList.findIndex(eachItem => el.account === eachItem.account && el.permission === eachItem.permission);
     if (index >= 0) {
-      if (originalList[index].public_key !== el.public_key) {
-        originalList[index].public_key = el.public_key;
-        originalList[index].private_key = null;
+      if (newList[index].public_key !== el.public_key) {
+        newList[index]._id = el._id;
+        newList[index].public_key = el.public_key;
+        newList[index].private_key = null;
+      }else{
+        newList[index]._id = el._id;
       }
     } else {
-      originalList.push(el);
+      if (el.account === 'eosio' && el.private_key === undefined && el.public_key && 
+        (el.permission === 'owner' || el.permission === 'active')) {
+        /**
+         * If the eosio account made from our tool is initialized state and has no private key in local storage,
+         * we assign the corresponding private key to the public key in the database. This only applies for
+         * owner and/or active permissions. Otherwise, we do nothing
+         */
+        if (el.public_key === "EOS5GnobZ231eekYUJHGTcmy2qve1K23r5jSFQbMfwWTtPB7mFZ1L") {
+          el.private_key = "5Jr65kdYmn33C3UabzhmWDm2PuqbRfPuDStts3ZFNSBLM7TqaiL";
+        }       
+      }
+      if(newList.length < MAX_ACCOUNT_TO_SHOW)
+        newList.push(el);
     }
     return null;
   });
-  return originalList;
+  newList.sort(alphabeticalSort);
+  return newList;
 }
 
 const addKeysToAccount = (accountData, list) => {
   let updatedList = list.slice(0);
-  let activeItem = updatedList.findIndex(el => (accountData.accountName === el.account && el.permission === 'active'));
-  let ownerItem = updatedList.findIndex(el => (accountData.accountName === el.account && el.permission === 'owner'));
-  updatedList[activeItem]["private_key"] = accountData.activePrivate;
-  updatedList[ownerItem]["private_key"] = accountData.ownerPrivate;
+  let index = updatedList.findIndex(el => (accountData.accountName === el.account && el.permission === accountData.permission));
+  updatedList[index].private_key = accountData.privateKey;
   return updatedList;
 }
 
@@ -300,37 +337,33 @@ const storeNewAccount = (createResponse, list) => {
 
 }
 
-const updateAccountList = (createResponse, list) => {
+const updateAccountList = (createResponse, list, defaultId) => {
   let {
-    baseData: { ownerPrivateKey, activePrivateKey, accountName },
+    baseData: { permission, privateKey, accountName },
     queryData
   } = createResponse;
   let accountSuccess = true;
   let msg = `Successfully updated the keys for ${accountName}`;
   let updatedList = list.slice(0);
-  let defaultId = "1";
 
   if (queryData && queryData.length > 0) {
-    let ownerIndex = updatedList.findIndex(item => item.account === accountName && item.permission === 'owner');
-    let activeIndex = updatedList.findIndex(item => item.account === accountName && item.permission === 'active');
-    updatedList[ownerIndex].private_key = ownerPrivateKey;
-    updatedList[ownerIndex].public_key = (queryData[0].permission === 'owner') ?
-      queryData[0].public_key : queryData[1].public_key;
-    updatedList[ownerIndex]._id = (queryData[0].permission === 'owner') ?
-      queryData[0]._id : queryData[1]._id;
-    updatedList[activeIndex].private_key = activePrivateKey;
-    updatedList[activeIndex].public_key = (queryData[0].permission === 'active') ?
-      queryData[0].public_key : queryData[1].public_key;
-    updatedList[activeIndex]._id = (queryData[0].permission === 'active') ?
-      queryData[0]._id : queryData[1]._id;
-    defaultId = updatedList[ownerIndex]._id;
+    let index = updatedList.findIndex(item => item.account === accountName && item.permission === permission);
+    let updatedAccount = queryData.filter(el => el.permission === permission)[0];    
+    updatedList[index].public_key = updatedAccount.public_key;
+    updatedList[index].private_key = privateKey;
+    //set new id as default id if the the permisssion was default permission
+    if(defaultId === updatedList[index]._id){
+      updatedList[index]._id = updatedAccount._id;
+      defaultId = updatedList[index]._id;
+    }else{
+      updatedList[index]._id = updatedAccount._id;
+    }       
   } else {
     msg = `Updated the keys for ${accountName} but failed to query the
        account after creation. Please import the keys you just used in the previous
        panel.`;
     accountSuccess = false;
   }
-
   updatedList.sort(alphabeticalSort);
 
   return {
@@ -345,12 +378,14 @@ const updateAccountList = (createResponse, list) => {
 const dataReducer = (state=dataInitState, action) => {
   switch (action.type) {
     case FETCH_FULFILLED:
+      let composedList = composePermissionList(action.payload.originalList, action.payload.response);
       return {
         ...state,
         creationSuccess: false,
         isSubmitting: false,
         submitError: null,
-        list: composePermissionList(action.payload.originalList, action.payload.response)
+        list: composedList,
+        defaultId: initializeDefaultId(state.defaultId, composedList),
       };
     case DEFAULT_SET:
       return {
@@ -396,7 +431,7 @@ const dataReducer = (state=dataInitState, action) => {
         creationSuccess: success
       };
     case EDIT_SUCCESS:
-      let { updatedList, updatedMsg, updatedSuccess, defaultId } = updateAccountList(action.payload, state.list);
+      let { updatedList, updatedMsg, updatedSuccess, defaultId } = updateAccountList(action.payload, state.list, state.defaultId);
       return {
         ...state,
         defaultId: defaultId,
@@ -414,7 +449,7 @@ const dataReducer = (state=dataInitState, action) => {
         isSubmitting: false
       };
     case ACCOUNT_CLEAR:
-      return reinitializedState(action.chainId);
+      return reinitializedState(state.list);
     default:
       return state;
   }

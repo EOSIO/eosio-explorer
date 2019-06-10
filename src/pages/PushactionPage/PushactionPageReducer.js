@@ -37,7 +37,7 @@ const FILTER_UPDATE = actionPrefix + `FILTER_UPDATE`;
 export const fetchStart = () => ({ type: FETCH_START });
 export const fetchFulfilled = (actionsList) => ({ type: FETCH_FULFILLED, actionsList });
 export const fetchRejected = (payload, error) => ({ type: FETCH_REJECTED, payload, error });
-export const updateActionToPush = (updatedAction) => ({ type: ACTION_UPDATE, updatedAction });
+export const updateActionToPush = (updatedAction, defaultPermission) => ({ type: ACTION_UPDATE, updatedAction, defaultPermission });
 export const prefillActionToPush = (updatedAction) => ({ type: ACTION_PREFILL, updatedAction });
 export const actionPush = (action) => ({ type: ACTION_PUSH, actionToPush: action });
 export const actionPushFulfilled = (response) => ({ type: ACTION_PUSH_FULFILLED, response });
@@ -140,15 +140,15 @@ export const combinedEpic = combineEpics(
   filterUpdateEpic
 );
 
-const getActionInitState = () =>{
+const getActionInitState = (defaultPermission) =>{
   return { _id: "",
             act: {
               account: "",
               name: "",
-              authorization: [{
+              authorization: defaultPermission || {
                 actor: "",
                 permission: ""
-              }]
+              }
             },
             payload: undefined,
             pushSuccess: false
@@ -179,9 +179,9 @@ const mapPrefilledAction = (prefilledAction) => {
 }
 
 // Mapping function to update the action object with the user's input
-const mapUpdatedAction = (updatedAction) => {
+const mapUpdatedAction = (updatedAction, defaultPermission) => {
   if (!updatedAction)
-    return getActionInitState();
+    return getActionInitState(defaultPermission);
 
   return {
     _id: updatedAction._id,
@@ -275,7 +275,7 @@ const actionReducer = (state = getActionInitState(), action) => {
   switch (action.type) {
     case ACTION_UPDATE:
       // User updates the action
-      return mapUpdatedAction(action.updatedAction);
+      return mapUpdatedAction(action.updatedAction, action.defaultPermission);
 
     case ACTION_PREFILL:
       // Action is prefilled from the action history viewer

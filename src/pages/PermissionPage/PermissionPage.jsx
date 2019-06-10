@@ -66,7 +66,7 @@ class PermissionPage extends Component {
 
     // Initialize local redux store state, then re-fetch MongoDB permissions
     function reInitialize () {
-      accountClear(chain_id);
+      accountClear();
       fetchStart();
       cogoToast.success("Successfully re-initialized the local storage state", {
         heading: 'Account Storage Reinitialization',
