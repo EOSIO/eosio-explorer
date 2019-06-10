@@ -183,7 +183,7 @@ Commands:
                     --server-mode - Starts the blockchain environment for the tool without
                                     opening the web application
                     --clear-browser-storage - Starts the tool with clearing browser local storage
-                    -d / --delete - Removes existing Docker containers and clear the browser local storage
+                    -del / --delete - Removes existing Docker containers and clear the browser local storage
                     Below flag(s) only work in development mode by git cloning the repo:
                     -dev / --develop - Starts the tool in development mode
                     -b / --build - Force building the gui of the tool
@@ -202,17 +202,53 @@ You can also add the `-h` flag to any of the commands listed above to view the a
 
 ### Starting the Tool
 
-Below is a short explanation about the different ways to start the tool.
+There are two ways to start the tool depending on what you need or want to accomplish:
 
 ```bash
 eosio-explorer init
 ```
-This command will build the different docker images, remove existing data (in MongoDB, local Blockchain and Local Storage) and start the docker containers along with the application.
+
+or
 
 ```bash
 eosio-explorer start
 ```
-This command will start/resume the docker containers and the application.
+
+This section will detail the specific differences between the two commands and help you decide when you should use one or the other.
+
+#### `init`
+
+The `init` command will perform the following operations when starting the tool:
+
+1. Setting up and copying the initial configurations for the tool
+2. Checking and building Docker images if necessary
+3. Check if package dependencies need to be installed. **This step won't execute if you have installed this tool with `yarn global`.**
+4. Clear the local storage, if it needs to be cleared. Otherwise, just provide the initial state
+5. Forcefully remove any existing Docker containers and volumes before starting new ones
+6. Operations indicated by command flags/options
+
+Therefore, you would want to use this command under these general circumstances:
+
+1. You just installed the tool
+2. You want to re-initialize the tool after installing an update (rebuilding Docker images, etc.)
+3. You want to completely wipe your blockchain and database, start from scratch.
+4. You want to re-initialize the tool after changing some configuration data
+
+#### `start`
+
+The `start` command will just do the following:
+
+1. Try to resume stopped Docker containers. **If no Docker containers exist, new ones will be started**. 
+2. Operations indicated by command flags/options
+
+Therefore, you would want to use this command under these general circumstances:
+
+1. You want to start the tool normally (without checking for updates)
+2. You have stopped Docker containers and want to resume a locally created blockchain
+
+Ideally, for each update installed, you want to run `init` command once, and then just use `start` thereafter. 
+
+Using the `start` command assumes you have already built and installed all necessary dependencies. 
 
 ### Stopping the Tool
 

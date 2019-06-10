@@ -67,6 +67,12 @@ In the upper left corner of the panel, you can see a dropdown menu listing the c
 
 ![Filter Dropdown](../../images/push-action/filter.png)
 
-Here is what you should see if you, for instance, decided to check all actions belonging only to the `dinosaur1311` contract, showing 20 rows at a time:
+Here is what you should see if you, for instance, decided to check all actions belonging only to the `eosio` contract:
 
 ![Filter Result](../../images/push-action/filter_result.png)
+
+## Success Indicator
+
+The Action History Viewer will list whether your action has been successfully pushed or not. If it failed, hovering over the failure icon will provide a tooltip that may tell you why the action failed. If the error is not known, then the tool will inform you that an error has occurred without specifying what the error actually was.
+
+![Success Indicator](../../images/push-action/success-indicator.png)
