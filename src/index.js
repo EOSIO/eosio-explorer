@@ -19,7 +19,7 @@ if ( currentLastTimestamp ){
 
   // If the current last timestamp from cookies / process.env does not match the stored one, it means user has run init or has built the app again
   // Hence, clear the whole persisted store.
-  if ( currentLastTimestamp !== storedLastTimestamp ){
+  if ( currentLastTimestamp !== storedLastTimestamp && storedLastTimestamp < currentLastTimestamp){
     persistor.purge();
   }
 
