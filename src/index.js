@@ -17,9 +17,10 @@ if ( currentLastTimestamp ){
 
   const storedLastTimestamp = localStorage.getItem('lastTimestamp');
 
-  // If the current last timestamp from cookies / process.env does not match the stored one, it means user has run init or has built the app again
+  // If the current last timestamp from cookies / process.env is greater than the stored one, it means user has run init or has built the app again
+  // since the last initialization or build.
   // Hence, clear the whole persisted store.
-  if ( currentLastTimestamp !== storedLastTimestamp ){
+  if (storedLastTimestamp < currentLastTimestamp){
     persistor.purge();
   }
 
