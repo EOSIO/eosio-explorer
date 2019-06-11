@@ -79,10 +79,34 @@ echo "=============================="
 (cd $COMPILER/docker-eosio-cdt && ./start_eosio_cdt_docker.sh && printf "${GREEN}done${NC}")
 
 
+
+echo " "
+echo "Choose your option by typing 1 or 2"
+echo "1. Start a new nodeos instance + database?"
+echo "2. Connect to existing nodeos + database?"
+
+read option
+
+if [ $option == 1 ]
+then
+  echo "start new instance"
+elif [ $option == 2 ]
+then 
+  echo "Please enter nodeos endpoint:"
+  read nodeos_endpoint
+  echo "Please enter MongoDB endpoint:"
+  read db_endpoint  
+  echo Nodeos: $nodeos_endpoint, MongoDB: $db_endpoint
+else  
+  echo "Invalid option, starting with a new instance"  
+fi  
+
+
 echo " "
 echo "=============================="
 echo "STARTING APP AND COMPILER SERVICE"
 echo "=============================="
+
 if $ISDEV; then
   (cd $COMPILER && yarn start &)
   echo " "
@@ -95,8 +119,8 @@ if $ISDEV; then
 else
   # run yarn serve-clear to adding env CLEARBROWSERSTORAGE=true while starting to serve
   if $CLEARBROWSERSTORAGE; then
-    (cd $APP && yarn serve-clear $COMPILER)
+    (cd $APP && yarn serve-clear $COMPILER $nodeos_endpoint $db_endpoint)
   else
-    (cd $APP && yarn serve $COMPILER)
+    (cd $APP && yarn serve $COMPILER $nodeos_endpoint $db_endpoint)
   fi
 fi

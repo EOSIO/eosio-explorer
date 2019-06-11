@@ -15,6 +15,8 @@ if (envConfig){
     process.env[k] = envConfig[k];
   }
 }
+var args = process.argv.slice(2);
+console.log("args ", args);
 
 const PORT = process.env.REACT_APP_APP_SERVE_PORT;
 
@@ -49,7 +51,13 @@ app.listen(PORT, ()=>{
   console.log(`Listening ${process.env.MODE !== `development`  ? `static \`build/\` folder and ` : `` }API calls on port ${PORT} in production mode.`);
   console.log(``);
   if(`${process.env.MODE}` !== `development`){
-    let url = "http://localhost:" + PORT;
+    let url;
+    if(args[0] !== 'null' && args[1] !== 'null'){
+      console.log("Here");
+      url = "http://localhost:" + PORT +"?nodeos="+args[0]+"&mongodb="+args[1];
+    }else{
+      url = "http://localhost:" + PORT;
+    }    
     console.log(`Application is ready on "${url}".`);
     console.log(`You can now view EOSIO Labs™: EOSIO Explorer in the browser.`);
     openBrowser(url);
