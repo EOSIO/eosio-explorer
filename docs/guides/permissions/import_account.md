@@ -34,4 +34,4 @@ After successfully importing the keys, you will see the success messsage:
 
 ![Import Keys Panel](../../images/permissions/import_keys_after.png)
 
-Afterwards, you can see the new account in the main list of accounts.
+Afterwards, you can see the new permission in the main list of permissions.
