@@ -37,10 +37,18 @@ COMPILER="$DEPENDENCIES_ROOT/api-eosio-compiler"
 
 ISDEV=false
 CLEARBROWSERSTORAGE=false
-USAGE="Usage: eosio-explorer start_gui [-dev] [--clear-browser-storage] (program to start eosio-explorer gui)
+ENDPOINTS=false
+NODE=false
+DB=false
+nodeos_endpoint=""
+db_endpoint=""
+
+USAGE="Usage: eosio-explorer start_gui [-dev] [--clear-browser-storage] [--endpoints] (program to start eosio-explorer gui)
 
 where:
     --clear-browser-storage   Starts the tool with clearing browser local storage
+    Only available in production:
+    --endpoints               Prompts user to input existing nodeos and MongoDB instance endpoints to connect with
     Only available in development:
     -dev, --develop           Starts the tool in development mode"
 
@@ -54,6 +62,19 @@ do
       ;;
     --clear-browser-storage)
       CLEARBROWSERSTORAGE=true
+      ;;
+    --endpoints)
+      ENDPOINTS=true
+      ;;     
+    node=*)
+      NODE=true
+      nodeos_endpoint=$(echo $arg | cut -f2 -d=) 
+      echo node $nodeos_endpoint
+      ;;
+    db=*) 
+      DB=true
+      db_endpoint=$(echo $arg | cut -f2 -d=) 
+      echo db $db_endpoint
       ;;
     -h|--help)
       echo "$USAGE"
@@ -79,29 +100,6 @@ echo "=============================="
 (cd $COMPILER/docker-eosio-cdt && ./start_eosio_cdt_docker.sh && printf "${GREEN}done${NC}")
 
 
-
-echo " "
-echo "Choose your option by typing 1 or 2"
-echo "1. Start a new nodeos instance + database?"
-echo "2. Connect to existing nodeos + database?"
-
-read option
-
-if [ $option == 1 ]
-then
-  echo "start new instance"
-elif [ $option == 2 ]
-then 
-  echo "Please enter nodeos endpoint:"
-  read nodeos_endpoint
-  echo "Please enter MongoDB endpoint:"
-  read db_endpoint  
-  echo Nodeos: $nodeos_endpoint, MongoDB: $db_endpoint
-else  
-  echo "Invalid option, starting with a new instance"  
-fi  
-
-
 echo " "
 echo "=============================="
 echo "STARTING APP AND COMPILER SERVICE"
@@ -117,6 +115,17 @@ if $ISDEV; then
     (cd $APP && PORT=$APP_DEV_PORT yarn start)
   fi
 else
+  if $ENDPOINTS; then    
+    echo " "
+    echo "Please enter nodeos endpoint:"
+    read nodeos_endpoint
+    echo " "
+    echo "Please enter MongoDB endpoint:"
+    read db_endpoint  
+    echo " "
+    echo Endpoints entered - Nodeos: $nodeos_endpoint, MongoDB: $db_endpoint    
+  fi  
+
   # run yarn serve-clear to adding env CLEARBROWSERSTORAGE=true while starting to serve
   if $CLEARBROWSERSTORAGE; then
     (cd $APP && yarn serve-clear $COMPILER $nodeos_endpoint $db_endpoint)

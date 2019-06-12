@@ -43,18 +43,24 @@ MAKESAMPLEDATA=false
 SERVERMODE=false
 HARDREPLAY=false
 NOTIMESTAMP=false
-
-USAGE="Usage: eosio-explorer start [-dev] [-del] [-b] [-s] [--server-mode [--clear-browser-storage] (program to start eosio-explorer)
+ENDPOINTS=false
+NODE=false
+DB=false
+nodeos_endpoint=""
+db_endpoint=""
+USAGE="Usage: eosio-explorer start [-dev] [-del] [-b] [-s] [--server-mode [--clear-browser-storage] [--endpoints] (program to start eosio-explorer)
 
 where:
-    --server-mode           Starts the tool in server-mode, it will start the dockers but not the gui
-    -s, --sample-data       Starts the tool with pre-existing sample accounts and smart contracts
-    --clear-browser-storage Starts the tool with clearing browser local storage
+    --server-mode             Starts the tool in server-mode, it will start the dockers but not the gui
+    -s, --sample-data         Starts the tool with pre-existing sample accounts and smart contracts
+    --clear-browser-storage   Starts the tool with clearing browser local storage
     -del, --delete            Removes existing Docker containers
+    Only available in production:
+    --endpoints               Prompts user to input existing nodeos and MongoDB instance endpoints to connect with
     Only available in development:
-    -dev, --develop         Starts the tool in development mode
-    -b, --build             Build gui
-    --no-timestamp          Builds gui without adding env LASTTIMESTAMP. Should only used by developer right before making a release"
+    -dev, --develop           Starts the tool in development mode
+    -b, --build               Build gui
+    --no-timestamp            Builds gui without adding env LASTTIMESTAMP. Should only used by developer right before making a release"
 
 
 # check for arguments
@@ -85,6 +91,17 @@ do
       ;;
     --no-timestamp)
       NOTIMESTAMP=true
+      ;;
+    --endpoints)
+      ENDPOINTS=true
+      ;;
+    node=*)
+      NODE=true
+      nodeos_endpoint=$(echo $arg | cut -f2 -d=) 
+      ;;
+    db=*)
+      DB=true
+      db_endpoint=$(echo $arg | cut -f2 -d=) 
       ;;
     -h|--help)
       echo "$USAGE"
@@ -182,10 +199,28 @@ if ( ! $SERVERMODE ); then
     fi
   else
     # If there is -d or from init setup ( or clear browser storage ), clear the browser storage by setting CLEARBROWSERSTORAGE=true while serve.
-    if $CLEARBROWSERSTORAGE; then
-      ./start_gui.sh --clear-browser-storage
-    else
-      ./start_gui.sh
+    if $CLEARBROWSERSTORAGE; then     
+      #If node and db endpoints are passed then pass those arguments to start_gui
+      if ( $NODE && $DB ); then
+        ./start_gui.sh --clear-browser-storage node=$nodeos_endpoint db=$db_endpoint
+      else
+         # If there is --endpoints, then send this argument to start_gui to prompt the users to input endpoints
+        if $ENDPOINTS; then 
+          ./start_gui.sh --clear-browser-storage --endpoints
+        else
+          ./start_gui.sh --clear-browser-storage
+        fi
+      fi      
+    else      
+      if ( $NODE && $DB ); then
+        ./start_gui.sh node=$nodeos_endpoint db=$db_endpoint
+      else
+        if $ENDPOINTS; then 
+          ./start_gui.sh --endpoints
+        else
+          ./start_gui.sh
+        fi  
+      fi      
     fi
   fi
 else

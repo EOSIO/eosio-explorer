@@ -36,7 +36,7 @@ const Nodeswitch = (props) => {
       nodeos, mongodb,
     })
     return () => { }
-  }, [])
+  }, [nodeos, mongodb])
 
   const isDirtyForm = nodeos !== values.nodeos || mongodb !== values.mongodb;
 
