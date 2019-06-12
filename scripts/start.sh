@@ -48,7 +48,7 @@ NODE=false
 DB=false
 nodeos_endpoint=""
 db_endpoint=""
-USAGE="Usage: eosio-explorer start [-dev] [-del] [-b] [-s] [--server-mode [--clear-browser-storage] [--endpoints / node=* db=*] (program to start eosio-explorer)
+USAGE="Usage: eosio-explorer start [-dev] [-del] [-b] [-s] [--server-mode [--clear-browser-storage] [--set-endpoints | node=<nodeos_endpoint> db=<mongodb_endpoint>] (program to start eosio-explorer)
 
 where:
     --server-mode             Starts the tool in server-mode, it will start the dockers but not the gui
@@ -56,8 +56,9 @@ where:
     --clear-browser-storage   Starts the tool with clearing browser local storage
     -del, --delete            Removes existing Docker containers
     Only available in production:
-    --endpoints               Prompts user to input existing nodeos and MongoDB instance endpoints to connect with
-    node=* db=*               Start the tool by connecting to passed nodeos and MongoDB endpoints
+    --set-endpoints           Prompts user to input existing nodeos and MongoDB instance endpoints to connect with
+    node=<nodeos_endpoint> 
+    db=<mongodb_endpoint>     Start the tool by connecting to passed nodeos and MongoDB endpoints
     Only available in development:
     -dev, --develop           Starts the tool in development mode
     -b, --build               Build gui
@@ -93,7 +94,7 @@ do
     --no-timestamp)
       NOTIMESTAMP=true
       ;;
-    --endpoints)
+    --set-endpoints)
       ENDPOINTS=true
       ;;
     node=*)
@@ -207,7 +208,7 @@ if ( ! $SERVERMODE ); then
       else
          # If there is --endpoints, then send this argument to start_gui to prompt the users to input endpoints
         if $ENDPOINTS; then 
-          ./start_gui.sh --clear-browser-storage --endpoints
+          ./start_gui.sh --clear-browser-storage --set-endpoints
         else
           ./start_gui.sh --clear-browser-storage
         fi
@@ -217,7 +218,7 @@ if ( ! $SERVERMODE ); then
         ./start_gui.sh node=$nodeos_endpoint db=$db_endpoint
       else
         if $ENDPOINTS; then 
-          ./start_gui.sh --endpoints
+          ./start_gui.sh --set-endpoints
         else
           ./start_gui.sh
         fi  
