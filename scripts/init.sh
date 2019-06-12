@@ -35,11 +35,13 @@ COMPILER="$LOCALSERVICE/docker-eosio-cdt"
 ISDEV=false
 MAKESAMPLEDATA=false
 
-USAGE="Usage: eosio-explorer init [-dev] [-s] [--server-mode] (program to initialize eosio-explorer)
+USAGE="Usage: eosio-explorer init [-s | --sample-data] [--server-mode] 
+                           [-dev | --develop] [-b | --build] (program to initialize eosio-explorer)
 
 where:
     -s, --sample-data   Starts the tool with pre-existing sample accounts and smart contracts
-    --server-mode       Starts the tool in server-mode, it will start the dockers but not the gui
+    --server-mode       Starts the tool in server-mode, it will start the docker containers but not the gui
+
     Only available in development:
     -dev, --develop     Starts the tool in development mode
     -b, --build         Build gui"
@@ -61,7 +63,9 @@ do
       echo "Running the tool with building gui"
       ;;
     -h|--help)
+      echo " "
       echo "$USAGE"
+      echo " "
       exit
       ;;
     *)
@@ -118,7 +122,8 @@ echo "=============================="
 ./remove_dockers.sh
 
 # start the dockers and gui
-./start.sh $@ --clear-browser-storage
+./start.sh $@ --clear-browser-storage1
+
 
 P1=$!
 

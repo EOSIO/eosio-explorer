@@ -48,17 +48,22 @@ NODE=false
 DB=false
 nodeos_endpoint=""
 db_endpoint=""
-USAGE="Usage: eosio-explorer start [-dev] [-del] [-b] [-s] [--server-mode [--clear-browser-storage] [--set-endpoints | node=<nodeos_endpoint> db=<mongodb_endpoint>] (program to start eosio-explorer)
+
+USAGE="Usage: eosio-explorer start [-del | --delete] [--server-mode] [-s | --sample-data] [--clear-browser-storage] 
+                            [--set-endpoints | node=<nodeos_endpoint> db=<mongodb_endpoint>]
+                            [-dev] [-del] [-b]  [--no-timestamp ] (program to start eosio-explorer)
 
 where:
+    -del, --delete            Removes existing Docker containers
     --server-mode             Starts the tool in server-mode, it will start the dockers but not the gui
     -s, --sample-data         Starts the tool with pre-existing sample accounts and smart contracts
     --clear-browser-storage   Starts the tool with clearing browser local storage
-    -del, --delete            Removes existing Docker containers
+    
     Only available in production:
     --set-endpoints           Prompts user to input existing nodeos and MongoDB instance endpoints to connect with
     node=<nodeos_endpoint> 
-    db=<mongodb_endpoint>     Start the tool by connecting to passed nodeos and MongoDB endpoints
+    db=<mongodb_endpoint>     Starts the tool by connecting to the nodeos and MongoDB endpoints passed
+
     Only available in development:
     -dev, --develop           Starts the tool in development mode
     -b, --build               Build gui
@@ -106,7 +111,9 @@ do
       db_endpoint="${arg#*=}"
       ;;
     -h|--help)
+      echo " "
       echo "$USAGE"
+      echo " "
       exit
       ;;
     *)
