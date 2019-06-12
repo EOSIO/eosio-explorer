@@ -58,7 +58,7 @@ class App extends Component {
       nodeos = queryStringValues.nodeos;
       mongodb = queryStringValues.mongodb;
     }
-    console.log("Initial enpoint: nodeos-"+nodeos+" db-"+mongodb);
+    
     this.props.connectStart(nodeos, mongodb);
     this.props.blockchaininfo_fetchstart();
     this.props.headblock_pollingStart();

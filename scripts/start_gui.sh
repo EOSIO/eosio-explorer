@@ -70,13 +70,11 @@ do
       ;;     
     node=*)
       NODE=true
-      nodeos_endpoint=$(echo $arg | cut -f2 -d=) 
-      echo node $nodeos_endpoint
+      nodeos_endpoint="${arg#*=}"
       ;;
     db=*) 
       DB=true
-      db_endpoint=$(echo $arg | cut -f2 -d=) 
-      echo db $db_endpoint
+      db_endpoint="${arg#*=}"
       ;;
     -h|--help)
       echo "$USAGE"
@@ -124,8 +122,7 @@ else
     echo " "
     echo "Please enter MongoDB endpoint:"
     read db_endpoint  
-    echo " "
-    echo Endpoints entered - Nodeos: $nodeos_endpoint, MongoDB: $db_endpoint    
+    echo " "  
   fi  
 
   # run yarn serve-clear to adding env CLEARBROWSERSTORAGE=true while starting to serve

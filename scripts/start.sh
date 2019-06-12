@@ -99,11 +99,11 @@ do
       ;;
     node=*)
       NODE=true
-      nodeos_endpoint=$(echo $arg | cut -f2 -d=) 
+      nodeos_endpoint="${arg#*=}" 
       ;;
     db=*)
       DB=true
-      db_endpoint=$(echo $arg | cut -f2 -d=) 
+      db_endpoint="${arg#*=}"
       ;;
     -h|--help)
       echo "$USAGE"
@@ -206,7 +206,7 @@ if ( ! $SERVERMODE ); then
       if ( $NODE && $DB ); then
         ./start_gui.sh --clear-browser-storage node=$nodeos_endpoint db=$db_endpoint
       else
-         # If there is --endpoints, then send this argument to start_gui to prompt the users to input endpoints
+         # If there is --set-endpoints, then send this argument to start_gui to prompt the users to input endpoints
         if $ENDPOINTS; then 
           ./start_gui.sh --clear-browser-storage --set-endpoints
         else
