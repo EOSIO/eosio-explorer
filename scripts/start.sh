@@ -48,7 +48,7 @@ NODE=false
 DB=false
 nodeos_endpoint=""
 db_endpoint=""
-USAGE="Usage: eosio-explorer start [-dev] [-del] [-b] [-s] [--server-mode [--clear-browser-storage] [--endpoints] (program to start eosio-explorer)
+USAGE="Usage: eosio-explorer start [-dev] [-del] [-b] [-s] [--server-mode [--clear-browser-storage] [--endpoints / node=* db=*] (program to start eosio-explorer)
 
 where:
     --server-mode             Starts the tool in server-mode, it will start the dockers but not the gui
@@ -57,6 +57,7 @@ where:
     -del, --delete            Removes existing Docker containers
     Only available in production:
     --endpoints               Prompts user to input existing nodeos and MongoDB instance endpoints to connect with
+    node=* db=*               Start the tool by connecting to passed nodeos and MongoDB endpoints
     Only available in development:
     -dev, --develop           Starts the tool in development mode
     -b, --build               Build gui

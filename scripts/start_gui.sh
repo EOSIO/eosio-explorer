@@ -43,12 +43,13 @@ DB=false
 nodeos_endpoint=""
 db_endpoint=""
 
-USAGE="Usage: eosio-explorer start_gui [-dev] [--clear-browser-storage] [--endpoints] (program to start eosio-explorer gui)
+USAGE="Usage: eosio-explorer start_gui [-dev] [--clear-browser-storage] [--endpoints/ node=* db=*] (program to start eosio-explorer gui)
 
 where:
     --clear-browser-storage   Starts the tool with clearing browser local storage
     Only available in production:
     --endpoints               Prompts user to input existing nodeos and MongoDB instance endpoints to connect with
+    node=* db=*               Start the tool by connecting to passed nodeos and MongoDB endpoints
     Only available in development:
     -dev, --develop           Starts the tool in development mode"
 
