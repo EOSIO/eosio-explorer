@@ -4,6 +4,8 @@
 
 In this page, you are able to get a listing of all the currently available accounts on the blockchain. When you start a local instance of nodeos, you will gain access to an `eosio` account which runs the EOSIO System Contracts which are responsible for important functions on the blockchain, including the creation of new accounts (via the `newaccount` action). You can create new accounts, update existing accounts or reset/clear all current permissions on this page. 
 
+Note, permissions are listed one by one which means if the private key for one of the permissions of an account is lost, this permission will be shown in the "Import Account" section while the other permission will remain as a selectable permission for you to use or to to update.
+
 ## Available Actions
 
 Above the two main panels in this page are buttons that allow you to perform various actions regarding account management.
