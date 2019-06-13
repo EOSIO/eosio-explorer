@@ -34,13 +34,24 @@ LOCALSERVICE="$DEPENDENCIES_ROOT/api-eosio-compiler"
 COMPILER="$LOCALSERVICE/docker-eosio-cdt"
 ISDEV=false
 MAKESAMPLEDATA=false
+ENDPOINTS=false
+NODE=false
+DB=false
+nodeos_endpoint=""
+db_endpoint=""
 
 USAGE="Usage: eosio-explorer init [-s | --sample-data] [--server-mode] 
+                           [--set-endpoints | node=<nodeos_endpoint> db=<mongodb_endpoint>]
                            [-dev | --develop] [-b | --build] (program to initialize eosio-explorer)
 
 where:
     -s, --sample-data   Starts the tool with pre-existing sample accounts and smart contracts
     --server-mode       Starts the tool in server-mode, it will start the docker containers but not the gui
+
+    Only available in production:
+    --set-endpoints               Prompts user to input the existing nodeos and MongoDB instance endpoints to connect with
+    node=<nodeos_endpoint> 
+    db=<mongodb_endpoint>         Starts the tool by connecting to the nodeos and MongoDB endpoints passed
 
     Only available in development:
     -dev, --develop     Starts the tool in development mode
@@ -62,6 +73,17 @@ do
     -b|--build)
       echo "Running the tool with building gui"
       ;;
+    --set-endpoints)
+      ENDPOINTS=true
+      ;;
+    node=*)
+      NODE=true
+      nodeos_endpoint="${arg#*=}" 
+      ;;
+    db=*)
+      DB=true
+      db_endpoint="${arg#*=}"
+      ;;
     -h|--help)
       echo " "
       echo "$USAGE"
@@ -69,7 +91,8 @@ do
       exit
       ;;
     *)
-      printf "illegal option: %s\n" "$arg" >&2
+      printf "Unknown option: %s\n" "$arg" >&2
+      echo " "
       echo "$USAGE" >&2
       exit 1
       ;;
@@ -122,8 +145,18 @@ echo "=============================="
 ./remove_dockers.sh
 
 # start the dockers and gui
-./start.sh $@ --clear-browser-storage1
 
+#If node and db endpoints are passed then pass those arguments to start
+if ( $NODE && $DB ); then
+  ./start.sh $@ --clear-browser-storage node=$nodeos_endpoint db=$db_endpoint
+else
+    # If there is --set-endpoints, then send this argument to start to prompt the users to input endpoints
+  if $ENDPOINTS; then 
+    ./start.sh $@ --clear-browser-storage  --set-endpoints
+  else
+    ./start.sh $@ --clear-browser-storage 
+  fi
+fi 
 
 P1=$!
 
