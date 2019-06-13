@@ -173,6 +173,9 @@ Commands:
                                          and smart contracts
                     --server-mode - Starts the blockchain environment for the tool without
                                     opening the web application
+                    Only available in production mode:
+                    --set-endpoints - Prompts user to input the existing nodeos and MongoDB instance endpoints to start the tool
+                    node=<nodeos_endpoint>  db=<mongodb_endpoint> - Starts the tool by connecting to the nodeos and MongoDB endpoints passed
                     Below flag(s) only work in development mode by git cloning the repo:
                     -dev / --develop - Starts the tool in development mode
                     -b / --build - Force building the gui of the tool
@@ -184,6 +187,9 @@ Commands:
                                     opening the web application
                     --clear-browser-storage - Starts the tool with clearing browser local storage
                     -del / --delete - Removes existing Docker containers and clear the browser local storage
+                    Only available in production mode:
+                    --set-endpoints - Prompts user to input the existing nodeos and MongoDB instance endpoints to start the tool
+                    node=<nodeos_endpoint>  db=<mongodb_endpoint> - Starts the tool by connecting to the nodeos and MongoDB endpoints passed
                     Below flag(s) only work in development mode by git cloning the repo:
                     -dev / --develop - Starts the tool in development mode
                     -b / --build - Force building the gui of the tool
