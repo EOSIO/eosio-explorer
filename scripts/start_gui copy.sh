@@ -34,7 +34,6 @@ else
 fi
 
 COMPILER="$DEPENDENCIES_ROOT/api-eosio-compiler"
-CONFIG_FILE=$HOME
 
 ISDEV=false
 CLEARBROWSERSTORAGE=false
@@ -96,7 +95,7 @@ do
   esac
 done
 
-# If --set-endpoints is passed the read the endpoints and store the value
+
 if $ENDPOINTS; then    
   echo " "
   echo "Please enter nodeos endpoint:"
@@ -105,43 +104,83 @@ if $ENDPOINTS; then
   echo "Please enter MongoDB endpoint:"
   read db_endpoint  
   echo " "  
+
   echo "Storing endpoints to config file..."
-  (cd $CONFIG_FILE && echo '{ "NodesEndpoint" : "'$nodeos_endpoint'", "DBEndpoint" : "'$db_endpoint' " }'>eosio_explorer_config.json && printf "${GREEN}done${NC}")
-elif ( $NODE && $DB ); then
-  echo "Storing endpoints to config file..."
-  (cd $CONFIG_FILE && echo '{ "NodesEndpoint" : "'$nodeos_endpoint'", "DBEndpoint" : "'$db_endpoint' " }'>eosio_explorer_config.json && printf "${GREEN}done${NC}")
+  (cd $HOME && echo '{ "NodesEndpoint" : "'$nodeos_endpoint'", "DBEndpoint" : "'$db_endpoint' " }'>eosio_explorer_config.json && printf "${GREEN}done${NC}")
+elif ( ! ($NODE && $DB) ); then
+  echo " "
+  echo "=================================="
+  echo "READING ENDPOINTS FROM CONFIG FILE"
+  echo "=================================="
+  
+  SCRIPT_PATH=$(pwd -P)
+  PATH="$PATH:/opt/eosio/bin"
+  echo hello
+  # cat eosio_explorer_config.json | ./bin/jq '.NodesEndpoint'
+  
+  
+
+  # (cd $HOME && cp eosio_explorer_config.json $SCRIPT_PATH/eosio_explorer_config.json)
+
+  while 
+  
+    read line;
+    
+  do echo $line; done < eosio_explorer_config.txt
+
+  # echo here $config
+
+  echo "${config#\"NodesEndpoint\":\"*\",\"}"
+
+  # re="NodesEndpoint":"((www|http:|https:)+[^\s]+[\w])"
+  # echo `expr match "$config" "NodesEndpoint":"((www|http:|https:)+[^\s]+[\w])"`
+
+  # if [[ $config =~ $re ]]; then
+  #   echo ${BASH_REMATCH[1]}
+  # fi 
+
+  # (cd $SCRIPT_PATH && mkdir -p bin && curl -sSL -o bin/jq https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 && chmod +x bin/jq )
+  
+  # databasename=`$SCRIPT_PATH/bin/jq '.NodesEndpoint' eosio_explorer_config.json`
+  # cat eosio_explorer_config.json | jq '.NodesEndpoint'
+  # cat eosio_explorer_config.json | sed -e 's/[{}]/''/g' | awk -v RS=',"' -F: '/^NodesEndpoint/ {print $2}'
+
+  echo $databasename
 fi
+
+
 
 # kill cdt service when you stop application
 # trap "exit" INT TERM ERR
 # trap "kill 0" EXIT
 
-echo " "
-echo "=============================="
-echo "STARTING CDT DOCKER"
-echo "=============================="
-# start the docker
-(cd $COMPILER/docker-eosio-cdt && ./start_eosio_cdt_docker.sh && printf "${GREEN}done${NC}")
+# echo " "
+# echo "=============================="
+# echo "STARTING CDT DOCKER"
+# echo "=============================="
+# # start the docker
+# (cd $COMPILER/docker-eosio-cdt && ./start_eosio_cdt_docker.sh && printf "${GREEN}done${NC}")
 
-echo " "
-echo "=============================="
-echo "STARTING APP AND COMPILER SERVICE"
-echo "=============================="
 
-if $ISDEV; then
-  (cd $COMPILER && yarn start &)
-  echo " "
-  if $CLEARBROWSERSTORAGE; then
-    # Set environment variable "REACT_APP_LAST_INIT_TIMESTAMP" at dev build to create a new timestamp in CRA development
-    (cd $APP && REACT_APP_LAST_INIT_TIMESTAMP=$(date +%s) PORT=$APP_DEV_PORT yarn start)
-  else
-    (cd $APP && PORT=$APP_DEV_PORT yarn start)
-  fi
-else
-  # run yarn serve-clear to adding env CLEARBROWSERSTORAGE=true while starting to serve
-  if $CLEARBROWSERSTORAGE; then
-    (cd $APP && yarn serve-clear $COMPILER $CONFIG_FILE/eosio_explorer_config.json)
-  else
-    (cd $APP && yarn serve $COMPILER $CONFIG_FILE/eosio_explorer_config.json)
-  fi
-fi
+# echo " "
+# echo "=============================="
+# echo "STARTING APP AND COMPILER SERVICE"
+# echo "=============================="
+
+# if $ISDEV; then
+#   (cd $COMPILER && yarn start &)
+#   echo " "
+#   if $CLEARBROWSERSTORAGE; then
+#     # Set environment variable "REACT_APP_LAST_INIT_TIMESTAMP" at dev build to create a new timestamp in CRA development
+#     (cd $APP && REACT_APP_LAST_INIT_TIMESTAMP=$(date +%s) PORT=$APP_DEV_PORT yarn start)
+#   else
+#     (cd $APP && PORT=$APP_DEV_PORT yarn start)
+#   fi
+# else
+#   # run yarn serve-clear to adding env CLEARBROWSERSTORAGE=true while starting to serve
+#   if $CLEARBROWSERSTORAGE; then
+#     (cd $APP && yarn serve-clear $COMPILER $nodeos_endpoint $db_endpoint)
+#   else
+#     (cd $APP && yarn serve $COMPILER $nodeos_endpoint $db_endpoint)
+#   fi
+# fi
