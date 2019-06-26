@@ -34,8 +34,8 @@ LOCALSERVICE="$DEPENDENCIES_ROOT/api-eosio-compiler"
 COMPILER="$LOCALSERVICE/docker-eosio-cdt"
 ISDEV=false
 MAKESAMPLEDATA=false
-nodeos_endpoint="http://localhost:8888"
-db_endpoint="mongodb://localhost:27788/eosio_nodeos_mongodb_plugin"
+nodeos_endpoint=$NODE_DEFAULT_ENDPOINT
+db_endpoint=$MONGODB_DEFAULT_ENDPOINT
 
 USAGE="Usage: eosio-explorer init [-s | --sample-data] [--server-mode]
                            [-dev | --develop] [-b | --build] (program to initialize eosio-explorer)

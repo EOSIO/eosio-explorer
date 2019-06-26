@@ -47,8 +47,8 @@ NOTIMESTAMP=false
 ENDPOINTS=false
 NODE=false
 DB=false
-nodeos_endpoint="http://localhost:8888"
-db_endpoint="mongodb://localhost:27788/eosio_nodeos_mongodb_plugin"
+nodeos_endpoint=$NODE_DEFAULT_ENDPOINT
+db_endpoint=$MONGODB_DEFAULT_ENDPOINT
 
 USAGE="Usage: eosio-explorer start [-del | --delete] [--server-mode] [-s | --sample-data] [--clear-browser-storage] 
                             [--set-endpoints | node=<nodeos_endpoint> db=<mongodb_endpoint>]
