@@ -135,7 +135,10 @@ if (!($ISDEV) && [ ! -e $APP"/build" ]); then
 fi
 
 # If --set-endpoints is passed then read the endpoints and store the value
-if $ENDPOINTS; then    
+if ( $NODE && $DB ); then
+  echo "Storing endpoints to config file..."
+  (cd $CONFIG_FILE && echo '{ "NodesEndpoint" : "'$nodeos_endpoint'", "DBEndpoint" : "'$db_endpoint'" }'>eosio_explorer_config.json && printf "${GREEN}done${NC}") 
+elif $ENDPOINTS; then    
   echo " "
   echo "Please enter Nodeos endpoint:"
   read nodeos_endpoint
@@ -144,10 +147,7 @@ if $ENDPOINTS; then
   read db_endpoint  
   echo " "  
   echo "Storing endpoints to config file..."
-  (cd $CONFIG_FILE && echo '{ "NodesEndpoint" : "'$nodeos_endpoint'", "DBEndpoint" : "'$db_endpoint' " }'>eosio_explorer_config.json && printf "${GREEN}done${NC}")
-elif ( $NODE && $DB ); then
-  echo "Storing endpoints to config file..."
-  (cd $CONFIG_FILE && echo '{ "NodesEndpoint" : "'$nodeos_endpoint'", "DBEndpoint" : "'$db_endpoint' " }'>eosio_explorer_config.json && printf "${GREEN}done${NC}")
+  (cd $CONFIG_FILE && echo '{ "NodesEndpoint" : "'$nodeos_endpoint'", "DBEndpoint" : "'$db_endpoint'" }'>eosio_explorer_config.json && printf "${GREEN}done${NC}")
 fi
 
 FILE=$CONFIG_FILE/eosio_explorer_config.json

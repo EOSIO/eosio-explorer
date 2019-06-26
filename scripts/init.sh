@@ -158,6 +158,7 @@ echo "========================================"
 (cd $HOME && echo '{"NodesEndpoint":"'$nodeos_endpoint'","DBEndpoint":"'$db_endpoint'"}'>eosio_explorer_config.json && printf "${GREEN}done${NC}")
 
 echo " "
+echo "Path:" $HOME/eosio_explorer_config.json 
 echo '{"NodesEndpoint":"'$nodeos_endpoint'","DBEndpoint":"'$db_endpoint'"}'
 echo " "
 # start the dockers and gui
