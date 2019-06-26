@@ -55,7 +55,6 @@ do
   esac
 done
 
-
 # remove existing dockers
 echo " "
 echo "=============================="
@@ -64,13 +63,13 @@ echo "=============================="
 (cd $EOSDOCKER && ./remove_eosio_docker.sh && printf "${GREEN}done${NC}")
 
 echo " "
-echo "=============================="
+echo "================================"
 echo "CLEANING EXISTING MONGODB DOCKER"
-echo "=============================="
+echo "================================"
 (cd $MONGODOCKER && ./remove_mongodb_docker.sh && printf "${GREEN}done${NC}")
 
 echo " "
-echo "=============================="
+echo "============================"
 echo "CLEANING EXISTING CDT DOCKER"
-echo "=============================="
+echo "============================"
 (cd $COMPILER && ./remove_eosio_cdt_docker.sh && printf "${GREEN}done${NC}")

@@ -39,39 +39,43 @@ where [command]:
 
     remove_dockers  Remove any currently present Docker containers"
 
-case $1 in
-  init)
-  ./scripts/init.sh ${@:2}
-  ;;
-
-  start)
-  ./scripts/start.sh ${@:2}
-  ;;
-
-  start_gui)
-  ./scripts/start_gui.sh ${@:2}
-  ;;
-
-  stop_dockers)
-  ./scripts/stop_dockers.sh ${@:2}
-  ;;
-
-  remove_dockers)
-  ./scripts/remove_dockers.sh ${@:2}
-  ;;
-
-  -v|--version)
-  echo $(cat package.json | grep version | awk -F: '{ print $2 }' | sed 's/[",]//g') 
-  ;;
-
-  -h|--help)
-    echo "$USAGE"
-    exit
-  ;;
-
-  *) 
-    printf "invalid option: %s\n" "$arg" >&2
-    echo "$USAGE" >&2
-    exit 1
+if [ "$#" -eq 0 ]; then
+  ./scripts/start.sh
+else
+  case $1 in
+    init)
+    ./scripts/init.sh ${@:2}
     ;;
-esac
+
+    start)
+    ./scripts/start.sh ${@:2}
+    ;;
+
+    start_gui)
+    ./scripts/start_gui.sh ${@:2}
+    ;;
+
+    stop_dockers)
+    ./scripts/stop_dockers.sh ${@:2}
+    ;;
+
+    remove_dockers)
+    ./scripts/remove_dockers.sh ${@:2}
+    ;;
+
+    -v|--version)
+    echo $(cat package.json | grep version | awk -F: '{ print $2 }' | sed 's/[",]//g') 
+    ;;
+
+    -h|--help)
+      echo "$USAGE"
+      exit
+    ;;
+
+    *) 
+      printf "invalid option: %s\n" "$arg" >&2
+      echo "$USAGE" >&2
+      exit 1
+      ;;
+  esac
+fi 

@@ -80,9 +80,9 @@ do
 done
 
 printf ${GREEN}"\n"
-printf "==========================\n"
-printf "Welcome to EOSIO Explorer \n"
-printf "==========================\n"
+printf "=========================\n"
+printf "Welcome to EOSIO Explorer\n"
+printf "=========================\n"
 printf "\n"${NC}
 
 echo "Please choose an option by typing 1 or 2: "
@@ -96,7 +96,7 @@ then
   echo "Starting tool with default endpoints..."  
 elif [ $option == 2 ]
 then 
-  echo "Please enter nodeos endpoint:"
+  echo "Please enter Nodeos endpoint:"
   read nodeos_endpoint
   echo "Please enter MongoDB endpoint:"
   read db_endpoint  
@@ -104,9 +104,9 @@ else
   echo "Invalid option, starting tool with default endpoints... "
 fi  
 
-echo "=============================="
+echo "==============================="
 echo "INITIALISING CONFIG IN PACKAGES"
-echo "=============================="
+echo "==============================="
 
 # copy init config into different packages
 cp -f $APP/init_config.file $EOSDOCKER/config.file.local
@@ -128,22 +128,22 @@ echo " "
 
 # DO NOT yarn install if the app is installed globally to avoid node modules collision
 if [[ !($PWD == $YARN_GLOBAL_DIR*) ]]; then
-  echo "=============================="
+  echo "========================="
   echo "INSTALLING DEPENDENCIES"
-  echo "=============================="
+  echo "========================="
   yarn install
 fi
 
 echo " "
-echo "=============================="
+echo "==========================="
 echo "BUILDING EOSIO DOCKER"
-echo "=============================="
+echo "==========================="
 (cd $EOSDOCKER && ./build_eosio_docker.sh && printf "${GREEN}done${NC}")
 
 echo " "
-echo "=============================="
+echo "=================================================="
 echo "BUILDING EOSIO_CDT DOCKER USED BY COMPILER SERVICE"
-echo "=============================="
+echo "=================================================="
 (cd $COMPILER && ./build_eosio_cdt_docker.sh && printf "${GREEN}done${NC}")
 
 # remove existing dockers
@@ -158,7 +158,7 @@ echo "========================================"
 (cd $HOME && echo '{"NodesEndpoint":"'$nodeos_endpoint'","DBEndpoint":"'$db_endpoint'"}'>eosio_explorer_config.json && printf "${GREEN}done${NC}")
 
 echo " "
-echo Nodeos: $nodeos_endpoint, MongoDB: $db_endpoint
+echo '{"NodesEndpoint":"'$nodeos_endpoint'","DBEndpoint":"'$db_endpoint'"}'
 echo " "
 # start the dockers and gui
 

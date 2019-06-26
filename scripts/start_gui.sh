@@ -41,8 +41,8 @@ CLEARBROWSERSTORAGE=false
 ENDPOINTS=false
 NODE=false
 DB=false
-nodeos_endpoint=""
-db_endpoint=""
+nodeos_endpoint="http://localhost:8888"
+db_endpoint="mongodb://localhost:27788/eosio_nodeos_mongodb_plugin"
 
 USAGE="Usage: eosio-explorer start_gui [--clear-browser-storage]
                                 [--set-endpoints | node=<nodeos_endpoint> db=<mongodb_endpoint>] 
@@ -99,7 +99,7 @@ done
 # If --set-endpoints is passed the read the endpoints and store the value
 if $ENDPOINTS; then    
   echo " "
-  echo "Please enter nodeos endpoint:"
+  echo "Please enter Nodeos endpoint:"
   read nodeos_endpoint
   echo " "
   echo "Please enter MongoDB endpoint:"
@@ -110,6 +110,17 @@ if $ENDPOINTS; then
 elif ( $NODE && $DB ); then
   echo "Storing endpoints to config file..."
   (cd $CONFIG_FILE && echo '{ "NodesEndpoint" : "'$nodeos_endpoint'", "DBEndpoint" : "'$db_endpoint' " }'>eosio_explorer_config.json && printf "${GREEN}done${NC}")
+fi
+
+FILE=$CONFIG_FILE/eosio_explorer_config.json
+if [ -f "$FILE" ]; then
+  echo " "
+  echo "$FILE exists"
+else
+  echo " "
+  printf "${RED}$FILE does not exist, calling init..\n ${NC}"
+  echo " "
+  ./init.sh
 fi
 
 # kill cdt service when you stop application
@@ -124,13 +135,12 @@ echo "=============================="
 (cd $COMPILER/docker-eosio-cdt && ./start_eosio_cdt_docker.sh && printf "${GREEN}done${NC}")
 
 echo " "
-echo "=============================="
+echo "================================="
 echo "STARTING APP AND COMPILER SERVICE"
-echo "=============================="
+echo "================================="
 
 if $ISDEV; then
   (cd $COMPILER && yarn start &)
-  echo " "
   if $CLEARBROWSERSTORAGE; then
     # Set environment variable "REACT_APP_LAST_INIT_TIMESTAMP" at dev build to create a new timestamp in CRA development
     (cd $APP && REACT_APP_LAST_INIT_TIMESTAMP=$(date +%s) PORT=$APP_DEV_PORT yarn start)

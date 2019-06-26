@@ -35,6 +35,7 @@ fi
 
 EOSDOCKER="$DEPENDENCIES_ROOT/docker-eosio-nodeos"
 MONGODOCKER="$DEPENDENCIES_ROOT/docker-mongodb"
+CONFIG_FILE=$HOME
 
 ISDEV=false
 CLEARBROWSERSTORAGE=false
@@ -46,8 +47,8 @@ NOTIMESTAMP=false
 ENDPOINTS=false
 NODE=false
 DB=false
-nodeos_endpoint=""
-db_endpoint=""
+nodeos_endpoint="http://localhost:8888"
+db_endpoint="mongodb://localhost:27788/eosio_nodeos_mongodb_plugin"
 
 USAGE="Usage: eosio-explorer start [-del | --delete] [--server-mode] [-s | --sample-data] [--clear-browser-storage] 
                             [--set-endpoints | node=<nodeos_endpoint> db=<mongodb_endpoint>]
@@ -133,6 +134,33 @@ if (!($ISDEV) && [ ! -e $APP"/build" ]); then
   BUILDAPPLICATION=true
 fi
 
+# If --set-endpoints is passed then read the endpoints and store the value
+if $ENDPOINTS; then    
+  echo " "
+  echo "Please enter Nodeos endpoint:"
+  read nodeos_endpoint
+  echo " "
+  echo "Please enter MongoDB endpoint:"
+  read db_endpoint  
+  echo " "  
+  echo "Storing endpoints to config file..."
+  (cd $CONFIG_FILE && echo '{ "NodesEndpoint" : "'$nodeos_endpoint'", "DBEndpoint" : "'$db_endpoint' " }'>eosio_explorer_config.json && printf "${GREEN}done${NC}")
+elif ( $NODE && $DB ); then
+  echo "Storing endpoints to config file..."
+  (cd $CONFIG_FILE && echo '{ "NodesEndpoint" : "'$nodeos_endpoint'", "DBEndpoint" : "'$db_endpoint' " }'>eosio_explorer_config.json && printf "${GREEN}done${NC}")
+fi
+
+FILE=$CONFIG_FILE/eosio_explorer_config.json
+if [ -f "$FILE" ]; then
+  echo " "
+  echo "$FILE exists"
+else
+  echo " "
+  printf "${RED}$FILE does not exist, calling init..\n ${NC}"
+  echo " "
+  ./init.sh
+fi
+
 echo " "
 echo "=============================="
 echo "STARTING MONGODB DOCKER"
@@ -150,8 +178,6 @@ elif ($HARDREPLAY) then
 else
   (cd $EOSDOCKER && ./start_eosio_docker.sh --nolog && printf "${GREEN}done${NC}")
 fi
-
-
 
 # wait until eosio blockchain is started
 waitcounter=0
@@ -177,6 +203,7 @@ do
     exit 0
   fi
 done
+
 
 if ( ! $SERVERMODE ); then
   # If the production version of the application needs to be built
@@ -209,28 +236,10 @@ if ( ! $SERVERMODE ); then
     fi
   else
     # If there is -d or from init setup ( or clear browser storage ), clear the browser storage by setting CLEARBROWSERSTORAGE=true while serve.
-    if $CLEARBROWSERSTORAGE; then     
-      #If node and db endpoints are passed then pass those arguments to start_gui
-      if ( $NODE && $DB ); then
-        ./start_gui.sh --clear-browser-storage node=$nodeos_endpoint db=$db_endpoint
-      else
-         # If there is --set-endpoints, then send this argument to start_gui to prompt the users to input endpoints
-        if $ENDPOINTS; then 
-          ./start_gui.sh --clear-browser-storage --set-endpoints
-        else
-          ./start_gui.sh --clear-browser-storage
-        fi
-      fi      
+    if $CLEARBROWSERSTORAGE; then  
+      ./start_gui.sh --clear-browser-storage
     else      
-      if ( $NODE && $DB ); then
-        ./start_gui.sh node=$nodeos_endpoint db=$db_endpoint
-      else
-        if $ENDPOINTS; then 
-          ./start_gui.sh --set-endpoints
-        else
-          ./start_gui.sh
-        fi  
-      fi      
+      ./start_gui.sh
     fi
   fi
 else
