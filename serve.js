@@ -54,7 +54,6 @@ app.listen(PORT, ()=>{
     let url;
     if(endpointConfig.hasOwnProperty("NodesEndpoint") && endpointConfig["NodesEndpoint"] != "" 
         && endpointConfig.hasOwnProperty("DBEndpoint") && endpointConfig["DBEndpoint"] != ""){
-      console.log("Here");
       url = "http://localhost:" + PORT +"?nodeos="+endpointConfig.NodesEndpoint.trim()+"&mongodb="+endpointConfig.DBEndpoint.trim();
     }else{
       url = "http://localhost:" + PORT;
