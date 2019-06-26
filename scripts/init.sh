@@ -85,9 +85,9 @@ printf "Welcome to EOSIO Explorer\n"
 printf "=========================\n"
 printf "\n"${NC}
 
-echo "Please choose an option by typing 1 or 2: "
-echo "1. Start the tool by connecting to default endpoints given by the tool."
-echo "2. Start the tool by connecting to existing endpoints."
+echo "Please select one of the following options by typing 1 or 2: "
+echo "1. Start the tool by connecting to default Nodeos and MongoDB endpoints."
+echo "2. Start the tool by connecting to existing Nodeos and MongoDB endpoints."
 
 read option
 
