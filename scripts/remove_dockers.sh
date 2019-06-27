@@ -48,13 +48,12 @@ do
       exit
       ;;
     *)
-      printf "illegal option: %s\n" "$arg" >&2
+      printf "Unknown option: %s\n" "$arg" >&2
       echo "$USAGE" >&2
       exit 1
       ;;
   esac
 done
-
 
 # remove existing dockers
 echo " "
@@ -64,13 +63,13 @@ echo "=============================="
 (cd $EOSDOCKER && ./remove_eosio_docker.sh && printf "${GREEN}done${NC}")
 
 echo " "
-echo "=============================="
+echo "================================"
 echo "CLEANING EXISTING MONGODB DOCKER"
-echo "=============================="
+echo "================================"
 (cd $MONGODOCKER && ./remove_mongodb_docker.sh && printf "${GREEN}done${NC}")
 
 echo " "
-echo "=============================="
+echo "============================"
 echo "CLEANING EXISTING CDT DOCKER"
-echo "=============================="
+echo "============================"
 (cd $COMPILER && ./remove_eosio_cdt_docker.sh && printf "${GREEN}done${NC}")

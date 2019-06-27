@@ -35,6 +35,7 @@ fi
 
 EOSDOCKER="$DEPENDENCIES_ROOT/docker-eosio-nodeos"
 MONGODOCKER="$DEPENDENCIES_ROOT/docker-mongodb"
+CONFIG_FILE=$HOME
 
 ISDEV=false
 CLEARBROWSERSTORAGE=false
@@ -43,18 +44,31 @@ MAKESAMPLEDATA=false
 SERVERMODE=false
 HARDREPLAY=false
 NOTIMESTAMP=false
+ENDPOINTS=false
+NODE=false
+DB=false
+nodeos_endpoint=$NODE_DEFAULT_ENDPOINT
+db_endpoint=$MONGODB_DEFAULT_ENDPOINT
 
-USAGE="Usage: eosio-explorer start [-dev] [-del] [-b] [-s] [--server-mode [--clear-browser-storage] (program to start eosio-explorer)
+USAGE="Usage: eosio-explorer start [-del | --delete] [--server-mode] [-s | --sample-data] [--clear-browser-storage] 
+                            [--set-endpoints | node=<nodeos_endpoint> db=<mongodb_endpoint>]
+                            [-dev] [-del] [-b]  [--no-timestamp ] (program to start eosio-explorer)
 
 where:
-    --server-mode           Starts the tool in server-mode, it will start the dockers but not the gui
-    -s, --sample-data       Starts the tool with pre-existing sample accounts and smart contracts
-    --clear-browser-storage Starts the tool with clearing browser local storage
     -del, --delete            Removes existing Docker containers
+    --server-mode             Starts the tool in server-mode, it will start the dockers but not the gui
+    -s, --sample-data         Starts the tool with pre-existing sample accounts and smart contracts
+    --clear-browser-storage   Starts the tool with clearing browser local storage
+    
+    Only available in production:
+    --set-endpoints           Prompts user to input existing nodeos and MongoDB instance endpoints to connect with
+    node=<nodeos_endpoint> 
+    db=<mongodb_endpoint>     Starts the tool by connecting to the nodeos and MongoDB endpoints passed
+
     Only available in development:
-    -dev, --develop         Starts the tool in development mode
-    -b, --build             Build gui
-    --no-timestamp          Builds gui without adding env LASTTIMESTAMP. Should only used by developer right before making a release"
+    -dev, --develop           Starts the tool in development mode
+    -b, --build               Build gui
+    --no-timestamp            Builds gui without adding env LASTTIMESTAMP. Should only used by developer right before making a release"
 
 
 # check for arguments
@@ -86,12 +100,26 @@ do
     --no-timestamp)
       NOTIMESTAMP=true
       ;;
+    --set-endpoints)
+      ENDPOINTS=true
+      ;;
+    node=*)
+      NODE=true
+      nodeos_endpoint="${arg#*=}" 
+      ;;
+    db=*)
+      DB=true
+      db_endpoint="${arg#*=}"
+      ;;
     -h|--help)
+      echo " "
       echo "$USAGE"
+      echo " "
       exit
       ;;
     *)
-      printf "illegal option: %s\n" "$arg" >&2
+      printf "Unknown option: %s\n" "$arg" >&2
+      echo " "
       echo "$USAGE" >&2
       exit 1
       ;;
@@ -104,6 +132,33 @@ done
 # Then build with a new timestamp.
 if (!($ISDEV) && [ ! -e $APP"/build" ]); then
   BUILDAPPLICATION=true
+fi
+
+# If --set-endpoints is passed then read the endpoints and store the value
+if ( $NODE && $DB ); then
+  echo "Storing endpoints to config file..."
+  (cd $CONFIG_FILE && echo '{ "NodesEndpoint" : "'$nodeos_endpoint'", "DBEndpoint" : "'$db_endpoint'" }'>eosio_explorer_config.json && printf "${GREEN}done${NC}") 
+elif $ENDPOINTS; then    
+  echo " "
+  echo "Please enter Nodeos endpoint:"
+  read nodeos_endpoint
+  echo " "
+  echo "Please enter MongoDB endpoint:"
+  read db_endpoint  
+  echo " "  
+  echo "Storing endpoints to config file..."
+  (cd $CONFIG_FILE && echo '{ "NodesEndpoint" : "'$nodeos_endpoint'", "DBEndpoint" : "'$db_endpoint'" }'>eosio_explorer_config.json && printf "${GREEN}done${NC}")
+fi
+
+FILE=$CONFIG_FILE/eosio_explorer_config.json
+if [ -f "$FILE" ]; then
+  echo " "
+  echo "$FILE exists"
+else
+  echo " "
+  printf "${RED}$FILE does not exist, calling init..\n ${NC}"
+  echo " "
+  ./init.sh
 fi
 
 echo " "
@@ -123,8 +178,6 @@ elif ($HARDREPLAY) then
 else
   (cd $EOSDOCKER && ./start_eosio_docker.sh --nolog && printf "${GREEN}done${NC}")
 fi
-
-
 
 # wait until eosio blockchain is started
 waitcounter=0
@@ -150,6 +203,7 @@ do
     exit 0
   fi
 done
+
 
 if ( ! $SERVERMODE ); then
   # If the production version of the application needs to be built
@@ -182,9 +236,9 @@ if ( ! $SERVERMODE ); then
     fi
   else
     # If there is -d or from init setup ( or clear browser storage ), clear the browser storage by setting CLEARBROWSERSTORAGE=true while serve.
-    if $CLEARBROWSERSTORAGE; then
+    if $CLEARBROWSERSTORAGE; then  
       ./start_gui.sh --clear-browser-storage
-    else
+    else      
       ./start_gui.sh
     fi
   fi

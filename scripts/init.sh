@@ -34,12 +34,16 @@ LOCALSERVICE="$DEPENDENCIES_ROOT/api-eosio-compiler"
 COMPILER="$LOCALSERVICE/docker-eosio-cdt"
 ISDEV=false
 MAKESAMPLEDATA=false
+nodeos_endpoint=$NODE_DEFAULT_ENDPOINT
+db_endpoint=$MONGODB_DEFAULT_ENDPOINT
 
-USAGE="Usage: eosio-explorer init [-dev] [-s] [--server-mode] (program to initialize eosio-explorer)
+USAGE="Usage: eosio-explorer init [-s | --sample-data] [--server-mode]
+                           [-dev | --develop] [-b | --build] (program to initialize eosio-explorer)
 
 where:
     -s, --sample-data   Starts the tool with pre-existing sample accounts and smart contracts
-    --server-mode       Starts the tool in server-mode, it will start the dockers but not the gui
+    --server-mode       Starts the tool in server-mode, it will start the docker containers but not the gui
+
     Only available in development:
     -dev, --develop     Starts the tool in development mode
     -b, --build         Build gui"
@@ -61,20 +65,48 @@ do
       echo "Running the tool with building gui"
       ;;
     -h|--help)
+      echo " "
       echo "$USAGE"
+      echo " "
       exit
       ;;
     *)
-      printf "illegal option: %s\n" "$arg" >&2
+      printf "Unknown option: %s\n" "$arg" >&2
+      echo " "
       echo "$USAGE" >&2
       exit 1
       ;;
   esac
 done
 
-echo "=============================="
+printf ${GREEN}"\n"
+printf "=========================\n"
+printf "Welcome to EOSIO Explorer\n"
+printf "=========================\n"
+printf "\n"${NC}
+
+echo "Please select one of the following options by typing 1 or 2: "
+echo "1. Start the tool by connecting to default Nodeos and MongoDB endpoints."
+echo "2. Start the tool by connecting to existing Nodeos and MongoDB endpoints."
+
+read option
+
+if [ $option == 1 ]
+then 
+  echo "Starting tool with default endpoints..."  
+elif [ $option == 2 ]
+then 
+  echo "Please enter Nodeos endpoint:"
+  read nodeos_endpoint
+  echo "Please enter MongoDB endpoint:"
+  read db_endpoint  
+else
+  echo "Invalid option, starting tool with default endpoints... "
+fi  
+
+echo "==============================="
 echo "INITIALISING CONFIG IN PACKAGES"
-echo "=============================="
+echo "==============================="
 
 # copy init config into different packages
 cp -f $APP/init_config.file $EOSDOCKER/config.file.local
@@ -96,28 +128,41 @@ echo " "
 
 # DO NOT yarn install if the app is installed globally to avoid node modules collision
 if [[ !($PWD == $YARN_GLOBAL_DIR*) ]]; then
-  echo "=============================="
+  echo "========================="
   echo "INSTALLING DEPENDENCIES"
-  echo "=============================="
+  echo "========================="
   yarn install
 fi
 
 echo " "
-echo "=============================="
+echo "==========================="
 echo "BUILDING EOSIO DOCKER"
-echo "=============================="
+echo "==========================="
 (cd $EOSDOCKER && ./build_eosio_docker.sh && printf "${GREEN}done${NC}")
 
 echo " "
-echo "=============================="
+echo "=================================================="
 echo "BUILDING EOSIO_CDT DOCKER USED BY COMPILER SERVICE"
-echo "=============================="
+echo "=================================================="
 (cd $COMPILER && ./build_eosio_cdt_docker.sh && printf "${GREEN}done${NC}")
 
 # remove existing dockers
 ./remove_dockers.sh
 
+#Create a config file in home directory
+echo " "
+echo "========================================"
+echo "Creating config files to store endpoints"
+echo "========================================"
+
+(cd $HOME && echo '{"NodesEndpoint":"'$nodeos_endpoint'","DBEndpoint":"'$db_endpoint'"}'>eosio_explorer_config.json && printf "${GREEN}done${NC}")
+
+echo " "
+echo "Path:" $HOME/eosio_explorer_config.json 
+echo '{"NodesEndpoint":"'$nodeos_endpoint'","DBEndpoint":"'$db_endpoint'"}'
+echo " "
 # start the dockers and gui
+
 ./start.sh $@ --clear-browser-storage
 
 P1=$!

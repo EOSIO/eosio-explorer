@@ -15,6 +15,7 @@ const displayStatus = (app) => {
 
 const startPm2 = () =>{
   console.log("\x1b[36mstarting app and compiler using pm2\x1b[0m");
+  
   if (fs.existsSync(process.argv.slice(2)[0])) {
     pm2.start({
       name      : COMPILER,
@@ -30,7 +31,8 @@ const startPm2 = () =>{
 
   pm2.start({
     name      : EXPLORER,
-    script    : 'serve.js'         // Script to be run
+    script    : 'serve.js',         // Script to be run
+    args: [process.argv.slice(2)[1]]
   }, function(err, app) {
     if (err) throw err
     displayStatus(app[0]);

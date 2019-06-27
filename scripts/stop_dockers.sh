@@ -26,7 +26,7 @@ do
       exit
       ;;
     *) 
-      printf "illegal option: %s\n" "$arg" >&2
+      printf "Unknown option: %s\n" "$arg" >&2
       echo "$USAGE" >&2
       exit 1
       ;;
@@ -34,7 +34,7 @@ do
 done
 
 echo " "
-echo "=============================="
+echo "============================="
 echo "STOPPING EOSIO DOCKER"
 echo "=============================="
 # Check if the Docker container is running
