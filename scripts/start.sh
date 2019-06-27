@@ -34,7 +34,7 @@ else
 fi
 
 EOSDOCKER="$DEPENDENCIES_ROOT/docker-eosio-nodeos"
-MONGODOCKER="$DEPENDENCIES_ROOT/docker-mongodb"
+SHIPDOCKER="$DEPENDENCIES_ROOT/docker-ship"
 CONFIG_FILE=$HOME
 
 ISDEV=false
@@ -163,12 +163,6 @@ fi
 
 echo " "
 echo "=============================="
-echo "STARTING MONGODB DOCKER"
-echo "=============================="
-(cd $MONGODOCKER && ./start_mongodb_docker.sh && printf "${GREEN}done${NC}")
-
-echo " "
-echo "=============================="
 echo "STARTING EOSIO DOCKER"
 echo "=============================="
 if ($MAKESAMPLEDATA); then
@@ -187,7 +181,7 @@ until $(curl --output /dev/null \
              --fail \
              localhost:8888/v1/chain/get_info)
 do
-  if [[ "$waitcounter" -lt 6 ]]; then
+  if [[ "$waitcounter" -lt 10 ]]; then
     echo " "
     echo "$((waitcounter+1)) - Waiting for dockers to be started..."
     sleep 10s
@@ -204,6 +198,11 @@ do
   fi
 done
 
+echo " "
+echo "======================================"
+echo "STARTING STATE HISTORY PLUGIN DOCKER"
+echo "======================================"
+(cd $SHIPDOCKER && ./start_ship_docker.sh && printf "${GREEN}done${NC}")
 
 if ( ! $SERVERMODE ); then
   # If the production version of the application needs to be built

@@ -30,6 +30,7 @@ fi
 
 EOSDOCKER="$DEPENDENCIES_ROOT/docker-eosio-nodeos"
 MONGODOCKER="$DEPENDENCIES_ROOT/docker-mongodb"
+SHIPDOCKER="$DEPENDENCIES_ROOT/docker-ship"
 LOCALSERVICE="$DEPENDENCIES_ROOT/api-eosio-compiler"
 COMPILER="$LOCALSERVICE/docker-eosio-cdt"
 ISDEV=false
@@ -114,6 +115,7 @@ cp -f $APP/init_config.file $EOSDOCKER/scripts/config.file.local
 cp -f $APP/init_config.file $MONGODOCKER/config.file.local
 cp -f $APP/init_config.file $COMPILER/config.file.local
 cp -f $APP/init_config.file $APP/config.file.local
+cp -f $APP/init_config.file $SHIPDOCKER/config.file.local
 
 # print init config and save it as .env.local into different packages
 echo "REACT_APP_MONGODB_PORT=$MONGODB_PORT" > $APP/.env.local
@@ -145,6 +147,12 @@ echo "=================================================="
 echo "BUILDING EOSIO_CDT DOCKER USED BY COMPILER SERVICE"
 echo "=================================================="
 (cd $COMPILER && ./build_eosio_cdt_docker.sh && printf "${GREEN}done${NC}")
+
+echo " "
+echo "======================================="
+echo "BUILDING STATE HISTORY PLUGIN DOCKER"
+echo "======================================="
+(cd $SHIPDOCKER && ./build_ship_docker.sh && printf "${GREEN}done${NC}")
 
 # remove existing dockers
 ./remove_dockers.sh
