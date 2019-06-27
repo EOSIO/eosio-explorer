@@ -205,17 +205,21 @@ You can also add the `-h` flag to any of the commands listed above to view the a
 
 ### Starting the Tool
 
-There are two ways to start the tool depending on what you need or want to accomplish:
+There are the ways to start the tool depending on what you need or want to accomplish:
 
 ```bash
 eosio-explorer init
 ```
 
-or
+```bash
+eosio-explorer start 
+```
 
 ```bash
-eosio-explorer start
+eosio-explorer 
 ```
+
+Running `eosio-explorer` without any command is equivalent to running `eosio-explorer start`
 
 This section will detail the specific differences between the two commands and help you decide when you should use one or the other.
 
