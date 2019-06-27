@@ -227,12 +227,13 @@ This section will detail the specific differences between the two commands and h
 
 The `init` command will perform the following operations when starting the tool:
 
-1. Setting up and copying the initial configurations for the tool
-2. Checking and building Docker images if necessary
-3. Check if package dependencies need to be installed. **This step won't execute if you have installed this tool with `yarn global`.**
-4. Clear the local storage, if it needs to be cleared. Otherwise, just provide the initial state
-5. Forcefully remove any existing Docker containers and volumes before starting new ones
-6. Operations indicated by command flags/options
+1. Create a config file which stores the Nodeos and MongoDB instance endpoint based on user selction.
+2. Setting up and copying the initial configurations for the tool
+3. Checking and building Docker images if necessary
+4. Check if package dependencies need to be installed. **This step won't execute if you have installed this tool with `yarn global`.**
+5. Clear the local storage, if it needs to be cleared. Otherwise, just provide the initial state
+6. Forcefully remove any existing Docker containers and volumes before starting new ones
+7. Operations indicated by command flags/options
 
 Therefore, you would want to use this command under these general circumstances:
 
