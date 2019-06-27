@@ -17,13 +17,15 @@
    * [Main EOSIO Dependencies](#main-eosio-dependencies)
    * [Platform Support](#platform-support)
    * [Required Tools](#required-tools)
+   * [Warning for Future Releases](#warning-for-future-releases)
 * [Installation](#installation)
    * [For Users](#for-users)
    * [For Contributors](#for-contributors)
    * [OS Platform Specific](#os-platform-specific)
 * [Usage](#usage)
-    * [Starting the tool](#starting-the-tool)
-    * [Stopping the tool](#stopping-the-tool)
+    * [Starting the Tool](#starting-the-tool)
+    * [Stopping the Tool](#stopping-the-tool)
+    * [Initializing with Sample Data](#initializing-with-sample-data)
     * [Modes](#modes)
     * [Using PM2 with the Tool](#using-pm2)
 * [Links to Documentation](#links-to-documentation)
@@ -84,6 +86,14 @@ The tool uses the following:
 :warning: - When using Docker for this tool, we require a minimum resource of **4 CPU, 8 GB memory allocation**.
 
 :warning: - Currently, the project supports `react-scripts v2.x.x` but **not** `react-scripts v3.x.x` in your global dependency (check `yarn global list`).
+
+### Warning for Future Releases 
+
+Applies to releases `> 0.3.1`:
+
+Originally, creating a local instance of `nodeos` using this tool would allow you to use an `eosio` account whose permission credentials are stored locally on the front-end. Specifically, it is hard-coded and could not be changed. However, moving forward, this `eosio` account will now be initialized in the database. **If you connect to a `nodeos` instance using an older version of this tool, you will no longer be able to access the default `eosio` permissions for that node** if you are using future versions of this tool. 
+
+For users or developers using older versions of this tool, **please update** as soon as possible and re-initialize your blockchain as to provide other users with the ability to use these permissions. Furthermore, you can choose to change the public keys of these `eosio` permissions and treat them as if they were normal accounts. **Keep in mind that doing this means you and any other users are now responsible for the new private keys, the tool will not keep track of the private keys for you if you change your connection.** 
 
 ## Installation
 
@@ -173,7 +183,10 @@ Commands:
                     --server-mode - Starts the blockchain environment for the tool without
                                     opening the web application
                     --clear-browser-storage - Starts the tool with clearing browser local storage
-                    -d / --delete - Removes existing Docker containers and clear the browser local storage
+                    -del / --delete - Removes existing Docker containers and clear the browser local storage
+                    Only available in production mode:
+                    --set-endpoints - Prompts user to input the existing nodeos and MongoDB instance endpoints to start the tool
+                    node=<nodeos_endpoint>  db=<mongodb_endpoint> - Starts the tool by connecting to the nodeos and MongoDB endpoints passed
                     Below flag(s) only work in development mode by git cloning the repo:
                     -dev / --develop - Starts the tool in development mode
                     -b / --build - Force building the gui of the tool
@@ -190,21 +203,62 @@ Commands:
 
 You can also add the `-h` flag to any of the commands listed above to view the available flags for each command within the terminal.
 
-### Starting the tool
+### Starting the Tool
 
-Below is a short explanation about the different ways to start the tool.
+There are the ways to start the tool depending on what you need or want to accomplish:
 
 ```bash
 eosio-explorer init
 ```
-This command will build the different docker images, remove existing data (in MongoDB, local Blockchain and Local Storage) and start the docker containers along with the application.
 
 ```bash
-eosio-explorer start
+eosio-explorer start 
 ```
-This command will start/resume the docker containers and the application.
 
-### Stopping the tool
+```bash
+eosio-explorer 
+```
+
+Running `eosio-explorer` without any command is equivalent to running `eosio-explorer start`
+
+This section will detail the specific differences between the two commands and help you decide when you should use one or the other.
+
+#### `init`
+
+The `init` command will perform the following operations when starting the tool:
+
+1. Create a config file which stores the Nodeos and MongoDB instance endpoint based on user selction.
+2. Setting up and copying the initial configurations for the tool
+3. Checking and building Docker images if necessary
+4. Check if package dependencies need to be installed. **This step won't execute if you have installed this tool with `yarn global`.**
+5. Clear the local storage, if it needs to be cleared. Otherwise, just provide the initial state
+6. Forcefully remove any existing Docker containers and volumes before starting new ones
+7. Operations indicated by command flags/options
+
+Therefore, you would want to use this command under these general circumstances:
+
+1. You just installed the tool
+2. You want to re-initialize the tool after installing an update (rebuilding Docker images, etc.)
+3. You want to completely wipe your blockchain and database, start from scratch.
+4. You want to re-initialize the tool after changing some configuration data
+
+#### `start`
+
+The `start` command will just do the following:
+
+1. Try to resume stopped Docker containers. **If no Docker containers exist, new ones will be started**. 
+2. Operations indicated by command flags/options
+
+Therefore, you would want to use this command under these general circumstances:
+
+1. You want to start the tool normally (without checking for updates)
+2. You have stopped Docker containers and want to resume a locally created blockchain
+
+Ideally, for each update installed, you want to run `init` command once, and then just use `start` thereafter. 
+
+Using the `start` command assumes you have already built and installed all necessary dependencies. 
+
+### Stopping the Tool
 
 :warning: - Proper way to pause/stop the docker containers is to use the below command, if you don't stop the docker containers properly then you may lose the data on the blockchain. Also, use this command and stop docker containers before shutting down the system to save data.
 
@@ -213,6 +267,19 @@ eosio-explorer stop_dockers
 ```
 
 Then use `eosio-explorer start` to resume/restart the docker containers.
+
+### Initializing with Sample Data 
+
+If you want to start or initialize a new blockchain with sample accounts, you can do the following:
+
+```bash
+eosio-explorer init --sample-data 
+eosio-explorer start --sample-data
+```
+
+If you aren't currently running an existing blockchain, the tool will then create your local `nodeos` instance with sample accounts already inserted into your database and blockchain. 
+
+:warning: - If you already have a blockchain running, whether it is stopped or not, the `--sample-data / -s` flag **will do nothing**. 
 
 ### Modes
 
