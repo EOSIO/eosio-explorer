@@ -950,10 +950,10 @@
   resolved "https://registry.yarnpkg.com/@emotion/unitless/-/unitless-0.7.3.tgz#6310a047f12d21a1036fb031317219892440416f"
   integrity sha512-4zAPlpDEh2VwXswwr/t8xGNDGg8RQiPxtxZ3qQEXyQsBV39ptTdESCjuBvGze1nLMVrxmTIKmnO/nAV8Tqjjzg==
 
-"@eosio-toppings/api-eosio-compiler@^0.3.1":
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/@eosio-toppings/api-eosio-compiler/-/api-eosio-compiler-0.3.1.tgz#6f7a9b62709e3c8aa1d72d3bf01985d50d5c5379"
-  integrity sha512-vWiNyFZtT2S9em4vHwx3N0BcEC+6abujm8+qKmL3AgTKA7KrW5+Q02mbS6Pw+FHEhXZGNndgwgNSbURshK6+eA==
+"@eosio-toppings/api-eosio-compiler@^0.3.2-alpha.0":
+  version "0.3.2-alpha.0"
+  resolved "https://registry.yarnpkg.com/@eosio-toppings/api-eosio-compiler/-/api-eosio-compiler-0.3.2-alpha.0.tgz#d85ccdc786be6211ccf8c4273278c97cffccb64f"
+  integrity sha512-ajAPkT90wFnhtHy+w16yUTVwBRz5ul69Z/5a1pUHkrSuSx1nPHCCPZNCUToRN0dVpxnIka6xUIpzST92/Kb2iQ==
   dependencies:
     body-parser "^1.19.0"
     cors "^2.8.5"
@@ -966,31 +966,31 @@
     recursive-copy "^2.0.10"
     strip-ansi "^5.1.0"
 
-"@eosio-toppings/api-mongodb-plugin@^0.3.1":
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/@eosio-toppings/api-mongodb-plugin/-/api-mongodb-plugin-0.3.1.tgz#2745392188dc9ed813f111601ec14c18c6798242"
-  integrity sha512-9m60KB6ebp4m/d4VFfPlV3KE1FFbkeo3LXyiwGxRg7Wl94n+hzgauLqBM6Qkf9+UL/98GrKbnrB5zju+uKjsZA==
+"@eosio-toppings/api-mongodb-plugin@^0.3.2-alpha.0":
+  version "0.3.2-alpha.0"
+  resolved "https://registry.yarnpkg.com/@eosio-toppings/api-mongodb-plugin/-/api-mongodb-plugin-0.3.2-alpha.0.tgz#32a4f1feb7362fd8d05329b24a648f566440968b"
+  integrity sha512-/Ye9HQzWJMglGM/HKT2PZkzpnVISOfPG0BkcKjULOl5+H0h4mSMrbedFiu4S3yA0ylAPALQObqhouMDgpQFu4A==
   dependencies:
     dotenv "^6.2.0"
     mongoose "^5.4.17"
 
-"@eosio-toppings/api-rpc@^0.3.1":
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/@eosio-toppings/api-rpc/-/api-rpc-0.3.1.tgz#2f1b2e8d24d9007af76acb1fe5ec7e5802944ecd"
-  integrity sha512-iuqFQFndx7A5q5YiaJOxanyxI8InB2XgIK9oR5y1H6hrozfF4c3GWBBZWfUsbGxsKy+CNDiHDKzBw4PPRvmZ7w==
+"@eosio-toppings/api-rpc@^0.3.2-alpha.0":
+  version "0.3.2-alpha.0"
+  resolved "https://registry.yarnpkg.com/@eosio-toppings/api-rpc/-/api-rpc-0.3.2-alpha.0.tgz#ea1e412ad9c15604c274d96f37f1b781551bcb09"
+  integrity sha512-O9UwRS5/KwiHoHG0RhjcfXsofKMu5gbMVqd8RZmT0mkkTwl3UmzNcmgWos/PXs6z4la7ns4PAQJRiYs5lzVqUQ==
   dependencies:
     eosjs "20.0.0-beta3"
     text-encoding "^0.7.0"
 
-"@eosio-toppings/docker-eosio-nodeos@^0.3.1":
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/@eosio-toppings/docker-eosio-nodeos/-/docker-eosio-nodeos-0.3.1.tgz#42010cf5d59496f5a1412d2edc12d5101ff29b46"
-  integrity sha512-e3mc7eZzxyrdzv8te45CvUfmIxzv7kfcu4C6L+i0Zx4d9y5VswgAChOyxmXZsI4ujMRreWpKfQBG4gmBIy9Vqg==
+"@eosio-toppings/docker-eosio-nodeos@^0.3.2-alpha.0":
+  version "0.3.2-alpha.0"
+  resolved "https://registry.yarnpkg.com/@eosio-toppings/docker-eosio-nodeos/-/docker-eosio-nodeos-0.3.2-alpha.0.tgz#a3eb71f30b671b701514bfa489686fed37d7c6e0"
+  integrity sha512-PeelfFJrVdwL6pyjN7bBIosp/toiieY5YNMNYXpXL9S1Jjfbij8L7ldn49Wdbd5GDdd5xSszJVbsbZ6+hu//2A==
 
-"@eosio-toppings/docker-mongodb@^0.3.1":
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/@eosio-toppings/docker-mongodb/-/docker-mongodb-0.3.1.tgz#21999d724636c3b4cd9ed8ae868d7a7d21b88ba1"
-  integrity sha512-wB3MAH7fwB8vReLZgQohbl4+2oBrcjDdGVLY/6CodAC0DxgIH17sbIzghyMnmH9W3VpNAPpqo0dcgwqd7NxcbQ==
+"@eosio-toppings/docker-mongodb@^0.3.2-alpha.0":
+  version "0.3.2-alpha.0"
+  resolved "https://registry.yarnpkg.com/@eosio-toppings/docker-mongodb/-/docker-mongodb-0.3.2-alpha.0.tgz#680e26d18342dc3f2ea1d1240d28409a9456b43e"
+  integrity sha512-miGuKUSxwq9DDtLE9Q3R8wkuSci2m+xbk2kIJUIeOBX5qJ5SqthxrNLvf1Kr23//KNHYNGa/GfkLFNU8xE2pkg==
 
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
