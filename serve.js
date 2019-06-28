@@ -15,8 +15,10 @@ if (envConfig){
     process.env[k] = envConfig[k];
   }
 }
-let endpointConfigPath = process.argv.slice(2)[0];
-let endpointConfig = JSON.parse(fs.readFileSync(endpointConfigPath, 'utf-8')); 
+if(`${process.env.MODE}` !== `development`){
+  let endpointConfigPath = process.argv.slice(2)[0];
+  let endpointConfig = JSON.parse(fs.readFileSync(endpointConfigPath, 'utf-8')); 
+}
 
 const PORT = process.env.REACT_APP_APP_SERVE_PORT;
 

@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const url = require('url');
 const apiMongodbPlugin = require('@eosio-toppings/api-mongodb-plugin').default;
+const apiShipPlugin = require('@eosio-toppings/api-ship-plugin');
 const connectMongo = require('@eosio-toppings/api-mongodb-plugin').connectMongo;
 
 router.get("*", (req, res) => {
@@ -21,6 +22,19 @@ router.get("*", (req, res) => {
         res.status(500);
         res.json(err).end();
       });
+  }else if(endpoint == "ship_get_blocks"){
+    console.log("Inside ship get blocks0");
+    apiShipPlugin["get_blocks"]()
+      .then(doc=>{
+        res.setHeader('Cache-Control', 'no-cache');
+        res.json(doc);
+      })
+      .catch(err=>{
+        console.error(err);
+        res.status(500);
+        res.json(err).end();
+      });
+
   }else{
     apiMongodbPlugin[endpoint](query)
       .then(doc=>{

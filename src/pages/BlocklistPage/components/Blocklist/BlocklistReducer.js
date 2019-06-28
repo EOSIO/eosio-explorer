@@ -48,8 +48,10 @@ const pollingEpic = ( action$, state$ ) => action$.pipe(
           let params = { records_count: records, show_empty: !filter };
           let query = paramsToQuery(params);
 
-          return apiMongodb(`get_blocks${query}`).pipe(
-            map(res => fetchFulfilled(res.response)),
+          return apiMongodb(`ship_get_blocks${query}`).pipe(
+            map(res => {
+              console.log("Ship res ", res);
+              return fetchFulfilled(res.response)}),
             catchError(error => {
               errorLog("Blocks page/ get block list error",error);
               return of(fetchRejected(error.response, { status: error.status }))
