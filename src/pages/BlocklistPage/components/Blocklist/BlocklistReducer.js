@@ -10,6 +10,7 @@ import { switchMap, mapTo, map, takeUntil, catchError, delay, startWith, exhaust
 import { combineEpics, ofType } from 'redux-observable';
 
 import apiMongodb from 'services/api-mongodb';
+import apiPostgres from 'services/api-postgres';
 import { errorLog } from 'helpers/error-logger';
 import paramsToQuery from 'helpers/params-to-query';
 
@@ -48,7 +49,7 @@ const pollingEpic = ( action$, state$ ) => action$.pipe(
           let params = { records_count: records, show_empty: !filter };
           let query = paramsToQuery(params);
 
-          return apiMongodb(`ship_get_blocks${query}`).pipe(
+          return apiPostgres(`get_blocks${query}`).pipe(
             map(res => {
               console.log("Ship res ", res);
               return fetchFulfilled(res.response)}),

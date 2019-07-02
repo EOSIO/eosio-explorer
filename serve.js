@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const app = express();
 const mongodb = require('./routers/mongodb');
+const postgres = require('./routers/postgres');
 
 const openBrowser = require('./helpers/openBrowser');
 
@@ -15,9 +16,11 @@ if (envConfig){
     process.env[k] = envConfig[k];
   }
 }
-if(`${process.env.MODE}` !== `development`){
+
+let endpointConfig;
+if(`${process.env.MODE}` !== `development`){  
   let endpointConfigPath = process.argv.slice(2)[0];
-  let endpointConfig = JSON.parse(fs.readFileSync(endpointConfigPath, 'utf-8')); 
+  endpointConfig = JSON.parse(fs.readFileSync(endpointConfigPath, 'utf-8')); 
 }
 
 const PORT = process.env.REACT_APP_APP_SERVE_PORT;
@@ -38,6 +41,7 @@ if ( process.env.MODE !== 'development'){
 }
 
 app.use("/api/mongodb", mongodb);
+app.use("/api/postgres", postgres);
 
 // catch-all route to /page-not-found/index.html defined last to handle page not found error
 app.get('/*', (req, res) => {
