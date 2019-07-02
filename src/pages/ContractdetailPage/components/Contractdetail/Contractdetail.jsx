@@ -5,13 +5,12 @@ import { connect } from 'react-redux';
 import { fetchStart, paramsSet } from './ContractdetailReducer';
 import MultiIndex from '../MultiIndex';
 import pathNameConsumer from 'helpers/pathname-consumer';
-import isObjectEmpty from 'helpers/is-object-empty';
 import { push } from 'connected-react-router'
 
 import { Row, Col, CardBody } from 'reactstrap';
 import styled from 'styled-components';
 import { CodeViewer, LoadingSpinner } from 'components';
-import { CardStyled, CardHeaderStyled, ButtonPrimary, ErrorButton, ErrorDivStyled, InputStyled} from 'styled';
+import { CardStyled, CardHeaderStyled, ButtonPrimary, ErrorDivStyled, InputStyled} from 'styled';
 
 const FirstCardStyled = styled(CardStyled)`
   border-top: solid 2px #1173a4;
@@ -94,25 +93,21 @@ const Contractdetail = (props) => {
       {showDetailsSection && 
         <div>
           {error
-            ? 
-              <>
-                {!isObjectEmpty(error) && <p className="text-danger">{JSON.stringify(error)}</p>}
-                <ErrorButton onClick={props.fetchStart}>Connection error, click to reload</ErrorButton>
-              </>
-            : isFetching
+            ? <CustomErrorDiv>No Smart Contract found with Smart Contract Name {params.account_name}</CustomErrorDiv>
+            : isFetching 
               ? <LoadingSpinner />
-              : !(payload.length !== 0 && payload[0].hasOwnProperty("abi") === true)
-                ? <CustomErrorDiv>No Smart Contract found with Smart Contract Name {params.account_name}</CustomErrorDiv>
+              : (Object.keys(payload).length === 0 && payload.constructor === Object) 
+                ? <LoadingSpinner />
                 : <div>
                     <Row> 
                       <Col sm="12">
                         <CardStyled>
                           <CardHeaderStyled>Smart Contract Detail</CardHeaderStyled>
                           <CardBody>
-                            <DivHeaderStyled>Smart Contract Name:&nbsp;{params.account_name}</DivHeaderStyled>
+                            <DivHeaderStyled>Smart Contract Name:&nbsp;{payload.account_name}</DivHeaderStyled>
                             <CodeViewer 
                               language="json"
-                              value={JSON.stringify(payload[0].abi, null, 2)}
+                              value={JSON.stringify(payload.abi, null, 2)}
                               readOnly={true}
                               height={300}
                             />
@@ -121,9 +116,9 @@ const Contractdetail = (props) => {
                       </Col>
                     </Row>  
                     
-                    { payload[0].abi.tables.length === 0 
+                    { payload.abi.tables.length === 0 
                       ? <DivMessageStyled>No Multi-Index table present for this contract</DivMessageStyled>
-                      : <MultiIndex abiData={payload[0]} />}
+                      : <MultiIndex abiData={payload} />}
                   </div>      
           } 
         </div>    

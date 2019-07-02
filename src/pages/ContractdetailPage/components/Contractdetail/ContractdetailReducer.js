@@ -10,8 +10,7 @@ import { mergeMap, map, catchError } from 'rxjs/operators';
 
 import { combineEpics, ofType } from 'redux-observable';
 
-import apiMongodb from 'services/api-mongodb';
-import paramsToQuery from 'helpers/params-to-query';
+import apiRpc from 'services/api-rpc';
 import { errorLog } from 'helpers/error-logger';
 
 // IMPORTANT
@@ -38,8 +37,8 @@ const fetchEpic = ( action$, state$ ) => action$.pipe(
 
     let { value: { contractdetailPage: { contractdetail: { params } }}} = state$;
 
-    return apiMongodb(`get_abi${paramsToQuery(params)}`).pipe(
-      map(res => fetchFulfilled(res.response)),
+    return apiRpc("get_abi", params).pipe(
+      map(res => fetchFulfilled(res)),
       catchError(error => {
         errorLog("Smart Contract page/ get abi error",error);
         return of(fetchRejected(error.response, { status: error.status }))
@@ -56,7 +55,7 @@ export const combinedEpic = combineEpics(
 
 //Reducer
 const dataInitState = {
-  payload: [],
+  payload: {},
   error: undefined
 }
 
