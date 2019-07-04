@@ -10,6 +10,7 @@ import { mergeMap, mapTo, map, catchError } from 'rxjs/operators';
 import { combineEpics, ofType } from 'redux-observable';
 
 import apiMongodb from 'services/api-mongodb';
+import apiPostgres from 'services/api-postgres';
 import apiRpc from 'services/api-rpc';
 import { errorLog } from 'helpers/error-logger';
 import paramsToQuery from 'helpers/params-to-query';
@@ -78,8 +79,10 @@ const fetchSmartContractsEpic = action$ => action$.pipe(
   ofType(FETCH_SMART_CONTRACTS),
   mergeMap(action => {
     // Get the list of smart contract to populate the Smart Contract Name dropdown
-    return apiMongodb(`get_smart_contracts`).pipe(
-      map(smartContractsResponse => fetchFulfilledSmartContract(smartContractsResponse.response)),
+    return apiPostgres(`get_smart_contracts`).pipe(
+      map(smartContractsResponse => {
+        console.log("smart res", smartContractsResponse);
+        return fetchFulfilledSmartContract(smartContractsResponse.response)}),
       catchError(error => {
         errorLog("Push Action page/ get smart contracts error", error);
         return of(fetchRejectedSmartContract(error.response, { status: error.status }))

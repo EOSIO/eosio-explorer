@@ -49,9 +49,7 @@ const pollingEpic = ( action$, state$ ) => action$.pipe(
           let query = paramsToQuery(params);
 
           return apiPostgres(`get_blocks${query}`).pipe(
-            map(res => {
-              console.log("Ship res ", res);
-              return fetchFulfilled(res.response)}),
+            map(res => fetchFulfilled(res.response)),
             catchError(error => {
               errorLog("Blocks page/ get block list error",error);
               return of(fetchRejected(error.response, { status: error.status }))

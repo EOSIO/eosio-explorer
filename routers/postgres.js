@@ -7,8 +7,6 @@ router.get("*", (req, res) => {
   let { pathname, query } = url.parse(req.url, true);
   let endpoint = pathname.substring(1); // remove leading '/'
 
-  
-  console.log("Ship routers");
   apiPostgresPlugin[endpoint](query)
     .then(doc=>{
       res.setHeader('Cache-Control', 'no-cache');

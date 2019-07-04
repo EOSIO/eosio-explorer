@@ -10,7 +10,7 @@ import { mergeMap, map, catchError } from 'rxjs/operators';
 
 import { combineEpics, ofType } from 'redux-observable';
 
-import apiMongodb from 'services/api-mongodb';
+import apiPostgres from 'services/api-postgres';
 import paramsToQuery from 'helpers/params-to-query';
 import { errorLog } from 'helpers/error-logger';
 
@@ -38,8 +38,10 @@ const fetchEpic = ( action$, state$ ) => action$.pipe(
 
     let { value: { blockdetailPage: { blockdetail: { params } }}} = state$;
 
-    return apiMongodb(`get_block_details${paramsToQuery(params)}`).pipe(
-      map(res => fetchFulfilled(res.response)),
+    return apiPostgres(`get_block_details${paramsToQuery(params)}`).pipe(
+      map(res => {
+        console.log("Res ", res.response);
+        return fetchFulfilled(res.response)}),
       catchError(error => {
         errorLog("Block detail page/ get block details error",error);
         return of(fetchRejected(error.response, { status: error.status }))

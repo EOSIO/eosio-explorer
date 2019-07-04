@@ -72,13 +72,13 @@ const Blockdetail = (props) => {
                                 <FormGroup row>
                                   <Col sm={2}>Timestamp:</Col>
                                   <Col sm={10} className="hashText">
-                                    {payload[0].createdAt}
+                                    {payload[0].timestamp}
                                   </Col>
                                 </FormGroup>
                                 <FormGroup row>
                                   <Col sm={2}>Number of Transactions:</Col>
                                   <Col sm={10} className="hashText">
-                                    {payload[0].block.transactions.length}
+                                    {payload[0].transactions.length}
                                   </Col>
                                 </FormGroup>
                               </Form>
@@ -87,7 +87,7 @@ const Blockdetail = (props) => {
                         </Col>
                       </Row>
 
-                      {(payload[0].block.transactions).length > 0 &&
+                      {(payload[0].transactions).length > 0 &&
                         <Row>
                           <Col sm="12">
                             <CardStyled>
@@ -101,11 +101,11 @@ const Blockdetail = (props) => {
                                   </tr>
                                 </thead>
                                 <tbody className="hashText">
-                                  {(payload[0].block.transactions).map((eachTransaction,index)=>
-                                    <tr key={(typeof(eachTransaction.trx) !== "string") ? eachTransaction.trx.id : eachTransaction.trx} 
-                                        onClick={evt=> (typeof(eachTransaction.trx) !== "string") ? props.push(`/transaction/${eachTransaction.trx.id}`): props.push(`/transaction/${eachTransaction.trx}`)}>
+                                  {(payload[0].transactions).map((eachTransaction,index)=>
+                                    <tr key={eachTransaction.id} 
+                                        onClick={evt=>  props.push(`/transaction/${eachTransaction.id}`)}>
                                       <td>{index+1}</td>
-                                      <td>{(typeof(eachTransaction.trx) !== "string") ? eachTransaction.trx.id : eachTransaction.trx}</td>                                      
+                                      <td>{eachTransaction.id}</td>                                      
                                     </tr>)}
                                 </tbody>
                                 </CustomTable>                               
