@@ -85,24 +85,26 @@ printf "Welcome to EOSIO Explorer\n"
 printf "=========================\n"
 printf "\n"${NC}
 
-echo "Please select one of the following options by typing 1 or 2: "
-echo "1. Start the tool by connecting to default Nodeos and MongoDB endpoints."
-echo "2. Start the tool by connecting to existing Nodeos and MongoDB endpoints."
+if ( ! $ISDEV ); then
+  echo "Please select one of the following options by typing 1 or 2: "
+  echo "1. Start the tool by connecting to default Nodeos and MongoDB endpoints."
+  echo "2. Start the tool by connecting to existing Nodeos and MongoDB endpoints."
 
-read option
+  read option
 
-if [ $option == 1 ]
-then 
-  echo "Starting tool with default endpoints..."  
-elif [ $option == 2 ]
-then 
-  echo "Please enter Nodeos endpoint:"
-  read nodeos_endpoint
-  echo "Please enter MongoDB endpoint:"
-  read db_endpoint  
-else
-  echo "Invalid option, starting tool with default endpoints... "
-fi  
+  if [ $option == 1 ]
+  then 
+    echo "Starting tool with default endpoints..."  
+  elif [ $option == 2 ]
+  then 
+    echo "Please enter Nodeos endpoint:"
+    read nodeos_endpoint
+    echo "Please enter MongoDB endpoint:"
+    read db_endpoint  
+  else
+    echo "Invalid option, starting tool with default endpoints... "
+  fi 
+fi 
 
 echo "==============================="
 echo "INITIALISING CONFIG IN PACKAGES"

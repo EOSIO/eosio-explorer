@@ -134,21 +134,23 @@ if (!($ISDEV) && [ ! -e $APP"/build" ]); then
   BUILDAPPLICATION=true
 fi
 
-# If --set-endpoints is passed then read the endpoints and store the value
-if ( $NODE && $DB ); then
-  echo "Storing endpoints to config file..."
-  (cd $CONFIG_FILE && echo '{ "NodesEndpoint" : "'$nodeos_endpoint'", "DBEndpoint" : "'$db_endpoint'" }'>eosio_explorer_config.json && printf "${GREEN}done${NC}") 
-elif $ENDPOINTS; then    
-  echo " "
-  echo "Please enter Nodeos endpoint:"
-  read nodeos_endpoint
-  echo " "
-  echo "Please enter MongoDB endpoint:"
-  read db_endpoint  
-  echo " "  
-  echo "Storing endpoints to config file..."
-  (cd $CONFIG_FILE && echo '{ "NodesEndpoint" : "'$nodeos_endpoint'", "DBEndpoint" : "'$db_endpoint'" }'>eosio_explorer_config.json && printf "${GREEN}done${NC}")
-fi
+# If --set-endpoints is passed in production mode only, then read the endpoints and store the value
+if ( ! $ISDEV ); then
+  if ( $NODE && $DB ); then
+    echo "Storing endpoints to config file..."
+    (cd $CONFIG_FILE && echo '{ "NodesEndpoint" : "'$nodeos_endpoint'", "DBEndpoint" : "'$db_endpoint'" }'>eosio_explorer_config.json && printf "${GREEN}done${NC}") 
+  elif $ENDPOINTS; then    
+    echo " "
+    echo "Please enter Nodeos endpoint:"
+    read nodeos_endpoint
+    echo " "
+    echo "Please enter MongoDB endpoint:"
+    read db_endpoint  
+    echo " "  
+    echo "Storing endpoints to config file..."
+    (cd $CONFIG_FILE && echo '{ "NodesEndpoint" : "'$nodeos_endpoint'", "DBEndpoint" : "'$db_endpoint'" }'>eosio_explorer_config.json && printf "${GREEN}done${NC}")
+  fi
+fi  
 
 FILE=$CONFIG_FILE/eosio_explorer_config.json
 if [ -f "$FILE" ]; then
