@@ -1,5 +1,12 @@
 # Change Log
 
+## [v0.3.4](https://github.com/EOSIO/eosio-explorer/tree/v0.3.4) (2019-07-10)
+[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.3.3...v0.3.4)
+
+**Implemented enhancements:**
+
+- update eos to 1.8.1 [\#125](https://github.com/EOSIO/eosio-explorer/pull/125) ([matharuajay](https://github.com/matharuajay))
+
 ## [v0.3.3](https://github.com/EOSIO/eosio-explorer/tree/v0.3.3) (2019-07-05)
 [Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.3.2...v0.3.3)
 
