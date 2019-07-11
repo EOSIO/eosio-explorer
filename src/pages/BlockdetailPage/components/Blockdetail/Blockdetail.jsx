@@ -39,7 +39,7 @@ const Blockdetail = (props) => {
                 </>
               : isFetching 
                 ? <LoadingSpinner />
-                : payload.length === 0 
+                : (Object.keys(payload).length === 0 && payload.constructor === Object) 
                   ? <CardStyled>
                       <CardHeaderStyled></CardHeaderStyled>
                       <CardBody>
@@ -60,25 +60,25 @@ const Blockdetail = (props) => {
                                 <FormGroup row>
                                   <Col sm={2}>Block Number:</Col>
                                   <Col sm={10} className="hashText">
-                                    {payload[0].block_num}
+                                    {payload.block_num}
                                   </Col>
                                 </FormGroup>
                                 <FormGroup row>
                                   <Col sm={2}>Block ID:</Col>
                                   <Col sm={10} className="hashText">
-                                    {payload[0].block_id}
+                                    {(payload.id).toUpperCase()}
                                   </Col>
                                 </FormGroup>
                                 <FormGroup row>
                                   <Col sm={2}>Timestamp:</Col>
                                   <Col sm={10} className="hashText">
-                                    {payload[0].timestamp}
+                                    {payload.timestamp}
                                   </Col>
                                 </FormGroup>
                                 <FormGroup row>
                                   <Col sm={2}>Number of Transactions:</Col>
                                   <Col sm={10} className="hashText">
-                                    {payload[0].transactions.length}
+                                    {payload.transactions.length}
                                   </Col>
                                 </FormGroup>
                               </Form>
@@ -87,7 +87,7 @@ const Blockdetail = (props) => {
                         </Col>
                       </Row>
 
-                      {(payload[0].transactions).length > 0 &&
+                      {(payload.transactions).length > 0 &&
                         <Row>
                           <Col sm="12">
                             <CardStyled>
@@ -101,11 +101,11 @@ const Blockdetail = (props) => {
                                   </tr>
                                 </thead>
                                 <tbody className="hashText">
-                                  {(payload[0].transactions).map((eachTransaction,index)=>
-                                    <tr key={eachTransaction.id} 
-                                        onClick={evt=>  props.push(`/transaction/${eachTransaction.id}`)}>
+                                  {(payload.transactions).map((eachTransaction,index)=>
+                                    <tr key={index} 
+                                        onClick={evt=> props.push(`/transaction/${(eachTransaction.trx.id).toUpperCase()}`)}>
                                       <td>{index+1}</td>
-                                      <td>{eachTransaction.id}</td>                                      
+                                      <td>{(eachTransaction.trx.id).toUpperCase()}</td>                                      
                                     </tr>)}
                                 </tbody>
                                 </CustomTable>                               

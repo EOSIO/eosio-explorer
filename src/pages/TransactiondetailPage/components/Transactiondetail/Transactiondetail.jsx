@@ -75,7 +75,7 @@ const Transactiondetail = (props) => {
                                 <FormGroup row>
                                   <Col sm={2}>Timestamp:</Col>
                                   <Col sm={10} className="hashText">
-                                    {payload[0].createdAt}
+                                    {payload[0].partial_expiration}
                                   </Col>
                                 </FormGroup>
                                 <FormGroup row>
@@ -106,10 +106,10 @@ const Transactiondetail = (props) => {
                                   </thead>
                                   <tbody className="hashText">
                                     {(payload[0].action_traces).map((eachAction,index)=>
-                                      <tr key={index} onClick={evt=> props.push(`/action/${eachAction.block_num}/${eachAction.receipt.global_sequence}`)}>
+                                      <tr key={index} onClick={evt=> props.push(`/action/${eachAction.block_num}/${eachAction.action_ordinal}`)}>
                                         <td>{index+1}</td>
-                                        <td>{eachAction.act.name}</td>  
-                                        <td>{eachAction.act.account}</td>                                    
+                                        <td>{eachAction.act_name}</td>  
+                                        <td>{eachAction.act_account}</td>                                    
                                       </tr>)}
                                   </tbody>
                                   </CustomTable> 

@@ -18,7 +18,7 @@ const Actiondetail = (props) => {
               <Label>Smart Contract Name:</Label>
             </Col>
             <Col xs="10">
-              <p className="form-control-static hashText">{action && action.act.account}</p>
+              <p className="form-control-static hashText">{action && action.act_account}</p>
             </Col>
           </FormGroup>
           <FormGroup row className="mb-0">
@@ -26,7 +26,7 @@ const Actiondetail = (props) => {
               <Label>Action Type:</Label>
             </Col>
             <Col xs="10">
-              <p className="form-control-static hashText">{action && action.act.name}</p>
+              <p className="form-control-static hashText">{action && action.act_name}</p>
             </Col>
           </FormGroup>
           <FormGroup row className="mb-0">
@@ -34,7 +34,7 @@ const Actiondetail = (props) => {
               <Label>Timestamp:</Label>
             </Col>
             <Col xs="10">
-              <p className="form-control-static hashText">{action && action.block_time}</p>
+              <p className="form-control-static hashText">{action && action.block_num}</p>
             </Col>
           </FormGroup>
           <FormGroup row className="mb-0">
@@ -43,7 +43,7 @@ const Actiondetail = (props) => {
             </Col>
             <Col xs="10">
               <p className="form-control-static hashText">
-                {action && <Link to={`/transaction/${action.trx_id}`}>{action.trx_id}</Link> }
+                {action && <Link to={`/transaction/${action.transaction_id}`}>{action.transaction_id}</Link> }
               </p>
             </Col>
           </FormGroup>
@@ -53,11 +53,7 @@ const Actiondetail = (props) => {
             </Col>
             <Col xs="10">
               <p className="form-control-static hashText">
-                { action && (action.act && (action.act.authorization && 
-                  action.act.authorization.map((auth, i) => (
-                    auth.actor + (i > 0 && i < (action.act.authorization.length - 1) ? ", " : "")
-                  )
-                ))) }
+                { action && action.actor }
               </p>
             </Col>
           </FormGroup>

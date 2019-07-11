@@ -43,8 +43,9 @@ const fetchEpic = ( action$, state$ ) => action$.pipe(
   mergeMap(action =>{
     let { value: { accountdetailPage: { accountdetail: { params } }}} = state$;
 
-    return apiRpc("get_account_details", params).pipe(
-      map(res =>  fetchFulfilled(res)),
+    return apiRpc("get_block", {'block_num_or_id': params}).pipe(
+      map(res => { console.log("Get-block res", res);
+        return fetchFulfilled(res)}),
       catchError(error => {
         errorLog("Accounts page/ get account detail error ", error);
         return of(fetchRejected(error.response, { status: error.status }))

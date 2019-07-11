@@ -79,8 +79,8 @@ const Actionhistory = (props) => {
                 <DropdownToggle caret>{filter.smartContractName || "Filter by Smart Contract"}</DropdownToggle>
                 <DropdownMenu modifiers={dropdownMaxHeight}>
                   {smartContractsList &&
-                    (smartContractsList.sort(alphabeticalSort)).map((smartContract) =>
-                      <DropdownItem key={smartContract._id} onClick={(e) => { (smartContract.name !== filter.smartContractName) && props.filterUpdate({ smartContractName: smartContract.name }); }}>
+                    (smartContractsList.sort(alphabeticalSort)).map((smartContract, index) =>
+                      <DropdownItem key={index} onClick={(e) => { (smartContract.name !== filter.smartContractName) && props.filterUpdate({ smartContractName: smartContract.name }); }}>
                         {smartContract.name}
                       </DropdownItem>)}
                 </DropdownMenu>
@@ -113,10 +113,10 @@ const Actionhistory = (props) => {
                       <tr><td colSpan="6" className="text-center">No actions found{filter.smartContractName && ` with Smart Contract name ${filter.smartContractName}`}</td></tr>
                       : actionsList.map((action, index) =>
                         <tr key={index}>
-                          <TdStyled><Link to={`/contract/${action.act.account}`}>{action.act.account}</Link></TdStyled>
-                          <TdStyled>{action.act.name}</TdStyled>
-                          <TdStyled>{action.block_time}</TdStyled>
-                          <TdStyled>{(action.act.authorization.length > 0) ? action.act.authorization[0].actor + "@" + action.act.authorization[0].permission : ""}</TdStyled>
+                          <TdStyled><Link to={`/contract/${action.act_account}`}>{action.act_account}</Link></TdStyled>
+                          <TdStyled>{action.act_name}</TdStyled>
+                          <TdStyled>{action.timestamp}</TdStyled>
+                          <TdStyled>{action.actor + "@" + action.permission}</TdStyled>
                           <TdStyled className="text-center">
                             {action.except ?
                               <>

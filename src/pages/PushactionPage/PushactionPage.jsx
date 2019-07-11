@@ -4,7 +4,7 @@ import { CardBody, Row, Col, Form, FormGroup, FormFeedback, Label, Input,
   UncontrolledAlert, DropdownToggle, DropdownMenu, DropdownItem, Spinner
 } from 'reactstrap';
 
-import { updateActionToPush, prefillActionToPush, actionPush, fetchStart, fetchSmartContracts } from './PushactionPageReducer';
+import { updateActionToPush, prefillActionToPush, actionPush, fetchStart, fetchSmartContracts,paramsSet,fetchAbi } from './PushactionPageReducer';
 import { CodeViewer, LoadingSpinner } from 'components';
 import useForm from 'helpers/useForm';
 import validate from './components/PushActionValidatorEngine/PushActionValidatorEngine';
@@ -107,6 +107,17 @@ const PushactionPage = (props) => {
     
   }, [props.pushactionPage.action])
 
+   //Change action list when smart contract is changed 
+  useEffect(() => {
+    if(props.pushactionPage.abi.abiData !== undefined){
+      if(props.pushactionPage.abi.abiData.account_name === selectedSmartContract ){
+        setActionList(props.pushactionPage.abi.abiData.abi.actions);
+      }else{
+        setActionList([]);
+      } 
+    }
+  }, [props.pushactionPage.abi.abiData])
+
   // This useEffect fires on component load only and performs some setup tasks
   useEffect(() => {
     props.fetchStart();
@@ -124,8 +135,9 @@ const PushactionPage = (props) => {
     }
   }, [])
 
-  let { permission: { data }, pushactionPage: { action, isPushingAction, smartContracts: { smartContractsList = [] }, isFetchingSmartContract } } = props;
+  let { permission: { data }, pushactionPage: { action, isPushingAction, smartContracts: { smartContractsList = [] }, isFetchingSmartContract, abi: {abiData = {}} } } = props;
   let { list, defaultId } = data;  
+  
 
   // Get the default permission. Overwrite it with the action object's permission, if the action object has a permission.
   let selectedPermission = list.find(permission => defaultId === permission._id) || {};
@@ -139,6 +151,13 @@ const PushactionPage = (props) => {
   const [isOpenDropDownActionType, toggleDropDownActionType] = useState(false);
   const [isOpenDropDownPermission, toggleDropDownPermission] = useState(false);
   const [actionList, setActionList] = useState([]);
+  const [selectedSmartContract, setSelectedSmartContract] = useState("");
+
+  const getABIandSetActionList = (smartContract) =>{   
+    setSelectedSmartContract(smartContract); 
+    props.paramsSet({account_name:  smartContract });
+    props.fetchAbi();
+  }
 
   return (
     <StandardTemplate>
@@ -191,11 +210,11 @@ const PushactionPage = (props) => {
                         <DropdownToggle caret className={errors.smartContractName && "invalid"}>{action.act.account || "Select Smart Contract"}</DropdownToggle>
                         <DropdownMenu modifiers={dropdownMaxHeight}>
                           {smartContractsList &&
-                            (smartContractsList).map((smartContract)=>
+                            (smartContractsList).map((smartContract, index)=>
                               <DropdownItem 
-                                key={smartContract._id} 
+                                key={index} 
                                 onClick={(e) => {                                   
-                                  setActionList(smartContract.abi.actions); 
+                                  getABIandSetActionList(smartContract.name); 
                                   updateAction("smartContractName", action, smartContract.name, props.updateActionToPush); 
                                   updateAction("actionType", action, "", props.updateActionToPush); 
                                   handleChange(e);
@@ -341,8 +360,7 @@ const PushactionPage = (props) => {
                   // When "Prefill" is clicked, set the actionId variable in the reducer to an object containing the block number and global sequence
                   // of that action. Then rebuild the Action Type list with actions available to the smart contract of that action.
                   props.prefillActionToPush(action);
-                  let actionListToSet = smartContractsList.find(smartContract => smartContract.name === action.act.account);
-                  actionListToSet ? setActionList(smartContractsList.find(smartContract => smartContract.name === action.act.account).abi.actions) : setActionList([]);
+                  getABIandSetActionList(action.act_account);
                   resetValidation();
                   window.scrollTo(0, 0);
                   prefillingAction.current = true;
@@ -367,7 +385,9 @@ export default connect(
     updateActionToPush,
     prefillActionToPush,
     actionPush,
-    fetchSmartContracts
+    fetchSmartContracts,
+    paramsSet,
+    fetchAbi
   }
 
 )(PushactionPage);
