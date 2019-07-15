@@ -1,5 +1,12 @@
 # Change Log
 
+## [v0.3.5](https://github.com/EOSIO/eosio-explorer/tree/v0.3.5) (2019-07-15)
+[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.3.4...v0.3.5)
+
+**Implemented enhancements:**
+
+- Bump up eosio.cdt Dockerfile version reference [\#127](https://github.com/EOSIO/eosio-explorer/pull/127) ([jcardenas9x](https://github.com/jcardenas9x))
+
 ## [v0.3.4](https://github.com/EOSIO/eosio-explorer/tree/v0.3.4) (2019-07-10)
 [Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.3.3...v0.3.4)
 
@@ -84,28 +91,28 @@
 - Update README.md .. Fixed path: ~/.bash\_profile [\#87](https://github.com/EOSIO/eosio-explorer/pull/87) ([jcalfee](https://github.com/jcalfee))
 
 ## [v0.3.0](https://github.com/EOSIO/eosio-explorer/tree/v0.3.0) (2019-05-21)
-[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.3.0-beta.0...v0.3.0)
+[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/0.3.0-beta.0...v0.3.0)
 
 **Merged pull requests:**
 
 - Added '0' to list of invalid numbers for account creation [\#86](https://github.com/EOSIO/eosio-explorer/pull/86) ([jcardenas9x](https://github.com/jcardenas9x))
 - Release v0.3.0 and release to public. [\#77](https://github.com/EOSIO/eosio-explorer/pull/77) ([terrylks](https://github.com/terrylks))
 
-## [v0.3.0-beta.0](https://github.com/EOSIO/eosio-explorer/tree/v0.3.0-beta.0) (2019-05-21)
-[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/0.3.0-beta.0...v0.3.0-beta.0)
-
 ## [0.3.0-beta.0](https://github.com/EOSIO/eosio-explorer/tree/0.3.0-beta.0) (2019-05-21)
-[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/0.3.0-beta...0.3.0-beta.0)
+[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.3.0-beta.0...0.3.0-beta.0)
+
+## [v0.3.0-beta.0](https://github.com/EOSIO/eosio-explorer/tree/v0.3.0-beta.0) (2019-05-21)
+[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.3.0-beta...v0.3.0-beta.0)
 
 **Merged pull requests:**
 
 - Internal: SKIP\_PREFLIGHT\_CHECK using create react app [\#85](https://github.com/EOSIO/eosio-explorer/pull/85) ([terrylks](https://github.com/terrylks))
 
-## [0.3.0-beta](https://github.com/EOSIO/eosio-explorer/tree/0.3.0-beta) (2019-05-21)
-[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.3.0-beta...0.3.0-beta)
-
 ## [v0.3.0-beta](https://github.com/EOSIO/eosio-explorer/tree/v0.3.0-beta) (2019-05-21)
-[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.3.0-alpha.2...v0.3.0-beta)
+[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/0.3.0-beta...v0.3.0-beta)
+
+## [0.3.0-beta](https://github.com/EOSIO/eosio-explorer/tree/0.3.0-beta) (2019-05-21)
+[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.3.0-alpha.2...0.3.0-beta)
 
 **Implemented enhancements:**
 
