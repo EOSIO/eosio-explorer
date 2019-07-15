@@ -950,10 +950,10 @@
   resolved "https://registry.yarnpkg.com/@emotion/unitless/-/unitless-0.7.3.tgz#6310a047f12d21a1036fb031317219892440416f"
   integrity sha512-4zAPlpDEh2VwXswwr/t8xGNDGg8RQiPxtxZ3qQEXyQsBV39ptTdESCjuBvGze1nLMVrxmTIKmnO/nAV8Tqjjzg==
 
-"@eosio-toppings/api-eosio-compiler@0.3.2-alpha.0":
-  version "0.3.2-alpha.0"
-  resolved "https://registry.yarnpkg.com/@eosio-toppings/api-eosio-compiler/-/api-eosio-compiler-0.3.2-alpha.0.tgz#d85ccdc786be6211ccf8c4273278c97cffccb64f"
-  integrity sha512-ajAPkT90wFnhtHy+w16yUTVwBRz5ul69Z/5a1pUHkrSuSx1nPHCCPZNCUToRN0dVpxnIka6xUIpzST92/Kb2iQ==
+"@eosio-toppings/api-eosio-compiler@0.3.5":
+  version "0.3.5"
+  resolved "https://registry.yarnpkg.com/@eosio-toppings/api-eosio-compiler/-/api-eosio-compiler-0.3.5.tgz#e2734ff1a87b5e81d2e4c2ca39a553c87da7341c"
+  integrity sha512-E606hu4FBOdMc0tN3rXbvw1A1LX0wpPG86GjQmGdSzSvglVMUXf5ziW+i83aZxh3d424GV4i0c+vfWQGGPQ8LA==
   dependencies:
     body-parser "^1.19.0"
     cors "^2.8.5"
@@ -982,10 +982,10 @@
     eosjs "20.0.0-beta3"
     text-encoding "^0.7.0"
 
-"@eosio-toppings/docker-eosio-nodeos@0.3.4":
-  version "0.3.4"
-  resolved "https://registry.yarnpkg.com/@eosio-toppings/docker-eosio-nodeos/-/docker-eosio-nodeos-0.3.4.tgz#d506428be130d3fbc59126c5ee25667b2a99d442"
-  integrity sha512-v/Ph6Fd2CpQVT30APL7M4F7K8aBV+oPeiR/qhvh3uaJRJ4pcbs8QGoiy4HqOLzYxpkns9GZpW4aaF37h/IG1Hg==
+"@eosio-toppings/docker-eosio-nodeos@0.3.5":
+  version "0.3.5"
+  resolved "https://registry.yarnpkg.com/@eosio-toppings/docker-eosio-nodeos/-/docker-eosio-nodeos-0.3.5.tgz#525a789320897d626731a502a6642ccc5f2625cd"
+  integrity sha512-Zf3fqLydBuK+Z1PX5GQMVpzy6n7l516F7R2JGfc+KKHvEQW8Dj9uJ6zyFVExqlZDKZt5MRAekoW7BBxjLZHPlw==
 
 "@eosio-toppings/docker-mongodb@0.3.2-alpha.0":
   version "0.3.2-alpha.0"

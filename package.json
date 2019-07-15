@@ -1,6 +1,6 @@
 {
   "name": "eosio-explorer",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "license": "MIT",
   "author": "block.one",
   "repository": "https://github.com/EOSIO/eosio-explorer",
@@ -13,10 +13,10 @@
   ],
   "description": "A full web application to communicate with EOSIO blockchain in a local development environment",
   "dependencies": {
-    "@eosio-toppings/api-eosio-compiler": "0.3.2-alpha.0",
+    "@eosio-toppings/api-eosio-compiler": "0.3.5",
     "@eosio-toppings/api-mongodb-plugin": "0.3.2-alpha.0",
     "@eosio-toppings/api-rpc": "0.3.2-alpha.0",
-    "@eosio-toppings/docker-eosio-nodeos": "0.3.4",
+    "@eosio-toppings/docker-eosio-nodeos": "0.3.5",
     "@eosio-toppings/docker-mongodb": "0.3.2-alpha.0",
     "chalk": "2.4.2",
     "cross-spawn": "6.0.5",
