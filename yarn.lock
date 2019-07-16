@@ -950,10 +950,10 @@
   resolved "https://registry.yarnpkg.com/@emotion/unitless/-/unitless-0.7.3.tgz#6310a047f12d21a1036fb031317219892440416f"
   integrity sha512-4zAPlpDEh2VwXswwr/t8xGNDGg8RQiPxtxZ3qQEXyQsBV39ptTdESCjuBvGze1nLMVrxmTIKmnO/nAV8Tqjjzg==
 
-"@eosio-toppings/api-eosio-compiler@0.3.6":
-  version "0.3.6"
-  resolved "https://registry.yarnpkg.com/@eosio-toppings/api-eosio-compiler/-/api-eosio-compiler-0.3.6.tgz#345b3e99e6af6b670c8959d90fa19ee2bd5de0c1"
-  integrity sha512-w5x8mqE3tK9GDb2s/hpoao7DfvpPeWbSINjKfAzNq1Aq+ycnoEh1wenC9S42xlsVRzbar8O0k4zCd+b9WFH4Lg==
+"@eosio-toppings/api-eosio-compiler@0.3.8":
+  version "0.3.8"
+  resolved "https://registry.yarnpkg.com/@eosio-toppings/api-eosio-compiler/-/api-eosio-compiler-0.3.8.tgz#250dd761f2be36dc545118cbed4f817114ce6e34"
+  integrity sha512-0pHvhbAbkl1He3Hm6gqG7Qw5EmIeCo6ZUKz+tgpygjnSdygbimBbAxXhxct4OehteQIf8M9gFh01JGqUKy5W9g==
   dependencies:
     body-parser "^1.19.0"
     cors "^2.8.5"
