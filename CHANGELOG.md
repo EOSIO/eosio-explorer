@@ -1,7 +1,7 @@
 # Change Log
 
-## [v0.3.7](https://github.com/EOSIO/eosio-explorer/tree/v0.3.7) (2019-07-16)
-[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.3.6...v0.3.7)
+## [v0.3.8](https://github.com/EOSIO/eosio-explorer/tree/v0.3.8) (2019-07-16)
+[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.3.6...v0.3.8)
 
 ## [v0.3.6](https://github.com/EOSIO/eosio-explorer/tree/v0.3.6) (2019-07-16)
 [Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.3.5...v0.3.6)
@@ -32,7 +32,6 @@
 
 **Implemented enhancements:**
 
-- Bump up eosio.cdt Dockerfile version reference [\#127](https://github.com/EOSIO/eosio-explorer/pull/127) ([jcardenas9x](https://github.com/jcardenas9x))
 - Fogbugz 3470: Start up scripts changes [\#122](https://github.com/EOSIO/eosio-explorer/pull/122) ([varshajnagaraja](https://github.com/varshajnagaraja))
 - Add link to smart contract name in Action history of Push action page [\#116](https://github.com/EOSIO/eosio-explorer/pull/116) ([varshajnagaraja](https://github.com/varshajnagaraja))
 - Refactor manage accounts page  [\#115](https://github.com/EOSIO/eosio-explorer/pull/115) ([varshajnagaraja](https://github.com/varshajnagaraja))
