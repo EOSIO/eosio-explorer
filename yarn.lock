@@ -982,10 +982,10 @@
     eosjs "20.0.0-beta3"
     text-encoding "^0.7.0"
 
-"@eosio-toppings/docker-eosio-nodeos@0.3.5":
-  version "0.3.5"
-  resolved "https://registry.yarnpkg.com/@eosio-toppings/docker-eosio-nodeos/-/docker-eosio-nodeos-0.3.5.tgz#525a789320897d626731a502a6642ccc5f2625cd"
-  integrity sha512-Zf3fqLydBuK+Z1PX5GQMVpzy6n7l516F7R2JGfc+KKHvEQW8Dj9uJ6zyFVExqlZDKZt5MRAekoW7BBxjLZHPlw==
+"@eosio-toppings/docker-eosio-nodeos@0.3.6":
+  version "0.3.6"
+  resolved "https://registry.yarnpkg.com/@eosio-toppings/docker-eosio-nodeos/-/docker-eosio-nodeos-0.3.6.tgz#bd8430e6207159b3b2f895bda9ff60f5224ac47a"
+  integrity sha512-Jf376UmeTVF2g9hbzNnlas+tdd4hkv+b/iFKYaOUMmgT7PqEESpJ+XRzdAsd0vr2nO/Z3HgkWL4TsqxF0kqKQA==
 
 "@eosio-toppings/docker-mongodb@0.3.2-alpha.0":
   version "0.3.2-alpha.0"
