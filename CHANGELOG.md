@@ -1,5 +1,10 @@
 # Change Log
 
+## [v0.3.6](https://github.com/EOSIO/eosio-explorer/tree/v0.3.6) (2019-07-16)
+[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.3.5...v0.3.6)
+
+- Reverted from dynamic chain IDs to static chain ID 
+
 ## [v0.3.5](https://github.com/EOSIO/eosio-explorer/tree/v0.3.5) (2019-07-15)
 [Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.3.4...v0.3.5)
 
@@ -91,28 +96,28 @@
 - Update README.md .. Fixed path: ~/.bash\_profile [\#87](https://github.com/EOSIO/eosio-explorer/pull/87) ([jcalfee](https://github.com/jcalfee))
 
 ## [v0.3.0](https://github.com/EOSIO/eosio-explorer/tree/v0.3.0) (2019-05-21)
-[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/0.3.0-beta.0...v0.3.0)
+[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.3.0-beta.0...v0.3.0)
 
 **Merged pull requests:**
 
 - Added '0' to list of invalid numbers for account creation [\#86](https://github.com/EOSIO/eosio-explorer/pull/86) ([jcardenas9x](https://github.com/jcardenas9x))
 - Release v0.3.0 and release to public. [\#77](https://github.com/EOSIO/eosio-explorer/pull/77) ([terrylks](https://github.com/terrylks))
 
-## [0.3.0-beta.0](https://github.com/EOSIO/eosio-explorer/tree/0.3.0-beta.0) (2019-05-21)
-[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.3.0-beta.0...0.3.0-beta.0)
-
 ## [v0.3.0-beta.0](https://github.com/EOSIO/eosio-explorer/tree/v0.3.0-beta.0) (2019-05-21)
-[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.3.0-beta...v0.3.0-beta.0)
+[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/0.3.0-beta.0...v0.3.0-beta.0)
+
+## [0.3.0-beta.0](https://github.com/EOSIO/eosio-explorer/tree/0.3.0-beta.0) (2019-05-21)
+[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/0.3.0-beta...0.3.0-beta.0)
 
 **Merged pull requests:**
 
 - Internal: SKIP\_PREFLIGHT\_CHECK using create react app [\#85](https://github.com/EOSIO/eosio-explorer/pull/85) ([terrylks](https://github.com/terrylks))
 
-## [v0.3.0-beta](https://github.com/EOSIO/eosio-explorer/tree/v0.3.0-beta) (2019-05-21)
-[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/0.3.0-beta...v0.3.0-beta)
-
 ## [0.3.0-beta](https://github.com/EOSIO/eosio-explorer/tree/0.3.0-beta) (2019-05-21)
-[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.3.0-alpha.2...0.3.0-beta)
+[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.3.0-beta...0.3.0-beta)
+
+## [v0.3.0-beta](https://github.com/EOSIO/eosio-explorer/tree/v0.3.0-beta) (2019-05-21)
+[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.3.0-alpha.2...v0.3.0-beta)
 
 **Implemented enhancements:**
 
@@ -166,6 +171,7 @@
 **Implemented enhancements:**
 
 - Pm2 enhancement [\#68](https://github.com/EOSIO/eosio-explorer/pull/68) ([matharuajay](https://github.com/matharuajay))
+- Show message to check log in case of error [\#67](https://github.com/EOSIO/eosio-explorer/pull/67) ([matharuajay](https://github.com/matharuajay))
 
 **Fixed bugs:**
 
@@ -176,7 +182,6 @@
 
 **Implemented enhancements:**
 
-- Show message to check log in case of error [\#67](https://github.com/EOSIO/eosio-explorer/pull/67) ([matharuajay](https://github.com/matharuajay))
 - Fogbugz 3408: Replace 'loading...' with spinner [\#58](https://github.com/EOSIO/eosio-explorer/pull/58) ([varshajnagaraja](https://github.com/varshajnagaraja))
 - Allow users to update the public keys for their existing accounts [\#57](https://github.com/EOSIO/eosio-explorer/pull/57) ([jcardenas9x](https://github.com/jcardenas9x))
 - Fogbugz 3391: Remove the whole Footer [\#54](https://github.com/EOSIO/eosio-explorer/pull/54) ([varshajnagaraja](https://github.com/varshajnagaraja))
