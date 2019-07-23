@@ -64,7 +64,7 @@ const Nodeswitch = (props) => {
                 </FormFeedback>
               }
           </Col>
-          <Col xs="2" style={{marginTop: "10px"}}>
+          {/* <Col xs="2" style={{marginTop: "10px"}}>
             <CenteredLabel htmlFor="mongodb">Connected MongoDB:</CenteredLabel>
           </Col>
           <Col xs="10" style={{marginTop: "10px"}}>
@@ -83,7 +83,7 @@ const Nodeswitch = (props) => {
                 { errors.mongodb || mongodb_endpoint_error}
               </FormFeedback>
             }
-          </Col>
+          </Col> */}
           <Col xs="12" className="text-right mt-3">
             <ButtonGroupSeperated className="float-right">
               <ButtonPrimary
