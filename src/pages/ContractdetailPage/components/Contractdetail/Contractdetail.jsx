@@ -96,9 +96,8 @@ const Contractdetail = (props) => {
             ? <CustomErrorDiv>No Smart Contract found with Smart Contract Name {params.account_name}</CustomErrorDiv>
             : isFetching 
               ? <LoadingSpinner />
-              : (Object.keys(payload).length === 0 && payload.constructor === Object) 
-                ? <LoadingSpinner />
-                : <div>
+              : (Object.keys(payload).length !== 0 && payload.hasOwnProperty("abi") === true) 
+                ? <div>
                     <Row> 
                       <Col sm="12">
                         <CardStyled>
@@ -119,7 +118,8 @@ const Contractdetail = (props) => {
                     { payload.abi.tables.length === 0 
                       ? <DivMessageStyled>No Multi-Index table present for this contract</DivMessageStyled>
                       : <MultiIndex abiData={payload} />}
-                  </div>      
+                  </div> 
+            : <CustomErrorDiv>No Smart Contract found with Smart Contract Name {params.account_name}</CustomErrorDiv>           
           } 
         </div>    
       }

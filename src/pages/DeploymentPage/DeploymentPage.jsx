@@ -138,7 +138,7 @@ const DeploymentPage = (props) => {
 
   const importRef = React.createRef();
 
-  let selectedPermission = list.find(permission => currentId === permission._id && !!permission.private_key) || {};
+  let selectedPermission = list.find(permission => currentId === permission.account+"@"+permission.permission && !!permission.private_key) || {};
   let noOfPermissions = list.slice(0).reduce((accounts, el) => {
     if (el.private_key) accounts++;
     return accounts;
@@ -201,7 +201,7 @@ const DeploymentPage = (props) => {
     ev.preventDefault();
     let cleanPath = sanitizeFilepath(path);
     let actualRootPath = (cleanPath.endsWith("/")) ? cleanPath.toString() : cleanPath.toString() + "/";
-    let currentPermission = list.find(account => account._id === currentId);
+    let currentPermission = list.find(account => account.account+"@"+account.permission === currentId);
     let msg = `Cannot deploy contract under the owner of the system contract`;
     let fullPath = {
       source: actualRootPath + currentFile
@@ -395,7 +395,7 @@ const DeploymentPage = (props) => {
                                   let msg = (currentId === defaultId) ?
                                     `${permission.account}@${permission.permission} (default)` :
                                     `${permission.account}@${permission.permission}`;
-                                  if (currentId === permission._id)
+                                  if (currentId === permission.account+"@"+permission.permission)
                                     return msg;
                                   else
                                     return null;
@@ -409,8 +409,8 @@ const DeploymentPage = (props) => {
                             ? <DropdownMenu style={{width: "100%"}} right>
                               {
                                 list.map((permission) => permission.private_key &&
-                                  <DropdownItem key={permission._id} onClick={() => { setCurrentId(permission._id) }}>
-                                    {`${permission.account}@${permission.permission}`}
+                                  <DropdownItem key={permission.account+"@"+permission.permission} onClick={() => { setCurrentId(permission.account+"@"+permission.permission) }}>
+                                    { (permission.account+"@"+permission.permission === defaultId) ? permission.account+"@"+permission.permission+" (default)" : permission.account+"@"+permission.permission}
                                   </DropdownItem>)
                               }
                             </DropdownMenu>

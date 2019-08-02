@@ -41,7 +41,7 @@ const pollingEpic = ( action$, state$ ) => action$.pipe(
         let query = paramsToQuery({ records_count: "1", show_empty: "true" });
 
         return apiPostgres(`get_blocks${query}`).pipe(
-          map(res => fetchFulfilled(res.response)),
+          map(res =>  fetchFulfilled(res.response)),
           catchError(error => {
             errorLog("Info page/ get latest block error",error);
             return of(fetchRejected(error.response, { status: error.status }))

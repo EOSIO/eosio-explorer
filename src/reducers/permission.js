@@ -11,6 +11,7 @@ import { mergeMap, map, catchError } from 'rxjs/operators';
 import { combineEpics, ofType } from 'redux-observable';
 
 import apiMongodb from 'services/api-mongodb';
+import apiPostgres from 'services/api-postgres';
 import apiRpc from 'services/api-rpc';
 import paramsToQuery from 'helpers/params-to-query';
 import { errorLog } from 'helpers/error-logger';
@@ -57,7 +58,7 @@ const fetchEpic = ( action$, state$ ) => action$.pipe(
   ofType(FETCH_START),
   mergeMap(action =>{
     let { value: { permission: { data: { defaultId, list } } } } = state$;
-    return apiMongodb(`get_all_permissions`).pipe(
+    return apiPostgres(`get_all_permissions`).pipe(
       map(res => fetchFulfilled({
         response: res.response,
         originalList: list,
@@ -239,25 +240,25 @@ const initializeDefaultId = (stateId, list) => {
     el => el.private_key && el.account === 'eosio' && el.permission === 'active'
   )[0];
   //Check and get current default permission   
-  let currentDefault = list.filter(el => el._id === stateId)[0];
+  let currentDefault = list.filter(el => el.account+"@"+el.permission === stateId)[0];
   //Get first permission
   let firstPermission = list.filter(el => el.private_key)[0];
   let newDefaultId = "";
   if(!firstPermission){
     newDefaultId = "";
   }else{
-    newDefaultId = firstPermission._id;
+    newDefaultId = firstPermission.account+"@"+firstPermission.permission;
   }
   
   //Check if the default permission set before exists, if not set either eosio owner or active permission as default
   //If eosio permissions doesn't exists then get the first permission and set as default permission
   //If no permission exist, then set empty string as to defaultId
   if (!stateId) {
-    return (eosio_owner) ? eosio_owner._id : (eosio_active) ? eosio_active._id : newDefaultId;
+    return (eosio_owner) ? eosio_owner.account+"@"+eosio_owner.permission : (eosio_active) ? eosio_active.account+"@"+eosio_active.permission : newDefaultId;
   } else {
     let currentDefaultExists = (currentDefault) ? currentDefault.private_key : null;
-    return (currentDefaultExists) ? currentDefault._id :
-      (eosio_owner) ? eosio_owner._id : (eosio_active) ? eosio_active._id : newDefaultId;
+    return (currentDefaultExists) ? currentDefault.account+"@"+currentDefault.permission :
+      (eosio_owner) ? eosio_owner.account+"@"+eosio_owner.permission : (eosio_active) ? eosio_active.account+"@"+eosio_active.permission : newDefaultId;
   }
 }
 
@@ -270,14 +271,14 @@ const composePermissionList = (originalList = [], payloadList = []) => {
     }
   );
   payloadList.map(function(el) {
+    //Extract public key 
+    el.public_key = el.public_key.substring(el.public_key.indexOf("(")+1, el.public_key.indexOf(","));  
+
     let index = newList.findIndex(eachItem => el.account === eachItem.account && el.permission === eachItem.permission);
     if (index >= 0) {
       if (newList[index].public_key !== el.public_key) {
-        newList[index]._id = el._id;
         newList[index].public_key = el.public_key;
         newList[index].private_key = null;
-      }else{
-        newList[index]._id = el._id;
       }
     } else {
       if (el.account === 'eosio' && el.private_key === undefined && el.public_key && 
@@ -292,7 +293,8 @@ const composePermissionList = (originalList = [], payloadList = []) => {
         }       
       }
       if(newList.length < MAX_ACCOUNT_TO_SHOW)
-        newList.push(el);
+        newList.push(el); 
+        
     }
     return null;
   });
@@ -351,13 +353,7 @@ const updateAccountList = (createResponse, list, defaultId) => {
     let updatedAccount = queryData.filter(el => el.permission === permission)[0];    
     updatedList[index].public_key = updatedAccount.public_key;
     updatedList[index].private_key = privateKey;
-    //set new id as default id if the the permisssion was default permission
-    if(defaultId === updatedList[index]._id){
-      updatedList[index]._id = updatedAccount._id;
-      defaultId = updatedList[index]._id;
-    }else{
-      updatedList[index]._id = updatedAccount._id;
-    }       
+        
   } else {
     msg = `Updated the keys for ${accountName} but failed to query the
        account after creation. Please import the keys you just used in the previous

@@ -16,7 +16,7 @@ const Headblock = (props) => {
   // }, [])
 
   let { headblock: { isPolling, data }} = props;
-  let { payload : [{block_num, block_id, block}={}]= [], error } = data;
+  let { payload : [{block_num, block_id, producer, timestamp, block}={}]= [], error } = data;
 
   return (
     <>
@@ -50,7 +50,7 @@ const Headblock = (props) => {
               <Label>Timestamp:</Label>
             </Col>
             <Col xs="10" className="hashText">
-              <p className="form-control-static">{block && block.timestamp}</p>
+              <p className="form-control-static">{timestamp}</p>
             </Col>
           </FormGroup>
           <FormGroup row className="mb-0">
@@ -58,7 +58,7 @@ const Headblock = (props) => {
               <Label>Block Producer:</Label>
             </Col>
             <Col xs="10" className="hashText">
-              <p className="form-control-static">{block && block.producer}</p>
+              <p className="form-control-static">{producer}</p>
             </Col>
           </FormGroup>
       </Form>

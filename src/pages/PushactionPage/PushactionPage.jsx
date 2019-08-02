@@ -4,7 +4,7 @@ import { CardBody, Row, Col, Form, FormGroup, FormFeedback, Label, Input,
   UncontrolledAlert, DropdownToggle, DropdownMenu, DropdownItem, Spinner
 } from 'reactstrap';
 
-import { updateActionToPush, prefillActionToPush, actionPush, fetchStart, fetchSmartContracts,paramsSet,fetchAbi } from './PushactionPageReducer';
+import { updateActionToPush, prefillActionToPush, actionPush, fetchStart, fetchSmartContracts,paramsSet,fetchAbi, fetchActionData } from './PushactionPageReducer';
 import { CodeViewer, LoadingSpinner } from 'components';
 import useForm from 'helpers/useForm';
 import validate from './components/PushActionValidatorEngine/PushActionValidatorEngine';
@@ -91,7 +91,7 @@ const PushactionPage = (props) => {
       { name: "smartContractName", value: action.act.account },
       { name: "actionType", value: action.act.name },
       { name: "payload", value: action.payload },
-      { name: "permission", value: selectedPermission._id }
+      { name: "permission", value: selectedPermission.account+"@"+selectedPermission.permission }
     ];
     updateValues(vals);
 
@@ -140,7 +140,7 @@ const PushactionPage = (props) => {
   
 
   // Get the default permission. Overwrite it with the action object's permission, if the action object has a permission.
-  let selectedPermission = list.find(permission => defaultId === permission._id) || {};
+  let selectedPermission = list.find(eachPermission => defaultId === eachPermission.account+"@"+eachPermission.permission) || {};
   if (action.act.authorization)
     selectedPermission = list.find(p => p.account === action.act.authorization.actor && p.permission === action.act.authorization.permission) || selectedPermission;
 
@@ -275,7 +275,7 @@ const PushactionPage = (props) => {
                         <DropdownToggle className={errors.permission && "invalid"} caret>                        
                           { list.filter(permission => !!permission.private_key).length < 1 ? "No Permissions Available"
                             : Object.keys(selectedPermission).length > 0
-                              ? (selectedPermission._id === defaultId)
+                              ? (selectedPermission.account+"@"+selectedPermission.permission === defaultId)
                                   ? (selectedPermission.account + "@" + selectedPermission.permission + " (default)")
                                   : (selectedPermission.account + "@" + selectedPermission.permission)
                               : "Select Permission"}
@@ -283,13 +283,13 @@ const PushactionPage = (props) => {
                         <DropdownMenu modifiers={dropdownMaxHeight}>
                           {(list).map( permission => permission.private_key &&
                               <DropdownItem 
-                                key={permission._id} 
+                                key={permission.account+"@"+permission.permission} 
                                 onClick={(e) => { 
                                   selectedPermission = list.find(p => p.account === action.act.authorization.actor && p.permission === action.act.authorization.permission) || selectedPermission;
                                   updateAction("permission", action, { actor: permission.account, permission: permission.permission }, props.updateActionToPush);
                                   resetValidation(e);
                               }}>
-                                {(defaultId === permission._id)
+                                {(defaultId === permission.account+"@"+permission.permission)
                                  ? (permission.account + '@'+ permission.permission +' (default)')
                                  : (permission.account + '@'+ permission.permission)
                                 }  
@@ -297,7 +297,7 @@ const PushactionPage = (props) => {
                         </DropdownMenu>     
                       </CustomDropdown>  
                       {/* Hidden inputs for validation and to make sure validation messages are shown by Bootstrap  */}
-                      <Input type="hidden" id="permission" name="permission" value={selectedPermission._id || ""} onChange={(e) => { handleChange(e); } } invalid={!!errors.permission} />
+                      <Input type="hidden" id="permission" name="permission" value={selectedPermission.account+"@"+selectedPermission.permission || ""} onChange={(e) => { handleChange(e); } } invalid={!!errors.permission} />
                       {
                         errors.permission && 
                         <FormFeedback invalid="true">
@@ -333,7 +333,7 @@ const PushactionPage = (props) => {
                       <ButtonGroupSeperated className="float-right">
                         <ButtonSecondary type="button" onClick={(e) => {
                           // Clear the action to its empty state and set the permission back to the default permission
-                          let defaultPermission = list.find(permission => defaultId === permission._id);
+                          let defaultPermission = list.find(permission => defaultId === permission.account+"@"+permission.permission);
                           let actionDefaultPermission = !!defaultPermission ? { actor: defaultPermission.account, permission: defaultPermission.permission } : undefined;
                           clearAction(action, props.updateActionToPush, actionDefaultPermission);
                           resetValidation(e);
@@ -359,6 +359,7 @@ const PushactionPage = (props) => {
                 <Actionhistory prefillCallback={(action) => {
                   // When "Prefill" is clicked, set the actionId variable in the reducer to an object containing the block number and global sequence
                   // of that action. Then rebuild the Action Type list with actions available to the smart contract of that action.
+                  props.fetchActionData(action.block_num, action.transaction_id, action.action_ordinal);
                   props.prefillActionToPush(action);
                   getABIandSetActionList(action.act_account);
                   resetValidation();
@@ -387,7 +388,8 @@ export default connect(
     actionPush,
     fetchSmartContracts,
     paramsSet,
-    fetchAbi
+    fetchAbi,
+    fetchActionData
   }
 
 )(PushactionPage);

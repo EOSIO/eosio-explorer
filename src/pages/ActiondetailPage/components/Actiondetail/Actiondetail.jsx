@@ -34,7 +34,7 @@ const Actiondetail = (props) => {
               <Label>Timestamp:</Label>
             </Col>
             <Col xs="10">
-              <p className="form-control-static hashText">{action && action.block_num}</p>
+              <p className="form-control-static hashText">{action && action.timestamp}</p>
             </Col>
           </FormGroup>
           <FormGroup row className="mb-0">

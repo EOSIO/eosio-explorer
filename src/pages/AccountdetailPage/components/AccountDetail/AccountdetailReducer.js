@@ -12,8 +12,6 @@ import { combineEpics, ofType } from 'redux-observable';
 
 import apiRpc from 'services/api-rpc';
 import { errorLog } from 'helpers/error-logger';
-import apiMongodb from 'services/api-mongodb';
-import paramsToQuery from 'helpers/params-to-query';
 // IMPORTANT
 // Must modify action prefix since action types must be unique in the whole app
 const actionPrefix = `AccountdetailPage/Accountdetail/`;
@@ -43,9 +41,8 @@ const fetchEpic = ( action$, state$ ) => action$.pipe(
   mergeMap(action =>{
     let { value: { accountdetailPage: { accountdetail: { params } }}} = state$;
 
-    return apiRpc("get_block", {'block_num_or_id': params}).pipe(
-      map(res => { console.log("Get-block res", res);
-        return fetchFulfilled(res)}),
+    return apiRpc("get_account_details", params).pipe(
+      map(res => fetchFulfilled(res)),
       catchError(error => {
         errorLog("Accounts page/ get account detail error ", error);
         return of(fetchRejected(error.response, { status: error.status }))
@@ -64,8 +61,8 @@ const fetchContractEpic = ( action$, state$ ) => action$.pipe(
   mergeMap(action =>{
     let { value: { accountdetailPage: { accountdetail: { params } }}} = state$;
 
-    return apiMongodb(`get_abi${paramsToQuery(params)}`).pipe(
-      map(res => fetchContractFulfilled(res.response)),
+    return apiRpc("get_abi", params).pipe(
+      map(res => fetchContractFulfilled(res)),
       catchError(error => {
         errorLog("Accounts page/ get abi error ", error);
         return of(fetchContractRejected(error.response, { status: error.status }))
@@ -124,7 +121,7 @@ const isFetchingReducer = (state = false, action) => {
 };
 
 const dataContractInitState = {
-  contractPayload: [],
+  contractPayload: {},
   contractError: undefined
 }
 

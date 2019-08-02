@@ -100,7 +100,7 @@ const Blocklist = (props) => {
                             <tr onClick={evt=>props.push(`/block/${eachBlock.block_id}`)} key={eachBlock.block_id}>
                               <td>{eachBlock.block_num}</td>
                               <td>{eachBlock.block_id}</td>
-                              <td>{eachBlock.num_of_transactions}</td>
+                              <td>{eachBlock.transaction_count}</td>
                               <td>{eachBlock.timestamp}</td>
                             </tr>)}
                         </tbody>

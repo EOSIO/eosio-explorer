@@ -11,6 +11,7 @@ import { mergeMap, mapTo, map, flatMap, catchError } from 'rxjs/operators';
 import { combineEpics, ofType } from 'redux-observable';
 
 import apiMongodb from 'services/api-mongodb';
+import apiPostgres from 'services/api-postgres';
 import { fetchStart as permission_fetchstart} from 'reducers/permission';
 import { switchCheck } from 'pages/InfoPage/components/BlockchainInfo/BlockchainInfoReducer';
 import paramsToQuery from 'helpers/params-to-query';

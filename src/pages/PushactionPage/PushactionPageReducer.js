@@ -36,6 +36,9 @@ const PARAMS_SET = actionPrefix + `PARAMS_SET`;
 const FETCH_ABI = actionPrefix + `FETCH_ABI`;
 const FETCH_ABI_FULFILLED = actionPrefix + `FETCH_ABI_FULFILLED`;
 const FETCH_ABI_REJECTED = actionPrefix + `FETCH_ABI_REJECTED`;
+const FETCH_ACTION_DATA = actionPrefix + `FETCH_ACTION_DATA`;
+const FETCH_ACTION_DATA_FULFILLED = actionPrefix + `FETCH_ACTION_DATA_FULFILLED`;
+const FETCH_ACTION_DATA_REJECTED = actionPrefix + `FETCH_ACTION_DATA_REJECTED`;
 
 //Action Creator
 export const fetchStart = () => ({ type: FETCH_START });
@@ -55,6 +58,9 @@ export const paramsSet = (params) => ({ type: PARAMS_SET, params });
 export const fetchAbi = () => ({ type: FETCH_ABI });
 export const fetchAbiFulfilled = (payload) => ({ type: FETCH_ABI_FULFILLED, payload });
 export const fetchAbiRejected = (payload, error) => ({ type: FETCH_ABI_REJECTED, payload, error });
+export const fetchActionData = (block_num, transaction_id, action_ordinal ) => ({ type: FETCH_ACTION_DATA, block_num, transaction_id, action_ordinal});
+export const fetchActionDataFulfilled = (payload, transaction_id, action_ordinal) => ({ type: FETCH_ACTION_DATA_FULFILLED, payload, transaction_id, action_ordinal});
+export const fetchActionDataRejected = (payload, error) => ({ type: FETCH_ACTION_DATA_REJECTED, payload, error });
 
 //Epic
 const fetchEpic = (action$, state$) => action$.pipe(
@@ -102,14 +108,26 @@ const fetchAbiEpic = (action$, state$) => action$.pipe(
   mergeMap(action => {
     // Get the list of smart contract to populate the Smart Contract Name dropdown
     let { value: { pushactionPage: {  params  }}} = state$;
-    console.log("param ", params);
     return apiRpc("get_abi", params).pipe(
-      map(res => {
-        console.log("res ",res);
-        return fetchAbiFulfilled(res)}),
+      map(res => fetchAbiFulfilled(res)),
       catchError(error => {
         errorLog("Push Action page/ get abi error",error);
         return of(fetchAbiRejected(error.response, { status: error.status }))
+      })
+    )
+  })
+);
+
+
+const fetchActionDataEpic = ( action$, state$ ) => action$.pipe(
+  ofType(FETCH_ACTION_DATA),
+  mergeMap(action =>{    
+    let params ={id_or_num: action.block_num};
+    return apiRpc("get_block", params).pipe(
+      map(res => fetchActionDataFulfilled(res, action.transaction_id, action.action_ordinal)),
+      catchError(error => {
+        errorLog("Push Action page/ get block details error",error);
+        return of(fetchActionDataRejected(error.response, { status: error.status }))
       })
     )
   })
@@ -165,7 +183,8 @@ export const combinedEpic = combineEpics(
   fetchSmartContractsEpic,
   recordsUpdateEpic,
   filterUpdateEpic,
-  fetchAbiEpic
+  fetchAbiEpic,
+  fetchActionDataEpic
 );
 
 const getActionInitState = (defaultPermission) =>{
@@ -194,18 +213,33 @@ const filterInitState = {
 const mapPrefilledAction = (prefilledAction) => {
   if (!prefilledAction)
     return getActionInitState();
-  
+  console.log("prefilledAction",prefilledAction)
   return {
     _id: prefilledAction._id,
     act: {
       account: prefilledAction.act_account,
       name: prefilledAction.act_name,
-      actor: prefilledAction.actor,
-      permission: prefilledAction.permission
+      authorization : { 
+        actor: prefilledAction.actor,
+        permission: prefilledAction.permission
+      }
     },
-    payload: JSON.stringify(prefilledAction.act_data, null, 2)
+    payload: JSON.stringify("", null, 2)
   }
 }
+
+const mapActionPayload = (payload, transaction_id, action_ordinal, state) => {
+  let transaction = payload.transactions.filter(eachTrx => eachTrx.trx.id.toUpperCase() === transaction_id);
+  if(transaction.length > 0){
+    return {
+      ...state,
+      payload: JSON.stringify(transaction[0].trx.transaction.actions[action_ordinal-1].data, null, 2)
+    };    
+  }else{
+    return state;
+  }
+}
+
 
 // Mapping function to update the action object with the user's input
 const mapUpdatedAction = (updatedAction, defaultPermission) => {
@@ -323,6 +357,12 @@ const actionReducer = (state = getActionInitState(), action) => {
     case ACTION_PREFILL:
       // Action is prefilled from the action history viewer
       return mapPrefilledAction(action.updatedAction);
+
+    case FETCH_ACTION_DATA_FULFILLED:
+      return mapActionPayload(action.payload, action.transaction_id, action.action_ordinal, state);
+
+    case FETCH_ACTION_DATA_REJECTED:
+      return state;
 
     case ACTION_PUSH:
       // User chooses to push the action
