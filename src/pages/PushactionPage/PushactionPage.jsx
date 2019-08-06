@@ -124,12 +124,14 @@ const PushactionPage = (props) => {
     props.fetchSmartContracts();
     setAdditionalValues(list);
     // Set initial permission based on the default
+
+    console.log("selectedPermission ", selectedPermission);
     updateAction("permission", action, { actor: selectedPermission.account, permission: selectedPermission.permission }, props.updateActionToPush);
 
     if (action.act.account !== "") {
       let smartContract = props.pushactionPage.smartContracts.smartContractsList.find(smartContract => smartContract.name === action.act.account) || {};
-      if (Object.keys(smartContract).length > 0 && smartContract.abi.actions)
-        setActionList(smartContract.abi.actions);
+      if (Object.keys(smartContract).length > 0 && smartContract.abi)
+        getABIandSetActionList(smartContract.name);
       else
         setActionList([]);
     }

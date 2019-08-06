@@ -10,7 +10,6 @@ import { CardBody, Col, Row, Form, FormGroup } from 'reactstrap';
 import styled from 'styled-components';
 import { CodeViewer, LoadingSpinner } from 'components';
 import { CardStyled, CardHeaderStyled, ButtonPrimary, InputStyled, ErrorDivStyled } from 'styled';
-import { animationFrameScheduler } from 'rxjs';
 
 
 const FirstCardStyled = styled(CardStyled)`

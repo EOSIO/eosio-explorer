@@ -6,11 +6,9 @@
 
 import { combineReducers } from 'redux';
 import { throwError, of } from 'rxjs';
-import { mergeMap, map, catchError } from 'rxjs/operators';
+import { mergeMap, map, catchError, delay } from 'rxjs/operators';
 
 import { combineEpics, ofType } from 'redux-observable';
-
-import apiMongodb from 'services/api-mongodb';
 import apiPostgres from 'services/api-postgres';
 import apiRpc from 'services/api-rpc';
 import paramsToQuery from 'helpers/params-to-query';
@@ -76,11 +74,13 @@ const createAccountObservable = (
   query, owner_private_key, active_private_key, accountName
 ) =>
   apiRpc("create_account", query).pipe(
-    map(res => ({
+    map(res => {
+      console.log("craete account success", res);
+      return ({
       ownerPrivateKey: owner_private_key,
       activePrivateKey: active_private_key,
       accountName: accountName
-    })),
+    })}),
     catchError(err => throwError(err))
   )
   
@@ -116,11 +116,14 @@ const createEpic = action$ => action$.pipe(
         new_account_owner_key: ownerPublicKey,
         new_account_active_key: activePublicKey
       };
+
       return createAccountObservable(query, ownerPrivateKey, activePrivateKey, accountName)
         .pipe(
-          mergeMap(response => {
-          return apiMongodb(`get_account_details${paramsToQuery({account_name: accountName})}`)
-            .pipe(
+          delay(1000),
+          mergeMap(response => { 
+            let query = paramsToQuery({account_name: response.accountName});  
+            console.log("query ", query)
+            return apiPostgres(`get_all_permissions${query}`).pipe(
               map(res => createFulfilled({
                 baseData: response,
                 queryData: res.response
@@ -162,8 +165,9 @@ const updateEpic = action$ => action$.pipe(
 
       return editAccountObservable(query)
         .pipe(
+          delay(1000),
           mergeMap(response => {
-            return apiMongodb(`get_account_details${paramsToQuery({account_name: baseData.accountName})}`)
+            return apiPostgres(`get_all_permissions${paramsToQuery({account_name: baseData.accountName})}`)
               .pipe(
                 map(res => editSuccess({
                   baseData: baseData,
@@ -227,6 +231,10 @@ const alphabeticalSort = (a, b) => {
 const hasPrivateKey = (item) => {
   return (!!item.private_key);
 }  
+
+const formatPublicKey = (public_key) =>{
+  return public_key.substring(public_key.indexOf("(")+1, public_key.indexOf(","));
+}
 
 const initializeDefaultId = (stateId, list) => {
 
@@ -317,9 +325,17 @@ const storeNewAccount = (createResponse, list) => {
   let accountSuccess = true;
   let msg = `Successfully created the account for ${accountName}`;
 
+  console.log("queryData ", queryData);
+
   if (queryData && queryData.length > 0) {
-    queryData[0]["private_key"] = (queryData[0].permission === 'owner') ? ownerPrivateKey : activePrivateKey;
-    queryData[1]["private_key"] = (queryData[1].permission === 'owner') ? ownerPrivateKey : activePrivateKey;
+    
+    queryData.map(eachAccount =>{
+      eachAccount.public_key = eachAccount.public_key.substring(eachAccount.public_key.indexOf("(")+1, eachAccount.public_key.indexOf(","));
+      eachAccount.private_key = (eachAccount.permission === 'owner') ? ownerPrivateKey : activePrivateKey;
+    });
+
+    // queryData[0]["private_key"] = (queryData[0].permission === 'owner') ? ownerPrivateKey : activePrivateKey;
+    // queryData[1]["private_key"] = (queryData[1].permission === 'owner') ? ownerPrivateKey : activePrivateKey;    
   } else {
     msg = `Created the account for ${accountName} but failed to query the
        account after creation. Please import the keys you just used in the previous
@@ -344,6 +360,8 @@ const updateAccountList = (createResponse, list, defaultId) => {
     baseData: { permission, privateKey, accountName },
     queryData
   } = createResponse;
+
+  console.log("query data ", queryData);
   let accountSuccess = true;
   let msg = `Successfully updated the keys for ${accountName}`;
   let updatedList = list.slice(0);
@@ -351,8 +369,15 @@ const updateAccountList = (createResponse, list, defaultId) => {
   if (queryData && queryData.length > 0) {
     let index = updatedList.findIndex(item => item.account === accountName && item.permission === permission);
     let updatedAccount = queryData.filter(el => el.permission === permission)[0];    
-    updatedList[index].public_key = updatedAccount.public_key;
+    console.log("updatedAccount ", updatedAccount);
+    console.log("updatedList[index].public_key  ", updatedList[index].public_key );
+    console.log("updatedList[index].private_key  ", updatedList[index].private_key );
+    console.log("after")
+    updatedList[index].public_key = formatPublicKey(updatedAccount.public_key);
     updatedList[index].private_key = privateKey;
+
+    console.log("updatedList[index].public_key  ", updatedList[index].public_key );
+    console.log("updatedList[index].private_key  ", updatedList[index].private_key );
         
   } else {
     msg = `Updated the keys for ${accountName} but failed to query the
