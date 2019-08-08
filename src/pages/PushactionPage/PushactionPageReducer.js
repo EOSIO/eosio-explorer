@@ -6,7 +6,7 @@
 
 import { combineReducers } from 'redux';
 import { of } from 'rxjs';
-import { mergeMap, mapTo, map, catchError } from 'rxjs/operators';
+import { mergeMap, mapTo, map, catchError, delay } from 'rxjs/operators';
 import { combineEpics, ofType } from 'redux-observable';
 
 import apiPostgres from 'services/api-postgres';
@@ -75,7 +75,6 @@ const fetchEpic = (action$, state$) => action$.pipe(
     }
 
     let actionHistoryQuery = paramsToQuery(actionHistoryParams);
-
     // Get the action history list
     return apiPostgres(`get_actions${actionHistoryQuery}`).pipe(
       // Send it to the data reducer
@@ -134,11 +133,13 @@ const fetchActionDataEpic = ( action$, state$ ) => action$.pipe(
 );
 
 const actionPushFulfilledEpic = action$ => action$.pipe(
+  delay(1000),
   ofType(ACTION_PUSH_FULFILLED),
   mapTo(fetchStart())
 );
 
 const actionPushRejectedEpic = action$ => action$.pipe(
+  delay(1000),
   ofType(ACTION_PUSH_REJECTED),
   mapTo(fetchStart())
 );
@@ -213,7 +214,6 @@ const filterInitState = {
 const mapPrefilledAction = (prefilledAction) => {
   if (!prefilledAction)
     return getActionInitState();
-  console.log("prefilledAction",prefilledAction)
   return {
     _id: prefilledAction._id,
     act: {

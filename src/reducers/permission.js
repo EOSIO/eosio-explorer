@@ -74,13 +74,11 @@ const createAccountObservable = (
   query, owner_private_key, active_private_key, accountName
 ) =>
   apiRpc("create_account", query).pipe(
-    map(res => {
-      console.log("craete account success", res);
-      return ({
+    map(res =>  ({
       ownerPrivateKey: owner_private_key,
       activePrivateKey: active_private_key,
       accountName: accountName
-    })}),
+    })),
     catchError(err => throwError(err))
   )
   

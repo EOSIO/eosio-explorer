@@ -125,7 +125,6 @@ const PushactionPage = (props) => {
     setAdditionalValues(list);
     // Set initial permission based on the default
 
-    console.log("selectedPermission ", selectedPermission);
     updateAction("permission", action, { actor: selectedPermission.account, permission: selectedPermission.permission }, props.updateActionToPush);
 
     if (action.act.account !== "") {
