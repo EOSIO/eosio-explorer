@@ -58,9 +58,8 @@ app.listen(PORT, ()=>{
   console.log(``);
   if(`${process.env.MODE}` !== `development`){
     let url;
-    if(endpointConfig.hasOwnProperty("NodesEndpoint") && endpointConfig["NodesEndpoint"] != "" 
-        && endpointConfig.hasOwnProperty("DBEndpoint") && endpointConfig["DBEndpoint"] != ""){
-      url = "http://localhost:" + PORT +"?nodeos="+endpointConfig.NodesEndpoint.trim()+"&mongodb="+endpointConfig.DBEndpoint.trim();
+    if(endpointConfig.hasOwnProperty("NodeEndpoint") && endpointConfig["NodeEndpoint"] != ""){
+      url = "http://localhost:" + PORT +"?nodeos="+endpointConfig.NodeEndpoint.trim();
     }else{
       url = "http://localhost:" + PORT;
     }    

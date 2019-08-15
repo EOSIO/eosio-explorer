@@ -54,9 +54,9 @@ class App extends Component {
     let { router: { location: { search } } } = this.props;
     let queryStringValues = queryString.parse(search);  
 
-    if(!!queryStringValues.nodeos && !!queryStringValues.mongodb){
+    if(!!queryStringValues.nodeos){
       nodeos = queryStringValues.nodeos;
-      mongodb = queryStringValues.mongodb;
+      console.log("nodeos ",nodeos);
     }
     
     this.props.connectStart(nodeos, mongodb);

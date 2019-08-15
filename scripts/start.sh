@@ -44,14 +44,9 @@ MAKESAMPLEDATA=false
 SERVERMODE=false
 HARDREPLAY=false
 NOTIMESTAMP=false
-ENDPOINTS=false
-NODE=false
-DB=false
-nodeos_endpoint=$NODE_DEFAULT_ENDPOINT
-db_endpoint=$MONGODB_DEFAULT_ENDPOINT
 
-USAGE="Usage: eosio-explorer start [-del | --delete] [--server-mode] [-s | --sample-data] [--clear-browser-storage] 
-                            [--set-endpoints | node=<nodeos_endpoint> db=<mongodb_endpoint>]
+
+USAGE="Usage: eosio-explorer start [-del | --delete] [--server-mode] [-s | --sample-data] [--clear-browser-storage]
                             [-dev] [-del] [-b]  [--no-timestamp ] (program to start eosio-explorer)
 
 where:
@@ -59,11 +54,6 @@ where:
     --server-mode             Starts the tool in server-mode, it will start the dockers but not the gui
     -s, --sample-data         Starts the tool with pre-existing sample accounts and smart contracts
     --clear-browser-storage   Starts the tool with clearing browser local storage
-    
-    Only available in production:
-    --set-endpoints           Prompts user to input existing nodeos and MongoDB instance endpoints to connect with
-    node=<nodeos_endpoint> 
-    db=<mongodb_endpoint>     Starts the tool by connecting to the nodeos and MongoDB endpoints passed
 
     Only available in development:
     -dev, --develop           Starts the tool in development mode
@@ -100,17 +90,6 @@ do
     --no-timestamp)
       NOTIMESTAMP=true
       ;;
-    --set-endpoints)
-      ENDPOINTS=true
-      ;;
-    node=*)
-      NODE=true
-      nodeos_endpoint="${arg#*=}" 
-      ;;
-    db=*)
-      DB=true
-      db_endpoint="${arg#*=}"
-      ;;
     -h|--help)
       echo " "
       echo "$USAGE"
@@ -134,21 +113,6 @@ if (!($ISDEV) && [ ! -e $APP"/build" ]); then
   BUILDAPPLICATION=true
 fi
 
-# If --set-endpoints is passed then read the endpoints and store the value
-if ( $NODE && $DB ); then
-  echo "Storing endpoints to config file..."
-  (cd $CONFIG_FILE && echo '{ "NodesEndpoint" : "'$nodeos_endpoint'", "DBEndpoint" : "'$db_endpoint'" }'>eosio_explorer_config.json && printf "${GREEN}done${NC}") 
-elif $ENDPOINTS; then    
-  echo " "
-  echo "Please enter Nodeos endpoint:"
-  read nodeos_endpoint
-  echo " "
-  echo "Please enter MongoDB endpoint:"
-  read db_endpoint  
-  echo " "  
-  echo "Storing endpoints to config file..."
-  (cd $CONFIG_FILE && echo '{ "NodesEndpoint" : "'$nodeos_endpoint'", "DBEndpoint" : "'$db_endpoint'" }'>eosio_explorer_config.json && printf "${GREEN}done${NC}")
-fi
 
 FILE=$CONFIG_FILE/eosio_explorer_config.json
 if [ -f "$FILE" ]; then
@@ -199,9 +163,9 @@ do
 done
 
 echo " "
-echo "======================================"
+echo "===================================="
 echo "STARTING STATE HISTORY PLUGIN DOCKER"
-echo "======================================"
+echo "===================================="
 (cd $SHIPDOCKER && ./start_ship_docker.sh && printf "${GREEN}done${NC}")
 
 if ( ! $SERVERMODE ); then
