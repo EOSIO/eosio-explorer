@@ -157,7 +157,7 @@ then
   fi      
 fi
   
-
+echo " "
 echo "==============================="
 echo "INITIALISING CONFIG IN PACKAGES"
 echo "==============================="
