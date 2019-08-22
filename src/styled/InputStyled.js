@@ -13,4 +13,7 @@ export default styled(Input)`
     border: solid 1px #1173a4;
     box-shadow: none;
   }
+  :disabled{
+    background-color: #f8f9fa;
+  }
 `

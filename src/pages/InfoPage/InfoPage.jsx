@@ -5,12 +5,11 @@ import { CardBody, Col, Row } from 'reactstrap';
 import { connect } from 'react-redux';
 
 import { StandardTemplate } from 'templates';
-import Nodeswitch from './components/Nodeswitch';
 import Headblock from './components/Headblock';
 import BlockchainInfo from './components/BlockchainInfo';
 import LastIrreversibleBlockInfo from './components/LastIrreversibleBlockInfo';
 import WelcomePopup from './components/WelcomePopup';
-import { CardStyled, CardHeaderStyled, PageTitleDivStyled } from 'styled';
+import { CardStyled, CardHeaderStyled, PageTitleDivStyled, InputStyled} from 'styled';
 import styled from 'styled-components';
 
 const FirstCardStyled = styled(CardStyled)`
@@ -21,7 +20,6 @@ class InfoPage extends Component {
 
   constructor(props) {
     super(props);
-
     if (navigator.userAgent === 'ReactSnap') {
       this.state = {
         modalIsOpen: false
@@ -58,7 +56,11 @@ class InfoPage extends Component {
                   Connections
                 </CardHeaderStyled>
                 <CardBody>
-                  <Nodeswitch/>
+                  <InputStyled
+                    type="text"
+                    defaultValue={this.props.nodeos}
+                    disabled
+                  />
                 </CardBody>
               </FirstCardStyled>
             </Col>
@@ -126,9 +128,12 @@ export default connect(
         sessionShowWelcomePopup
       }
     },
-  }) => ({
+    endpoint: {path: { nodeos }}
+  } 
+  ) => ({
     showWelcomePopup,
-    sessionShowWelcomePopup
+    sessionShowWelcomePopup,
+    nodeos
   }),
   null
 )(InfoPage);

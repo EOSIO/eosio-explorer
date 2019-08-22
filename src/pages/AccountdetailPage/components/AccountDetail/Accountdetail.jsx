@@ -44,7 +44,7 @@ const Accountdetail = (props) => {
 
   let { accountdetail: { isFetching, data, contractData, params } } = props;
   let { payload={}, error } = data;
-  let { contractPayload = {}, contractError } = contractData;
+  let { contractPayload = {} } = contractData;
 
   return (
     <div className="Accountdetail">

@@ -11,12 +11,8 @@ import { ErrorButton } from 'styled';
 
 const Headblock = (props) => {
 
-  // useEffect(()=>{
-  //   return () => { props.pollingStop() }
-  // }, [])
-
   let { headblock: { isPolling, data }} = props;
-  let { payload : [{block_num, block_id, producer, timestamp, block}={}]= [], error } = data;
+  let { payload : [{block_num, block_id, producer, timestamp}={}]= [], error } = data;
 
   return (
     <>

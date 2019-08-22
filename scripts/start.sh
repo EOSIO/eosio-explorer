@@ -157,7 +157,7 @@ do
     echo " "
     echo "here is what you can do"
     echo "eosio-explorer start --delete (this will clear the data and start the application)"
-    echo "eosio-explorer init (this will initialize the application, clear all the blockchain and mongo data and start the application)"
+    echo "eosio-explorer init (this will initialize the application, clear all the blockchain and postgres db data and start the application)"
     exit 0
   fi
 done

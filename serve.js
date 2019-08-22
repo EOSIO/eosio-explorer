@@ -1,7 +1,6 @@
 const express = require('express');
 const path = require('path');
 const app = express();
-const mongodb = require('./routers/mongodb');
 const postgres = require('./routers/postgres');
 
 const openBrowser = require('./helpers/openBrowser');
@@ -15,12 +14,6 @@ if (envConfig){
   for (let k in envConfig) {
     process.env[k] = envConfig[k];
   }
-}
-
-let endpointConfig;
-if(`${process.env.MODE}` !== `development`){  
-  let endpointConfigPath = process.argv.slice(2)[0];
-  endpointConfig = JSON.parse(fs.readFileSync(endpointConfigPath, 'utf-8')); 
 }
 
 const PORT = process.env.REACT_APP_APP_SERVE_PORT;
@@ -40,7 +33,6 @@ if ( process.env.MODE !== 'development'){
   app.use(express.static(path.join(__dirname, 'build')));
 }
 
-app.use("/api/mongodb", mongodb);
 app.use("/api/postgres", postgres);
 
 // catch-all route to /page-not-found/index.html defined last to handle page not found error
@@ -57,13 +49,9 @@ app.listen(PORT, ()=>{
   console.log(`Listening ${process.env.MODE !== `development`  ? `static \`build/\` folder and ` : `` }API calls on port ${PORT} in production mode.`);
   console.log(``);
   if(`${process.env.MODE}` !== `development`){
-    let url;
-    if(endpointConfig.hasOwnProperty("NodeEndpoint") && endpointConfig["NodeEndpoint"] != ""){
-      url = "http://localhost:" + PORT +"?nodeos="+endpointConfig.NodeEndpoint.trim();
-    }else{
-      url = "http://localhost:" + PORT;
-    }    
-    console.log(`Application is ready on "${url}".`);
+    let url;   
+    url = "http://localhost:" + PORT +"/check-ship";      
+    console.log(`Application is ready on http://localhost:${PORT}.`);
     console.log(`You can now view EOSIO Labs™: EOSIO Explorer in the browser.`);
     openBrowser(url);
   }

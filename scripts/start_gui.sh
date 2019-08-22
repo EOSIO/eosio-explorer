@@ -39,7 +39,6 @@ CLEARBROWSERSTORAGE=false
 
 
 USAGE="Usage: eosio-explorer start_gui [--clear-browser-storage]
-                                [--set-endpoints | node=<nodeos_endpoint> db=<mongodb_endpoint>] 
                                 [-dev | --develop] (program to start eosio-explorer gui)
 
 where:
@@ -109,8 +108,8 @@ if $ISDEV; then
 else
   # run yarn serve-clear to adding env CLEARBROWSERSTORAGE=true while starting to serve
   if $CLEARBROWSERSTORAGE; then
-    (cd $APP && yarn serve-clear $COMPILER $CONFIG_FILE/eosio_explorer_config.json)
+    (cd $APP && yarn serve-clear $COMPILER)
   else
-    (cd $APP && yarn serve $COMPILER $CONFIG_FILE/eosio_explorer_config.json)
+    (cd $APP && yarn serve $COMPILER)
   fi
 fi

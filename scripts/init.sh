@@ -86,12 +86,17 @@ printf "Welcome to EOSIO Explorer\n"
 printf "=========================\n"
 printf "\n"${NC}
 
-echo "Please select one of the following options by typing 1 or 2: "
-echo "1. Start the tool by connecting to default Node endpoint provided by the tool"
-echo "2. Start the tool by connecting to existing Node endpoint"
+ 
+
+echo "Please type 1, 2 or 3, to start the tool and connect to your required endpoint, which are as follows: "
+echo ""
+echo "1. Default Node endpoint provided by the tool"
+echo "2. A pre-existing Node endpoint"
+echo "3. The Node endpoint detailed in the config file (location: $HOME/eosio_explorer_config.json)"
 
 read option
 
+echo " "
 if [ $option == 1 ]
 then 
   echo "Starting tool with default endpoints..."  
@@ -99,15 +104,19 @@ elif [ $option == 2 ]
 then 
   echo "Please enter Node endpoint:"
   read nodeos_endpoint
+elif [ $option == 3 ]
+then
+  echo "Reading the endpoint from $HOME/eosio_explorer_config.json" 
+  nodeos_endpoint=$(cat $HOME/eosio_explorer_config.json | sed -n 's|.*"NodeEndpoint":"\([^"]*\)".*|\1|p')
 else
   echo "Invalid option, starting tool with default endpoints... "
 fi  
 
+#remove '/' at the end if any
 nodeos_endpoint=${nodeos_endpoint%/};
-echo $nodeos_endpoint;
 
-# remove port if any
-url_with_no_port=$(echo $nodeos_endpoint | cut -d':' -f1,2)
+echo " "
+echo "Connecting to $nodeos_endpoint"
 
 if [ $option == 2 ];
 then
@@ -133,7 +142,7 @@ then
     re='^[0-9.]+$'
     if ! [[ $version =~ $re ]] ; then
       echo " "
-      printf "${RED}The EOS version of the node you are trying to connect to is not compatible with the tool \nPlease run the command again with the node endpoint running on EOS version 1.8.1 and above \n ${NC}"
+      printf "${RED}The EOS version of the node you are trying to connect to is not compatible with the tool, \nplease run the command again with the node endpoint running on EOS version 1.8.1 above \n ${NC}"
       echo " "
       exit 1
     else
@@ -142,7 +151,7 @@ then
         echo "Compatible with tool"        
       else
         echo " "
-        printf "${RED}The EOS version of the node you are trying to connect to is not compatible with the tool \nPlease run the command again with the node endpoint running on EOS version 1.8.1 and above \n ${NC}"
+        printf "${RED}The EOS version of the node you are trying to connect to is not compatible with the tool, \nplease run the command again with the node endpoint running on EOS version 1.8.1 above \n ${NC}"
         echo " "
         exit 1
       fi  
@@ -151,7 +160,7 @@ then
     # exit 1
   else
     echo " "
-    printf "${RED}Invalid node endpoint, please run the command again with the valid endpoint \n ${NC}"
+    printf "${RED}Invalid node endpoint, please run the command again with a valid endpoint \n ${NC}"
     echo " "
     exit 1
   fi      
@@ -166,8 +175,8 @@ echo "==============================="
 cp -f $APP/init_config.file $EOSDOCKER/config.file.local
 cp -f $APP/init_config.file $EOSDOCKER/scripts/config.file.local
 cp -f $APP/init_config.file $COMPILER/config.file.local
-cp -f $APP/init_config.file $APP/config.file.local
 cp -f $APP/init_config.file $SHIPDOCKER/config.file.local
+cp -f $APP/init_config.file $APP/config.file.local
 
 # extract domain name from the URL for fill-pg
 domain_name=$(echo $nodeos_endpoint | cut -d'/' -f3 | cut -d':' -f1)
@@ -178,8 +187,8 @@ echo "NODE_ENDPOINT_DOMAIN_NAME=$domain_name" >> $SHIPDOCKER/config.file.local
 echo "NODE_ENDPOINT_TO_CONNECT=$nodeos_endpoint" >> $APP/config.file.local
 
 # print init config and save it as .env.local into different packages
-# echo "REACT_APP_MONGODB_PORT=$MONGODB_PORT" > $APP/.env.local
-# echo "REACT_APP_MONGODB_DB_NAME=$MONGODB_DB_NAME" >> $APP/.env.local
+
+rm -f $APP/.env.local
 echo "REACT_APP_LOCAL_SERVICE_PORT=$LOCAL_SERVICE_PORT" >> $APP/.env.local
 echo "REACT_APP_APP_SERVE_PORT=$APP_SERVE_PORT" >> $APP/.env.local
 
@@ -190,16 +199,16 @@ echo " "
 
 # DO NOT yarn install if the app is installed globally to avoid node modules collision
 if [[ !($PWD == $YARN_GLOBAL_DIR*) ]]; then
-  echo "========================="
+  echo "======================="
   echo "INSTALLING DEPENDENCIES"
-  echo "========================="
+  echo "======================="
   yarn install
 fi
 
 echo " "
-echo "==========================="
+echo "====================="
 echo "BUILDING EOSIO DOCKER"
-echo "==========================="
+echo "====================="
 (cd $EOSDOCKER && ./build_eosio_docker.sh && printf "${GREEN}done${NC}")
 
 echo " "
@@ -209,26 +218,37 @@ echo "=================================================="
 (cd $COMPILER && ./build_eosio_cdt_docker.sh && printf "${GREEN}done${NC}")
 
 echo " "
-echo "======================================="
+echo "===================================="
 echo "BUILDING STATE HISTORY PLUGIN DOCKER"
-echo "======================================="
+echo "===================================="
 (cd $SHIPDOCKER && ./build_ship_docker.sh && printf "${GREEN}done${NC}")
 
 # remove existing dockers
 ./remove_dockers.sh
 
-#Create a config file in home directory
-echo " "
-echo "========================================"
-echo "Creating config files to store endpoints"
-echo "========================================"
+if [ $option != 3 ];
+then
+  #Create a config file in home directory
+  echo " "
+  echo "========================================"
+  echo "Creating config files to store endpoints"
+  echo "========================================"
 
-(cd $HOME && echo '{"NodeEndpoint":"'$nodeos_endpoint'"}'>eosio_explorer_config.json && printf "${GREEN}done${NC}")
+  (cd $HOME && echo '{"NodeEndpoint":"'$nodeos_endpoint'"}'>eosio_explorer_config.json && printf "${GREEN}done${NC}")
 
-echo " "
-echo "Path:" $HOME/eosio_explorer_config.json 
-echo '{"NodeEndpoint":"'$nodeos_endpoint'"}'
-echo " "
+  echo " "
+  echo "Path:" $HOME/eosio_explorer_config.json 
+  echo '{"NodeEndpoint":"'$nodeos_endpoint'"}'
+  echo " "
+fi  
+
+#Inserting the entered endpoint from the user to a config file to connect to from front-end
+if $ISDEV; then
+  (cd $APP/public && echo 'window._env_={"NODE_PATH": "'$nodeos_endpoint'"}'>env-config.js)
+else
+  (cd $APP/build && echo 'window._env_={"NODE_PATH": "'$nodeos_endpoint'"}'>env-config.js)
+fi
+
 # start the dockers and gui
 
 ./start.sh $@ --clear-browser-storage
