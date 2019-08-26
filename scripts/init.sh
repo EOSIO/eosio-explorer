@@ -181,10 +181,7 @@ cp -f $APP/init_config.file $APP/config.file.local
 # extract domain name from the URL for fill-pg
 domain_name=$(echo $nodeos_endpoint | cut -d'/' -f3 | cut -d':' -f1)
 
-echo "NODE_ENDPOINT_TO_CONNECT=$nodeos_endpoint" >> $EOSDOCKER/config.file.local
-echo "NODE_ENDPOINT_TO_CONNECT=$nodeos_endpoint" >> $SHIPDOCKER/config.file.local
 echo "NODE_ENDPOINT_DOMAIN_NAME=$domain_name" >> $SHIPDOCKER/config.file.local
-echo "NODE_ENDPOINT_TO_CONNECT=$nodeos_endpoint" >> $APP/config.file.local
 
 # print init config and save it as .env.local into different packages
 
