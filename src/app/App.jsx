@@ -24,6 +24,7 @@ import NotFound404Page from 'pages/NotFound404Page';
 
 import { WillRoute } from 'hocs';
 import { connectStart } from 'reducers/endpoint';
+import { fetchStart as permissionFetchStart} from 'reducers/permission';
 import { pollingStart as headblock_pollingStart} from 'reducers/headblock';
 import { pollingStart as lastblockinfo_pollingStart } from 'reducers/lastblockinfo';
 import { fetchStart as blockchaininfo_fetchstart } from 'pages/InfoPage/components/BlockchainInfo/BlockchainInfoReducer';
@@ -52,6 +53,7 @@ class App extends Component {
     this.props.blockchaininfo_fetchstart();
     this.props.headblock_pollingStart();
     this.props.lastblockinfo_pollingStart();
+    this.props.permissionFetchStart();
   }
 
   render() {
@@ -89,6 +91,7 @@ export default withRouter(connect(
   {
     connectStart,
     blockchaininfo_fetchstart,
+    permissionFetchStart,
     headblock_pollingStart,
     lastblockinfo_pollingStart,
   }
