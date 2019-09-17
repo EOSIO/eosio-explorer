@@ -29,8 +29,13 @@ const fetchEpic = ( action$, state$ ) => action$.pipe(
   ofType(FETCH_START),
   mergeMap(action =>{
     let { value: { actiondetailPage: { params } } } = state$;
-    let newParams = paramsToQuery(params);
-    return apiPostgres(`get_action_details${newParams}`).pipe(
+    let { value: { endpoint: { path: { nodeos }}}} = state$;
+    params = {
+      ...params,
+      endpoint: nodeos
+    }
+    // let newParams = paramsToQuery(params);
+    return apiPostgres(`get_action_details${paramsToQuery(params)}`).pipe(
       map(res => fetchFulfilled(res.response)),
       catchError(error => {
         errorLog("Action Detail page/ get action details error", error);

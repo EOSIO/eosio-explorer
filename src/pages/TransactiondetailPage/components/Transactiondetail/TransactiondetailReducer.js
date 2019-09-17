@@ -37,6 +37,11 @@ const fetchEpic = ( action$, state$ ) => action$.pipe(
   mergeMap(action =>{
 
     let { value: { transactiondetailPage: { transactiondetail: { params } }}} = state$;
+    let { value: { endpoint: { path: { nodeos }}}} = state$;
+    params = {
+      ...params,
+      endpoint: nodeos
+    }
 
     return apiPostgres(`get_transaction_details${paramsToQuery(params)}`).pipe(
       map(res => fetchFulfilled(res.response)),

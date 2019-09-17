@@ -53,7 +53,7 @@ const Actiondetail = (props) => {
             </Col>
             <Col xs="10">
               <p className="form-control-static hashText">
-                { action && action.actor }
+                { action && action.action_data.authorization[0].actor }
               </p>
             </Col>
           </FormGroup>

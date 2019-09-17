@@ -136,7 +136,7 @@ const PushactionPage = (props) => {
     }
   }, [])
 
-  let { permission: { data }, pushactionPage: { action, isPushingAction, smartContracts: { smartContractsList = [] }, isFetchingSmartContract, abi: {abiData = {}} } } = props;
+  let { permission: { data }, pushactionPage: { action, isPushingAction, smartContracts: { smartContractsList = [] }, isFetchingSmartContract } } = props;
   let { list, defaultId } = data;  
   
 
