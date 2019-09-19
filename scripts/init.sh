@@ -34,16 +34,25 @@ LOCALSERVICE="$DEPENDENCIES_ROOT/api-eosio-compiler"
 COMPILER="$LOCALSERVICE/docker-eosio-cdt"
 ISDEV=false
 MAKESAMPLEDATA=false
+SET_MODE=false
+NODEOS=false
+nodeos_value_passed=$NODE_DEFAULT_ENDPOINT
 nodeos_endpoint=$NODE_DEFAULT_ENDPOINT
 domain_name="localhost"
 
 
 USAGE="Usage: eosio-explorer init [-s | --sample-data] [--server-mode]
                            [-dev | --develop] [-b | --build] (program to initialize eosio-explorer)
+                           [--set-mode=(1/2/3)] [nodeos=<endpoint>]
 
 where:
     -s, --sample-data   Starts the tool with pre-existing sample accounts and smart contracts
     --server-mode       Starts the tool in server-mode, it will start the docker containers but not the gui
+    --set-mode          Set mode can take the value 1, 2 or 3, 
+                        1- Connect to default Nodeos instance
+                        2- Pass the Nodeos instance endpoint using 'nodeos' argument
+                        3- Read the endpoint from config file in HOME directory
+    nodeos              Starts the tool by connecting to the Nodeos instance endpoint passed, this argument is valid only when the mode 2 is passed i.e., --set-mode=2
 
     Only available in development:
     -dev, --develop     Starts the tool in development mode
@@ -64,6 +73,14 @@ do
       ;;
     -b|--build)
       echo "Running the tool with building gui"
+      ;;
+    --set-mode=*)
+      SET_MODE=true
+      option="${arg#*=}"
+      ;;
+    nodeos=*)
+      NODEOS=true
+      nodeos_value_passed="${arg#*=}"
       ;;
     -h|--help)
       echo " "
@@ -86,31 +103,57 @@ printf "Welcome to EOSIO Explorer\n"
 printf "=========================\n"
 printf "\n"${NC}
 
- 
 
-echo "Please type 1, 2 or 3, to start the tool and connect to your required endpoint, which are as follows: "
-echo ""
-echo "1. Default Node endpoint provided by the tool"
-echo "2. A pre-existing Node endpoint"
-echo "3. The Node endpoint detailed in the config file (location: $HOME/eosio_explorer_config.json)"
+# If set-mode is false then provide the options to select the endpoints
+if ( ! $SET_MODE ); then
+  echo "Please type 1, 2 or 3, to start the tool and connect to your required endpoint, which are as follows: "
+  echo ""
+  echo "1. Default Nodeos instance provided by the tool"
+  echo "2. A pre-existing Nodeos instance"
+  echo "3. The Nodeos instance endpoint detailed in the config file (location: $HOME/eosio_explorer_config.json)"
 
-read option
+  read option
 
-echo " "
-if [ $option == 1 ]
-then 
-  echo "Starting tool with default endpoints..."  
-elif [ $option == 2 ]
-then 
-  echo "Please enter Node endpoint:"
-  read nodeos_endpoint
-elif [ $option == 3 ]
-then
-  echo "Reading the endpoint from $HOME/eosio_explorer_config.json" 
-  nodeos_endpoint=$(cat $HOME/eosio_explorer_config.json | sed -n 's|.*"NodeEndpoint":"\([^"]*\)".*|\1|p')
+  echo " "
+  if [ $option == 1 ]
+  then 
+    echo "Starting tool with default instance..."  
+  elif [ $option == 2 ]
+  then 
+    echo "Please enter Nodeos instance endpoint:"
+    read nodeos_endpoint
+  elif [ $option == 3 ]
+  then
+    echo "Reading the endpoint from $HOME/eosio_explorer_config.json" 
+    nodeos_endpoint=$(cat $HOME/eosio_explorer_config.json | sed -n 's|.*"NodeEndpoint":"\([^"]*\)".*|\1|p')
+  else
+    echo "Invalid option, starting tool with default instance... "
+  fi
 else
-  echo "Invalid option, starting tool with default endpoints... "
-fi  
+  # If set-mode is true the read the endpoint from arguments
+
+  if [ $option == 1 ]
+  then 
+    echo "Starting tool with default instance..." 
+  elif [ $option == 2 ]; then
+    if ( ! $NODEOS ); then
+      echo "You have passed the mode as 2 but not provided the Nodeos instance endpoint."
+      echo "please run the command again with endpoint or pass the mode as 1 to run with the default instance" 
+      echo " "
+      exit 1
+    else
+      nodeos_endpoint=$nodeos_value_passed   
+    fi
+  elif [ $option == 3 ]; then
+    echo "Reading the endpoint from $HOME/eosio_explorer_config.json" 
+    nodeos_endpoint=$(cat $HOME/eosio_explorer_config.json | sed -n 's|.*"NodeEndpoint":"\([^"]*\)".*|\1|p') 
+  else    
+    echo "Invalid mode, accepted values for --set-mode argument is 1, 2 or 3."
+    echo "Please run the command again with the valid mode or run 'eosio-explorer init' without --set-mode to select the mode manually"
+    echo " "
+    exit 1
+  fi     
+fi
 
 #remove '/' at the end if any
 nodeos_endpoint=${nodeos_endpoint%/};
@@ -118,8 +161,8 @@ nodeos_endpoint=${nodeos_endpoint%/};
 echo " "
 echo "Connecting to $nodeos_endpoint"
 
-if [ $option == 2 ];
-then
+if [ $option == 2 ] || [ $option == 3 ] || [ $option == 4 ];
+then 
   echo " "
   echo "========================"
   echo "VALIDATING NODE ENDPOINT"
@@ -159,10 +202,16 @@ then
     #  remove this
     # exit 1
   else
-    echo " "
-    printf "${RED}Invalid node endpoint, please run the command again with a valid endpoint \n ${NC}"
-    echo " "
-    exit 1
+    if [ $nodeos_endpoint == $NODE_DEFAULT_ENDPOINT ];
+    then 
+      echo " "
+      echo "The docker will start the Nodeos instance"
+    else 
+      echo " "
+      printf "${RED}Invalid node endpoint, please run the command again with a valid endpoint \n ${NC}"
+      echo " "
+      exit 1
+    fi    
   fi      
 fi
   
@@ -243,6 +292,7 @@ fi
 if $ISDEV; then
   (cd $APP/public && echo 'window._env_={"NODE_PATH": "'$nodeos_endpoint'"}'>env-config.js)
 else
+  (cd $APP && mkdir -p build)
   (cd $APP/build && echo 'window._env_={"NODE_PATH": "'$nodeos_endpoint'"}'>env-config.js)
 fi
 

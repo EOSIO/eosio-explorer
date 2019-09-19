@@ -90,6 +90,10 @@ do
     --no-timestamp)
       NOTIMESTAMP=true
       ;;
+    --set-mode=*)      
+      ;;  
+    nodeos=*)
+      ;;  
     -h|--help)
       echo " "
       echo "$USAGE"
@@ -187,6 +191,8 @@ if ( ! $SERVERMODE ); then
       echo " "
       (cd $APP && yarn build && printf "${GREEN}done${NC}")
     fi
+    nodeos_endpoint=$(cat $CONFIG_FILE/eosio_explorer_config.json | sed -n 's|.*"NodeEndpoint":"\([^"]*\)".*|\1|p')
+    (cd $APP/build && echo 'window._env_={"NODE_PATH": "'$nodeos_endpoint'"}'>env-config.js)
   fi
 
   # build and start the application
