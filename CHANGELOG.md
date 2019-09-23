@@ -1,5 +1,71 @@
 # Change Log
 
+## [v0.3.8](https://github.com/EOSIO/eosio-explorer/tree/v0.3.8) (2019-07-16)
+[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.3.6...v0.3.8)
+
+## [v0.3.6](https://github.com/EOSIO/eosio-explorer/tree/v0.3.6) (2019-07-16)
+[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.3.5...v0.3.6)
+
+## [v0.3.5](https://github.com/EOSIO/eosio-explorer/tree/v0.3.5) (2019-07-15)
+[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.3.4...v0.3.5)
+
+**Implemented enhancements:**
+
+- Bump up eosio.cdt Dockerfile version reference [\#127](https://github.com/EOSIO/eosio-explorer/pull/127) ([jcardenas9x](https://github.com/jcardenas9x))
+
+## [v0.3.4](https://github.com/EOSIO/eosio-explorer/tree/v0.3.4) (2019-07-10)
+[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.3.3...v0.3.4)
+
+**Implemented enhancements:**
+
+- update eos to 1.8.1 [\#125](https://github.com/EOSIO/eosio-explorer/pull/125) ([matharuajay](https://github.com/matharuajay))
+
+## [v0.3.3](https://github.com/EOSIO/eosio-explorer/tree/v0.3.3) (2019-07-05)
+[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.3.2...v0.3.3)
+
+**Implemented enhancements:**
+
+- Upgrade eos version to 1.8 [\#124](https://github.com/EOSIO/eosio-explorer/pull/124) ([varshajnagaraja](https://github.com/varshajnagaraja))
+
+## [v0.3.2](https://github.com/EOSIO/eosio-explorer/tree/v0.3.2) (2019-06-28)
+[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.3.1...v0.3.2)
+
+**Implemented enhancements:**
+
+- Fogbugz 3470: Start up scripts changes [\#122](https://github.com/EOSIO/eosio-explorer/pull/122) ([varshajnagaraja](https://github.com/varshajnagaraja))
+- Add link to smart contract name in Action history of Push action page [\#116](https://github.com/EOSIO/eosio-explorer/pull/116) ([varshajnagaraja](https://github.com/varshajnagaraja))
+- Refactor manage accounts page  [\#115](https://github.com/EOSIO/eosio-explorer/pull/115) ([varshajnagaraja](https://github.com/varshajnagaraja))
+- Adjustments to in-app console log terminal [\#110](https://github.com/EOSIO/eosio-explorer/pull/110) ([jcardenas9x](https://github.com/jcardenas9x))
+- Fogbugz 3434 - Update timestamp colums [\#108](https://github.com/EOSIO/eosio-explorer/pull/108) ([matharuajay](https://github.com/matharuajay))
+- Refactor all pollingEpic by using exhaustMap [\#106](https://github.com/EOSIO/eosio-explorer/pull/106) ([terrylks](https://github.com/terrylks))
+- Fogbugz 3428: Help button not linking to context sensitive help [\#103](https://github.com/EOSIO/eosio-explorer/pull/103) ([varshajnagaraja](https://github.com/varshajnagaraja))
+
+**Fixed bugs:**
+
+- Fix a bug where calling eosio-explorer start right after eosio-explorer init would clear the local storage [\#121](https://github.com/EOSIO/eosio-explorer/pull/121) ([jcardenas9x](https://github.com/jcardenas9x))
+- Refactor manage accounts page  [\#115](https://github.com/EOSIO/eosio-explorer/pull/115) ([varshajnagaraja](https://github.com/varshajnagaraja))
+- Adjustments to in-app console log terminal [\#110](https://github.com/EOSIO/eosio-explorer/pull/110) ([jcardenas9x](https://github.com/jcardenas9x))
+- Fogbugz 3457 - Compiler service dev mode [\#107](https://github.com/EOSIO/eosio-explorer/pull/107) ([mjk90](https://github.com/mjk90))
+- Fogbugz 3422 - Push Action: There is no sorting on filter by smart contract [\#105](https://github.com/EOSIO/eosio-explorer/pull/105) ([varshajnagaraja](https://github.com/varshajnagaraja))
+- Fogbugz 3419 - Error Console going off screen [\#104](https://github.com/EOSIO/eosio-explorer/pull/104) ([mjk90](https://github.com/mjk90))
+- Fogbugz 3431 - Action history loading spinner [\#102](https://github.com/EOSIO/eosio-explorer/pull/102) ([mjk90](https://github.com/mjk90))
+- Fogbugz 3425 - Deployment Page responsive CSS issues [\#101](https://github.com/EOSIO/eosio-explorer/pull/101) ([mjk90](https://github.com/mjk90))
+- Fogbugz 3411: Improper not found styling on Action Detail Page [\#100](https://github.com/EOSIO/eosio-explorer/pull/100) ([varshajnagaraja](https://github.com/varshajnagaraja))
+- Move dotenv package back into "dependencies" for production build. [\#99](https://github.com/EOSIO/eosio-explorer/pull/99) ([terrylks](https://github.com/terrylks))
+
+**Closed issues:**
+
+- Cannot deploy contract with a header file. [\#109](https://github.com/EOSIO/eosio-explorer/issues/109)
+
+**Merged pull requests:**
+
+- Incoming doc update [\#123](https://github.com/EOSIO/eosio-explorer/pull/123) ([varshajnagaraja](https://github.com/varshajnagaraja))
+- Fogbugz 3469 - Generate a Unique Chain ID on each "init" [\#120](https://github.com/EOSIO/eosio-explorer/pull/120) ([mjk90](https://github.com/mjk90))
+- Change '-d'  option to ' -del' in start command [\#117](https://github.com/EOSIO/eosio-explorer/pull/117) ([varshajnagaraja](https://github.com/varshajnagaraja))
+- Fogbugz 3453, 3393, 3456 - Push Action page changes & failed actions [\#112](https://github.com/EOSIO/eosio-explorer/pull/112) ([mjk90](https://github.com/mjk90))
+- Removing init option from start command [\#111](https://github.com/EOSIO/eosio-explorer/pull/111) ([varshajnagaraja](https://github.com/varshajnagaraja))
+- Fogbugz 3451: Deploy Contract- Button comes on top of error console panel [\#98](https://github.com/EOSIO/eosio-explorer/pull/98) ([varshajnagaraja](https://github.com/varshajnagaraja))
+
 ## [v0.3.1](https://github.com/EOSIO/eosio-explorer/tree/v0.3.1) (2019-05-24)
 [Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.3.1-alpha.0...v0.3.1)
 
@@ -31,18 +97,18 @@
 - Update README.md .. Fixed path: ~/.bash\_profile [\#87](https://github.com/EOSIO/eosio-explorer/pull/87) ([jcalfee](https://github.com/jcalfee))
 
 ## [v0.3.0](https://github.com/EOSIO/eosio-explorer/tree/v0.3.0) (2019-05-21)
-[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/0.3.0-beta.0...v0.3.0)
+[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.3.0-beta.0...v0.3.0)
 
 **Merged pull requests:**
 
 - Added '0' to list of invalid numbers for account creation [\#86](https://github.com/EOSIO/eosio-explorer/pull/86) ([jcardenas9x](https://github.com/jcardenas9x))
 - Release v0.3.0 and release to public. [\#77](https://github.com/EOSIO/eosio-explorer/pull/77) ([terrylks](https://github.com/terrylks))
 
-## [0.3.0-beta.0](https://github.com/EOSIO/eosio-explorer/tree/0.3.0-beta.0) (2019-05-21)
-[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.3.0-beta.0...0.3.0-beta.0)
-
 ## [v0.3.0-beta.0](https://github.com/EOSIO/eosio-explorer/tree/v0.3.0-beta.0) (2019-05-21)
-[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/0.3.0-beta...v0.3.0-beta.0)
+[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/0.3.0-beta.0...v0.3.0-beta.0)
+
+## [0.3.0-beta.0](https://github.com/EOSIO/eosio-explorer/tree/0.3.0-beta.0) (2019-05-21)
+[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/0.3.0-beta...0.3.0-beta.0)
 
 **Merged pull requests:**
 
@@ -157,7 +223,7 @@
 - v0.2.2 release [\#37](https://github.com/EOSIO/eosio-explorer/pull/37) ([terrylks](https://github.com/terrylks))
 
 ## [v0.2.2](https://github.com/EOSIO/eosio-explorer/tree/v0.2.2) (2019-05-08)
-[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/eosio-explorer@0.2.1...v0.2.2)
+[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.2.1...v0.2.2)
 
 **Implemented enhancements:**
 
@@ -204,10 +270,10 @@
 - Doc update [\#6](https://github.com/EOSIO/eosio-explorer/pull/6) ([terrylks](https://github.com/terrylks))
 - Internal: yarn lock updates [\#3](https://github.com/EOSIO/eosio-explorer/pull/3) ([terrylks](https://github.com/terrylks))
 
-## [eosio-explorer@0.2.1](https://github.com/EOSIO/eosio-explorer/tree/eosio-explorer@0.2.1) (2019-05-03)
-[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.2.1...eosio-explorer@0.2.1)
-
 ## [v0.2.1](https://github.com/EOSIO/eosio-explorer/tree/v0.2.1) (2019-05-03)
+[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/eosio-explorer@0.2.1...v0.2.1)
+
+## [eosio-explorer@0.2.1](https://github.com/EOSIO/eosio-explorer/tree/eosio-explorer@0.2.1) (2019-05-03)
 
 
 \* *This Change Log was automatically generated by [github_changelog_generator](https://github.com/skywinder/Github-Changelog-Generator)*

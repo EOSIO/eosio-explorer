@@ -103,7 +103,6 @@ printf "Welcome to EOSIO Explorer\n"
 printf "=========================\n"
 printf "\n"${NC}
 
-
 # If set-mode is false then provide the options to select the endpoints
 if ( ! $SET_MODE ); then
   echo "Please type 1, 2 or 3, to start the tool and connect to your required endpoint, which are as follows: "

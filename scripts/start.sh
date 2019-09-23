@@ -117,7 +117,6 @@ if (!($ISDEV) && [ ! -e $APP"/build" ]); then
   BUILDAPPLICATION=true
 fi
 
-
 FILE=$CONFIG_FILE/eosio_explorer_config.json
 if [ -f "$FILE" ]; then
   echo " "
