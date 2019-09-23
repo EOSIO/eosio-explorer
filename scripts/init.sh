@@ -264,9 +264,9 @@ echo "=================================================="
 (cd $COMPILER && ./build_eosio_cdt_docker.sh && printf "${GREEN}done${NC}")
 
 echo " "
-echo "===================================="
-echo "BUILDING STATE HISTORY PLUGIN DOCKER"
-echo "===================================="
+echo "============================"
+echo "PULLING FILL-PG DOCKER IMAGE"
+echo "============================"
 (cd $SHIPDOCKER && ./build_ship_docker.sh && printf "${GREEN}done${NC}")
 
 # remove existing dockers
