@@ -23,7 +23,7 @@ const Blockdetail = (props) => {
 
   useEffect(()=>{
     let { router: { location: {pathname} } } = props;
-    props.paramsSet({id_or_num: pathNameConsumer(pathname)});
+    props.paramsSet({id_or_num: (pathNameConsumer(pathname)).toUpperCase()});
     props.fetchStart();
   }, [])
 

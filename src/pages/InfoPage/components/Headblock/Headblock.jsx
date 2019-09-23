@@ -38,7 +38,7 @@ const Headblock = (props) => {
               <Label>Block ID:</Label>
             </Col>
             <Col xs="10" className="hashText">
-              <p className="form-control-static">{block_id}</p>
+              <p style={{textTransform: "lowercase"}} className="form-control-static">{block_id}</p>
             </Col>
           </FormGroup>
           <FormGroup row className="mb-0">

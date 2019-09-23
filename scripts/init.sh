@@ -43,7 +43,7 @@ domain_name="localhost"
 
 USAGE="Usage: eosio-explorer init [-s | --sample-data] [--server-mode]
                            [-dev | --develop] [-b | --build] (program to initialize eosio-explorer)
-                           [--set-mode=(1/2/3)] [nodeos=<endpoint>]
+                           [--set-mode=<1/2/3>] [nodeos=<endpoint>]
 
 where:
     -s, --sample-data   Starts the tool with pre-existing sample accounts and smart contracts
@@ -138,6 +138,7 @@ else
     if ( ! $NODEOS ); then
       echo "You have passed the mode as 2 but not provided the Nodeos instance endpoint."
       echo "please run the command again with endpoint or pass the mode as 1 to run with the default instance" 
+      echo "To know more about options, run 'eosio-explorer init -h'"
       echo " "
       exit 1
     else
@@ -149,6 +150,7 @@ else
   else    
     echo "Invalid mode, accepted values for --set-mode argument is 1, 2 or 3."
     echo "Please run the command again with the valid mode or run 'eosio-explorer init' without --set-mode to select the mode manually"
+    echo "To know more about options, run 'eosio-explorer init -h'"
     echo " "
     exit 1
   fi     
