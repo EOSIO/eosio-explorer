@@ -128,42 +128,48 @@ else
   ./init.sh
 fi
 
-echo " "
-echo "=============================="
-echo "STARTING EOSIO DOCKER"
-echo "=============================="
-if ($MAKESAMPLEDATA); then
-  (cd $EOSDOCKER && ./start_eosio_docker.sh --nolog --sample-data && printf "${GREEN}done${NC}")
-elif ($HARDREPLAY) then
-  (cd $EOSDOCKER && ./start_eosio_docker.sh --nolog --hard-replay && printf "${GREEN}done${NC}")
-else
-  (cd $EOSDOCKER && ./start_eosio_docker.sh --nolog && printf "${GREEN}done${NC}")
-fi
+# Get the endpoint stored in config file
+nodeos_endpoint=$(cat $CONFIG_FILE/eosio_explorer_config.json | sed -n 's|.*"NodeEndpoint":"\([^"]*\)".*|\1|p')
 
-# wait until eosio blockchain is started
-waitcounter=0
-until $(curl --output /dev/null \
-             --silent \
-             --head \
-             --fail \
-             localhost:8888/v1/chain/get_info)
-do
-  if [[ "$waitcounter" -lt 10 ]]; then
-    echo " "
-    echo "$((waitcounter+1)) - Waiting for dockers to be started..."
-    sleep 10s
-    waitcounter=$((waitcounter+1))
+if [ $nodeos_endpoint == $NODE_DEFAULT_ENDPOINT ] 
+then
+  echo " "
+  echo "=============================="
+  echo "STARTING EOSIO DOCKER"
+  echo "=============================="
+  if ($MAKESAMPLEDATA); then
+    (cd $EOSDOCKER && ./start_eosio_docker.sh --nolog --sample-data && printf "${GREEN}done${NC}")
+  elif ($HARDREPLAY) then
+    (cd $EOSDOCKER && ./start_eosio_docker.sh --nolog --hard-replay && printf "${GREEN}done${NC}")
   else
-    # if the blockchain is not running even after a minute, remove the dockers and try to start again
-    echo " "
-    printf "${RED}Problem starting docker${NC}"
-    echo " "
-    echo "here is what you can do"
-    echo "eosio-explorer start --delete (this will clear the data and start the application)"
-    echo "eosio-explorer init (this will initialize the application, clear all the blockchain and postgres db data and start the application)"
-    exit 0
+    (cd $EOSDOCKER && ./start_eosio_docker.sh --nolog && printf "${GREEN}done${NC}")
   fi
-done
+
+  # wait until eosio blockchain is started
+  waitcounter=0
+  until $(curl --output /dev/null \
+              --silent \
+              --head \
+              --fail \
+              localhost:8888/v1/chain/get_info)
+  do
+    if [[ "$waitcounter" -lt 10 ]]; then
+      echo " "
+      echo "$((waitcounter+1)) - Waiting for dockers to be started..."
+      sleep 10s
+      waitcounter=$((waitcounter+1))
+    else
+      # if the blockchain is not running even after a minute, remove the dockers and try to start again
+      echo " "
+      printf "${RED}Problem starting docker${NC}"
+      echo " "
+      echo "here is what you can do"
+      echo "eosio-explorer start --delete (this will clear the data and start the application)"
+      echo "eosio-explorer init (this will initialize the application, clear all the blockchain and postgres db data and start the application)"
+      exit 0
+    fi
+  done
+fi
 
 echo " "
 echo "===================================="
