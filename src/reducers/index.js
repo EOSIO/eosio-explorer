@@ -21,6 +21,7 @@ import { combinedEpic as contractdetailPageEpic, combinedReducer as contractdeta
 import { combinedEpic as permissionPageEpic, combinedReducer as permissionPageReducer } from 'pages/PermissionPage/PermissionPageReducer';
 import { combinedEpic as deploymentPageEpic, combinedReducer as deploymentPageReducer } from 'pages/DeploymentPage/DeploymentPageReducer';
 import { combinedEpic as pushactionPageEpic, combinedReducer as pushactionPageReducer } from 'pages/PushactionPage/PushactionPageReducer';
+import { combinedEpic as checkShipVersionEpic, combinedReducer as CheckShipVersionPageReducer } from 'pages/CheckShipVersionPage/CheckShipVersionPageReducer';
 
 
 export const rootEpic = combineEpics(
@@ -42,6 +43,7 @@ export const rootEpic = combineEpics(
   permissionPageEpic,
   deploymentPageEpic,
   pushactionPageEpic,
+  checkShipVersionEpic
 );
 
 export const rootReducer = (history) => combineReducers({
@@ -63,5 +65,6 @@ export const rootReducer = (history) => combineReducers({
   contractdetailPage: contractdetailPageReducer,
   permissionPage: permissionPageReducer,
   deploymentPage: deploymentPageReducer,
-  pushactionPage: pushactionPageReducer
+  pushactionPage: pushactionPageReducer,
+  checkShipVersionPage: CheckShipVersionPageReducer
 })

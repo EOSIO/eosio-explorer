@@ -63,10 +63,10 @@ const Permissionlist = (props) => {
     panelSelect("import-account-"+panel);
   }
 
-  function setAsDefault (id, accName, permission) {
+  function setAsDefault (accName, permission) {
     let msg = `Successfully set ${accName}@${permission} as the default account`;
-    defaultSet(id);
-    if (defaultId !== id)
+    defaultSet(accName+"@"+permission);
+    if (defaultId !== accName+"@"+permission)
       cogoToast.success(msg, {
         heading: 'Account Changed',
         position: 'bottom-center',
@@ -96,15 +96,15 @@ const Permissionlist = (props) => {
                                       listWithPrivateKey.length > 0 
                                         ? listWithPrivateKey.map((eachPermission) => (
                                             <tbody className="accountRow" key={eachPermission.account+""+eachPermission.permission}> 
-                                              <tr key={eachPermission._id}>
+                                              <tr key={eachPermission.account+"@"+eachPermission.permission}>
                                                 <td width="7%">
                                                   <div style={{marginTop: "14px"}}>                                                
                                                     <RadioButtonDivStyled>
                                                       <label className="radioContainer">
-                                                        <input name={eachPermission._id}
+                                                        <input name={eachPermission.account+"@"+eachPermission.permission}
                                                           type="radio"
-                                                          checked={eachPermission._id === defaultId ? true : false}
-                                                          onClick={() => setAsDefault(eachPermission._id, 
+                                                          checked={eachPermission.account+"@"+eachPermission.permission === defaultId ? true : false}
+                                                          onClick={() => setAsDefault( 
                                                             eachPermission.account, 
                                                             eachPermission.permission)}
                                                           readOnly />
@@ -151,7 +151,7 @@ const Permissionlist = (props) => {
                                       The accounts in this panel do not have private keys assigned to them yet. You can click 
                                       the "Import Keys" button to assign your private keys to these accounts. <b>Note:</b> Be 
                                       sure that the private keys you import to the accounts here correspond to the public
-                                      key fetched from the MongoDB. Otherwise you won't be able to do anything with them, even
+                                      key fetched from the PostgresDB. Otherwise you won't be able to do anything with them, even
                                       if you import keys. 
                                     </InfoDivStyled>
                                     <PermissionTable borderless>

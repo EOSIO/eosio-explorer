@@ -80,10 +80,10 @@ const Actionlist = (props) => {
                   {payload.length < 1
                     ? <tr><td colSpan="3" className="text-center">No actions found{smartContractName && ` with Smart Contract name ${smartContractName}`}</td></tr>
                     : payload.map((action, index)=>
-                      <tr onClick={evt=>props.push(`/action/${action.block_num}/${action.receipt.global_sequence}`)} key={index}>
-                        <td>{action.act.account}</td>
-                        <td>{action.act.name}</td>
-                        <td>{action.block_time}</td>
+                      <tr onClick={evt=>props.push(`/action/${action.transaction_id}/${action.action_ordinal}`)} key={index}>
+                        <td>{action.act_account}</td>
+                        <td>{action.act_name}</td>
+                        <td>{action.timestamp}</td>
                       </tr>)}
                 </tbody>
               </TableStyled>

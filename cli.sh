@@ -32,12 +32,12 @@ where [command]:
                     all Docker containers, etc.
 
     start           Start the tool, assumes the dependencies and Docker images are already prepared
-                    
-    start_gui       Starts the web tool locally without touching the nodeos and MongoDB containers
-
+  
     stop_dockers    Stops any currently running Docker containers gracefully
 
-    remove_dockers  Remove any currently present Docker containers"
+    remove_dockers  Remove any currently present Docker containers
+    
+    "
 
 if [ "$#" -eq 0 ]; then
   ./scripts/start.sh
@@ -49,10 +49,6 @@ else
 
     start)
     ./scripts/start.sh ${@:2}
-    ;;
-
-    start_gui)
-    ./scripts/start_gui.sh ${@:2}
     ;;
 
     stop_dockers)

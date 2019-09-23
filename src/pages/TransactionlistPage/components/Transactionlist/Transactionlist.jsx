@@ -83,13 +83,15 @@ const Transactionlist = (props) => {
                           </tr>
                         </thead>
                         <tbody className="hashText">
-                          {(isPolling || payload.length <= 0) ? (
-                            <tr><td colSpan="3" className="text-center"><LoadingSpinner /></td></tr>
-                          ) : payload.map(eachTransaction=>
-                            <tr onClick={evt=>props.push(`/transaction/${eachTransaction.trx_id}`)} key={eachTransaction.trx_id}>
-                              <td>{eachTransaction.trx_id}</td>
+                          {(isPolling) 
+                          ? <tr><td colSpan="3" className="text-center"><LoadingSpinner /></td></tr>
+                          : (payload.length < 1)
+                            ? <tr><td colSpan="3" className="text-center">No transactions found</td></tr>
+                            : payload.map((eachTransaction, index)=>
+                            <tr onClick={evt=>props.push(`/transaction/${eachTransaction.id}`)} key={index}>
+                              <td>{eachTransaction.id}</td>
                               <td>{eachTransaction.block_num}</td>
-                              <td>{eachTransaction.expiration}</td>
+                              <td>{eachTransaction.partial_expiration}</td>
                             </tr>)}
                         </tbody>
                       </TableStyled>

@@ -9,7 +9,7 @@ import { of } from 'rxjs';
 import { mergeMap, mapTo, map, catchError } from 'rxjs/operators';
 import { combineEpics, ofType } from 'redux-observable';
 
-import apiMongodb from 'services/api-mongodb';
+import apiPostgres from 'services/api-postgres';
 import { errorLog } from 'helpers/error-logger';
 import paramsToQuery from 'helpers/params-to-query';
 
@@ -43,7 +43,7 @@ const fetchEpic = ( action$, state$ ) => action$.pipe(
 
     let query = paramsToQuery(params);
     
-    return apiMongodb(`get_actions${query}`).pipe(
+    return apiPostgres(`get_actions${query}`).pipe(
       map(res => fetchFulfilled(res.response)),
       catchError(error => {
         errorLog("Action page/ get action list error",error);

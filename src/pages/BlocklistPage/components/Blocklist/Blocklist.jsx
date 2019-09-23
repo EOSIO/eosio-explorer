@@ -97,11 +97,11 @@ const Blocklist = (props) => {
                           {(isPolling || payload.length <= 0) ? (
                             <tr><td colSpan="4" className="text-center"><LoadingSpinner /></td></tr>
                           ) : payload.map(eachBlock=>
-                            <tr onClick={evt=>props.push(`/block/${eachBlock.block_id}`)} key={eachBlock.block_id}>
+                            <tr onClick={evt=>props.push(`/block/${eachBlock.block_num}`)} key={eachBlock.block_num}>
                               <td>{eachBlock.block_num}</td>
                               <td>{eachBlock.block_id}</td>
-                              <td>{eachBlock.block.transactions.length}</td>
-                              <td>{eachBlock.block.timestamp}</td>
+                              <td>{eachBlock.transaction_count}</td>
+                              <td>{eachBlock.timestamp}</td>
                             </tr>)}
                         </tbody>
                       </TableStyled>

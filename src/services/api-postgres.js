@@ -4,7 +4,7 @@ import { ajax } from 'rxjs/ajax';
 export default ( apiPath ) => navigator.userAgent !== "ReactSnap"
 ?
   ajax({
-    url :`/api/mongodb/${apiPath}`,
+    url :`/api/postgres/${apiPath}`,
     timeout: process.env.REACT_APP_API_TIMEOUT_TIME,
     responseType: "json"
   })

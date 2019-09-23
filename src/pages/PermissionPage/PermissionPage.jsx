@@ -64,7 +64,7 @@ class PermissionPage extends Component {
     const { panelSelect, panel, accountClear, fetchStart, payload } = this.props;
     const { chain_id } = payload || { chain_id: "NONE" };
 
-    // Initialize local redux store state, then re-fetch MongoDB permissions
+    // Initialize local redux store state, then re-fetch PostgresDB permissions
     function reInitialize () {
       accountClear();
       fetchStart();

@@ -34,7 +34,7 @@ else
 fi
 
 EOSDOCKER="$DEPENDENCIES_ROOT/docker-eosio-nodeos"
-MONGODOCKER="$DEPENDENCIES_ROOT/docker-mongodb"
+SHIPDOCKER="$DEPENDENCIES_ROOT/docker-ship"
 CONFIG_FILE=$HOME
 
 ISDEV=false
@@ -44,14 +44,9 @@ MAKESAMPLEDATA=false
 SERVERMODE=false
 HARDREPLAY=false
 NOTIMESTAMP=false
-ENDPOINTS=false
-NODE=false
-DB=false
-nodeos_endpoint=$NODE_DEFAULT_ENDPOINT
-db_endpoint=$MONGODB_DEFAULT_ENDPOINT
 
-USAGE="Usage: eosio-explorer start [-del | --delete] [--server-mode] [-s | --sample-data] [--clear-browser-storage] 
-                            [--set-endpoints | node=<nodeos_endpoint> db=<mongodb_endpoint>]
+
+USAGE="Usage: eosio-explorer start [-del | --delete] [--server-mode] [-s | --sample-data] [--clear-browser-storage]
                             [-dev] [-del] [-b]  [--no-timestamp ] (program to start eosio-explorer)
 
 where:
@@ -59,11 +54,6 @@ where:
     --server-mode             Starts the tool in server-mode, it will start the dockers but not the gui
     -s, --sample-data         Starts the tool with pre-existing sample accounts and smart contracts
     --clear-browser-storage   Starts the tool with clearing browser local storage
-    
-    Only available in production:
-    --set-endpoints           Prompts user to input existing nodeos and MongoDB instance endpoints to connect with
-    node=<nodeos_endpoint> 
-    db=<mongodb_endpoint>     Starts the tool by connecting to the nodeos and MongoDB endpoints passed
 
     Only available in development:
     -dev, --develop           Starts the tool in development mode
@@ -100,17 +90,10 @@ do
     --no-timestamp)
       NOTIMESTAMP=true
       ;;
-    --set-endpoints)
-      ENDPOINTS=true
-      ;;
-    node=*)
-      NODE=true
-      nodeos_endpoint="${arg#*=}" 
-      ;;
-    db=*)
-      DB=true
-      db_endpoint="${arg#*=}"
-      ;;
+    --set-mode=*)      
+      ;;  
+    nodeos=*)
+      ;;  
     -h|--help)
       echo " "
       echo "$USAGE"
@@ -134,24 +117,6 @@ if (!($ISDEV) && [ ! -e $APP"/build" ]); then
   BUILDAPPLICATION=true
 fi
 
-# If --set-endpoints is passed in production mode only, then read the endpoints and store the value
-if ( ! $ISDEV ); then
-  if ( $NODE && $DB ); then
-    echo "Storing endpoints to config file..."
-    (cd $CONFIG_FILE && echo '{ "NodesEndpoint" : "'$nodeos_endpoint'", "DBEndpoint" : "'$db_endpoint'" }'>eosio_explorer_config.json && printf "${GREEN}done${NC}") 
-  elif $ENDPOINTS; then    
-    echo " "
-    echo "Please enter Nodeos endpoint:"
-    read nodeos_endpoint
-    echo " "
-    echo "Please enter MongoDB endpoint:"
-    read db_endpoint  
-    echo " "  
-    echo "Storing endpoints to config file..."
-    (cd $CONFIG_FILE && echo '{ "NodesEndpoint" : "'$nodeos_endpoint'", "DBEndpoint" : "'$db_endpoint'" }'>eosio_explorer_config.json && printf "${GREEN}done${NC}")
-  fi
-fi  
-
 FILE=$CONFIG_FILE/eosio_explorer_config.json
 if [ -f "$FILE" ]; then
   echo " "
@@ -162,12 +127,6 @@ else
   echo " "
   ./init.sh
 fi
-
-echo " "
-echo "=============================="
-echo "STARTING MONGODB DOCKER"
-echo "=============================="
-(cd $MONGODOCKER && ./start_mongodb_docker.sh && printf "${GREEN}done${NC}")
 
 echo " "
 echo "=============================="
@@ -189,7 +148,7 @@ until $(curl --output /dev/null \
              --fail \
              localhost:8888/v1/chain/get_info)
 do
-  if [[ "$waitcounter" -lt 6 ]]; then
+  if [[ "$waitcounter" -lt 10 ]]; then
     echo " "
     echo "$((waitcounter+1)) - Waiting for dockers to be started..."
     sleep 10s
@@ -201,11 +160,16 @@ do
     echo " "
     echo "here is what you can do"
     echo "eosio-explorer start --delete (this will clear the data and start the application)"
-    echo "eosio-explorer init (this will initialize the application, clear all the blockchain and mongo data and start the application)"
+    echo "eosio-explorer init (this will initialize the application, clear all the blockchain and postgres db data and start the application)"
     exit 0
   fi
 done
 
+echo " "
+echo "===================================="
+echo "STARTING STATE HISTORY PLUGIN DOCKER"
+echo "===================================="
+(cd $SHIPDOCKER && ./start_ship_docker.sh && printf "${GREEN}done${NC}")
 
 if ( ! $SERVERMODE ); then
   # If the production version of the application needs to be built
@@ -226,6 +190,8 @@ if ( ! $SERVERMODE ); then
       echo " "
       (cd $APP && yarn build && printf "${GREEN}done${NC}")
     fi
+    nodeos_endpoint=$(cat $CONFIG_FILE/eosio_explorer_config.json | sed -n 's|.*"NodeEndpoint":"\([^"]*\)".*|\1|p')
+    (cd $APP/build && echo 'window._env_={"NODE_PATH": "'$nodeos_endpoint'"}'>env-config.js)
   fi
 
   # build and start the application

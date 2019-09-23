@@ -34,7 +34,7 @@ else
 fi
 
 EOSDOCKER="$DEPENDENCIES_ROOT/docker-eosio-nodeos"
-MONGODOCKER="$DEPENDENCIES_ROOT/docker-mongodb"
+SHIPDOCKER="$DEPENDENCIES_ROOT/docker-ship"
 COMPILER="$DEPENDENCIES_ROOT/api-eosio-compiler/docker-eosio-cdt"
 
 USAGE="Usage: eosio-explorer remove_dockers (Remove any currently present Docker containers)"
@@ -63,13 +63,13 @@ echo "=============================="
 (cd $EOSDOCKER && ./remove_eosio_docker.sh && printf "${GREEN}done${NC}")
 
 echo " "
-echo "================================"
-echo "CLEANING EXISTING MONGODB DOCKER"
-echo "================================"
-(cd $MONGODOCKER && ./remove_mongodb_docker.sh && printf "${GREEN}done${NC}")
-
-echo " "
 echo "============================"
 echo "CLEANING EXISTING CDT DOCKER"
 echo "============================"
 (cd $COMPILER && ./remove_eosio_cdt_docker.sh && printf "${GREEN}done${NC}")
+
+echo " "
+echo "======================================"
+echo "CLEANING STATE HISTORY PLUGIN DOCKER"
+echo "======================================"
+(cd $SHIPDOCKER && ./remove_ship_docker.sh && printf "${GREEN}done${NC}")

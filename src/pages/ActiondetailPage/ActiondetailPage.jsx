@@ -20,8 +20,8 @@ const ActiondetailPage = (props) => {
   useEffect(()=>{
     let { router: { location: { pathname } } } = props;
     let urlValues = pathname.split("/");
-    props.paramsSet({block_num: urlValues[2]});
-    props.paramsSet({global_sequence: urlValues[3]});
+    props.paramsSet({id: urlValues[2]});
+    props.paramsSet({action_ordinal: urlValues[3]});
     props.fetchStart();
   }, [])
 
@@ -73,7 +73,7 @@ const ActiondetailPage = (props) => {
                 : <CardStyled>
                     <CardHeaderStyled></CardHeaderStyled>
                     <CardBody>
-                      <ErrorDivStyled>No Action found with Block Number '{params.block_num}' and Global Sequence Number '{params.global_sequence}'<br/><br/>
+                      <ErrorDivStyled>No Action found with Transaction ID '{params.id}' and Action ordinal '{params.action_ordinal}'<br/><br/>
                         <ButtonPrimary
                           onClick={evt=> props.push(`/action-list`)}>Back
                         </ButtonPrimary>           

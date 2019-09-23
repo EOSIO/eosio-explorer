@@ -16,7 +16,7 @@ export default function validate (values, privateKeyList) {
         let errorString = "";
         let reasons = [];
 
-        let privateKey = privateKeyList.find(key => key._id === values.permission);
+        let privateKey = privateKeyList.find(key => key.account+"@"+key.permission === values.permission);
         if(!privateKey.private_key) {
             reasons.push("The selected permission does not have a private key");
         }

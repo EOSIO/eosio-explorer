@@ -24,11 +24,9 @@ YARN_GLOBAL_DIR=$(yarn global dir)
 
 # If current folder is localed inside yarn global folder, means it is installed globally
 if [[ $PWD == $YARN_GLOBAL_DIR* ]]; then
-
     # yarn added globally, dependencies are installed as siblings directory
     DEPENDENCIES_ROOT="$(dirname "$(dirname "$( pwd -P )")")/$DEPENDENCIES_SCOPE_NAME"
 else
-
     # yarn installed locally, dependencies are installed under current's project directory
     DEPENDENCIES_ROOT="$(dirname "$( pwd -P )")/node_modules/$DEPENDENCIES_SCOPE_NAME"
 fi
@@ -38,23 +36,13 @@ CONFIG_FILE=$HOME
 
 ISDEV=false
 CLEARBROWSERSTORAGE=false
-ENDPOINTS=false
-NODE=false
-DB=false
-nodeos_endpoint=$NODE_DEFAULT_ENDPOINT
-db_endpoint=$MONGODB_DEFAULT_ENDPOINT
+
 
 USAGE="Usage: eosio-explorer start_gui [--clear-browser-storage]
-                                [--set-endpoints | node=<nodeos_endpoint> db=<mongodb_endpoint>] 
                                 [-dev | --develop] (program to start eosio-explorer gui)
 
 where:
     --clear-browser-storage       Starts the tool with clearing browser local storage
-
-    Only available in production:
-    --set-endpoints               Prompts user to input the existing nodeos and MongoDB instance endpoints to connect with
-    node=<nodeos_endpoint> 
-    db=<mongodb_endpoint>         Starts the tool by connecting to the nodeos and MongoDB endpoints passed
 
     Only available in development:
     -dev, --develop               Starts the tool in development mode"
@@ -69,17 +57,6 @@ do
       ;;
     --clear-browser-storage)
       CLEARBROWSERSTORAGE=true
-      ;;
-    --set-endpoints)
-      ENDPOINTS=true
-      ;;     
-    node=*)
-      NODE=true
-      nodeos_endpoint="${arg#*=}"
-      ;;
-    db=*) 
-      DB=true
-      db_endpoint="${arg#*=}"
       ;;
     -h|--help)
       echo " "
@@ -96,21 +73,6 @@ do
   esac
 done
 
-# If --set-endpoints is passed the read the endpoints and store the value
-if ( $NODE && $DB ); then
-  echo "Storing endpoints to config file..."
-  (cd $CONFIG_FILE && echo '{ "NodesEndpoint" : "'$nodeos_endpoint'", "DBEndpoint" : "'$db_endpoint'" }'>eosio_explorer_config.json && printf "${GREEN}done${NC}") 
-elif $ENDPOINTS; then    
-  echo " "
-  echo "Please enter Nodeos endpoint:"
-  read nodeos_endpoint
-  echo " "
-  echo "Please enter MongoDB endpoint:"
-  read db_endpoint  
-  echo " "  
-  echo "Storing endpoints to config file..."
-  (cd $CONFIG_FILE && echo '{ "NodesEndpoint" : "'$nodeos_endpoint'", "DBEndpoint" : "'$db_endpoint'" }'>eosio_explorer_config.json && printf "${GREEN}done${NC}")
-fi
 
 FILE=$CONFIG_FILE/eosio_explorer_config.json
 if [ -f "$FILE" ]; then
@@ -122,10 +84,6 @@ else
   echo " "
   ./init.sh
 fi
-
-# kill cdt service when you stop application
-# trap "exit" INT TERM ERR
-# trap "kill 0" EXIT
 
 echo " "
 echo "=============================="
@@ -150,8 +108,8 @@ if $ISDEV; then
 else
   # run yarn serve-clear to adding env CLEARBROWSERSTORAGE=true while starting to serve
   if $CLEARBROWSERSTORAGE; then
-    (cd $APP && yarn serve-clear $COMPILER $CONFIG_FILE/eosio_explorer_config.json)
+    (cd $APP && yarn serve-clear $COMPILER)
   else
-    (cd $APP && yarn serve $COMPILER $CONFIG_FILE/eosio_explorer_config.json)
+    (cd $APP && yarn serve $COMPILER)
   fi
 fi

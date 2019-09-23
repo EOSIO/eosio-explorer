@@ -69,7 +69,7 @@ const ConnectionIndicator = (props) => {
       <StyledDiv>
         <Indicator status={connectionIndicator.status.headblockStatus}>&nbsp;</Indicator>
         <StyledInner>
-          <StyledName>MongoDB</StyledName>
+          <StyledName>PostgresDB</StyledName>
           <StyledBlockNum>{headblockNum ? headblockNum : ` - `}</StyledBlockNum>
         </StyledInner>
       </StyledDiv>

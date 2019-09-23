@@ -44,7 +44,7 @@ const Accountdetail = (props) => {
 
   let { accountdetail: { isFetching, data, contractData, params } } = props;
   let { payload={}, error } = data;
-  let { contractPayload = [], contractError } = contractData;
+  let { contractPayload = {} } = contractData;
 
   return (
     <div className="Accountdetail">
@@ -135,7 +135,7 @@ const Accountdetail = (props) => {
                                   }
                                 </Col>
                               </FormGroup>
-                              { contractError || !(contractPayload.length !== 0 && contractPayload[0].hasOwnProperty("abi") === true)
+                              { (contractPayload.hasOwnProperty("abi") === false)
                                 ? <FormGroup row>
                                     <Col sm={2}>Smart Contract:</Col>
                                     <Col sm={10} className="hashText"> No Smart Contract </Col>
@@ -143,8 +143,8 @@ const Accountdetail = (props) => {
                                 : <FormGroup row>
                                     <Col sm={2}>Smart Contract:</Col>
                                     <Col sm={10} className="hashText">
-                                      <Link to={`/contract/${contractPayload[0].name}`}>
-                                        {contractPayload[0].name}
+                                      <Link to={`/contract/${contractPayload.account_name}`}>
+                                        {contractPayload.account_name}
                                       </Link>                                      
                                     </Col>
                                   </FormGroup>     

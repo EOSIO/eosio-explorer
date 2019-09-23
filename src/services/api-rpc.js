@@ -12,7 +12,7 @@ const apiRpcCall = async ( apiPath, query={} ) => {
     let { permission: { data: { list, defaultId }}} = state;
 
     // Get private key of the currently selected permission
-    let selectedPermission = list.find(permission => permission._id === defaultId) || {};
+    let selectedPermission = list.find(permission => permission.account+"@"+permission.permission === defaultId) || {};
     let { account: actor = "", permission = "", private_key } = selectedPermission;
 
     //Override actor / permissoin / private_key if the query already provide actor and permission. Loop through the list in permission store and find the private_key.
