@@ -53,7 +53,7 @@ class App extends Component {
     this.props.blockchaininfo_fetchstart();
     this.props.headblock_pollingStart();
     this.props.lastblockinfo_pollingStart();
-    // this.props.permissionFetchStart();
+    this.props.permissionFetchStart();
   }
 
   render() {
