@@ -92,7 +92,7 @@ do
       ;;
     --set-mode=*)      
       ;;  
-    nodeos=*)
+    --nodeos_endpoint=*)
       ;;  
     -h|--help)
       echo " "

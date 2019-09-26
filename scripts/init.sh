@@ -43,7 +43,7 @@ domain_name="localhost"
 
 USAGE="Usage: eosio-explorer init [-s | --sample-data] [--server-mode]
                            [-dev | --develop] [-b | --build] (program to initialize eosio-explorer)
-                           [--set-mode=<1/2/3>] [nodeos=<endpoint>]
+                           [--set-mode=<1/2/3>] [--nodeos_endpoint=<endpoint>]
 
 where:
     -s, --sample-data   Starts the tool with pre-existing sample accounts and smart contracts
@@ -52,7 +52,7 @@ where:
                         1- Connect to default Nodeos instance
                         2- Pass the Nodeos instance endpoint using 'nodeos' argument
                         3- Read the endpoint from config file in HOME directory
-    nodeos              Starts the tool by connecting to the Nodeos instance endpoint passed, this argument is valid only when the mode 2 is passed i.e., --set-mode=2
+    --nodeos_endpoint   Starts the tool by connecting to the Nodeos instance endpoint passed, this argument is valid only when the mode 2 is passed i.e., --set-mode=2
 
     Only available in development:
     -dev, --develop     Starts the tool in development mode
@@ -78,10 +78,10 @@ do
       SET_MODE=true
       option="${arg#*=}"
       ;;
-    nodeos=*)
+    --nodeos_endpoint=*)
       NODEOS=true
       nodeos_value_passed="${arg#*=}"
-      ;;
+      ;;    
     -h|--help)
       echo " "
       echo "$USAGE"
