@@ -28,10 +28,9 @@ export const connectFulfilled = payload => ({ type: CONNECT_FULFILLED, payload }
 const connectEpic = ( action$, state$ ) => action$.pipe(
   ofType(CONNECT_START),
   mergeMap(action =>{   
-    let query = paramsToQuery({ port: 5431 });
+    let query = paramsToQuery({ port: process.env.REACT_APP_POSTGRES_DB_PORT });
     return apiPostgres(`connectToDB${query}`).pipe(
       map(res => {
-        console.log("DB result ", res);
         return connectFulfilled(action.nodeos)}),
       catchError(error => {
         errorLog("Manage accounts page/ get all permissions error",error);
