@@ -56,7 +56,6 @@ class CheckShipVersionPage extends Component {
   constructor(props) {
     super(props);
     let host = new URL(window._env_.NODE_PATH).hostname;    
-    console.log("window._env_.NODE_PATH ",window._env_.NODE_PATH);
     props.establishWebsocketConnectionStart(host);
   }
 

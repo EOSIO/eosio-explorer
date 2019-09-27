@@ -6,11 +6,12 @@
 
 import { combineReducers } from 'redux';
 import { of } from 'rxjs';
-import { mergeMap } from 'rxjs/operators';
+import { mergeMap, map, catchError } from 'rxjs/operators';
 
 import { combineEpics, ofType } from 'redux-observable';
-
-
+import apiPostgres from 'services/api-postgres';
+import { errorLog } from 'helpers/error-logger';
+import paramsToQuery from 'helpers/params-to-query';
 // IMPORTANT
 // Must modify action prefix since action types must be unique in the whole app
 const actionPrefix = `endpoint/`;
@@ -26,9 +27,16 @@ export const connectFulfilled = payload => ({ type: CONNECT_FULFILLED, payload }
 // Epic
 const connectEpic = ( action$, state$ ) => action$.pipe(
   ofType(CONNECT_START),
-  mergeMap(action =>{      
-      return of(connectFulfilled(action.nodeos));
-    }
+  mergeMap(action =>{   
+    let query = paramsToQuery({ port: process.env.REACT_APP_POSTGRES_DB_PORT });
+    return apiPostgres(`connectToDB${query}`).pipe(
+      map(res => {
+        return connectFulfilled(action.nodeos)}),
+      catchError(error => {
+        errorLog("Manage accounts page/ get all permissions error",error);
+        return of(connectFulfilled(action.nodeos))
+      })
+    )}
   )
 );
 
