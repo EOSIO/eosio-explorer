@@ -23,7 +23,7 @@ const Blockdetail = (props) => {
 
   useEffect(()=>{
     let { router: { location: {pathname} } } = props;
-    props.paramsSet({id_or_num: (pathNameConsumer(pathname)).toUpperCase()});
+    props.paramsSet({id_or_num: pathNameConsumer(pathname)});
     props.fetchStart();
   }, [])
 
@@ -93,9 +93,9 @@ const Blockdetail = (props) => {
                                 <tbody className="hashText">
                                   {(payload[0].transactions).map((eachTransaction,index)=>
                                     <tr key={index} 
-                                        onClick={evt=> props.push(`/transaction/${(eachTransaction.trx.id).toUpperCase()}`)}>
+                                        onClick={evt=> props.push(`/transaction/${eachTransaction.trx.id}`)}>
                                       <td>{index+1}</td>
-                                      <td>{(eachTransaction.trx.id).toUpperCase()}</td>                                      
+                                      <td>{eachTransaction.trx.id}</td>                                      
                                     </tr>)}
                                 </tbody>
                                 </CustomTable>                               

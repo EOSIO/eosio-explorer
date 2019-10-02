@@ -25,7 +25,7 @@ const Transactiondetail = (props) => {
 
   useEffect(()=>{
     let { router: { location: {pathname} } } = props;
-    props.paramsSet({id: (pathNameConsumer(pathname)).toUpperCase()});
+    props.paramsSet({id: pathNameConsumer(pathname)});
     props.fetchStart();
   }, [])
 
