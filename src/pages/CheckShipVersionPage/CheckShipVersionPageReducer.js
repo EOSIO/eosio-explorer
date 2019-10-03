@@ -24,10 +24,10 @@ const shipversionCheckEpic = (action$, state$) => action$.pipe(
 
     return checkWs(host).pipe(
       map(res => {
-        console.log("success msg")
+        console.log("Able to connect to ship plugin")
         return establishWebsocketConnectionFulfilled(res)}),
       catchError(err =>  {
-        console.log("error msg")
+        console.log("error connecting to ship plugin")
         return of(establishWebsocketConnectionRejected("error"))
       })
     )       
