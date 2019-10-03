@@ -60,14 +60,14 @@ The EOSIO Labs™: EOSIO Explorer is designed specifically to be a tool for loca
 3. :octocat: Ability to push actions from a deployed smart contract to a connected EOSIO Blockchain
 4. :telescope: Automatically updating lists for blocks produced, transactions performed, actions pushed, etc.
 5. :sunglasses: Search for and review accounts and deployed smart contracts on the connected EOSIO Blockchain
-6. :electric_plug: Simple way to connect to a different `nodeos` instance after opening the tool
+6. :electric_plug: Simple way to connect to a different `nodeos` instance 
 
 ### Main EOSIO Dependencies
 
 The tool uses the following:
 
-1. [`eosio v1.8.0`](https://github.com/EOSIO/eos/releases/tag/v1.8.0)
-2. [`eosio.cdt v1.6.1`](https://github.com/EOSIO/eosio.cdt/releases/tag/v1.6.1)
+1. [`eosio v1.8.1`](https://github.com/EOSIO/eos/releases/tag/v1.8.1)
+2. [`eosio.cdt v1.6.2`](https://github.com/EOSIO/eosio.cdt/releases/tag/v1.6.2)
 
 ### Platform Support
 
@@ -111,10 +111,9 @@ If you wish to install the tool without `global`, then you can do the following 
 
 ```bash
 git clone https://github.com/EOSIO/eosio-explorer.git
-yarn install
 ```
 
-After installing, you can do `eosio-explorer -v` or `yarn eosio-explorer -v` to check if the installation worked. If it worked, you should get the current version of the tool.
+After cloning, follow the [Development](./docs/development.md) guide to get the tool ready to run. 
 
 ### For Contributors
 
@@ -124,7 +123,7 @@ See: [Development](./docs/development.md)
 
 :warning: - In summary, for terminal OSes, headless Chrome (`chrome`) must be available, otherwise you cannot start the GUI.
 
-If you want to start the tool without the GUI to simply create an EOSIO blockchain environment (`nodeos` and MongoDB setup), please pass the `--server-mode` flag to the `start` or `init` commands. This may be useful for users who run terminal OSes and want to supply their development team with a development environment quickly and painlessly.
+If you want to start the tool without the GUI to simply create an EOSIO blockchain environment (`nodeos` and PostgresDB setup), please pass the `--server-mode` flag to the `init` or `start` commands. This may be useful for users who run terminal OSes and want to supply their development team with a development environment quickly and painlessly.
 
 #### Ubuntu 18.04 / Ubuntu 16.04
 
@@ -156,8 +155,8 @@ Alternatively, though not recommended, you can disable `SELinux` entirely.
 After installation of the application, depending on how you have installed the tool, can be run in different ways.
 
 ```bash
-Installed with global:                eosio-explorer <command>
-Installed via cloning the repository: yarn eosio-explorer <command>
+Installed with global                : eosio-explorer <command>
+Installed via cloning the repository : yarn eosio-explorer <command>
 ```
 
 Run the tool with the specified command
@@ -165,7 +164,9 @@ Run the tool with the specified command
 ```bash
 Commands:
   -v                Prints out the current version of the tool
+
   -h or --help      Prints out the current list of available commands
+  
   init              Initialize the tool by copying initial config, setting up
                     all Docker containers, etc.
                     Available flag(s):
