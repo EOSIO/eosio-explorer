@@ -278,7 +278,7 @@ Then use `eosio-explorer start` to resume/restart the docker containers.
 
 ### Initializing with Sample Data 
 
-If you want to start or initialize a new blockchain with sample accounts, you can do the following:
+If you want to initialize a new blockchain with sample accounts and data, you can do the following:
 
 ```bash
 eosio-explorer init --sample-data 
