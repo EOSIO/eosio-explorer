@@ -52,7 +52,6 @@ USAGE="Usage: eosio-explorer start [-del | --delete] [--server-mode] [-s | --sam
 where:
     -del, --delete            Removes existing Docker containers
     --server-mode             Starts the tool in server-mode, it will start the dockers but not the gui
-    -s, --sample-data         Starts the tool with pre-existing sample accounts and smart contracts
     --clear-browser-storage   Starts the tool with clearing browser local storage
 
     Only available in development:

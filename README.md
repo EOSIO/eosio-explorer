@@ -111,9 +111,11 @@ If you wish to install the tool without `global`, then you can do the following 
 
 ```bash
 git clone https://github.com/EOSIO/eosio-explorer.git
+yarn build
+yarn install
 ```
 
-After cloning, follow the [Development](./docs/development.md) guide to get the tool ready to run. 
+After installing, you can do `eosio-explorer -v` or `yarn eosio-explorer -v` to check if the installation worked. If it worked, you should get the current version of the tool.
 
 ### For Contributors
 
@@ -166,39 +168,42 @@ Commands:
   -v                Prints out the current version of the tool
 
   -h or --help      Prints out the current list of available commands
-  
+
   init              Initialize the tool by copying initial config, setting up
                     all Docker containers, etc.
+
                     Available flag(s):
-                    -s / --sample-data - Starts the tool with pre-existing sample accounts
-                                         and smart contracts
-                    --server-mode - Starts the blockchain environment for the tool without
-                                    opening the web application
+                    -s / --sample-data - Starts the tool with pre-existing sample accounts and
+                                         smart contracts
+                    --server-mode      - Starts the blockchain environment for the tool without opening
+                                         the web application
+                    --set-mode         - Set mode can take the value 1, 2 or 3(e.g.: --set-mode=1), 
+                                         1- Connect to default Nodeos instance provided by the tool
+                                         2- Connect to the endpoint passed using 'nodeos_endpoint=<endpoint>' argument
+                                         3- Connect to the endpoint mentioned in config file
+                    --nodeos_endpoint  - Starts the tool by connecting to the Nodeos instance endpoint(RPC endpoint) passed, 
+                                         this argument is valid only when --set-mode=2
+
                     Below flag(s) only work in development mode by git cloning the repo:
                     -dev / --develop - Starts the tool in development mode
                     -b / --build - Force building the gui of the tool
-  start             Start the tool, assumes the dependencies and Docker images are already prepared
+
+  start             Start the tool, assumes the dependencies and Docker images are already prepared (using init command)
+
                     Available flag(s):
-                    -s / --sample-data - Starts the tool with pre-existing
-                                         sample accounts and smart contracts
-                    --server-mode - Starts the blockchain environment for the tool without
-                                    opening the web application
+                    --server-mode      - Starts the blockchain environment for the tool without
+                                         opening the web application
                     --clear-browser-storage - Starts the tool with clearing browser local storage
-                    -del / --delete - Removes existing Docker containers and clear the browser local storage
-                    Only available in production mode:
-                    --set-endpoints - Prompts user to input the existing nodeos and MongoDB instance endpoints to start the tool
-                    node=<nodeos_endpoint>  db=<mongodb_endpoint> - Starts the tool by connecting to the nodeos and MongoDB endpoints passed
+                    -del / --delete    - Removes existing Docker containers and clear the browser local storage
+
                     Below flag(s) only work in development mode by git cloning the repo:
-                    -dev / --develop - Starts the tool in development mode
-                    -b / --build - Force building the gui of the tool
-                    --no-timestamp - Builds gui without adding env LASTTIMESTAMP.
-                                     Should only used by developer right before making a release
-  start_gui         Starts the web tool locally without touching the nodeos and MongoDB containers.
-                    Available flag(s):
-                    --clear-browser-storage - Clears the local storage
-                    Below flag(s) only work in development mode by git cloning the repo:
-                    -dev / --develop - Starts the tool in development mode
+                    -dev / --develop   - Starts the tool in development mode
+                    -b / --build       - Force building the gui of the tool
+                    --no-timestamp     - Builds gui without adding env LASTTIMESTAMP.
+                                         Should only used by developer right before making a release
+
   stop_dockers      Stops any currently running Docker containers gracefully
+
   remove_dockers    Remove any currently present Docker containers
 ```
 
@@ -206,7 +211,7 @@ You can also add the `-h` flag to any of the commands listed above to view the a
 
 ### Starting the Tool
 
-There are the ways to start the tool depending on what you need or want to accomplish:
+There are ways to start the tool depending on what you need or want to accomplish:
 
 ```bash
 eosio-explorer init
@@ -228,7 +233,7 @@ This section will detail the specific differences between the two commands and h
 
 The `init` command will perform the following operations when starting the tool:
 
-1. Create a config file which stores the Nodeos and MongoDB instance endpoint based on user selction.
+1. Create a config file which stores the Nodeos instance endpoint based on user selction.
 2. Setting up and copying the initial configurations for the tool
 3. Checking and building Docker images if necessary
 4. Check if package dependencies need to be installed. **This step won't execute if you have installed this tool with `yarn global`.**
@@ -239,20 +244,22 @@ The `init` command will perform the following operations when starting the tool:
 Therefore, you would want to use this command under these general circumstances:
 
 1. You just installed the tool
-2. You want to re-initialize the tool after installing an update (rebuilding Docker images, etc.)
-3. You want to completely wipe your blockchain and database, start from scratch.
-4. You want to re-initialize the tool after changing some configuration data
+2. You want switch to different blockchain using the instance endpoint
+3. You want to re-initialize the tool after installing an update (rebuilding Docker images, etc.)
+4. You want to completely wipe your blockchain data, start from scratch.
+5. You want to re-initialize the tool after changing some configuration data
 
 #### `start`
 
 The `start` command will just do the following:
 
 1. Try to resume stopped Docker containers. **If no Docker containers exist, new ones will be started**. 
-2. Operations indicated by command flags/options
+3. Operations indicated by command flags/options
 
 Therefore, you would want to use this command under these general circumstances:
 
-1. You want to start the tool normally (without checking for updates)
+1. You have already run `init` command to initialize the tool
+2. You want to start the tool normally without changing the endpoint (connects to the endpoint provided in previous run)
 2. You have stopped Docker containers and want to resume a locally created blockchain
 
 Ideally, for each update installed, you want to run `init` command once, and then just use `start` thereafter. 
@@ -275,18 +282,13 @@ If you want to start or initialize a new blockchain with sample accounts, you ca
 
 ```bash
 eosio-explorer init --sample-data 
-eosio-explorer start --sample-data
 ```
-
-If you aren't currently running an existing blockchain, the tool will then create your local `nodeos` instance with sample accounts already inserted into your database and blockchain. 
-
-:warning: - If you already have a blockchain running, whether it is stopped or not, the `--sample-data / -s` flag **will do nothing**. 
 
 ### Modes
 
 **Development mode**
 
-sacrifices some performance but enables hot code reloading, allowing you to work on contributing to the project without rebuilding. This will not run as a background process. This mode is ONLY to be used for developing the core functionality of EOSIO Explorer not for development of dApps. Unless you don't plan to modify or add new functionality to the tool, the production mode is supposed to be used.
+Sacrifices some performance but enables hot code reloading, allowing you to work on contributing to the project without rebuilding. This will not run as a background process. This mode is ONLY to be used for developing the core functionality of EOSIO Explorer not for development of dApps. Unless you don't plan to modify or add new functionality to the tool, the production mode is supposed to be used.
 
 **Production mode**
 
