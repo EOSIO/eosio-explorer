@@ -31,8 +31,8 @@ Make sure `node.js`, `yarn`, `docker` are installed properly and we assume you a
     - `yarn link @eosio-toppings/api-rpc`
     - `yarn link @eosio-toppings/docker-eosio-nodeos`
     - `yarn link @eosio-toppings/docker-ship`
-4. Run `yarn build`    
-5. Run `yarn install`
+4. Run `yarn install`    
+5. Run `yarn build`
 6. Run `yarn eosio-explorer init` to initialize and start the app.
 7. (Optional) - If your tool is already running, stop the app by `Ctrl + C`. 
 8. Run `yarn eosio-explorer start -dev` to start the app in development mode.
