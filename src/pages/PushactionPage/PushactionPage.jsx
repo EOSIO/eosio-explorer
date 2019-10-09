@@ -13,7 +13,7 @@ import { defaultSet } from 'reducers/permission';
 import Actionhistory from './components/Actionhistory';
 import styled from 'styled-components';
 import cogoToast from 'cogo-toast';
-
+import { fetchStart as permissionFetchStart} from 'reducers/permission';
 import { PageTitleDivStyled, CardStyled, CardHeaderStyled, ButtonGroupSeperated, ButtonPrimary, ButtonSecondary, DropdownStyled, OverlayStyled } from 'styled';
 
 const FirstCardStyled = styled(CardStyled)`
@@ -120,6 +120,7 @@ const PushactionPage = (props) => {
 
   // This useEffect fires on component load only and performs some setup tasks
   useEffect(() => {
+    props.permissionFetchStart();
     props.fetchStart();
     props.fetchSmartContracts();
     setAdditionalValues(list);
@@ -390,7 +391,8 @@ export default connect(
     fetchSmartContracts,
     paramsSet,
     fetchAbi,
-    fetchActionData
+    fetchActionData,
+    permissionFetchStart
   }
 
 )(PushactionPage);
