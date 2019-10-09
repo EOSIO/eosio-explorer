@@ -24,3 +24,4 @@ yarn-error.log*
 config.file.local
 
 #Local log file
+logger.txt
