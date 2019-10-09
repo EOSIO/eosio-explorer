@@ -1,0 +1,21 @@
+
+Arguments passed to init:
+Manual selected mode: 2
+Connecting to http://18.136.194.62:8888
+eos version: v1.8.1
+valid endpoint
+Copied configuration to all dependencies
+Running yarn install
+Build eosio docker
+Build eosio-cdt docker
+Pulling fill-pg docker image
+Clean up existing docker containers
+Created config file in /Users/varshanagaraja directory
+Production mode
+Write nodeos endpoint to front-end config file in build folder
+--------------------------
+Arguments passed to start:
+--clear-browser-storage
+config file exists
+endpoint read from config file: http://18.136.194.62:8888
+State history plugin filler docker started

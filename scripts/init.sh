@@ -58,9 +58,17 @@ where:
     -dev, --develop     Starts the tool in development mode
     -b, --build         Build gui"
 
+write_to_log()
+{
+  echo $1 >> $APP/logger.txt  
+}
+
+echo "" > $APP/logger.txt
+write_to_log "Arguments passed to init:"
 # check for arguments
 for arg in $@
 do
+  write_to_log "$arg"
   case $arg in
     -dev|--develop)
       ISDEV=true
@@ -113,6 +121,8 @@ if ( ! $SET_MODE ); then
 
   read option
 
+  write_to_log "Manual selected mode: $option"
+
   echo " "
   if [ $option == 1 ]
   then 
@@ -125,11 +135,12 @@ if ( ! $SET_MODE ); then
   then
     echo "Reading the endpoint from $HOME/eosio_explorer_config.json" 
     nodeos_endpoint=$(cat $HOME/eosio_explorer_config.json | sed -n 's|.*"NodeEndpoint":"\([^"]*\)".*|\1|p')
+    write_to_log "nodeos_endpoint entered: $nodeos_endpoint"
   else
     echo "Invalid option, starting tool with default instance... "
   fi
 else
-  # If set-mode is true the read the endpoint from arguments
+  # If set-mode is true then read the endpoint from arguments
 
   if [ $option == 1 ]
   then 
@@ -162,6 +173,8 @@ nodeos_endpoint=${nodeos_endpoint%/};
 echo " "
 echo "Connecting to $nodeos_endpoint"
 
+write_to_log "Connecting to $nodeos_endpoint"
+
 if [ $option == 2 ] || [ $option == 3 ] || [ $option == 4 ];
 then 
   echo " "
@@ -179,9 +192,10 @@ then
     echo "========================"
     # extract version from the get_info output
     version=$(curl -s $nodeos_endpoint/v1/chain/get_info | sed -n 's|.*"server_version_string":"\([^"]*\)".*|\1|p')  
-    echo "version $version" 
+    echo "version $version"
+    write_to_log "eos version: $version" 
     version=${version:1:5}
-
+    
     # Check the extracted version if it's a number
     re='^[0-9.]+$'
     if ! [[ $version =~ $re ]] ; then
@@ -192,7 +206,8 @@ then
     else
       if [[ "$version" > 1.8.0 ]];
       then
-        echo "Compatible with tool"        
+        echo "Compatible with tool"     
+        write_to_log "valid endpoint"   
       else
         echo " "
         printf "${RED}The EOS version of the node you are trying to connect to is not compatible with the tool, \nplease run the command again with the node endpoint running on EOS version 1.8.1 above \n ${NC}"
@@ -211,6 +226,7 @@ then
       echo " "
       printf "${RED}Invalid node endpoint, please run the command again with a valid endpoint \n ${NC}"
       echo " "
+      write_to_log "Invalid endpoint"
       exit 1
     fi    
   fi      
@@ -244,12 +260,14 @@ echo "LOCAL_SERVICE_PORT=$LOCAL_SERVICE_PORT" > $LOCALSERVICE/.env.local
 
 echo "Copying initial config done."
 echo " "
+write_to_log "Copied configuration to all dependencies"
 
 # DO NOT yarn install if the app is installed globally to avoid node modules collision
 if [[ !($PWD == $YARN_GLOBAL_DIR*) ]]; then
   echo "======================="
   echo "INSTALLING DEPENDENCIES"
   echo "======================="
+  write_to_log "Running yarn install"
   yarn install
 fi
 
@@ -257,21 +275,25 @@ echo " "
 echo "====================="
 echo "BUILDING EOSIO DOCKER"
 echo "====================="
+write_to_log "Build eosio docker"
 (cd $EOSDOCKER && ./build_eosio_docker.sh && printf "${GREEN}done${NC}")
 
 echo " "
 echo "=================================================="
 echo "BUILDING EOSIO_CDT DOCKER USED BY COMPILER SERVICE"
 echo "=================================================="
+write_to_log "Build eosio-cdt docker"
 (cd $COMPILER && ./build_eosio_cdt_docker.sh && printf "${GREEN}done${NC}")
 
 echo " "
 echo "============================"
 echo "PULLING FILL-PG DOCKER IMAGE"
 echo "============================"
+write_to_log "Pulling fill-pg docker image"
 (cd $SHIPDOCKER && ./build_ship_docker.sh && printf "${GREEN}done${NC}")
 
 # remove existing dockers
+write_to_log "Clean up existing docker containers"
 ./remove_dockers.sh
 
 if [ $option != 3 ];
@@ -284,6 +306,7 @@ then
 
   (cd $HOME && echo '{"NodeEndpoint":"'$nodeos_endpoint'"}'>eosio_explorer_config.json && printf "${GREEN}done${NC}")
 
+  write_to_log "Created config file in $HOME directory"
   echo " "
   echo "Path:" $HOME/eosio_explorer_config.json 
   echo '{"NodeEndpoint":"'$nodeos_endpoint'"}'
@@ -292,10 +315,18 @@ fi
 
 #Inserting the entered endpoint from the user to a config file to connect to from front-end
 if $ISDEV; then
+  write_to_log "Development mode"
   (cd $APP/public && echo 'window._env_={"NODE_PATH": "'$nodeos_endpoint'"}'>env-config.js)
+  write_to_log "Write nodeos endpoint to front-end config file in public folder"
 else
-  (cd $APP && mkdir -p build)
-  (cd $APP/build && echo 'window._env_={"NODE_PATH": "'$nodeos_endpoint'"}'>env-config.js)
+  write_to_log "Production mode"
+  if [ -e $APP"/build" ]
+  then
+    (cd $APP/build && echo 'window._env_={"NODE_PATH": "'$nodeos_endpoint'"}'>env-config.js)
+    write_to_log "Write nodeos endpoint to front-end config file in build folder"
+  else
+    write_to_log "build folder doesn't exists"
+  fi
 fi
 
 # start the dockers and gui
