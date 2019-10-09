@@ -22,3 +22,5 @@ yarn-error.log*
 
 # local config
 config.file.local
+
+#Local log file
