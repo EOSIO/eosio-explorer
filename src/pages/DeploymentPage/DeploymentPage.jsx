@@ -8,7 +8,7 @@ import {
 } from 'reactstrap';
 import { StandardTemplate } from 'templates';
 import { connect } from 'react-redux';
-
+import { fetchStart as permissionFetchStart} from 'reducers/permission';
 import InputInstructions from './components/InputInstructions';
 import { DragDropCodeViewer, CodeViewer } from 'components';
 import {
@@ -145,6 +145,7 @@ const DeploymentPage = (props) => {
   }, 0);
 
   useEffect(() => {
+    props.permissionFetchStart();
     outputClear();
   }, [])
 
@@ -579,7 +580,8 @@ export default connect(
     contractCompile,
     contractDeploy,
     logClear,
-    outputClear
+    outputClear,
+    permissionFetchStart
   }
 
 )(DeploymentPage);
