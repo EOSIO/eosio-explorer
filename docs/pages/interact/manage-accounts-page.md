@@ -24,7 +24,7 @@ Afterwards, click the "Submit" button and your account would be created successf
 
 ### Reset All Permissions
 
-Upon first setup of this tool, the only account that should be in the "Default Signature Account" is the `eosio` account containing the EOSIO system contract. Adding new accounts or importing keys to accounts fetched from the MongoDB will expand this list but otherwise, the default local storage state just contains the `eosio` account credentials. If you wish to clean out your local storage's state and re-initialize it to how it was before, click the "Reset All Permissions" button. A confirmation dialog will appear to ask you if you really wish to perform this operation. Click "Confirm" to go through with it, or click "Cancel" or outside of the dialog to cancel.
+Upon first setup of this tool, the only account that should be in the "Default Signature Account" is the `eosio` account containing the EOSIO system contract. Adding new accounts or importing keys to accounts fetched from the PostgresDB will expand this list but otherwise, the default local storage state just contains the `eosio` account credentials. If you wish to clean out your local storage's state and re-initialize it to how it was before, click the "Reset All Permissions" button. A confirmation dialog will appear to ask you if you really wish to perform this operation. Click "Confirm" to go through with it, or click "Cancel" or outside of the dialog to cancel.
 
 ## Default Signature Account
 
@@ -32,7 +32,7 @@ This panel contains the currently available accounts which have both public and 
 
 ## Import Account
 
-The accounts in this panel do not have private keys assigned to them yet, whether it is both `owner` and `active` permissions or just one of them. You can click the "Import Keys" button to assign your private keys to these accounts. **Note**: Be sure that the private keys you import to the accounts here correspond to the public key fetched from the MongoDB. Otherwise you won't be able to do anything with them, even if you import keys. 
+The accounts in this panel do not have private keys assigned to them yet, whether it is both `owner` and `active` permissions or just one of them. You can click the "Import Keys" button to assign your private keys to these accounts. **Note**: Be sure that the private keys you import to the accounts here correspond to the public key fetched from the PostgresDB. Otherwise you won't be able to do anything with them, even if you import keys. 
 
 ## Import/Edit Account Panel
 

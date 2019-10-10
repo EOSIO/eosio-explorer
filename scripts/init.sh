@@ -48,11 +48,11 @@ USAGE="Usage: eosio-explorer init [-s | --sample-data] [--server-mode]
 where:
     -s, --sample-data   Starts the tool with pre-existing sample accounts and smart contracts
     --server-mode       Starts the tool in server-mode, it will start the docker containers but not the gui
-    --set-mode          Set mode can take the value 1, 2 or 3, 
-                        1- Connect to default Nodeos instance
-                        2- Pass the Nodeos instance endpoint using 'nodeos' argument
-                        3- Read the endpoint from config file in HOME directory
-    --nodeos_endpoint   Starts the tool by connecting to the Nodeos instance endpoint passed, this argument is valid only when the mode 2 is passed i.e., --set-mode=2
+    --set-mode          Set mode can take the value 1, 2 or 3(e.g.: --set-mode=1), 
+                        1- Connect to default Nodeos instance provided by the tool
+                        2- Connect to the endpoint passed using 'nodeos_endpoint=<endpoint>' argument
+                        3- Connect to the endpoint mentioned in config file (location: $HOME/eosio_explorer_config.json)
+    --nodeos_endpoint   Starts the tool by connecting to the Nodeos instance endpoint(RPC endpoint) passed, this argument is valid only when --set-mode=2
 
     Only available in development:
     -dev, --develop     Starts the tool in development mode

@@ -22,4 +22,4 @@ Clicking on a particular row will take you to the associated [Transaction Detail
 
 ## Block Raw JSON
 
-A panel containing a visualization of the raw JSON data of the produced block. This is taken directly from the currently connected MongoDB service. 
+A panel containing a visualization of the raw JSON data of the produced block.

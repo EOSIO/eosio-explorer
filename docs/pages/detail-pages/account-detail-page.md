@@ -19,4 +19,4 @@ The account detail panel contains the basic information about a given account. T
 
 ## Account Raw JSON
 
-A panel containing a visualization of the raw JSON data of the account. This is taken directly from the currently connected MongoDB service. If you are currently connected to nodeos instances in a development environment, many of the fields here may contains values of `-1`.
+A panel containing a visualization of the raw JSON data of the account. If you are currently connected to nodeos instances in a development environment, many of the fields here may contains values of `-1`.

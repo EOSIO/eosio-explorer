@@ -14,11 +14,12 @@ Make sure `node.js`, `yarn`, `docker` are installed properly and we assume you a
 2. cd into `eosio-toppings` (eosio-toppings repository project root)
 3. cd into each of the below packages folder and run `yarn link` in each folder. A "Success Registered" message should be shown each time you do `yarn link`
     - packages/api-eosio-compiler
-    - packages/api-mongodb-plugin
+    - packages/api-postgres-plugin
     - packages/api-rpc
     - packages/docker-eosio-nodeos
-    - packages/docker-mongodb
-4. Run `yarn install`
+    - packages/docker-ship
+4. cd into packages/api-postgres-plugin and run `yarn link @eosio-toppings/api-rpc`
+5. Run `yarn install`
 
 ### eosio-explorer
 
@@ -26,14 +27,15 @@ Make sure `node.js`, `yarn`, `docker` are installed properly and we assume you a
 2. cd into `eosio-explorer` (eosio-explorer repository project root)
 3. Make symlinks to above local `eosio-toppings` dependecies. Run below commands. "success Using linked package" messages should be shown.
     - `yarn link @eosio-toppings/api-eosio-compiler`
-    - `yarn link @eosio-toppings/api-mongodb-plugin`
+    - `yarn link @eosio-toppings/api-postgres-plugin`
     - `yarn link @eosio-toppings/api-rpc`
     - `yarn link @eosio-toppings/docker-eosio-nodeos`
-    - `yarn link @eosio-toppings/docker-mongodb`
-4. Run `yarn install`
-5. Run `yarn eosio-explorer init` to initialize and start the app.
-6. (Optional) - If your tool is already running, stop the app by `Ctrl + C`. 
-7. Run `yarn eosio-explorer start -dev` to start the app in development mode.
+    - `yarn link @eosio-toppings/docker-ship`
+4. Run `yarn install`    
+5. Run `yarn build`
+6. Run `yarn eosio-explorer init` to initialize and start the app.
+7. (Optional) - If your tool is already running, stop the app by `Ctrl + C`. 
+8. Run `yarn eosio-explorer start -dev` to start the app in development mode.
 
 The setup development environment is finished. You can now start modifying the sources code in both repositories for the development in your local machine.
 
