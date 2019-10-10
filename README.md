@@ -284,6 +284,14 @@ If you want to initialize a new blockchain with sample accounts and data, you ca
 eosio-explorer init --sample-data 
 ```
 
+### Note to connect to external nodeos endpoint
+If you choose to connect to the nodeos instance other than default instance provided by the tool:
+* Make sure the State History Plugin(SHiP) is enabled 
+* SHiP plugin port should be the default one(8080)
+* The hostname of nodeos endpoint and SHiP plugin websocket endpoint should be same. The tool extracts the hostname from the nodeos endpoint passed and       establish connection with the same host name with 8080 port 
+  eg: If the nodeos endpoint is http://localhost:8888 the SHiP plugin websocket connection endpoint is constructed as localhost:8080
+* Also, if you try to connect to the nodeos instance running locally in your machine, please enter your machine IP instead of localhost in the endpoint
+
 ### Modes
 
 **Development mode**
