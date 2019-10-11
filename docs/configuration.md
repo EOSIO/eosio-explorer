@@ -18,7 +18,7 @@ Out of the box, this tool requires several ports to be opened and available for 
 * `5111` [ UI - Web Application in Standard Mode ]
 * `8081` [ EOSIO Compiler/Deployment Local Service (Node.JS) ]
 * `8888` [ `nodeos` RPC API Service ] 
-* `27788` [ MongoDB API Service ]
+* `8080` [ SHiP plugin ]
 
 Currently, the ports for the `nodeos` RPC API and Net Plugin services **cannot** be modified.
 
@@ -49,8 +49,7 @@ The other keys in this file relate to the Docker services found in the [eosio-to
 
 Sometimes, it is necessary to modify the environment variables used by the main web application. This may be for a multitude of reasons but the safest environment variables to change are:
 
-* `REACT_APP_MONGODB_PORT` - The port of the MongoDB endpoint the web app will connect to on start-up. Defaults to `27788`.
-* `REACT_APP_MONGODB_DB_NAME` - The name of the MongoDB database the web app should get data from after connecting to the MongoDB database. Defaults to `eosio_nodeos_mongodb_plugin`. 
+* `REACT_APP_PG_PORT` - The port of the PostgresDB endpoint the web app will connect to on start-up. Defaults to `5431`. 
 * `REACT_APP_LOCAL_SERVICE_PORT` - The port of the EOSIO Compiler/Deployment Local Service. It should be the same as `LOCAL_SERVICE_PORT` inside `init_config.file`. 
 * `REACT_APP_APP_SERVE_PORT` - The port of the web application in standard mode. Should match `APP_SERVE_PORT` in the other config files.
 

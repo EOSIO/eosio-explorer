@@ -23,8 +23,6 @@ Navigate back to the top [here](../README.md).
     * [Push Action Page](./pages/interact/push-action-page.md)
 * Guides
     * [Managing Connections](./guides/connection)
-        * [Making a New Connection](./guides/connection/new-connections.md)
-        * [Resetting the Current Connection](./guides/connection/reset-connections.md)
     * [Managing Accounts](./guides/permissions)
         * [Create Account](./guides/permissions/create_account.md)
         * [Importing Keys](./guides/permissions/import_account.md)
