@@ -59,10 +59,17 @@ where:
     -b, --build               Build gui
     --no-timestamp            Builds gui without adding env LASTTIMESTAMP. Should only used by developer right before making a release"
 
-
+write_to_log()
+{
+  echo $1 >> $APP/logger.txt  
+}
+write_to_log "--------------------------"
+write_to_log "$date"
+write_to_log "Arguments passed to start:"
 # check for arguments
 for arg in $@
 do
+  write_to_log "$arg"
   case $arg in
     -del|--delete)
       ./remove_dockers.sh
@@ -112,7 +119,10 @@ done
 #   user has not added -dev flag but:
 #     the build folder does not exist
 # Then build with a new timestamp.
+
 if (!($ISDEV) && [ ! -e $APP"/build" ]); then
+  echo "required to build the app"
+  write_to_log "required to build the app"
   BUILDAPPLICATION=true
 fi
 
@@ -120,15 +130,20 @@ FILE=$CONFIG_FILE/eosio_explorer_config.json
 if [ -f "$FILE" ]; then
   echo " "
   echo "$FILE exists"
+  write_to_log "config file exists"
 else
   echo " "
-  printf "${RED}$FILE does not exist, calling init..\n ${NC}"
+  printf "${RED}$FILE does not exist, calling init...\n ${NC}"
+  write_to_log "config file doesn't exists, calling init..."
   echo " "
   ./init.sh
 fi
 
 # Get the endpoint stored in config file
 nodeos_endpoint=$(cat $CONFIG_FILE/eosio_explorer_config.json | sed -n 's|.*"NodeEndpoint":"\([^"]*\)".*|\1|p')
+
+write_to_log "endpoint read from config file: $nodeos_endpoint"
+echo "Connecting to $nodeos_endpoint"
 
 if [ $nodeos_endpoint == $NODE_DEFAULT_ENDPOINT ] 
 then
@@ -159,6 +174,7 @@ then
       waitcounter=$((waitcounter+1))
     else
       # if the blockchain is not running even after a minute, remove the dockers and try to start again
+      write_to_log "problem starting eosio nodeos docker"
       echo " "
       printf "${RED}Problem starting docker${NC}"
       echo " "
@@ -168,13 +184,15 @@ then
       exit 0
     fi
   done
+  write_to_log "eosio docker started"
 fi
 
 echo " "
-echo "===================================="
-echo "STARTING STATE HISTORY PLUGIN DOCKER"
-echo "===================================="
+echo "==========================================="
+echo "STARTING STATE HISTORY PLUGIN FILLER DOCKER"
+echo "==========================================="
 (cd $SHIPDOCKER && ./start_ship_docker.sh && printf "${GREEN}done${NC}")
+write_to_log "State history plugin filler docker started"
 
 if ( ! $SERVERMODE ); then
   # If the production version of the application needs to be built
@@ -184,7 +202,7 @@ if ( ! $SERVERMODE ); then
     echo "=============================="
     echo "BUILDING APPLICATION"
     echo "=============================="
-
+    write_to_log "Building the GUI"
     # Set environment variable "REACT_APP_LAST_INIT_TIMESTAMP" at build time to create a new timestamp while serving the app.
     if ( ! $NOTIMESTAMP ); then
       (cd $APP && REACT_APP_LAST_INIT_TIMESTAMP=$(date +%s) yarn build && printf "${GREEN}done${NC}")
@@ -197,8 +215,10 @@ if ( ! $SERVERMODE ); then
     fi
     nodeos_endpoint=$(cat $CONFIG_FILE/eosio_explorer_config.json | sed -n 's|.*"NodeEndpoint":"\([^"]*\)".*|\1|p')
     (cd $APP/build && echo 'window._env_={"NODE_PATH": "'$nodeos_endpoint'"}'>env-config.js)
+    write_to_log "nodeos endpoint is written to front-end config file"
   fi
 
+  write_to_log "call start_gui"
   # build and start the application
   if $ISDEV; then
     # If there is -d or from init setup ( or clear browser storage ), clear the browser storage by adding a new timestamp when start CRA dev.
@@ -218,6 +238,7 @@ if ( ! $SERVERMODE ); then
 else
   echo ""
   echo "dockers have been started, you can now connect to this server"
+  write_to_log "dockers have been started, GUI won't be started"
 fi
 
 P1=$!

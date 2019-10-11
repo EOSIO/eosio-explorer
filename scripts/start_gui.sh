@@ -47,10 +47,16 @@ where:
     Only available in development:
     -dev, --develop               Starts the tool in development mode"
 
+write_to_log()
+{
+  echo $1 >> $APP/logger.txt  
+}
 
+write_to_log "Arguments passed to start_gui:"
 # check for arguments
 for arg in $@
 do
+  write_to_log "$arg"
   case $arg in
     -dev|--develop)
       ISDEV=true
@@ -91,6 +97,7 @@ echo "STARTING CDT DOCKER"
 echo "=============================="
 # start the docker
 (cd $COMPILER/docker-eosio-cdt && ./start_eosio_cdt_docker.sh && printf "${GREEN}done${NC}")
+write_to_log "CDT docker started"
 
 echo " "
 echo "================================="
@@ -106,6 +113,7 @@ if $ISDEV; then
     (cd $APP && PORT=$APP_DEV_PORT yarn start)
   fi
 else
+  write_to_log "Starting app in production mode"
   # run yarn serve-clear to adding env CLEARBROWSERSTORAGE=true while starting to serve
   if $CLEARBROWSERSTORAGE; then
     (cd $APP && yarn serve-clear $COMPILER)
