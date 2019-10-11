@@ -179,9 +179,9 @@ Commands:
                                          the web application
                     --set-mode         - Set mode can take the value 1, 2 or 3(e.g.: --set-mode=1), 
                                          1- Connect to default Nodeos instance provided by the tool
-                                         2- Connect to the endpoint passed using 'nodeos_endpoint=<endpoint>' argument
+                                         2- Connect to the endpoint passed using 'nodeos-endpoint=<endpoint>' argument
                                          3- Connect to the endpoint mentioned in config file
-                    --nodeos_endpoint  - Starts the tool by connecting to the Nodeos instance endpoint(RPC endpoint) passed, 
+                    --nodeos-endpoint  - Starts the tool by connecting to the Nodeos instance endpoint(RPC endpoint) passed, 
                                          this argument is valid only when --set-mode=2
 
                     Below flag(s) only work in development mode by git cloning the repo:

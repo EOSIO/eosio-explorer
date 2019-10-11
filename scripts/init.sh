@@ -52,7 +52,7 @@ where:
                         1- Connect to default Nodeos instance provided by the tool
                         2- Connect to the endpoint passed using 'nodeos_endpoint=<endpoint>' argument
                         3- Connect to the endpoint mentioned in config file (location: $HOME/eosio_explorer_config.json)
-    --nodeos_endpoint   Starts the tool by connecting to the Nodeos instance endpoint(RPC endpoint) passed, this argument is valid only when --set-mode=2
+    --nodeos-endpoint   Starts the tool by connecting to the Nodeos instance endpoint(RPC endpoint) passed, this argument is valid only when --set-mode=2
 
     Only available in development:
     -dev, --develop     Starts the tool in development mode
@@ -86,7 +86,7 @@ do
       SET_MODE=true
       option="${arg#*=}"
       ;;
-    --nodeos_endpoint=*)
+    --nodeos-endpoint=*|nodeos-endpoint=*)
       NODEOS=true
       nodeos_value_passed="${arg#*=}"
       ;;    

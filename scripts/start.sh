@@ -64,7 +64,6 @@ write_to_log()
   echo $1 >> $APP/logger.txt  
 }
 write_to_log "--------------------------"
-write_to_log "$date"
 write_to_log "Arguments passed to start:"
 # check for arguments
 for arg in $@
@@ -98,7 +97,7 @@ do
       ;;
     --set-mode=*)      
       ;;  
-    --nodeos_endpoint=*)
+    --nodeos-endpoint=*|nodeos-endpoint=*)
       ;;  
     -h|--help)
       echo " "
