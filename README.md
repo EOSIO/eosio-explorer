@@ -290,7 +290,7 @@ If you choose to connect to the nodeos instance other than default instance prov
 * SHiP plugin port should be defaulted to 8080
 * The hostname of nodeos endpoint and SHiP plugin websocket endpoint should be same. The tool extracts the hostname from the nodeos endpoint passed and       establish connection with the same host name with 8080 port.     
   eg: If the nodeos endpoint is `http://localhost:8888` the SHiP plugin websocket endpoint is constructed as `localhost:8080`
-* Also, if you try to connect to the nodeos instance running locally in your machine, please enter your machine IP instead of localhost in the endpoint
+* Also, if you try to connect to the nodeos instance running locally in your machine other than the default instance provided by the tool, please use         your machine IP instead of localhost in the endpoint
 * Changing the connection **will clear your locally stored private keys** so please back them up in advance if you need to.
 
 ### Modes
