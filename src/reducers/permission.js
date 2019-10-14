@@ -49,14 +49,15 @@ export const createStart = account => ({ type: CREATE_START, account });
 export const createFulfilled = payload => ({ type: CREATE_FULFILLED, payload });
 export const createRejected = ( payload, error ) => ({ type: CREATE_REJECTED, payload, error });
 
-const MAX_ACCOUNT_TO_SHOW = 200;
+const MAX_ACCOUNT_TO_SHOW = 400;
 //Epic
 
 const fetchEpic = ( action$, state$ ) => action$.pipe(
   ofType(FETCH_START),
   mergeMap(action =>{
     let { value: { permission: { data: { defaultId, list } } } } = state$;
-    return apiPostgres(`get_all_permissions`).pipe(
+    let query = paramsToQuery({records_count: MAX_ACCOUNT_TO_SHOW/2});
+    return apiPostgres(`get_all_permissions${query}`).pipe(
       map(res => fetchFulfilled({
         response: res.response,
         originalList: list,
@@ -119,8 +120,7 @@ const createEpic = action$ => action$.pipe(
         .pipe(
           delay(1000),
           mergeMap(response => { 
-            let query = paramsToQuery({account_name: response.accountName});  
-            console.log("query ", query)
+            let query = paramsToQuery({account_name: response.accountName});
             return apiPostgres(`get_all_permissions${query}`).pipe(
               map(res => createFulfilled({
                 baseData: response,
@@ -273,7 +273,7 @@ const composePermissionList = (originalList = [], payloadList = []) => {
   let clonedList = originalList.slice(0);  
   let newList = clonedList.filter(
     item => {
-      return hasPrivateKey(item) && payloadList.findIndex(eachItem => item.account === eachItem.account && item.permission === eachItem.permission) > -1;
+      return hasPrivateKey(item);
     }
   );
   payloadList.map(function(el) {
@@ -323,8 +323,6 @@ const storeNewAccount = (createResponse, list) => {
   let accountSuccess = true;
   let msg = `Successfully created the account for ${accountName}`;
 
-  console.log("queryData ", queryData);
-
   if (queryData && queryData.length > 0) {
     
     queryData.map(eachAccount =>{
@@ -359,7 +357,6 @@ const updateAccountList = (createResponse, list, defaultId) => {
     queryData
   } = createResponse;
 
-  console.log("query data ", queryData);
   let accountSuccess = true;
   let msg = `Successfully updated the keys for ${accountName}`;
   let updatedList = list.slice(0);
@@ -367,15 +364,8 @@ const updateAccountList = (createResponse, list, defaultId) => {
   if (queryData && queryData.length > 0) {
     let index = updatedList.findIndex(item => item.account === accountName && item.permission === permission);
     let updatedAccount = queryData.filter(el => el.permission === permission)[0];    
-    console.log("updatedAccount ", updatedAccount);
-    console.log("updatedList[index].public_key  ", updatedList[index].public_key );
-    console.log("updatedList[index].private_key  ", updatedList[index].private_key );
-    console.log("after")
     updatedList[index].public_key = formatPublicKey(updatedAccount.public_key);
     updatedList[index].private_key = privateKey;
-
-    console.log("updatedList[index].public_key  ", updatedList[index].public_key );
-    console.log("updatedList[index].private_key  ", updatedList[index].private_key );
         
   } else {
     msg = `Updated the keys for ${accountName} but failed to query the
