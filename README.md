@@ -66,7 +66,7 @@ The EOSIO Labs™: EOSIO Explorer is designed specifically to be a tool for loca
 
 The tool uses the following:
 
-1. [`eosio v1.8.6`](https://github.com/EOSIO/eos/releases/tag/v1.8.1)
+1. [`eosio v1.8.6`](https://github.com/EOSIO/eos/releases/tag/v1.8.6)
 2. [`eosio.cdt v1.6.2`](https://github.com/EOSIO/eosio.cdt/releases/tag/v1.6.2)
 
 ### Platform Support
