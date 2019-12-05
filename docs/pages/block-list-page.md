@@ -8,7 +8,7 @@ Optionally, you can choose to change the number of blocks to display on this lis
 
 ## Block List
 
-A panel containing a dynamic table which continuously updates by polling the MongoDB instance for blocks produced by the currently running `nodeos` instance. Each row on this list contains the following information:
+A panel containing a dynamic table which continuously updates by polling the PostgresDB instance, which is filled using fill-pg tool, for blocks produced by the currently running `nodeos` instance. Each row on this list contains the following information:
 * Block number
 * Block ID
 * Number of transactions

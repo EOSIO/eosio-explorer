@@ -31,8 +31,7 @@ const startPm2 = () =>{
 
   pm2.start({
     name      : EXPLORER,
-    script    : 'serve.js',         // Script to be run
-    args: [process.argv.slice(2)[1]]
+    script    : 'serve.js'        // Script to be run    
   }, function(err, app) {
     if (err) throw err
     displayStatus(app[0]);

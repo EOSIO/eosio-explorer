@@ -1,6 +1,3 @@
-MONGODB_CONTAINER_NAME=eosio_mongodb
-NODEOS_CONTAINER_NAME=eosio_nodeos
-MONGODB_VOLUME_NAME=eosio_mongodb_volume
 NODEOS_VOLUME_NAME=eosio_volume
 
 APP_DEV_PORT=3000

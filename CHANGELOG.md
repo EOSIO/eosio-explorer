@@ -1,5 +1,22 @@
 # Change Log
 
+## [v1.0.0](https://github.com/EOSIO/eosio-explorer/tree/v1.0.0) (2019-12-05)
+[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.3.8...v1.0.0)
+
+**Closed issues:**
+
+- Installed globally, Permission denied [\#130](https://github.com/EOSIO/eosio-explorer/issues/130)
+- Run EOSIO Explorer as service [\#128](https://github.com/EOSIO/eosio-explorer/issues/128)
+
+**Merged pull requests:**
+
+- V1.8.6 [\#135](https://github.com/EOSIO/eosio-explorer/pull/135) ([varshajnagaraja](https://github.com/varshajnagaraja))
+- Permission fix [\#134](https://github.com/EOSIO/eosio-explorer/pull/134) ([varshajnagaraja](https://github.com/varshajnagaraja))
+- Script logging [\#133](https://github.com/EOSIO/eosio-explorer/pull/133) ([varshajnagaraja](https://github.com/varshajnagaraja))
+- Doc v1.0 [\#132](https://github.com/EOSIO/eosio-explorer/pull/132) ([varshajnagaraja](https://github.com/varshajnagaraja))
+- Connect to DB changes [\#131](https://github.com/EOSIO/eosio-explorer/pull/131) ([varshajnagaraja](https://github.com/varshajnagaraja))
+- Integrate ship [\#129](https://github.com/EOSIO/eosio-explorer/pull/129) ([varshajnagaraja](https://github.com/varshajnagaraja))
+
 ## [v0.3.8](https://github.com/EOSIO/eosio-explorer/tree/v0.3.8) (2019-07-16)
 [Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.3.6...v0.3.8)
 

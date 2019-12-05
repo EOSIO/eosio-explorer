@@ -53,7 +53,7 @@ const MultiIndex = (props) => {
   const [dropDownSelctedValue, setSelectedValue] = useState("Select Table");
   const [showDetailsSection, setShowDetailsSection ] = useState(false);
   const [ isOpenDropDown, toggleDropDown] = useState(false);
-  const [ scopeName, setScopeName] = useState(props.abiData.name);  
+  const [ scopeName, setScopeName] = useState(props.abiData.account_name);  
 
   let { multiIndex: { isFetching, data, params } } = props;
   let { payload, error } = data;
@@ -88,14 +88,14 @@ const MultiIndex = (props) => {
               trigger="hover focus"
               autohide={true}>
               Default value of Scope name is set to Smart Contract name, change it if you want to fetch from different scope
-              </ToolTipUncontrolledStyled>          
+              </ToolTipUncontrolledStyled>     
             <ScopeInputStyled 
               value={scopeName}
               onKeyDown={
                 evt => {
                   if (evt.key === 'Enter') {
                     if(dropDownSelctedValue !== "Select Table"){
-                      props.paramsSet({contract_name: abiData.name, table_name: dropDownSelctedValue, scope_name: scopeName || abiData.name });
+                      props.paramsSet({contract_name: abiData.account_name, table_name: dropDownSelctedValue, scope_name: scopeName || abiData.account_name });
                       props.fetchStart();
                       setShowDetailsSection(true);  
                     }
@@ -108,7 +108,7 @@ const MultiIndex = (props) => {
             <ButtonPrimary
               disabled = {dropDownSelctedValue === "Select Table"}
               onClick={evt => {
-                props.paramsSet({contract_name: abiData.name, table_name: dropDownSelctedValue, scope_name: scopeName || abiData.name });
+                props.paramsSet({contract_name: abiData.account_name, table_name: dropDownSelctedValue, scope_name: scopeName || abiData.account_name });
                 props.fetchStart();
                 setShowDetailsSection(true);                               
               }}>

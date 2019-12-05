@@ -39,18 +39,8 @@ const Blockdetail = (props) => {
                 </>
               : isFetching 
                 ? <LoadingSpinner />
-                : payload.length === 0 
-                  ? <CardStyled>
-                      <CardHeaderStyled></CardHeaderStyled>
-                      <CardBody>
-                        <ErrorDivStyled>No Block found with Block ID or Block Number {params.id_or_num} <br/><br/>
-                          <ButtonPrimary
-                            onClick={evt=> props.push(`/block-list`)}>Back
-                          </ButtonPrimary>           
-                        </ErrorDivStyled>           
-                      </CardBody>
-                    </CardStyled>
-                  : <div>
+                : payload.length > 0
+                  ? <div>
                       <Row>
                         <Col sm="12">
                           <FirstCardStyled>
@@ -72,13 +62,13 @@ const Blockdetail = (props) => {
                                 <FormGroup row>
                                   <Col sm={2}>Timestamp:</Col>
                                   <Col sm={10} className="hashText">
-                                    {payload[0].createdAt}
+                                    {payload[0].timestamp}
                                   </Col>
                                 </FormGroup>
                                 <FormGroup row>
                                   <Col sm={2}>Number of Transactions:</Col>
                                   <Col sm={10} className="hashText">
-                                    {payload[0].block.transactions.length}
+                                    {payload[0].transactions.length}
                                   </Col>
                                 </FormGroup>
                               </Form>
@@ -87,7 +77,7 @@ const Blockdetail = (props) => {
                         </Col>
                       </Row>
 
-                      {(payload[0].block.transactions).length > 0 &&
+                      {(payload[0].transactions).length > 0 &&
                         <Row>
                           <Col sm="12">
                             <CardStyled>
@@ -101,11 +91,11 @@ const Blockdetail = (props) => {
                                   </tr>
                                 </thead>
                                 <tbody className="hashText">
-                                  {(payload[0].block.transactions).map((eachTransaction,index)=>
-                                    <tr key={(typeof(eachTransaction.trx) !== "string") ? eachTransaction.trx.id : eachTransaction.trx} 
-                                        onClick={evt=> (typeof(eachTransaction.trx) !== "string") ? props.push(`/transaction/${eachTransaction.trx.id}`): props.push(`/transaction/${eachTransaction.trx}`)}>
+                                  {(payload[0].transactions).map((eachTransaction,index)=>
+                                    <tr key={index} 
+                                        onClick={evt=> props.push(`/transaction/${eachTransaction.trx.id}`)}>
                                       <td>{index+1}</td>
-                                      <td>{(typeof(eachTransaction.trx) !== "string") ? eachTransaction.trx.id : eachTransaction.trx}</td>                                      
+                                      <td>{eachTransaction.trx.id}</td>                                      
                                     </tr>)}
                                 </tbody>
                                 </CustomTable>                               
@@ -121,7 +111,7 @@ const Blockdetail = (props) => {
                             <CardBody>
                               <CodeViewer
                                 language="json"
-                                value={JSON.stringify(payload, null, 2)}
+                                value={JSON.stringify(payload[0], null, 2)}
                                 readOnly={true}
                                 height={600}
                               />  
@@ -129,7 +119,19 @@ const Blockdetail = (props) => {
                           </CardStyled>
                         </Col>
                       </Row>
-                    </div>}    
+                    </div>
+                  : <CardStyled>
+                      <CardHeaderStyled></CardHeaderStyled>
+                      <CardBody>
+                        <ErrorDivStyled>No Block found with Block ID or Block Number {params.id_or_num} <br/><br/>
+                          <ButtonPrimary
+                            onClick={evt=> props.push(`/block-list`)}>Back
+                          </ButtonPrimary>           
+                        </ErrorDivStyled>           
+                      </CardBody>
+                    </CardStyled>
+                  
+                }    
       </div>
     </div>
   );

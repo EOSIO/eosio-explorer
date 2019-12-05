@@ -34,9 +34,9 @@ do
 done
 
 echo " "
-echo "============================="
+echo "====================="
 echo "STOPPING EOSIO DOCKER"
-echo "=============================="
+echo "====================="
 # Check if the Docker container is running
 if [ "$(docker ps -q -f status=running -f name=^$NODEOS_CONTAINER_NAME$)" ]; then
     docker exec -i $NODEOS_CONTAINER_NAME ./scripts/stop_blockchain.sh
@@ -44,26 +44,30 @@ else
     echo "eosio docker is not running"
 fi
 
+echo " "
+echo "====================================="
+echo "STOPPING STATE HISTORY PLUGIN DOCKERS"
+echo "====================================="
+# Check if the Docker container is running
+if [ "$(docker ps -q -f status=running -f name=^$SHIP_CONTAINER_NAME$)" ]; then
+    docker stop $SHIP_CONTAINER_NAME
+else
+    echo "eosio docker is not running"
+fi
+
+if [ "$(docker ps -q -f status=running -f name=^$POSTGRES_CONTAINER_NAME$)" ]; then
+    docker stop $POSTGRES_CONTAINER_NAME
+else
+    echo "eosio docker is not running"
+fi
 
 echo " "
-echo "=============================="
+echo "==================="
 echo "STOPPING CDT DOCKER"
-echo "=============================="
+echo "==================="
 # Check if the Docker container is running
 if [ "$(docker ps -aq -f status=running -f name=^$CDT_CONTAINER_NAME$)" ]; then
     docker stop $CDT_CONTAINER_NAME
 else
     echo "cdt docker is not running"
-fi
-
-
-echo " "
-echo "=============================="
-echo "STOPPING MONGODB DOCKER"
-echo "=============================="
-# Check if the Docker container is running
-if [ "$(docker ps -aq -f status=running -f name=^$MONGODB_CONTAINER_NAME$)" ]; then
-    docker stop $MONGODB_CONTAINER_NAME
-else
-    echo "mongodb docker is not running"
 fi

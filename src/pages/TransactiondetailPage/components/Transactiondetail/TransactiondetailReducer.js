@@ -10,7 +10,7 @@ import { mergeMap, map, catchError } from 'rxjs/operators';
 
 import { combineEpics, ofType } from 'redux-observable';
 
-import apiMongodb from 'services/api-mongodb';
+import apiPostgres from 'services/api-postgres';
 import paramsToQuery from 'helpers/params-to-query';
 import { errorLog } from 'helpers/error-logger';
 
@@ -37,8 +37,13 @@ const fetchEpic = ( action$, state$ ) => action$.pipe(
   mergeMap(action =>{
 
     let { value: { transactiondetailPage: { transactiondetail: { params } }}} = state$;
+    let { value: { endpoint: { path: { nodeos }}}} = state$;
+    params = {
+      ...params,
+      endpoint: nodeos
+    }
 
-    return apiMongodb(`get_transaction_details${paramsToQuery(params)}`).pipe(
+    return apiPostgres(`get_transaction_details${paramsToQuery(params)}`).pipe(
       map(res => fetchFulfilled(res.response)),
       catchError(error => {
         errorLog("Transaction detail page/ get transaction details error",error);

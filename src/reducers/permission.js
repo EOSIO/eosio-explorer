@@ -6,11 +6,10 @@
 
 import { combineReducers } from 'redux';
 import { throwError, of } from 'rxjs';
-import { mergeMap, map, catchError } from 'rxjs/operators';
+import { mergeMap, map, catchError, delay } from 'rxjs/operators';
 
 import { combineEpics, ofType } from 'redux-observable';
-
-import apiMongodb from 'services/api-mongodb';
+import apiPostgres from 'services/api-postgres';
 import apiRpc from 'services/api-rpc';
 import paramsToQuery from 'helpers/params-to-query';
 import { errorLog } from 'helpers/error-logger';
@@ -50,14 +49,15 @@ export const createStart = account => ({ type: CREATE_START, account });
 export const createFulfilled = payload => ({ type: CREATE_FULFILLED, payload });
 export const createRejected = ( payload, error ) => ({ type: CREATE_REJECTED, payload, error });
 
-const MAX_ACCOUNT_TO_SHOW = 200;
+const MAX_ACCOUNT_TO_SHOW = 400;
 //Epic
 
 const fetchEpic = ( action$, state$ ) => action$.pipe(
   ofType(FETCH_START),
   mergeMap(action =>{
     let { value: { permission: { data: { defaultId, list } } } } = state$;
-    return apiMongodb(`get_all_permissions`).pipe(
+    let query = paramsToQuery({records_count: MAX_ACCOUNT_TO_SHOW/2});
+    return apiPostgres(`get_all_permissions${query}`).pipe(
       map(res => fetchFulfilled({
         response: res.response,
         originalList: list,
@@ -75,7 +75,7 @@ const createAccountObservable = (
   query, owner_private_key, active_private_key, accountName
 ) =>
   apiRpc("create_account", query).pipe(
-    map(res => ({
+    map(res =>  ({
       ownerPrivateKey: owner_private_key,
       activePrivateKey: active_private_key,
       accountName: accountName
@@ -115,11 +115,13 @@ const createEpic = action$ => action$.pipe(
         new_account_owner_key: ownerPublicKey,
         new_account_active_key: activePublicKey
       };
+
       return createAccountObservable(query, ownerPrivateKey, activePrivateKey, accountName)
         .pipe(
-          mergeMap(response => {
-          return apiMongodb(`get_account_details${paramsToQuery({account_name: accountName})}`)
-            .pipe(
+          delay(1000),
+          mergeMap(response => { 
+            let query = paramsToQuery({account_name: response.accountName});
+            return apiPostgres(`get_all_permissions${query}`).pipe(
               map(res => createFulfilled({
                 baseData: response,
                 queryData: res.response
@@ -161,8 +163,9 @@ const updateEpic = action$ => action$.pipe(
 
       return editAccountObservable(query)
         .pipe(
+          delay(1000),
           mergeMap(response => {
-            return apiMongodb(`get_account_details${paramsToQuery({account_name: baseData.accountName})}`)
+            return apiPostgres(`get_all_permissions${paramsToQuery({account_name: baseData.accountName})}`)
               .pipe(
                 map(res => editSuccess({
                   baseData: baseData,
@@ -227,6 +230,10 @@ const hasPrivateKey = (item) => {
   return (!!item.private_key);
 }  
 
+const formatPublicKey = (public_key) =>{
+  return public_key.substring(public_key.indexOf("(")+1, public_key.indexOf(","));
+}
+
 const initializeDefaultId = (stateId, list) => {
 
 
@@ -239,25 +246,25 @@ const initializeDefaultId = (stateId, list) => {
     el => el.private_key && el.account === 'eosio' && el.permission === 'active'
   )[0];
   //Check and get current default permission   
-  let currentDefault = list.filter(el => el._id === stateId)[0];
+  let currentDefault = list.filter(el => el.account+"@"+el.permission === stateId)[0];
   //Get first permission
   let firstPermission = list.filter(el => el.private_key)[0];
   let newDefaultId = "";
   if(!firstPermission){
     newDefaultId = "";
   }else{
-    newDefaultId = firstPermission._id;
+    newDefaultId = firstPermission.account+"@"+firstPermission.permission;
   }
   
   //Check if the default permission set before exists, if not set either eosio owner or active permission as default
   //If eosio permissions doesn't exists then get the first permission and set as default permission
   //If no permission exist, then set empty string as to defaultId
   if (!stateId) {
-    return (eosio_owner) ? eosio_owner._id : (eosio_active) ? eosio_active._id : newDefaultId;
+    return (eosio_owner) ? eosio_owner.account+"@"+eosio_owner.permission : (eosio_active) ? eosio_active.account+"@"+eosio_active.permission : newDefaultId;
   } else {
     let currentDefaultExists = (currentDefault) ? currentDefault.private_key : null;
-    return (currentDefaultExists) ? currentDefault._id :
-      (eosio_owner) ? eosio_owner._id : (eosio_active) ? eosio_active._id : newDefaultId;
+    return (currentDefaultExists) ? currentDefault.account+"@"+currentDefault.permission :
+      (eosio_owner) ? eosio_owner.account+"@"+eosio_owner.permission : (eosio_active) ? eosio_active.account+"@"+eosio_active.permission : newDefaultId;
   }
 }
 
@@ -266,18 +273,18 @@ const composePermissionList = (originalList = [], payloadList = []) => {
   let clonedList = originalList.slice(0);  
   let newList = clonedList.filter(
     item => {
-      return hasPrivateKey(item) && payloadList.findIndex(eachItem => item.account === eachItem.account && item.permission === eachItem.permission) > -1;
+      return hasPrivateKey(item);
     }
   );
   payloadList.map(function(el) {
+    //Extract public key 
+    el.public_key = el.public_key.substring(el.public_key.indexOf("(")+1, el.public_key.indexOf(","));  
+
     let index = newList.findIndex(eachItem => el.account === eachItem.account && el.permission === eachItem.permission);
     if (index >= 0) {
       if (newList[index].public_key !== el.public_key) {
-        newList[index]._id = el._id;
         newList[index].public_key = el.public_key;
         newList[index].private_key = null;
-      }else{
-        newList[index]._id = el._id;
       }
     } else {
       if (el.account === 'eosio' && el.private_key === undefined && el.public_key && 
@@ -292,7 +299,8 @@ const composePermissionList = (originalList = [], payloadList = []) => {
         }       
       }
       if(newList.length < MAX_ACCOUNT_TO_SHOW)
-        newList.push(el);
+        newList.push(el); 
+        
     }
     return null;
   });
@@ -316,8 +324,14 @@ const storeNewAccount = (createResponse, list) => {
   let msg = `Successfully created the account for ${accountName}`;
 
   if (queryData && queryData.length > 0) {
-    queryData[0]["private_key"] = (queryData[0].permission === 'owner') ? ownerPrivateKey : activePrivateKey;
-    queryData[1]["private_key"] = (queryData[1].permission === 'owner') ? ownerPrivateKey : activePrivateKey;
+    
+    queryData.map(eachAccount =>{
+      eachAccount.public_key = eachAccount.public_key.substring(eachAccount.public_key.indexOf("(")+1, eachAccount.public_key.indexOf(","));
+      eachAccount.private_key = (eachAccount.permission === 'owner') ? ownerPrivateKey : activePrivateKey;
+    });
+
+    // queryData[0]["private_key"] = (queryData[0].permission === 'owner') ? ownerPrivateKey : activePrivateKey;
+    // queryData[1]["private_key"] = (queryData[1].permission === 'owner') ? ownerPrivateKey : activePrivateKey;    
   } else {
     msg = `Created the account for ${accountName} but failed to query the
        account after creation. Please import the keys you just used in the previous
@@ -342,6 +356,7 @@ const updateAccountList = (createResponse, list, defaultId) => {
     baseData: { permission, privateKey, accountName },
     queryData
   } = createResponse;
+
   let accountSuccess = true;
   let msg = `Successfully updated the keys for ${accountName}`;
   let updatedList = list.slice(0);
@@ -349,15 +364,9 @@ const updateAccountList = (createResponse, list, defaultId) => {
   if (queryData && queryData.length > 0) {
     let index = updatedList.findIndex(item => item.account === accountName && item.permission === permission);
     let updatedAccount = queryData.filter(el => el.permission === permission)[0];    
-    updatedList[index].public_key = updatedAccount.public_key;
+    updatedList[index].public_key = formatPublicKey(updatedAccount.public_key);
     updatedList[index].private_key = privateKey;
-    //set new id as default id if the the permisssion was default permission
-    if(defaultId === updatedList[index]._id){
-      updatedList[index]._id = updatedAccount._id;
-      defaultId = updatedList[index]._id;
-    }else{
-      updatedList[index]._id = updatedAccount._id;
-    }       
+        
   } else {
     msg = `Updated the keys for ${accountName} but failed to query the
        account after creation. Please import the keys you just used in the previous

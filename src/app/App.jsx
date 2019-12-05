@@ -6,7 +6,6 @@ import Loadable from 'react-loadable';
 import { connect } from 'react-redux';
 import { withRouter } from "react-router";
 import TagManager from 'react-gtm-module';
-import queryString from 'query-string';
 
 import InfoPage from 'pages/InfoPage';
 import BlocklistPage from 'pages/BlocklistPage';
@@ -20,10 +19,12 @@ import ContractdetailPage from 'pages/ContractdetailPage';
 import PermissionPage from 'pages/PermissionPage';
 import DeploymentPage from 'pages/DeploymentPage';
 import PushactionPage from 'pages/PushactionPage';
+import CheckShipVersionPage from 'pages/CheckShipVersionPage';
 import NotFound404Page from 'pages/NotFound404Page';
 
 import { WillRoute } from 'hocs';
 import { connectStart } from 'reducers/endpoint';
+import { fetchStart as permissionFetchStart} from 'reducers/permission';
 import { pollingStart as headblock_pollingStart} from 'reducers/headblock';
 import { pollingStart as lastblockinfo_pollingStart } from 'reducers/lastblockinfo';
 import { fetchStart as blockchaininfo_fetchstart } from 'pages/InfoPage/components/BlockchainInfo/BlockchainInfoReducer';
@@ -48,21 +49,11 @@ class App extends Component {
 
   componentDidMount(){
     setTimeout(()=>{Loadable.preloadAll()}, 1000);
-
-    let { endpoint: { path : { nodeos, mongodb }}} = this.props;
-
-    let { router: { location: { search } } } = this.props;
-    let queryStringValues = queryString.parse(search);  
-
-    if(!!queryStringValues.nodeos && !!queryStringValues.mongodb){
-      nodeos = queryStringValues.nodeos;
-      mongodb = queryStringValues.mongodb;
-    }
-    
-    this.props.connectStart(nodeos, mongodb);
+    this.props.connectStart(window._env_.NODE_PATH);
     this.props.blockchaininfo_fetchstart();
     this.props.headblock_pollingStart();
     this.props.lastblockinfo_pollingStart();
+    // this.props.permissionFetchStart();
   }
 
   render() {
@@ -83,8 +74,9 @@ class App extends Component {
           <WillRoute exact path="/permission" component={ PermissionPage }/>
           <WillRoute exact path="/deploy" component={ DeploymentPage }/>
           <WillRoute exact path="/push-action" component={ PushactionPage }/>
+          <WillRoute exact path="/check-ship" component={ CheckShipVersionPage }/>
           <WillRoute exact path="/page-not-found" component={ NotFound404Page }/>
-
+          
           <Redirect to="/" />
         </Switch>
       </div>
@@ -99,6 +91,7 @@ export default withRouter(connect(
   {
     connectStart,
     blockchaininfo_fetchstart,
+    permissionFetchStart,
     headblock_pollingStart,
     lastblockinfo_pollingStart,
   }

@@ -9,7 +9,7 @@ import { interval, of } from 'rxjs';
 import { switchMap, mapTo, map, takeUntil, catchError, delay, startWith, exhaustMap } from 'rxjs/operators';
 import { combineEpics, ofType } from 'redux-observable';
 
-import apiMongodb from 'services/api-mongodb';
+import apiPostgres from 'services/api-postgres';
 import { errorLog } from 'helpers/error-logger';
 import paramsToQuery from 'helpers/params-to-query';
 
@@ -39,8 +39,8 @@ const pollingEpic = ( action$, state$ ) => action$.pipe(
       exhaustMap(index => {
         let query = paramsToQuery({ records_count: "1", show_empty: "true" });
 
-        return apiMongodb(`get_blocks${query}`).pipe(
-          map(res => fetchFulfilled(res.response)),
+        return apiPostgres(`get_blocks${query}`).pipe(
+          map(res =>  fetchFulfilled(res.response)),
           catchError(error => {
             errorLog("Info page/ get latest block error",error);
             return of(fetchRejected(error.response, { status: error.status }))

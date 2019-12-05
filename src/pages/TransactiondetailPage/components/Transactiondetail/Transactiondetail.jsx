@@ -42,18 +42,8 @@ const Transactiondetail = (props) => {
                 </>
               : isFetching           
                 ? <LoadingSpinner />
-                : payload.length === 0 
-                  ? <CardStyled>
-                      <CardHeaderStyled></CardHeaderStyled>
-                      <CardBody>
-                        <ErrorDivStyled>No Transaction found with Transaction ID {params.id} <br/><br/>
-                          <ButtonPrimary
-                            onClick={evt=> props.push(`/transaction-list`)}>Back
-                          </ButtonPrimary>           
-                        </ErrorDivStyled>           
-                      </CardBody>
-                    </CardStyled>
-                  : <div>
+                : payload.length > 0 
+                  ? <div>
                       <Row>
                         <Col sm="12">
                           <FirstCardStyled>
@@ -75,13 +65,13 @@ const Transactiondetail = (props) => {
                                 <FormGroup row>
                                   <Col sm={2}>Timestamp:</Col>
                                   <Col sm={10} className="hashText">
-                                    {payload[0].createdAt}
+                                    {payload[0].partial_expiration}
                                   </Col>
                                 </FormGroup>
                                 <FormGroup row>
                                   <Col sm={2}>Number of Actions:</Col>
                                   <Col sm={10} className="hashText">
-                                    {payload[0].action_traces.length}
+                                    {payload[0].transaction.actions.length}
                                   </Col>
                                 </FormGroup>
                               </Form>
@@ -90,7 +80,7 @@ const Transactiondetail = (props) => {
                         </Col>
                       </Row>
 
-                      {(payload[0].action_traces.length) > 0
+                      {(payload[0].transaction.actions.length) > 0
                         && <Row>
                             <Col sm={12}>
                               <CardStyled>
@@ -105,11 +95,11 @@ const Transactiondetail = (props) => {
                                     </tr>
                                   </thead>
                                   <tbody className="hashText">
-                                    {(payload[0].action_traces).map((eachAction,index)=>
-                                      <tr key={index} onClick={evt=> props.push(`/action/${eachAction.block_num}/${eachAction.receipt.global_sequence}`)}>
+                                    {(payload[0].transaction.actions).map((eachAction,index)=>
+                                      <tr key={index} onClick={evt=> props.push(`/action/${payload[0].id}/${index+1}`)}>
                                         <td>{index+1}</td>
-                                        <td>{eachAction.act.name}</td>  
-                                        <td>{eachAction.act.account}</td>                                    
+                                        <td>{eachAction.name}</td>  
+                                        <td>{eachAction.account}</td>                                    
                                       </tr>)}
                                   </tbody>
                                   </CustomTable> 
@@ -135,6 +125,16 @@ const Transactiondetail = (props) => {
                         </Col>
                       </Row>
                     </div>
+                  : <CardStyled>
+                      <CardHeaderStyled></CardHeaderStyled>
+                      <CardBody>
+                        <ErrorDivStyled>No Transaction found with Transaction ID {params.id} <br/><br/>
+                          <ButtonPrimary
+                            onClick={evt=> props.push(`/transaction-list`)}>Back
+                          </ButtonPrimary>           
+                        </ErrorDivStyled>           
+                      </CardBody>
+                    </CardStyled>
             }
       </div>
     </div>
