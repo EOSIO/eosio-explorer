@@ -1,5 +1,8 @@
 # Change Log
 
+## [v1.1.0](https://github.com/EOSIO/eosio-explorer/tree/v1.1.0) (2020-03-25)
+[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v1.0.0...v1.1.0)
+
 ## [v1.0.0](https://github.com/EOSIO/eosio-explorer/tree/v1.0.0) (2019-12-05)
 [Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.3.8...v1.0.0)
 
@@ -114,28 +117,28 @@
 - Update README.md .. Fixed path: ~/.bash\_profile [\#87](https://github.com/EOSIO/eosio-explorer/pull/87) ([jcalfee](https://github.com/jcalfee))
 
 ## [v0.3.0](https://github.com/EOSIO/eosio-explorer/tree/v0.3.0) (2019-05-21)
-[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.3.0-beta.0...v0.3.0)
+[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/0.3.0-beta.0...v0.3.0)
 
 **Merged pull requests:**
 
 - Added '0' to list of invalid numbers for account creation [\#86](https://github.com/EOSIO/eosio-explorer/pull/86) ([jcardenas9x](https://github.com/jcardenas9x))
 - Release v0.3.0 and release to public. [\#77](https://github.com/EOSIO/eosio-explorer/pull/77) ([terrylks](https://github.com/terrylks))
 
-## [v0.3.0-beta.0](https://github.com/EOSIO/eosio-explorer/tree/v0.3.0-beta.0) (2019-05-21)
-[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/0.3.0-beta.0...v0.3.0-beta.0)
-
 ## [0.3.0-beta.0](https://github.com/EOSIO/eosio-explorer/tree/0.3.0-beta.0) (2019-05-21)
-[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/0.3.0-beta...0.3.0-beta.0)
+[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.3.0-beta.0...0.3.0-beta.0)
+
+## [v0.3.0-beta.0](https://github.com/EOSIO/eosio-explorer/tree/v0.3.0-beta.0) (2019-05-21)
+[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.3.0-beta...v0.3.0-beta.0)
 
 **Merged pull requests:**
 
 - Internal: SKIP\_PREFLIGHT\_CHECK using create react app [\#85](https://github.com/EOSIO/eosio-explorer/pull/85) ([terrylks](https://github.com/terrylks))
 
-## [0.3.0-beta](https://github.com/EOSIO/eosio-explorer/tree/0.3.0-beta) (2019-05-21)
-[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.3.0-beta...0.3.0-beta)
-
 ## [v0.3.0-beta](https://github.com/EOSIO/eosio-explorer/tree/v0.3.0-beta) (2019-05-21)
-[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.3.0-alpha.2...v0.3.0-beta)
+[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/0.3.0-beta...v0.3.0-beta)
+
+## [0.3.0-beta](https://github.com/EOSIO/eosio-explorer/tree/0.3.0-beta) (2019-05-21)
+[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/0.3.0-alpha.2...0.3.0-beta)
 
 **Implemented enhancements:**
 
@@ -153,11 +156,11 @@
 - Made revisions to README.md for proofing reasons [\#79](https://github.com/EOSIO/eosio-explorer/pull/79) ([jcardenas9x](https://github.com/jcardenas9x))
 - adds wallet related legal rider [\#78](https://github.com/EOSIO/eosio-explorer/pull/78) ([josephjguerra](https://github.com/josephjguerra))
 
-## [v0.3.0-alpha.2](https://github.com/EOSIO/eosio-explorer/tree/v0.3.0-alpha.2) (2019-05-20)
-[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/0.3.0-alpha.2...v0.3.0-alpha.2)
-
 ## [0.3.0-alpha.2](https://github.com/EOSIO/eosio-explorer/tree/0.3.0-alpha.2) (2019-05-20)
-[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.3.0-alpha.1...0.3.0-alpha.2)
+[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.3.0-alpha.2...0.3.0-alpha.2)
+
+## [v0.3.0-alpha.2](https://github.com/EOSIO/eosio-explorer/tree/v0.3.0-alpha.2) (2019-05-20)
+[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v0.3.0-alpha.1...v0.3.0-alpha.2)
 
 **Fixed bugs:**
 
