@@ -966,18 +966,18 @@
     recursive-copy "^2.0.10"
     strip-ansi "^5.1.0"
 
-"@eosio-toppings/api-postgres-plugin@1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@eosio-toppings/api-postgres-plugin/-/api-postgres-plugin-1.0.0.tgz#fa32332d067e100b7f8e6a7ebaf1794fb2386bac"
-  integrity sha512-W8rEJrQMhZtptfrcgj0vt/y5UIK/zxJJfWMTMdtGQnQooApMwLJG3UrkwcDm+iYG9Ucev7ZlhqEg31Nx0vFBuA==
+"@eosio-toppings/api-postgres-plugin@1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@eosio-toppings/api-postgres-plugin/-/api-postgres-plugin-1.1.0.tgz#87d91430b086961e8d084242c04fc3a0b9c91798"
+  integrity sha512-hTpZ3sBFISQTwNVpBh4QajhFY8fDNbgOjNJLlbmNvYa75ZW2kuS8sC3/p0nP+BJOdvkM2ZA5LH+6Pwz/wBcucQ==
   dependencies:
-    "@eosio-toppings/api-rpc" "^1.0.0"
+    "@eosio-toppings/api-rpc" "^1.1.0"
     pg "^7.11.0"
 
-"@eosio-toppings/api-rpc@1.0.0", "@eosio-toppings/api-rpc@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@eosio-toppings/api-rpc/-/api-rpc-1.0.0.tgz#2d8321c4245e29f66d77de6808f4135ade485a67"
-  integrity sha512-+t6A/DXXpktJ0zp+X+jK2uBLGZGrV0EfCnHArRtSPqVhrQONhnYWt6C9U9GfhWcF9XiS+FQ5VrCJErcyCGdxRQ==
+"@eosio-toppings/api-rpc@1.1.0", "@eosio-toppings/api-rpc@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@eosio-toppings/api-rpc/-/api-rpc-1.1.0.tgz#437f508ec0b635d8c3e4e9eec944dfa0961ff2ae"
+  integrity sha512-YrXOpzBKNPiwpxh0NMGKZODZ/DWP6WtjRBF2rl/ouBFSgrXGGLEPnKt+c9emVAMoKigr1V3DFprUoaK70B3YWA==
   dependencies:
     eosjs "20.0.0"
     node-fetch "^2.6.0"
@@ -988,10 +988,10 @@
   resolved "https://registry.yarnpkg.com/@eosio-toppings/docker-eosio-nodeos/-/docker-eosio-nodeos-1.0.0.tgz#3d2c7d54c191899414a370909c3c421f275d1e5b"
   integrity sha512-c+a6p+FThlbi4wFNJwlR5yxfs5JwImXR/HTZkAI8kDEhQNAelT5Spq23LWZeEIeT11Vn5dsu/4vNePqobbhG4A==
 
-"@eosio-toppings/docker-ship@1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@eosio-toppings/docker-ship/-/docker-ship-1.0.0.tgz#e2d6ddf2065ba9f1b3d17ac25d0b7742e971cd51"
-  integrity sha512-rRqzj1HFTNiQrae1PC3KTE82tfTzvYDRLc700IOR5DqZ6L2KG3etJVTzmrlpDRljVu3WZuWOBbqjjalWVnXWZw==
+"@eosio-toppings/docker-ship@1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@eosio-toppings/docker-ship/-/docker-ship-1.1.0.tgz#0946bde5af2f2f98e2e88685f69f5aad60c19d99"
+  integrity sha512-FSc7qyaXvWH4Q4dF6iESBzlNWoGPDjRsQDQuWDMl3RymRqtxUEPE/OnUvsACnK17xA/9MIo41MantDamhPhx5A==
 
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
