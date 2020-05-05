@@ -1,5 +1,12 @@
 # Change Log
 
+## [v1.2.0](https://github.com/EOSIO/eosio-explorer/tree/v1.2.0) (2020-05-05)
+[Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v1.1.0...v1.2.0)
+
+**Implemented enhancements:**
+
+- Bump up eosio and fill-pg version [\#147](https://github.com/EOSIO/eosio-explorer/pull/147) ([varshajnagaraja](https://github.com/varshajnagaraja))
+
 ## [v1.1.0](https://github.com/EOSIO/eosio-explorer/tree/v1.1.0) (2020-03-25)
 [Full Changelog](https://github.com/EOSIO/eosio-explorer/compare/v1.0.0...v1.1.0)
 
