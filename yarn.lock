@@ -966,10 +966,10 @@
     recursive-copy "^2.0.10"
     strip-ansi "^5.1.0"
 
-"@eosio-toppings/api-postgres-plugin@1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@eosio-toppings/api-postgres-plugin/-/api-postgres-plugin-1.1.0.tgz#87d91430b086961e8d084242c04fc3a0b9c91798"
-  integrity sha512-hTpZ3sBFISQTwNVpBh4QajhFY8fDNbgOjNJLlbmNvYa75ZW2kuS8sC3/p0nP+BJOdvkM2ZA5LH+6Pwz/wBcucQ==
+"@eosio-toppings/api-postgres-plugin@1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@eosio-toppings/api-postgres-plugin/-/api-postgres-plugin-1.1.1.tgz#40265cb7f5fefe004e9f5ce5ce291d4dd56caca7"
+  integrity sha512-n5vKkI/F3bb2KSTDhlV+3VU+D1k3tqu9DZsEMaPH98k/fbX2Wz0LGbWlb67LoPFXTjfETc9lsVfPMRizcxq58A==
   dependencies:
     "@eosio-toppings/api-rpc" "^1.1.0"
     pg "^7.11.0"
@@ -983,15 +983,15 @@
     node-fetch "^2.6.0"
     text-encoding "^0.7.0"
 
-"@eosio-toppings/docker-eosio-nodeos@1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@eosio-toppings/docker-eosio-nodeos/-/docker-eosio-nodeos-1.0.0.tgz#3d2c7d54c191899414a370909c3c421f275d1e5b"
-  integrity sha512-c+a6p+FThlbi4wFNJwlR5yxfs5JwImXR/HTZkAI8kDEhQNAelT5Spq23LWZeEIeT11Vn5dsu/4vNePqobbhG4A==
-
-"@eosio-toppings/docker-ship@1.1.0":
+"@eosio-toppings/docker-eosio-nodeos@1.1.0":
   version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@eosio-toppings/docker-ship/-/docker-ship-1.1.0.tgz#0946bde5af2f2f98e2e88685f69f5aad60c19d99"
-  integrity sha512-FSc7qyaXvWH4Q4dF6iESBzlNWoGPDjRsQDQuWDMl3RymRqtxUEPE/OnUvsACnK17xA/9MIo41MantDamhPhx5A==
+  resolved "https://registry.yarnpkg.com/@eosio-toppings/docker-eosio-nodeos/-/docker-eosio-nodeos-1.1.0.tgz#7e2b103dafb8dd40b63f5733a8c6178c8294b02c"
+  integrity sha512-zsLJll3NpJqsaxl7Co36Hmo2iZWVMCkDwOcp7u3OCFc4zJHohEpcGvSuCvtddOp7lSNiiAN5ELCcX/sw7lSpAQ==
+
+"@eosio-toppings/docker-ship@1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@eosio-toppings/docker-ship/-/docker-ship-1.2.0.tgz#bcd1a153ceadd007fdd4aa4c1f757ede5fbf68db"
+  integrity sha512-64hWWzqRTL0faE+Zl0qvJu/uHzxKwujqHikHcuro352k2Zwgh93JoszA9KqMKOVtrMlBykxkrRnHe7QgXFeTIg==
 
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
