@@ -14,9 +14,9 @@
   "description": "A full web application to communicate with EOSIO blockchain in a local development environment",
   "dependencies": {
     "@eosio-toppings/api-eosio-compiler": "1.0.0",
+    "@eosio-toppings/api-postgres-plugin": "1.1.1",
     "@eosio-toppings/api-rpc": "1.1.0",
     "@eosio-toppings/docker-eosio-nodeos": "1.1.0",
-    "@eosio-toppings/api-postgres-plugin": "1.1.1",
     "@eosio-toppings/docker-ship": "1.2.0",
     "chalk": "^4.1.0",
     "cross-spawn": "^7.0.3",
