@@ -43,11 +43,30 @@ const CloseButton = styled.button`
   top: 9px;
   right: 13px;
   border: none;
-  background: transparent;
-  padding: 10px;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  opacity: 0.3;
+  background-color: #fff;
   &:hover {
-    cursor: pointer;
+    opacity: 1;
   }
+  &:before, &:after {
+    top: 0px;
+    position: absolute;
+    left: 15px;
+    content: ' ';
+    height: 33px;
+    width: 2px;
+    background-color: #333;
+  }
+  &:before {
+    transform: rotate(45deg);
+  }
+  &:after {
+    transform: rotate(-45deg);
+  }
+  
 `
 
 const InfoPortal = ({ children }) => {
@@ -81,7 +100,6 @@ const WelcomePopup = ({ toggle, open, toggleShowAgain }) => {
           <InfoModalWrapper>
             <WelcomeModalCard>
               <CloseButton onClick={() => closeModal()}>
-                <img src="https://icon.now.sh/x/8ba5bf" alt="close" />
               </CloseButton>
               <PageTitleDivStyled>
                 Welcome to EOSIO Labs™: EOSIO Explorer
