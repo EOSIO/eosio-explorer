@@ -50,7 +50,7 @@
   "devDependencies": {
     "@coreui/coreui": "^2.1.8",
     "@coreui/react": "^2.1.5",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "cogo-toast": "^1.0.4",
     "connected-react-router": "^6.3.2",
     "eosjs-ecc": "^4.0.4",
