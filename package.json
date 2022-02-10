@@ -59,7 +59,7 @@
     "http-proxy-middleware": "^0.19.1",
     "js-cookie": "^2.2.0",
     "monaco-editor-webpack-plugin": "^1.7.0",
-    "node-sass": "^4.11.0",
+    "node-sass": "^7.0.0",
     "react": "^16.8.4",
     "react-app-rewire-styled-components": "^3.0.2",
     "react-app-rewired": "^2.1.1",
