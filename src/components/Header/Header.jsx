@@ -211,9 +211,9 @@ const Header = (props) => {
         <WrappedLink to={`/`}>
           <Nav className="nav-items d-md-down-none" navbar>
             <LogoWrapper>
-              {process.env.REACT_APP_API_NETWORK_NAME.toLowerCase().includes(
-                "airwire"
-              ) ? (
+              {(process.env.REACT_APP_API_NETWORK_NAME || "")
+                .toLowerCase()
+                .includes("airwire") ? (
                 <AirWireStyled
                   src="https://ipfs.airwire.io/ipfs/Qmdisktsun8NoXDY5R6mX4B2YyoLn7j4LorXgBxkXee7DP"
                   alt="airwire explorer"
