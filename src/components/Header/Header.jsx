@@ -215,7 +215,7 @@ const Header = (props) => {
                 "airwire"
               ) ? (
                 <AirWireStyled
-                  src="https://ipfs.airwire.io/ipfs/QmYcehEf8MEfdgVVrrJrkTy521w51Vpkhgd86gr5VTQv5y"
+                  src="https://ipfs.airwire.io/ipfs/Qmdisktsun8NoXDY5R6mX4B2YyoLn7j4LorXgBxkXee7DP"
                   alt="airwire explorer"
                 />
               ) : (
